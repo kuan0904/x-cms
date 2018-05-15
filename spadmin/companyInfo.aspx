@@ -11,25 +11,21 @@
 function getdata() {   
     $.postJSON('companyinfo.ashx', { "action": "get", "_": new Date().getTime() }, function (data) {       
         if (data != "") {
-            data = JSON.parse(data);
-            $("#companyName").val(data.companyName);
-            $("#companyNo").val(data.companyNo);
-            $("#companyName").val(data.companyName);
-            $("#companyName").val(data.companyName);
-            $("#companyName").val(data.companyName);
-            $("#companyName").val(data.companyName);
-            $("#companyName").val(data.companyName);
-            $("#companyName").val(data.companyName);
-            $("#companyName").val(data.companyName);
-            $("#companyName").val(data.companyName);
-            $("#companyName").val(data.companyName);
+            var data = JSON.parse(data);                                         
+       
+            $.each(data, function (key, val) {
+                var id = "#" + key
+                $(id).val(val);
+                   
+            });
+
+           
 
         }
     });     
 }
 
-       $(document).ready(function () {
-  
+       $(document).ready(function () {  
             getdata();
          
         
@@ -60,7 +56,12 @@ function getdata() {
                     </div>
                 </div>
 
-            
+                   <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1">facebook id</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="facebookid" placeholder="facebook id" class="col-xs-10 col-sm-5" />
+                    </div>
+                </div>
 
                 <div class="space-4"></div>
 

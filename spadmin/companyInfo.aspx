@@ -7,30 +7,7 @@
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <script >
 
-        jQuery.postJSON = function(url, para, callback) { 
-    $.ajax({ 
-        type: 'POST', 
-        url: url, 
-        data: para, 
-        dataType: "json", 
-        async: false, 
-        cache: false, 
-        success: function(data) { callback(data); },
-        error: function(xhr, error) { callback(''); }         
-    }); 
-};
-jQuery.post = function(url, para, callback) { 
-    $.ajax({ 
-        type: 'POST', 
-        url: url, 
-        data: para, 
-        dataType: "text", 
-        async: false, 
-        cache: false, 
-        success: function(data) { callback(data); }, 
-        error: function(xhr, error) { callback(''); }         
-    }); 
-};
+ 
 function getdata() {   
     $.postJSON('companyinfo.ashx', { "action": "get", "_": new Date().getTime() }, function (data) {       
         if (data != "") {

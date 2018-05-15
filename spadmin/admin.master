@@ -39,6 +39,32 @@
     <script src="/assets/js/respond.min.js"></script>
     <![endif]-->
  <script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
+    <script>
+        jQuery.postJSON = function (url, para, callback) {
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: para,
+                dataType: "json",
+                async: false,
+                cache: false,
+                success: function (data) { callback(data); },
+                error: function (xhr, error) { callback(''); }
+            });
+        };
+        jQuery.post = function (url, para, callback) {
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: para,
+                dataType: "text",
+                async: false,
+                cache: false,
+                success: function (data) { callback(data); },
+                error: function (xhr, error) { callback(''); }
+            });
+        };
+    </script>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
  

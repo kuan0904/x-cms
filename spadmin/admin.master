@@ -1,0 +1,226 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="admin.master.cs" Inherits="spadmin_admin" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+   
+    <title><%=Session["systemName"].ToString ()%> - <%=Session["companyName"].ToString () %></title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- basic styles -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/font-awesome.min.css" />
+
+    <!--[if IE 7]>
+      <link rel="stylesheet" href="/assets/css/font-awesome-ie7.min.css" />
+    <![endif]-->
+    <!-- page specific plugin styles -->
+    <!-- fonts -->
+
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
+
+    <!-- ace styles -->
+
+    <link rel="stylesheet" href="/assets/css/ace.min.css" />
+    <link rel="stylesheet" href="/assets/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="/assets/css/ace-skins.min.css" />
+
+    <!--[if lte IE 8]>
+      <link rel="stylesheet" href="/assets/css/ace-ie.min.css" />
+    <![endif]-->
+    <!-- inline styles related to this page -->
+    <!-- ace settings handler -->
+
+    <script src="/assets/js/ace-extra.min.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="/assets/js/html5shiv.js"></script>
+    <script src="/assets/js/respond.min.js"></script>
+    <![endif]-->
+ <script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+ 
+</head>
+
+
+
+<body >
+    <form id="form1" runat="server" enctype="multipart/form-data" class="form-horizontal" role="form">
+
+		<div class="navbar navbar-default" id="navbar">
+			<script type="text/javascript">
+				try{ace.settings.check('navbar' , 'fixed')}catch(e){}
+			</script>
+
+			<div class="navbar-container" id="navbar-container">
+				<div class="navbar-header pull-left">
+					<a href="#" class="navbar-brand">
+						<small>
+							<i class="icon-leaf"></i>
+							<%=Session["companyName"].ToString () %>-<%=Session["systemName"].ToString () %>
+						</small>
+					</a><!-- /.brand -->
+				</div><!-- /.navbar-header -->
+
+				<div class="navbar-header pull-right" role="navigation">
+					<ul class="nav ace-nav">
+						<li class="light-blue">
+							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
+									<span class="user-info">
+									<%=  Session["username"].ToString () %>
+								</span>
+
+								<i class="icon-caret-down"></i>
+							</a>
+
+							<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+								<li>
+									<a href="#">
+										<i class="icon-cog"></i>
+										設定
+									</a>
+								</li>
+
+								<li>
+									<a href="#">
+										<i class="icon-user"></i>
+										個人資料
+									</a>
+								</li>
+
+								<li class="divider"></li>
+
+								<li>
+									<a href="SignOut.aspx">
+										<i class="icon-off"></i>
+										登出
+									</a>
+								</li>
+							</ul>
+						</li>
+					</ul><!-- /.ace-nav -->
+				</div><!-- /.navbar-header -->
+			</div><!-- /.container -->
+		</div>
+
+		<div class="main-container" id="main-container">
+			<script type="text/javascript">
+				try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+			</script>
+
+			<div class="main-container-inner">
+				<a class="menu-toggler" id="menu-toggler" href="#">
+					<span class="menu-text"></span>
+				</a>
+
+				<div class="sidebar" id="sidebar">
+					<script type="text/javascript">
+						try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
+					</script>
+
+					<div class="sidebar-shortcuts" id="sidebar-shortcuts">
+
+						<div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+							<span class="btn btn-success"></span>
+
+							<span class="btn btn-info"></span>
+
+							<span class="btn btn-warning"></span>
+
+							<span class="btn btn-danger"></span>
+						</div>
+					</div><!-- #sidebar-shortcuts -->
+                <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:dbconnConnection %>"
+                SelectCommand="" ></asp:SqlDataSource>
+					<ul class="nav nav-list">
+                       
+                        <asp:Repeater ID="Repeater1" runat="server" DataSourceID="SqlDataSource1"  ViewStateMode="Disabled">
+                            <ItemTemplate >
+                                <li <%#Set_active (Eval("unitid").ToString(),Request.QueryString ["unitid"])%> >
+                                    <a href="<%# Eval("adminpage") %>?unitid=<%# Eval("unitid") %>" class="dropdown-toggle"> 
+                                    <span class="menu-text"><%# Eval("unitname") %></span> 
+                                    <%#Eval("rows").ToString() !="0" ? "<b class=\"arrow icon-angle-down\"></b>":""%>
+                                    </a>
+                                    <%#Set_submenu(Eval("unitid").ToString (),Session["userid"].ToString (),Request.QueryString ["unitid"]) %>                                  
+                                </li>
+                            </ItemTemplate>
+                        </asp:Repeater>
+                     
+					</ul><!-- /.nav-list -->
+
+					<div class="sidebar-collapse" id="sidebar-collapse">
+						<i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
+					</div>
+
+					<script type="text/javascript">
+						try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
+					</script>
+				</div>
+
+				<div class="main-content">
+					
+
+					<div class="page-content">
+						<div class="page-header">
+                            <h1>   <asp:ContentPlaceHolder ID="ContentPlaceHolder_title" runat="server">
+                                </asp:ContentPlaceHolder>
+                               
+                                <script src="ckeditor/ckeditor.js"></script>
+                            </h1>
+						</div><!-- /.page-header -->
+
+						<div class="row">
+                            <div class="col-xs-12">
+                                <!-- PAGE CONTENT BEGINS -->
+                              <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                                </asp:ContentPlaceHolder>
+                                <!-- PAGE CONTENT ENDS -->
+                            </div><!-- /.col -->
+						</div><!-- /.row -->
+					</div><!-- /.page-content -->
+				</div><!-- /.main-content -->
+
+				<!-- /#ace-settings-container -->
+			</div><!-- /.main-container-inner -->
+
+			<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+				<i class="icon-double-angle-up icon-only bigger-110"></i>
+			</a>
+		</div><!-- /.main-container -->
+
+
+
+
+		<script type="text/javascript">
+			if("ontouchend" in document) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"script>");
+		</script>
+		<script src="/assets/js/bootstrap.min.js"></script>
+		<script src="/assets/js/typeahead-bs2.min.js"></script>
+
+		<!-- page specific plugin scripts -->
+
+		<!--[if lte IE 8]>
+		  <script src="/assets/js/excanvas.min.js"></script>
+		<![endif]-->
+
+		<script src="/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+		<script src="/assets/js/jquery.ui.touch-punch.min.js"></script>
+		<script src="/assets/js/jquery.slimscroll.min.js"></script>
+		<script src="/assets/js/jquery.easy-pie-chart.min.js"></script>
+		<script src="/assets/js/jquery.sparkline.min.js"></script>
+	
+
+		<!-- ace scripts -->
+
+		<script src="/assets/js/ace-elements.min.js"></script>
+		<script src="/assets/js/ace.min.js"></script>
+
+		<!-- inline scripts related to this page -->
+
+	
+
+    </form>
+</body>
+</html>

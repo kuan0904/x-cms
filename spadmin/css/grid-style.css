@@ -1,0 +1,170 @@
+@charset "utf-8";
+
+
+/* 排序 */
+.gridSort
+{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.gridSort li
+{
+    cursor: move; 
+    margin: 3px 3px 3px 2px;
+    padding: 2px;
+    float: left;
+    width: 200px;
+    height: 130px; /* font-size: 4em; */
+    text-align: left;
+    background-color: #FaFaFa;
+    border: solid 1px #CCCCCC;
+}
+.gridSort img
+{
+    height: 106px;
+}
+
+/* 雜誌內頁排序、時區圖排序 */
+.gridImg
+{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.gridImg li
+{
+    cursor: move; 
+    margin: 2px;
+    padding: 2px;
+    float: left;
+    width: 160px; /*  font-size: 4em;  */
+    height: 250px;
+    text-align: center;
+}
+.gridImg img
+{
+    width: 160px;
+}
+.gridImg2
+{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.gridImg2 li
+{
+    cursor: move; 
+    margin: 2px;
+    padding: 2px;
+    float: left;
+    width: 160px; /*  font-size: 4em;  */
+    height: 120px;
+    text-align: center;
+}
+.gridImg2 img
+{
+    width: 160px;
+}
+
+/* 分類圖 */
+.gridImg
+{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.gridImgL li
+{
+    margin: 5px;
+    padding: 15px 10px 10px 10px;
+    float: left;
+    width: 200px;
+    height: 160px; /* font-size: 4em;  */ /*  text-align: left; */
+}
+.gridImgL img
+{
+    height: 100px;
+}
+
+/* 標籤左右選取 */
+.gridTag
+{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.gridTag li
+{
+    margin: 1px;
+    padding: 4px;
+    float: left;
+    width: 135px;
+    height: 32px; /*   font-size: 1.1em; */
+    line-height: 35px;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #FaFaFa;
+    border: solid 1px #CCCCCC;
+    cursor: pointer;
+}
+
+/* Menu上下排序、Tag上下排序 */
+.gridMenu
+{    
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 60%;    
+}
+.gridMenu li
+{
+    cursor: move; 
+    margin: 0 3px 3px 3px;
+    padding: 0.4em;
+    padding-left: 10em; /*  font-size: 1.4em; */
+    height: 30px;
+    line-height: 30px;
+    width: 60%;
+    background-color: #FaFaFa;
+    border: solid 1px #CCCCCC;
+    text-align: left;
+}
+.gridMenu li span
+{
+    position: absolute;
+    margin-left: -6em;
+}
+
+/* 基本table */
+.basetable
+{
+    border: 1px solid #BBBBBB;
+    width: 100%;
+    border-spacing: 0;
+}
+.basetable td
+{
+    padding: 5px;
+    border: 1px solid #BBBBBB;
+    border-spacing: 0;
+}
+/* 新增區table */
+.addTable
+{
+    border: 1px solid #CCCCCC;
+    width: 60%;
+    border-spacing: 0;
+    background-color: #EEEEEE;
+}
+.addTable td
+{
+    padding: 5px;
+    border: 1px solid #CCCCCC;
+    border-spacing: 0;
+}

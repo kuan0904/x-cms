@@ -8,6 +8,8 @@ using Newtonsoft.Json.Linq;
 using System.Web.SessionState;
 using System.Collections.Specialized;
 using System.Data;
+
+using System.Data.SqlClient;
 public class companyinfo : IHttpHandler {
 
     public void ProcessRequest (HttpContext context) {
@@ -23,6 +25,35 @@ public class companyinfo : IHttpHandler {
 
             context.Response.Write(result);
             context.Response.End();
+        }
+        if (p_ACTION == "set") {
+
+            string strsql = @"update companydata set  companyNo=@companyNo,
+            companyName=@companyName,systemName=@systemName,
+            address=@address,phone=@phone,facebookid=@facebookid,
+            googleid=@googleid,logoPic=@logoPic";
+            int i = 0;
+            using (SqlConnection conn = new SqlConnection(unity.classlib.dbConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand();
+                conn.Open();
+                cmd = new SqlCommand(strsql, conn);
+                cmd.Parameters.Add("@companyNo", SqlDbType.VarChar).Value = context.Request["companyNo"];
+                cmd.Parameters.Add("@companyName", SqlDbType.VarChar).Value = context.Request["companyName"];
+                cmd.Parameters.Add("@systemName", SqlDbType.VarChar).Value = context.Request["systemName"];
+                cmd.Parameters.Add("@address", SqlDbType.VarChar).Value = context.Request["address"];
+                cmd.Parameters.Add("@phone", SqlDbType.VarChar).Value = context.Request["phone"];
+                cmd.Parameters.Add("@facebookid", SqlDbType.VarChar).Value = context.Request["facebookid"];
+                cmd.Parameters.Add("@googleid", SqlDbType.VarChar).Value = context.Request["googleid"];           
+                cmd.Parameters.Add("@logoPic", SqlDbType.VarChar).Value = context.Request["logoPic"];
+                i=cmd.ExecuteNonQuery();
+                cmd.Dispose();
+                conn.Close();
+
+            }
+
+
+            context.Response.Write(i);
         }
     }
 

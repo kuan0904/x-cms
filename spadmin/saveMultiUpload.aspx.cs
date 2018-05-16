@@ -14,10 +14,11 @@ public partial class spadmin_saveMultiUpload : System.Web.UI.Page
             Server.Transfer("~/account/login.aspx");
         }
         string img_path = "upload/";
-        img_path = "../webimages/product/";
-        if (Request.QueryString["p_id"] != null)
+        string kind = Request.QueryString["kind"];
+       
+        if (kind == "companylogo")
         {
-
+            //img_path = "../webimages/product/";
             //html上傳多個雜誌內頁圖檔
             string fname = "";
            

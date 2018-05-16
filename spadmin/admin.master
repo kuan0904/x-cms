@@ -38,7 +38,7 @@
     <script src="/assets/js/html5shiv.js"></script>
     <script src="/assets/js/respond.min.js"></script>
     <![endif]-->
- <script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
+ <script type="text/javascript" src="/assets/js/jquery-2.0.3.min.js"></script>
     <script>
         jQuery.postJSON = function (url, para, callback) {
             $.ajax({

@@ -196,7 +196,7 @@
                                         排序</label>
                                         </td> 
                                     <td>
-                                        <asp:TextBox ID="class_priority" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="class_sort" runat="server"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>

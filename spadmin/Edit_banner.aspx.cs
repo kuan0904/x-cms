@@ -1,16 +1,14 @@
 ﻿using System;
-
 using System.Web.UI.WebControls;
-
 using System.Data;
-
 using System.IO;
 using System.Collections.Specialized;
 
 public partial class spadmin_Edit_banner : System.Web.UI.Page    
 {
-   
-   
+    string unitid = "";
+    public static string unitname = "";
+
     protected void Page_Init(object sender, EventArgs e)
     {
         for (int i = 0;i <= 23;i++)
@@ -18,7 +16,9 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
             stime.Items.Add(i.ToString() );
             etime.Items.Add(i.ToString() );
         }
-        string strsql = "SELECT *  FROM tbl_banner_class where classid > @id order by  priority ";
+        unitid = Request.QueryString["unitid"];
+        unitname = unitlib.Get_UnitName(int.Parse(unitid));
+        string strsql = "SELECT *  FROM tbl_banner_class where classid > @id order by  sort ";
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("id", Selected_id.Value);
         DataTable dt = admin_contrl.Data_Get (strsql, nvc);
@@ -55,7 +55,7 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
       
             t_title.Text = dt.Rows[0]["title"].ToString ();
             t_url.Text = dt.Rows[0]["url"].ToString();
-            t_priority.Text  = dt.Rows[0]["priority"].ToString ();
+            t_sort.Text  = dt.Rows[0]["sort"].ToString ();
             t_status.SelectedValue = dt.Rows[0]["status"].ToString ();
             t_targetblank.Text  = dt.Rows[0]["targetblank"].ToString ();
             sdate.Text = DateTime.Parse(dt.Rows[0]["enabledate"].ToString ()).ToString("yyyy/MM/dd");
@@ -115,17 +115,17 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
         string strsql = "";
         if (Btn_save.CommandArgument == "add")
         {
-            strsql = @"INSERT  INTO tbl_banner(filename, path, url, targetblank, priority, enabledate, disabledate, 
-                status, title, createdate, createuserid, url2, classId,class) VALUES (@filename, @path, @url, @targetblank,
-                @priority, @enabledate, @disabledate, @status, @title, @createdate, @createuserid, @url2, @classId,'') ";
+            strsql = @"INSERT  INTO tbl_banner(filename, path, url, targetblank, sort, enabledate, disabledate, 
+                status, title, createdate, createuserid,  classId,viewcount) VALUES (@filename, @path, @url, @targetblank,
+                @sort, @enabledate, @disabledate, @status, @title, @createdate, @createuserid,  @classId,0) ";
             nvc.Add("createdate", DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
             nvc.Add("createuserid", Session["userid"].ToString());
         }
         else {
 
             strsql = @"UPDATE  tbl_banner SET filename =@filename, path =@path, url =@url, targetblank =@targetblank, 
-            priority =@priority, enabledate =@enabledate, disabledate =@disabledate, status =@status, title =@title, 
-            url2 =@url2, classId =@classId where bannerid=@bannerid";
+            sort =@sort, enabledate =@enabledate, disabledate =@disabledate, status =@status, title =@title, 
+             classId =@classId where bannerid=@bannerid";
             nvc.Add("bannerid", Selected_id.Value);
            
         }
@@ -135,17 +135,16 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
         nvc.Add("path", "webimages/banner/");
         nvc.Add("url", t_url.Text);
         nvc.Add("targetblank", t_targetblank.Text);
-        nvc.Add("priority", t_priority.Text);
+        nvc.Add("sort", t_sort.Text);
         nvc.Add("enabledate",sdate.Text + " " + stime.SelectedValue + ":00:00");
         nvc.Add("status", t_status.SelectedValue);
-        nvc.Add("title", t_title.Text); ;
-        nvc.Add("url2","");
+        nvc.Add("title", t_title.Text);      
         nvc.Add("classId", DropDownList1.SelectedValue);
         if (edate.Text != "")           
             nvc.Add("disabledate", edate.Text + " " + etime.SelectedValue + ":00:00");       
         else       
             nvc.Add("disabledate", "DBNull");
-
+     
         int i = admin_contrl.Data_add(strsql, nvc);
 
         selectSQL();
@@ -197,7 +196,7 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
     {
         Selected_id.Value = "";
         t_title.Text = "";
-        t_priority.Text = "";
+        t_sort.Text = "";
         t_status.SelectedIndex = -1;
         t_targetblank.SelectedIndex  = -1;
         sdate.Text = "";
@@ -205,14 +204,7 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
         t_url.Text  = "";
         Literal1.Text = "";
         stime.SelectedIndex = 0;
-        etime.SelectedIndex = 0;
-         
-        
-      
-
-
-
-
+        etime.SelectedIndex = 0;   
     }
     protected void btn_del_Click(object sender, System.EventArgs e)
     {
@@ -242,7 +234,7 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
     {
         LinkButton obj = sender as LinkButton;
         Selected_id.Value = obj.CommandArgument;
-        string strsql = "delete from tbl_banner  where bannerid = @id";
+        string strsql = "update from tbl_banner set status='D'  where bannerid = @id";
         int i = admin_contrl.Data_delete(strsql, Selected_id.Value);
         ListView1.DataBind();
     }

@@ -2,81 +2,23 @@
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-            <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-        <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
-        <script >
-     $(document).ready(function() {
-            var url = "searchpd.ashx";
-          //  $(".autofill").autocomplete({ source: url });
-            $('.autofill').each(function(i) {              
-                var ac_new_invoice = (function (i) {
-                    return {
-                        source: "searchpd.ashx",
-                        minLength: 1,
-                        select: function (event, ui) {
-                            i = i + 1;
-                            var str = '#ctl00$ContentPlaceHolder1$top' + i;
-                            $(str).val(ui.item.id);
-                            str = '#ContentPlaceHolder1_txt_fill' + i;
-                            $(str).html(ui.item.title);
-                           //多個
 
-                        }
-                    };
-                })(i);
-                $(this).autocomplete(ac_new_invoice);
-
-            });
-         //一個用
-            var ac_config = {
-                source: url,
-                select: function(event, ui) {
-                    //event.preventDefault(); 
-                   
-                    $("#txt_fill_sort").val(ui.item.value);
-                    $("#txt_fill").html(ui.item.title);
-                    $("#fill_id").val(ui.item.id);
-                    //$("#zip").val(ui.item.zip);
-                },
-                minLength: 1
-            };
-
-
-            $("#txt_fill_sort").autocomplete(ac_config);
-
-
-        });
-
-    </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
 
 
     <asp:MultiView ID="MultiView1" runat="server">
 
-        <asp:View ID="View1" runat="server">
-
-            <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:dbconnConnection %>" SelectCommand="SELECT  * FROM tbl_category WHERE classId =@id AND parentid = 0 order by priority">
-                <SelectParameters>
-                    <asp:ControlParameter ControlID="DropDownList1" Name="id" PropertyName="SelectedValue" />
-                </SelectParameters>
-            </asp:SqlDataSource>
-            <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:dbconnConnection %>" SelectCommand="select * ,  (SELECT  title   FROM tbl_category  WHERE (b.parentid = categoryid)) AS upname  from tbl_category as b  where  classid = @d1  order by priority ">
-                <SelectParameters>
-                    <asp:ControlParameter ControlID="DropDownList1" Name="d1" PropertyName="SelectedValue" />
-                </SelectParameters>
-            </asp:SqlDataSource>
-
-
+        <asp:View ID="View1" runat="server">    
             <div class="box-header well" data-original-title>
-
-                <asp:LinkButton ID="Btn_add" runat="server" class="btn btn-large" OnClick="Btn_add_Click" Text=""><i class="icon-plus"></i>新增資料</asp:LinkButton>
                 <asp:DropDownList ID="DropDownList1" runat="server" AutoPostBack="True" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged">
                 </asp:DropDownList>
+                <asp:LinkButton ID="Btn_add" runat="server" class="btn btn-large" OnClick="Btn_add_Click" Text=""><i class="icon-plus"></i>新增資料</asp:LinkButton>
+               
                 <asp:HiddenField ID="parentid" runat="server" />
             </div>
             <div class="box-content">
-                <asp:ListView ID="ListView1" runat="server" DataKeyNames="categoryid" DataSourceID="SqlDataSource2" OnPagePropertiesChanging="ContactsListView_PagePropertiesChanging">
+                <asp:ListView ID="ListView1" runat="server" DataKeyNames="categoryid"  OnPagePropertiesChanging="ContactsListView_PagePropertiesChanging">
                     <EmptyDataTemplate>
                         <table runat="server" style="background-color: #FFFFFF; border-collapse: collapse; border-color: #999999; border-style: none; border-width: 1px;">
                             <tr>
@@ -93,11 +35,9 @@
                             <td><%#Eval("categoryid")%></td>
                             <td><%#Eval("upname")%></td>
                             <td><%#Eval("title")%></td>
-                            <td><%#Eval("priority")%></td>
-                            <td style="text-align: center"><%# statusTotxt(Eval("status").ToString())%></td>
-                              <td style="text-align: center"><asp:Button ID="Button1" runat="server" Text="刪除"
-                                   OnClick ="Button1_Click"    CommandName="delete" CommandArgument='<%# Eval("categoryid")%>'  
-                                   OnClientClick="return  confirm('你確定嗎?')"  Visible= <%# Eval("status").ToString()=="0" ? true:false  %> /></td>
+                            <td><%#Eval("sort")%></td>
+                            <td style="text-align: center"><%#( Eval("status").ToString() == "Y") ? "啟用": "停用"%></td>
+                              <td style="text-align: center"></td>
                         </tr>
                     </ItemTemplate>
                     <LayoutTemplate>
@@ -156,7 +96,7 @@
                                         上層選單
                                     </td>
                                     <td>
-                                        <asp:DropDownList ID="DropDownList2" runat="server" DataSourceID="SqlDataSource1" DataTextField="title" DataValueField="categoryid">
+                                        <asp:DropDownList ID="DropDownList2" runat="server"  >
                                         </asp:DropDownList>
 
                                     </td>
@@ -175,7 +115,7 @@
                                     <td>
                                         優先順序</td>
                                     <td>
-                                        <asp:TextBox ID="priority" runat="server" TextMode="Number"></asp:TextBox>
+                                        <asp:TextBox ID="sort" runat="server" TextMode="Number"></asp:TextBox>
                                     </td>
                                 </tr>
 
@@ -186,8 +126,8 @@
                                         狀態</td>
                                     <td>
                                         <asp:DropDownList ID="status" runat="server" RepeatDirection="Horizontal">
-                                            <asp:ListItem Value="1">開啟</asp:ListItem>
-                                            <asp:ListItem Value="0">關閉</asp:ListItem>
+                                            <asp:ListItem Value="Y">開啟</asp:ListItem>
+                                            <asp:ListItem Value="N">關閉</asp:ListItem>
                                         </asp:DropDownList>
                                     </td>
                                 </tr>

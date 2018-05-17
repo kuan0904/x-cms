@@ -13,20 +13,17 @@
     </script>
 
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">    
      <asp:SqlDataSource ID="viewDataSource" runat="server" ConnectionString="<%$ ConnectionStrings:dbconnConnection %>" SelectCommand=""></asp:SqlDataSource>
-
     <asp:MultiView ID="MultiView1" runat="server">
 
-        <asp:View ID="View1" runat="server">	
-        
+        <asp:View ID="View1" runat="server">	        
       
-                    <div class="box-header well" data-original-title>   
-                          <asp:LinkButton ID="Btn_add" runat="server" Text="" class="btn btn-large" OnClick ="Btn_add_Click" ><i class="icon-plus"></i>新增資料</asp:LinkButton>                                                                                                 
+                    <div class="box-header well" data-original-title>   <%=unitname %>
                           <asp:DropDownList ID="DropDownList1" runat="server"  DataTextField="title" DataValueField="classId" AutoPostBack="True" OnSelectedIndexChanged ="id_change">
                           </asp:DropDownList>     
-                         
+                            <asp:LinkButton ID="Btn_add" runat="server" Text="" class="btn btn-large" OnClick ="Btn_add_Click" ><i class="icon-plus"></i>新增資料</asp:LinkButton>                                                                                                 
+                       
                     </div>
                     <div class="box-content">                          
                   
@@ -54,11 +51,11 @@
             <td><a href='../webimages/banner/<%#Eval("filename")%>' target="_blank" ><img src='../webimages/banner/<%#Eval("filename")%>' height ="100" /></a> </td>
                 <td><%#Eval("url")%></td>
                 <td><%#Eval("targetblank")%></td>
-                <td><%#Eval("priority")%></td>
+                <td><%#Eval("sort")%></td>
                 <td><%# Eval("enabledate").ToString ()%></td>
-                    <td><%#  Eval("disabledate") %></td>
-                    <td><%#( Eval("status").ToString() == "1") ? "啟用": "停用"%></td>                                        
-                    <td><%#Eval("title")%></td>
+                <td><%#  Eval("disabledate") %></td>
+                <td><%#( Eval("status").ToString() == "Y") ? "啟用": "停用"%></td>                                        
+                <td><%#Eval("title")%></td>
                                           
         </tr>
         </ItemTemplate>
@@ -122,7 +119,7 @@
             <asp:HiddenField ID="Selected_id" runat="server" />
        
                     <div class="box-header well" data-original-title>
-                        <h2>版位設定</h2>
+                        <h2><%=DropDownList1.SelectedItem.Text   %>管理</h2>
                     </div>
                     <div class="box-content">
                   
@@ -140,14 +137,14 @@
                                     <td>
                                         連結網址</td>
                                     <td>
-                                        <asp:TextBox ID="t_url" runat="server" Width="400px"></asp:TextBox>
+                                        <asp:TextBox ID="t_url" runat="server" Width="500px"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         優先順序</td>
                                     <td>
-                                        <asp:TextBox ID="t_priority" runat="server" size="1" TextMode="Number"></asp:TextBox>
+                                        <asp:TextBox ID="t_sort" runat="server" size="1" TextMode="Number"></asp:TextBox>
                                     </td>
                                 </tr>
                           
@@ -155,7 +152,7 @@
                                     <td>
                                         啟用時間</td>
                                     <td>
-                                        <asp:TextBox ID="sdate" runat="server" size="7"></asp:TextBox>                                   
+                                        <asp:TextBox ID="sdate" runat="server" size="10"  required></asp:TextBox>                                   
                                          <asp:DropDownList ID="stime" runat="server">        
                                         </asp:DropDownList> 
                                     </td>
@@ -164,7 +161,7 @@
                                     <td>
                                         停用時間</td>
                                     <td>
-                                          <asp:TextBox ID="edate" runat="server"  size="7"></asp:TextBox>                                        
+                                          <asp:TextBox ID="edate" runat="server"  size="10" ></asp:TextBox>                                        
                                          <asp:DropDownList ID="etime" runat="server">
                                         </asp:DropDownList> 
                                     </td>
@@ -172,7 +169,7 @@
                                 <tr>
                                     <td>
                                         標題</td>
-                                    <td> <asp:TextBox  runat="server" ID="t_title"></asp:TextBox>
+                                    <td> <asp:TextBox  runat="server" ID="t_title"  required></asp:TextBox>
                                     </td>
                                 </tr>
                                                
@@ -192,8 +189,8 @@
                                         狀態</td>
                                     <td>
                                         <asp:dropdownlist ID="t_status" runat="server" RepeatDirection="Horizontal">
-                                            <asp:ListItem Value="1">Y</asp:ListItem>
-                                            <asp:ListItem Value="0">N</asp:ListItem>
+                                            <asp:ListItem Value="Y">Y</asp:ListItem>
+                                            <asp:ListItem Value="N">N</asp:ListItem>
                                         </asp:dropdownlist>
                                     </td>
                                       </tr> 

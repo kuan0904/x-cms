@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/spadmin/admin.master" AutoEventWireup="true" CodeFile="EditContents.aspx.cs" Inherits="spadmin_EditContents" %>
 <%@ Register Assembly="CKFinder" Namespace="CKFinder" TagPrefix="CKFinder" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+    
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
     <div class="row-fluid">
@@ -20,6 +21,10 @@
                           </div>          
                 </div>
             </div>
-     
+    
+
+    		<p><a class='iframe' href="/hp.html">Outside Webpage (Iframe)</a></p>
+	
 </asp:Content>
+
 

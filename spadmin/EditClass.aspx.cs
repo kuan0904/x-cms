@@ -20,25 +20,20 @@ public partial class admin_EditClass : System.Web.UI.Page
     protected void Page_Init(object sender, EventArgs e)
     {
         string unitid = Request.QueryString["unitid"];
-        string classid = "";
-        string strsql = "SELECT *  FROM tbl_category_class where classid > @classid  ";
-      
-        NameValueCollection nvc = new NameValueCollection();
-        nvc.Add("classid", classid);
+        string strsql = "SELECT *  FROM tbl_category where parentid =0  ";      
+        NameValueCollection nvc = new NameValueCollection();  
         DataTable dt = admin_contrl.Data_Get(strsql, nvc);
+        DropDownList2.Items.Add(new ListItem("設為上層", "0"));
 
         for (int i = 0; i< dt.Rows.Count; i++){
-            DropDownList1.Items.Add(new ListItem(dt.Rows [i]["title"].ToString (), dt.Rows[i]["classId"].ToString()));
+            DropDownList1.Items.Add(new ListItem(dt.Rows [i]["title"].ToString (), dt.Rows[i]["categoryid"].ToString()));
+            DropDownList2.Items.Add(new ListItem(dt.Rows[i]["title"].ToString(), dt.Rows[i]["categoryid"].ToString()));
+
         }
         dt.Dispose();
-
-      //  strsql = " SELECT  * FROM tbl_category WHERE classId = 'B' AND parentid = 0 ";
-
-
-        DropDownList2.DataBound += new EventHandler(DropDownList2_DataBound);
+        
    
-       //    DropDownList2.SelectedIndexChanged += new EventHandler(SelectedIndexChanged);
-       
+      
     }
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -60,18 +55,15 @@ public partial class admin_EditClass : System.Web.UI.Page
     public void selectSQL()
     {
 
-
+        string strsql = @"SELECT * ,
+(select title from tbl_category a where a.categoryid = b.parentid ) as upname
+            FROM tbl_category b where b.parentid =@parentid  ";
+        NameValueCollection nvc = new NameValueCollection();
+        nvc.Add("parentid", DropDownList1.SelectedValue);
+        DataTable dt = admin_contrl.Data_Get(strsql, nvc);
+        ListView1.DataSource = dt;
         ListView1.DataBind();
-
-
-        //strsql = "select * ,  (SELECT  title   FROM tbl_category  WHERE (b.parentid = categoryid)) AS upname  from tbl_category as b  where  classid <> '' " ;
-        //if (DropDownList1.SelectedValue !="") 
-        //{
-        //    strsql += " and classid  = '" + DropDownList1.SelectedValue + "' ";
-        //}
-        //strsql += " order by priority ";
-        //把PagedDataSource 對象賦給Repeater控制項 
-
+        dt.Dispose();
 
 
     }
@@ -84,7 +76,7 @@ public partial class admin_EditClass : System.Web.UI.Page
     //編輯
     protected void link_edit(object sender, System.EventArgs e)
     {
-         LinkButton obj = sender as LinkButton;
+        LinkButton obj = sender as LinkButton;
         Selected_id.Value = obj.CommandArgument;
         MultiView1.ActiveViewIndex = 1;
         Btn_save.CommandArgument = "edit";
@@ -102,11 +94,11 @@ public partial class admin_EditClass : System.Web.UI.Page
 
         if (rs.Read())
         {
-         
-        
-           class_name.Text  = rs["title"].ToString();
+
+
+            class_name.Text = rs["Title"].ToString();
             parentid.Value  = rs["parentid"].ToString();    
-            priority.Text = rs["priority"].ToString();
+            sort.Text = rs["sort"].ToString();
           
         }
         rs.Close();
@@ -126,35 +118,23 @@ public partial class admin_EditClass : System.Web.UI.Page
 
         if (Btn_save.CommandArgument == "add")
         {
-            strsql = " insert into  tbl_category( parentid, classId, priority, status, status_mobile, title, createdate, createuserid, filename, top1, top2, top3, url, url_mobile, push, hot) values ";
-            strsql += "(@parentid, @classId, @priority, @status, @status_mobile, @title, getdate(), '"+ Session["userid"].ToString() + "', @filename, @top1, @top2, @top3, @url, @url_mobile, @push, @hot ) ";
+            strsql = " insert into  tbl_category( parentid, classId, sort, status,  title, createdate, createuserid, filename) values ";
+            strsql += "(@parentid, @classId, @sort, @status,  @title, getdate(), '"+ Session["userid"].ToString() + "', @filename ) ";
         }
         else {
-            strsql = "update  tbl_category set parentid=@parentid,classId=@classId,priority=@priority,status=@status,status_mobile=@status_mobile, title=@title";
-            strsql += ",filename=@filename,top1=@top1,top2=@top2,top3=@top3,url=@url,url_mobile=@url_mobile,push=@push,hot=@hot  ";
+            strsql = "update  tbl_category set parentid=@parentid,sort=@sort,status=@status, title=@title";
             strsql += " where categoryid =@categoryid";
         }
-
-
         SqlConnection conn = new SqlConnection(classlib.dbConnectionString);
-        SqlCommand cmd = new SqlCommand();
-    
+        SqlCommand cmd = new SqlCommand();    
         conn.Open();
-
-
-
         cmd = new SqlCommand(strsql, conn);
         cmd.Parameters.Add("parentid", SqlDbType.NVarChar).Value = DropDownList2.SelectedValue;
         cmd.Parameters.Add("classId", SqlDbType.NVarChar).Value = DropDownList1.SelectedValue;
-        cmd.Parameters.Add("priority", SqlDbType.NVarChar).Value = priority.Text;
+        cmd.Parameters.Add("sort", SqlDbType.NVarChar).Value = sort.Text;
         cmd.Parameters.Add("status", SqlDbType.NVarChar).Value = status.SelectedValue;
-        cmd.Parameters.Add("status_mobile", SqlDbType.NVarChar).Value = status.SelectedValue; ;
         cmd.Parameters.Add("title", SqlDbType.NVarChar).Value =class_name.Text;       
-        cmd.Parameters.Add("filename", SqlDbType.NVarChar).Value ="";
-
-        cmd.Parameters.Add("push", SqlDbType.VarChar).Value = "";
-        cmd.Parameters.Add("hot", SqlDbType.VarChar).Value = "";
-
+       
         if (Btn_save.CommandArgument == "add")
         {
        
@@ -165,20 +145,14 @@ public partial class admin_EditClass : System.Web.UI.Page
 
 
         cmd.ExecuteNonQuery();
-        cmd.Dispose();
-
-
-     
-        conn.Close();
-    
-       
-        MultiView1.ActiveViewIndex = 0;
-      
+        cmd.Dispose();     
+        conn.Close();  
+        MultiView1.ActiveViewIndex = 0;      
         cleaninput();
         selectSQL();
     }
 
-    
+
 
 
     protected void Btn_add_Click(object sender, System.EventArgs e)
@@ -186,7 +160,29 @@ public partial class admin_EditClass : System.Web.UI.Page
         MultiView1.ActiveViewIndex = 1;
         Btn_save.CommandArgument = "add";
         cleaninput();
-    }
+        DropDownList2.SelectedValue = DropDownList1.SelectedValue;
+        strsql = "select max(sort)+1 from tbl_category where parentid = @parentid";
+        using (SqlConnection conn = new SqlConnection(unity.classlib.dbConnectionString))
+        {
+            SqlDataReader rs = default(SqlDataReader);
+            SqlCommand cmd = new SqlCommand();
+            conn.Open();
+          
+            cmd = new SqlCommand(strsql, conn);
+            cmd.Parameters.Add("parentid", SqlDbType.VarChar).Value = DropDownList1.SelectedValue ;
+            rs = cmd.ExecuteReader();
+            if (rs.Read())
+            {
+          
+                    sort.Text= rs[0].ToString ();
+            }
+         
+            rs.Close();
+            cmd.Dispose();
+            conn.Close();
+        }
+        if (sort.Text == "") sort.Text = "1";
+     }
 
     protected void Btn_cancel_Click(object sender, System.EventArgs e)
     {
@@ -198,13 +194,8 @@ public partial class admin_EditClass : System.Web.UI.Page
     public void cleaninput()
     {
         Selected_id.Value = "";
-
-        priority.Text = "1";
+        sort.Text = "1";
         class_name.Text = "";
-
-      //  Page.ClientScript.RegisterStartupScript(this.GetType(), "", "addlist();", true);
-
-
     }
 
     protected void btn_del_Click(object sender, System.EventArgs e)
@@ -212,15 +203,11 @@ public partial class admin_EditClass : System.Web.UI.Page
        
         SqlConnection conn = new SqlConnection(classlib.dbConnectionString);
         SqlCommand cmd = new SqlCommand();
-
         conn.Open();
-
         cmd = new SqlCommand("update  tbl_category set status = 0 where categoryid = '" + Selected_id.Value + "' ", conn);
         cmd.ExecuteNonQuery();
         cmd.Dispose();
         conn.Close();
-
-
         selectSQL();
     }
 
@@ -241,35 +228,15 @@ public partial class admin_EditClass : System.Web.UI.Page
         cmd.ExecuteNonQuery();
         cmd.Dispose();
         conn.Close();
-
-
         selectSQL();
-        ;
+       
     }
    
-    protected void DropDownList2_DataBound(object sender, EventArgs e)
-    {
-        DropDownList2.Items.Insert(0, new ListItem("設為上層", "0"));
-        DropDownList2.SelectedIndex = DropDownList2.Items.IndexOf(DropDownList2.Items.FindByValue(parentid.Value  ));
-
-    }
-    public string statusTotxt(string str)
-    {
-        if (str == "1")
-        {
-            return "開啟";
-        }
-        if (str == "0")
-        {
-            return "關閉";
-        }
-        return "";
-
-    }
-    
+  
+   
     protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
     {
-        DropDownList2.DataBind();
+        selectSQL();
     }
 
     protected void Button1_Click(object sender, EventArgs e)

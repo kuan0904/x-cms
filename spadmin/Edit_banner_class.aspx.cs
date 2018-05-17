@@ -76,7 +76,7 @@ public partial class spadmin_Edit_banner_class : System.Web.UI.Page
 
             
             class_title .Text = rs["title"].ToString();
-            class_priority.Text = rs["priority"].ToString();
+            class_sort.Text = rs["sort"].ToString();
             class_ads.SelectedValue  = rs["ads"].ToString();
            class_fx.SelectedValue = rs["fx"].ToString();
           class_speed.SelectedValue = rs["speed"].ToString();
@@ -102,12 +102,12 @@ public partial class spadmin_Edit_banner_class : System.Web.UI.Page
 
         if (Btn_save.CommandArgument == "add")
         {
-            strsql = " insert into  tbl_banner_class( title, rotator, ads, fx,speed, createdate, createuserid, priority) values ";
-            strsql += "(@title, @rotator, @ads,@fx,@speed,  getdate(), '" + Session["userid"].ToString() + "', @priority ) ";
+            strsql = " insert into  tbl_banner_class( title, rotator, ads, fx,speed, createdate, createuserid, sort) values ";
+            strsql += "(@title, @rotator, @ads,@fx,@speed,  getdate(), '" + Session["userid"].ToString() + "', @sort ) ";
         }
         else {
             strsql = "update  tbl_banner_class set title=@title,rotator=@rotator,ads=@ads,fx=@fx,speed=@speed";
-            strsql += ",priority=@priority ";
+            strsql += ",sort=@sort ";
             strsql += " where classId =@classId";
         }
 
@@ -127,7 +127,7 @@ public partial class spadmin_Edit_banner_class : System.Web.UI.Page
         cmd.Parameters.Add("ads", SqlDbType.NVarChar).Value = class_ads.Text;
         cmd.Parameters.Add("fx", SqlDbType.NVarChar).Value = class_fx.Text;
         cmd.Parameters.Add("speed", SqlDbType.NVarChar).Value = class_speed.Text;
-        cmd.Parameters.Add("priority", SqlDbType.NVarChar).Value = class_priority.Text;
+        cmd.Parameters.Add("sort", SqlDbType.NVarChar).Value = class_sort.Text;
         if (Btn_save.CommandArgument == "add")
         {
 

@@ -109,10 +109,11 @@ public partial class spadmin_admin : System.Web.UI.MasterPage
             for (i = 0; i < dt.Rows.Count; i++)
             {
                 itemdata += "<li ";
-                if (thisid == dt.Rows[i]["unitid"].ToString() )
-                itemdata += "class=\"active\"";
-                itemdata +=" ><a href = \"" + dt.Rows[i]["adminpage"].ToString() + "?unitid=" + dt.Rows[i]["unitid"].ToString() + "\">";
-               
+                if (thisid == dt.Rows[i]["unitid"].ToString() ) itemdata += "class=\"active\"";
+                itemdata += " ><a href = \"" + dt.Rows[i]["adminpage"].ToString();
+                itemdata += "?unitid=" + dt.Rows[i]["unitid"].ToString();
+                if (dt.Rows[i]["ifram"].ToString() == "Y") itemdata +=  " class=\"iframe\" " ;
+                itemdata +=   "\">";              
                 itemdata += "<i class=\"icon-double-angle-right\"></i>" + dt.Rows[i]["unitname"].ToString() + "</a></li>";        
             }
             itemdata += "</ul>";

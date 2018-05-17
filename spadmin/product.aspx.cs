@@ -308,11 +308,11 @@ public partial class spadmin_product : System.Web.UI.Page
         for ( i = 0; i <= CATEGORY_CLASS2.GetUpperBound(0); i++)
         {
             nvc.Clear();
-            strsql = @"INSERT INTO tbl_category_link_product  (categoryid, productid, priority, createdate)
-                        VALUES(@categoryid, @productid, @priority,getdate()) ";
+            strsql = @"INSERT INTO tbl_category_link_product  (categoryid, productid, sort, createdate)
+                        VALUES(@categoryid, @productid, @sort,getdate()) ";
             if (CATEGORY_CLASS2[i] != "0")
             {
-                nvc.Add("priority", i.ToString ());
+                nvc.Add("sort", i.ToString ());
                 nvc.Add("productid", p_id.Text);
                
 

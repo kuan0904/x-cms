@@ -21,8 +21,7 @@ public partial class spadmin_edit_tag : System.Web.UI.Page
     {
 
         unitid = Request.QueryString["unitid"];   
-        unitname = unitlib.Get_UnitName(int.Parse(unitid));
-    
+        unitname = unitlib.Get_UnitName(int.Parse(unitid));  
 
     }
     protected void Page_Load(object sender, EventArgs e)
@@ -57,7 +56,6 @@ public partial class spadmin_edit_tag : System.Web.UI.Page
     {
         selectSQL();
     }
-
     //編輯
     protected void link_edit(object sender, System.EventArgs e)
     {
@@ -87,9 +85,6 @@ public partial class spadmin_edit_tag : System.Web.UI.Page
         conn.Close();
      
     }
-
-
-
     protected void Btn_save_Click(object sender, System.EventArgs e)
     {
         string strsql = "";
@@ -134,30 +129,22 @@ public partial class spadmin_edit_tag : System.Web.UI.Page
         cleaninput();
         selectSQL();
     }
-
-
-
-
     protected void Btn_add_Click(object sender, System.EventArgs e)
     {
         MultiView1.ActiveViewIndex = 1;
         Btn_save.CommandArgument = "add";
         cleaninput();
     }
-
     protected void Btn_cancel_Click(object sender, System.EventArgs e)
     {
         MultiView1.ActiveViewIndex = 0;
         cleaninput();
     }
-
-
     public void cleaninput()
     {
         Selected_id.Value = "";       
         tagname.Text = "";
     }
-
     protected void btn_del_Click(object sender, System.EventArgs e)
     {
 
@@ -174,9 +161,6 @@ public partial class spadmin_edit_tag : System.Web.UI.Page
 
         selectSQL();
     }
-
-
-
     //刪除
     protected void link_delete(object sender, System.EventArgs e)
     {
@@ -195,11 +179,6 @@ public partial class spadmin_edit_tag : System.Web.UI.Page
         selectSQL();
        
     }
-
- 
- 
- 
-
     protected void Button1_Click(object sender, EventArgs e)
     {
         Button obj = sender as Button;

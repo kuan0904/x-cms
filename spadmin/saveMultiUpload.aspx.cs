@@ -42,7 +42,29 @@ public partial class spadmin_saveMultiUpload : System.Web.UI.Page
             }
 
         }
-        
+        if (kind == "article")
+        {
+            img_path = "../webimages/article/";
+            string fname = "";
+            //用逗號相隔
+            for (int i = 0; i <= Request.Files.Count - 1; i++)
+            {
+                HttpPostedFile filex = Request.Files[i];
+
+                if (filex.ContentLength > 0)
+                {
+                    fname = DateTime.Now.ToString("yyyyMMddHHmmssff") + unity.classlib.GetFileExt(filex.FileName);
+                    //新檔案(重新命名)
+                    //filex.SaveAs(Server.MapPath(img_path + filex.FileName));
+                    filex.SaveAs(Server.MapPath(img_path + fname));
+                    //自動縮圖
+                    //  ResizeImg(186, 0, Server.MapPath(setImgPath(fname)), Server.MapPath(setImgPath(fname, "thumbnail")));
+                    Response.Write("{\"result\":\"" + fname + "\"}");
+                    Response.Flush();
+                }
+            }
+
+        }
     }
 
 }

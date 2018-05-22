@@ -22,7 +22,7 @@ public class unitlib
         string strsql = "SELECT unitname  FROM unitdata  where unitid =  @unitid  ";
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("unitid", unitid.ToString ());
-        DataTable dt = admin_contrl.Data_Get(strsql, nvc);
+        DataTable dt = DbControl.Data_Get(strsql, nvc);
         if (dt.Rows.Count >0)        unitname = dt.Rows[0]["unitname"].ToString();
         dt.Dispose();
         nvc.Clear();

@@ -18,7 +18,7 @@ public class authority
     public static string check_power(string unitid, string userid)
     {
         string flag = "";
-        using (SqlConnection conn = new SqlConnection(dbcontrol.dbConnectionString))
+        using (SqlConnection conn = new SqlConnection(DbControl.dbConnectionString))
         {
             string strsql = "SELECT   * FROM Powerlist where user_id=@userid and unitid=@unitid";
             SqlCommand cmd = new SqlCommand();

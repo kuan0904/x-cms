@@ -86,19 +86,17 @@
             if (articleId > 0) {
                 var dataValue = "{articleId:'"+  articleId +"'}";             
                     $.postJSON('article.aspx/get_tbl_article', dataValue, 'application/json; charset=utf-8', function (result) {
-                        if (result != "") {
-                           
+                        if (result != "") {                           
                             var result = result.d;
                             result = JSON.parse(result);
-                            maindata = result;
+                            maindata = result;                    
+                            $('#postday').datepicker("setDate", new Date(result.PostDay));
                             $('#subject').val(result.Subject)
-                            $('#subtitle').val(result.SubTitle);
-                            $('#postDay').val(result.PostDay);
+                            $('#subtitle').val(result.SubTitle);                          
                             $('#keywords').val(result.Keywords);
                             $("#status").prop("checked", result.Status  == "Y" ? true : false);
                             $('#postDay').val(result.PostDay);
-                            CKEDITOR.instances['contents'].setData(result.Contents);
-                           
+                            CKEDITOR.instances['contents'].setData(result.Contents);                           
                            
                             //$.each(result, function (key, val) {
                             //    alert(key);
@@ -106,9 +104,14 @@
                     
                         }
                     });
-      
+                    $.postJSON('article.aspx/get_tbl_article', dataValue, 'application/json; charset=utf-8', function (result) {
+                        if (result != "") {
                
-               
+                                                 
+
+                        }
+                    });
+
             }
 
      
@@ -179,19 +182,9 @@
                     result = JSON.parse(result);
                     result = result.main;
                     var cb = "";
-                   
-                    $.each(result, function (key, val) {
-                        var s = "";
-                        if (maindata != undefined) {       
-                            if (maindata.Tags.length == 1) {
-                                if (maindata.Tags == val.id) s = " checked ";
-                            }
-                            else if (maindata.Tags.length > 1) {
-                                for (i = 0; i < maindata.Tags.length; i++) {
-                                    if (maindata.Tags[i] == val.id) s = " checked ";
-                                }
-                            }
-                        }
+                    var s = "";
+                    $.each(result, function (key, val) {        
+                        s = check_cbx(maindata.Tags, val.id);                      
                         cb += "<input name='tags' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl>" + val.name + "</span>";
                     });
                     
@@ -205,43 +198,34 @@
                     result = JSON.parse(result);
                     result = result.main;
                     var cb = "";
-                    var s = "";
-           
+                    var s = "";           
                     $.each(result, function (key, val) {
-                     if (maindata != undefined) {  
-                        if (maindata.Writer.length == 1) {
-                              if (maindata.Writer == val.id) s = " checked ";
-                        }
-                        else if (maindata.Writer.length > 1){
-                            for (i = 0; i < maindata.Writer.length; i++) {
-                                if (maindata.Writer[i] == val.id) s = " checked ";
-                            }
-                        }
-                    }
+                    s = check_cbx(maindata.Writer, val.id);         
                         cb += "<input name='writer' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl>" + val.name + "</span>";
                     });
                     $("#writer").html(cb);
 
                 }
             });
+        
             $.postJSON('article.aspx/get_category', dataValue, 'application/json; charset=utf-8', function (result) {
                 if (result != "") {
                     var result = result.d;
                     result = JSON.parse(result);
                     result = result.main;
                     var cb = "";
-                    $.each(result, function (key, val) {
-
-
+                    var s = "";
+                    $.each(result, function (key, val) {                   
                         if (val.detail.length > 0) {
-
                             cb += "<b>" + val.name + "</b>:";
-                            for (i = 0; i < val.detail.length; i++) {
-                                cb += "<input name='categoryid' class='ace ace-checkbox-2' type='checkbox' value='" + val.detail[i].id + "'><span class=lbl>" + val.detail[i].name + "</span>";
+                            for (i = 0; i < val.detail.length; i++) {                               
+                                s = check_cbx(maindata.Category, val.detail[i].id);                                
+                                cb += "<input name='categoryid' class='ace ace-checkbox-2' type='checkbox' value='" + val.detail[i].id + "'" + s + "><span class=lbl>" + val.detail[i].name + "</span>";
                             }
                         }
                         else {
-                            cb += "<input name='categoryid' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'><span class=lbl>" + val.name + "</span>";
+                            s = check_cbx(maindata.Category, val.id);
+                            cb += "<input name='categoryid' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl>" + val.name + "</span>";
 
                         }
                         cb += "<Br>";
@@ -250,6 +234,22 @@
                 }
             });
         });
+        function check_cbx(obj, val) {
+            var s = "";
+          
+            if (obj != undefined) {
+                if (obj.length == 1) {
+                    if (obj == val) s = " checked ";
+                }
+                else if (obj.length > 1) {
+                    for (ix = 0; ix < obj.length; ix++) {
+                        if (obj[ix] == val) s = " checked ";
+                    }
+                }
+            }
+           
+            return s;
+        }
         function check_data(kind) {//將主資料存到SESSION       
             var errmsg = "";
             var content = CKEDITOR.instances['contents'].getData();
@@ -284,7 +284,10 @@
             if (errmsg == '') {
                 $.postJSON('article.aspx/Set_data', JSON.stringify(dataValue), 'application/json; charset=utf-8', function (result) {
                     result = result.d;
-                    check_item(kind);
+                    if (result == '')
+                        check_item(kind);
+                    else
+                        alert(result);
                 });
 
             } else {
@@ -308,12 +311,14 @@
             $.postJSON('article.aspx/Set_ItemData', JSON.stringify(dataValue), 'application/json; charset=utf-8', function (result) {
                 if (result != "") {
                     var result = result.d;
-                    $('#recent-tab a[href="#item1"]').tab('show')
-                    if (kind == "s") {
-                        save_db();
-                    }
-                    else if (kind == 'p') {
-                        //preview;
+                    if (result == '' ){
+                        $('#recent-tab a[href="#item1"]').tab('show')
+                        if (kind == "s") {
+                            save_db();
+                        }
+                        else if (kind == 'p') {
+                            //preview;
+                        }
                     }
                     return (result)
                 }
@@ -329,7 +334,10 @@
             $.postJSON('article.aspx/Set_DB', dataValue, 'application/json; charset=utf-8', function (result) {
                 if (result != "") {
                     var result = result.d;
-                    alert(result);
+                    if (result == '')
+                    { alert('OK'); }
+                    else
+                    { alert(result); }
                 }
             });
 

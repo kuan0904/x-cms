@@ -30,12 +30,10 @@ public partial class spadmin_article : System.Web.UI.Page
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-      
-    
-      
+         
         if (Session["MainData"] != null)
         {
-            
+           
         }
         //if (Session["ItemData"] != null)
         //{
@@ -144,11 +142,17 @@ public partial class spadmin_article : System.Web.UI.Page
     [WebMethod]
     public static string get_tbl_article(string articleId)
     {
-
         article.MainData    mainData =  article.DbHandle.Get_article(int.Parse(articleId));
         string  result = JsonConvert.SerializeObject(mainData);
         return (result);
-
+    }
+    [WebMethod]
+    public static List<article.ItemData> get_tbl_article_item(string articleId)
+    {
+        List<article.ItemData> ItemData = new List<article.ItemData>();
+        ItemData = article.DbHandle.Get_article_item(int.Parse(articleId));
+        string result = JsonConvert.SerializeObject(ItemData);
+        return (ItemData);
     }
 
     [WebMethod(EnableSession = true)]
@@ -158,6 +162,7 @@ public partial class spadmin_article : System.Web.UI.Page
        
         MainData MainData = new MainData();
         MainData = HttpContext.Current.Session["MainData"] as article.MainData ;
+        
         if (MainData.Id == 0)
         {
           MainData.Id =  article.DbHandle .Article_Add();

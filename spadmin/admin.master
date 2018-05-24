@@ -63,7 +63,59 @@
     </script>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
+     <style>
+
+ .pagenavi a, .pagenavi span
+{
+  min-width:50px;
+  min-height:20px;
+  line-height:100%;
+  text-decoration:none;
+  text-align:center;
+  margin:0 3px;
+  padding:4px 0 0;
+  vertical-align:middle;
+  display:inline-block;
+  zoom:1;*display:inline;
+  -webkit-border-radius:10em;
+  -moz-border-radius:10em;
+  border-radius:10em
+}
+.pagenavi a
+{
+  background:#666;
+  color:#fff;
+  text-decoration:none
+}
+.pagenavi a:hover
+{
+  background-color:#333;
+  text-decoration:none;
+}
+.pagenavi .current
+{
+  color:#666;
+  text-decoration:none
+}
+.post-nav
+{
+  margin:0 0 30px;
+  padding:15px 0;
+  clear:both;
+  font-size:14px;
+}
+.pagenavi
+{
+  padding:0;
+  text-align:right;
+  margin:0;
+  float:right;
+  width:100%;
+}
  
+
+    </style>
+
 </head>
 
 
@@ -186,11 +238,12 @@
 
 					<div class="page-content">
 						<div class="page-header">
-                            <h1>   <asp:ContentPlaceHolder ID="ContentPlaceHolder_title" runat="server">
-                                </asp:ContentPlaceHolder>
+                            <h1>  
                                
                                 <script src="ckeditor/ckeditor.js"></script>
-                            </h1>
+                            </h1> 
+                            <asp:ContentPlaceHolder ID="ContentPlaceHolder_title" runat="server">
+                                </asp:ContentPlaceHolder>
 						</div><!-- /.page-header -->
 
 						<div class="row">

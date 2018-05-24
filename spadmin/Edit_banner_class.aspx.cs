@@ -44,7 +44,7 @@ public partial class spadmin_Edit_banner_class : System.Web.UI.Page
         strsql += " where   classId >@id   order by  classId ";
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("id", "0");
-        DataTable dt = admin_contrl.Data_Get(strsql, nvc);
+        DataTable dt = DbControl.Data_Get(strsql, nvc);
         ListView1.DataSource = dt;
         ListView1.DataBind();
          }

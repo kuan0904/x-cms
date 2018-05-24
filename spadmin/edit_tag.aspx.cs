@@ -44,7 +44,7 @@ public partial class spadmin_edit_tag : System.Web.UI.Page
         string strsql = "SELECT *  FROM tbl_tag where unitid =  @unitid  ";
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("unitid", unitid);
-        DataTable dt = admin_contrl.Data_Get(strsql, nvc);
+        DataTable dt =DbControl.Data_Get(strsql, nvc);
         ListView1.DataSource = dt;
         ListView1.DataBind();
         dt.Dispose();

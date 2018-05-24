@@ -22,7 +22,7 @@ public partial class admin_EditClass : System.Web.UI.Page
         string unitid = Request.QueryString["unitid"];
         string strsql = "SELECT *  FROM tbl_category where parentid =0  ";      
         NameValueCollection nvc = new NameValueCollection();  
-        DataTable dt = admin_contrl.Data_Get(strsql, nvc);
+        DataTable dt = DbControl.Data_Get(strsql, nvc);
         DropDownList2.Items.Add(new ListItem("設為上層", "0"));
 
         for (int i = 0; i< dt.Rows.Count; i++){
@@ -60,7 +60,7 @@ public partial class admin_EditClass : System.Web.UI.Page
             FROM tbl_category b where b.parentid =@parentid  ";
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("parentid", DropDownList1.SelectedValue);
-        DataTable dt = admin_contrl.Data_Get(strsql, nvc);
+        DataTable dt = DbControl.Data_Get(strsql, nvc);
         ListView1.DataSource = dt;
         ListView1.DataBind();
         dt.Dispose();

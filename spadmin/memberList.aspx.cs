@@ -169,7 +169,7 @@ public partial class spadmin_memberList : System.Web.UI.Page
         else
             strsql += " ORDER BY  memberid desc ";
 
-        DataTable dt = admin_contrl.Data_Get(strsql, nvc);
+        DataTable dt = DbControl.Data_Get(strsql, nvc);
         ListView1.DataSource = dt;
         ListView1.DataBind();
 

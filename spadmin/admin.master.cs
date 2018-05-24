@@ -66,7 +66,7 @@ public partial class spadmin_admin : System.Web.UI.MasterPage
         {
             string strsql = "select * from unitdata where unitid=" +  thisid;
             NameValueCollection nvc = new NameValueCollection();
-            DataTable dt = admin_contrl.Data_Get(strsql, nvc);
+            DataTable dt = DbControl.Data_Get(strsql, nvc);
             if (dt.Rows.Count >0)
             {
                 if (dt.Rows [0]["upperid"].ToString () == unitid)
@@ -100,7 +100,7 @@ public partial class spadmin_admin : System.Web.UI.MasterPage
             strsql += " and user_id = " + userid + " and status<>'D' order by sort ";
         }
         NameValueCollection nvc = new NameValueCollection();
-        DataTable dt = admin_contrl.Data_Get(strsql, nvc);
+        DataTable dt = DbControl.Data_Get(strsql, nvc);
         string itemdata = "";
         if (dt.Rows.Count > 0)    
         {
@@ -111,9 +111,9 @@ public partial class spadmin_admin : System.Web.UI.MasterPage
                 itemdata += "<li ";
                 if (thisid == dt.Rows[i]["unitid"].ToString() ) itemdata += "class=\"active\"";
                 itemdata += " ><a href = \"" + dt.Rows[i]["adminpage"].ToString();
-                itemdata += "?unitid=" + dt.Rows[i]["unitid"].ToString();
+                itemdata += "?unitid=" + dt.Rows[i]["unitid"].ToString() + "\""; 
                 if (dt.Rows[i]["ifram"].ToString() == "Y") itemdata +=  " class=\"iframe\" " ;
-                itemdata +=   "\">";              
+                itemdata += ">";              
                 itemdata += "<i class=\"icon-double-angle-right\"></i>" + dt.Rows[i]["unitname"].ToString() + "</a></li>";        
             }
             itemdata += "</ul>";

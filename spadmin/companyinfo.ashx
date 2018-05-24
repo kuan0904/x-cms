@@ -18,7 +18,7 @@ public class companyinfo : IHttpHandler {
 
             string strsql = "select * from companydata ";
             NameValueCollection nvc = new NameValueCollection();
-            DataTable dt = admin_contrl.Data_Get(strsql, nvc);
+            DataTable dt =DbControl .Data_Get(strsql, nvc);
             string result= JsonConvert.SerializeObject(dt, Formatting.Indented);
             result = result.Replace("[", "").Replace("]", "").Replace("\r\n", "");
             result = JsonConvert.SerializeObject(result);

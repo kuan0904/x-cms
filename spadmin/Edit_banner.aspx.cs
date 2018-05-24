@@ -21,7 +21,7 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
         string strsql = "SELECT *  FROM tbl_banner_class where classid > @id order by  sort ";
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("id", Selected_id.Value);
-        DataTable dt = admin_contrl.Data_Get (strsql, nvc);
+        DataTable dt = DbControl.Data_Get (strsql, nvc);
         DropDownList1.DataSource = dt;
         DropDownList1.DataBind();
 
@@ -50,7 +50,7 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
         string strsql= "select * from tbl_banner where bannerid=@bannerid";
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add ("bannerid", Selected_id.Value);
-        DataTable dt = admin_contrl.Data_Get(strsql, nvc);
+        DataTable dt = DbControl.Data_Get(strsql, nvc);
 
       
             t_title.Text = dt.Rows[0]["title"].ToString ();
@@ -145,7 +145,7 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
         else       
             nvc.Add("disabledate", "DBNull");
      
-        int i = admin_contrl.Data_add(strsql, nvc);
+        int i = DbControl.Data_add(strsql, nvc);
 
         selectSQL();
         MultiView1.ActiveViewIndex = 0;
@@ -210,7 +210,7 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
     {
 
         string strsql = "delete from tbl_banner  where bannerid = @id";  
-        int i = admin_contrl.Data_delete(strsql, Selected_id.Value);    
+        int i = DbControl.Data_delete(strsql, Selected_id.Value);    
         
         ListView1.DataBind();
 
@@ -235,7 +235,7 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
         LinkButton obj = sender as LinkButton;
         Selected_id.Value = obj.CommandArgument;
         string strsql = "update from tbl_banner set status='D'  where bannerid = @id";
-        int i = admin_contrl.Data_delete(strsql, Selected_id.Value);
+        int i = DbControl.Data_delete(strsql, Selected_id.Value);
         ListView1.DataBind();
     }
     protected void id_change(object sender, EventArgs e)

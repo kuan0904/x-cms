@@ -17,30 +17,41 @@ using System.Web.Script.Serialization;
 
 public partial class spadmin_article : System.Web.UI.Page
 {
+    public string articleId = "";
+    public article.MainData mainData;
     protected void Page_Init(object sender, EventArgs e)
     {
+        if (Request.QueryString["articleId"] != null)
+        {
+            articleId = Request.QueryString["articleId"];
+          
+        }
 
-     
-    
     }
     protected void Page_Load(object sender, EventArgs e)
     {
+      
+    
+      
         if (Session["MainData"] != null)
         {
-            MainData MainData = new MainData();
-            MainData = Session["MainData"] as article.MainData  ;
-
-            //List<MainData> MainData = new List<MainData>();
-            //MainData = Session["MainData"] as List<MainData>;           
-            //foreach (MainData idx in MainData)
-            //{
-            //   string[] tags =idx.Tags;
-            //    foreach (string s in tags)
-            //    {
-            //        Response.Write(s );
-            //    }
-            //}
+            
         }
+        //if (Session["ItemData"] != null)
+        //{
+
+        //    List<ItemData> ItemData = new List<ItemData>();
+        //    ItemData = Session["ItemData"] as List<ItemData>;
+        //    foreach (ItemData idx in ItemData)
+        //    {
+        //        Response.Write(idx.Contents);
+        //        //string[] tags = idx.Tags;
+        //        //foreach (string s in tags)
+        //        //{
+        //        //    Response.Write(s);
+        //        //}
+        //    }
+        //}
     }
     [WebMethod]    
     public static string get_tag(string kind)
@@ -94,10 +105,8 @@ public partial class spadmin_article : System.Web.UI.Page
 
     }
     [WebMethod]
-    public static string get_category(string kind)
-    {
+    public static string get_category(string kind)    {
         string result = "{ \"main\":[";
-
         if (kind == "get")
         {
             string strsql = "SELECT *  FROM  tbl_category  where status='Y' and  parentid =0  ";
@@ -131,6 +140,17 @@ public partial class spadmin_article : System.Web.UI.Page
         return (result);
 
     }
+
+    [WebMethod]
+    public static string get_tbl_article(string articleId)
+    {
+
+        article.MainData    mainData =  article.DbHandle.Get_article(int.Parse(articleId));
+        string  result = JsonConvert.SerializeObject(mainData);
+        return (result);
+
+    }
+
     [WebMethod(EnableSession = true)]
     public static string Set_DB()
     {
@@ -140,15 +160,15 @@ public partial class spadmin_article : System.Web.UI.Page
         MainData = HttpContext.Current.Session["MainData"] as article.MainData ;
         if (MainData.Id == 0)
         {
-            MainData.Id = DbControl.Article_Add();
+          MainData.Id =  article.DbHandle .Article_Add();
         }
         int i = 0;
        
-        i = DbControl.Article_Update(MainData);
+        i = article.DbHandle.Article_Update(MainData);
         if (HttpContext.Current.Session["ItemData"] != null) { 
             List<article.ItemData> itemDatas = new List<article.ItemData>();
             itemDatas = HttpContext.Current.Session["ItemData"] as List<ItemData>;
-            i = DbControl.Article_item_Update(itemDatas);
+            i = article.DbHandle.Article_item_Update(itemDatas);
         }
         return (result);
 
@@ -156,51 +176,31 @@ public partial class spadmin_article : System.Web.UI.Page
   
     [WebMethod(EnableSession = true)]
     public static string Set_data(string kind, string id,string[] categoryid
-        , string title, string subtitle,string contents, string pic
+        , string subject, string subtitle,string contents, string pic,string postday 
         , string[] tags, string[] writer,string keywords, string status)
     {
 
         MainData MainData = new MainData
         {
             Id = int.Parse(id),
-            Title = title,
+            Subject = subject,
             SubTitle = subtitle,
             Contents = contents,
-            Image = pic,
+            Pic  = pic,
+            PostDay = DateTime.Parse ( postday) ,
             Status = status,
-            FBShare = 0,
-            GoogleShare = 0,
-            TwitterShare = 0,
-            PinterestShare = 0,
+            FBcount = 0,
+            Googlecount = 0,
+            Twittercount = 0,
+            Pinterestcount = 0,
             Viewcount = 0,
             Keywords = keywords,
             Tags = tags,
             Category = categoryid,
             Writer = writer
+           
         };
-
-        //List<MainData> MainData = new List<MainData>();
-        //MainData.Add(new MainData
-        //{
-        //    Id = int.Parse(id),
-        //    Title = title,
-        //    SubTitle = subtitle,
-        //    Contents = contents,
-        //    Image = pic,
-        //    Status = status,
-        //    FBShare = 0,
-        //    GoogleShare =0,
-        //    TwitterShare=0,
-        //    PinterestShare=0,
-        //    Viewcount =0,
-        //    Keywords =keywords ,
-        //    Tags =tags,
-        //    Category = categoryid,
-        //    Writer= writer 
-
-
-        //});
-        //Session["MainData"] = articledata;
+   
         HttpContext.Current.Session["MainData"] = MainData;
       //  var json = new JavaScriptSerializer().Serialize(MainData);
         string result = "";
@@ -209,22 +209,18 @@ public partial class spadmin_article : System.Web.UI.Page
     }
   
     [WebMethod(EnableSession = true)]
-    public static string Set_ItemData(string kind, string id
-      , string title, string contents, string pic ,string secno     )
+    public static string Set_ItemData(string kind, string id , List<article.ItemData> item)
     {
         List<ItemData> ItemData = new List<ItemData>();
-        ItemData.Add(new ItemData
-        {
-            Id = int.Parse(id),
-            Title = title,           
-            Contents = contents,
-            Image = pic,
-            Secno =int.Parse (secno )
-        });       
+        ItemData = item;
+        //ItemData.Add(new ItemData
+        //{
+            
+        //});
         HttpContext.Current.Session["ItemData"] = ItemData;
-        var json = new JavaScriptSerializer().Serialize(ItemData);
-        string result = json;
-        return (result);
+        //  var json = new JavaScriptSerializer().Serialize(ItemData);
+        string result = "";
+        return (result); ;
 
     }
 }

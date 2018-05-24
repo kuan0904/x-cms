@@ -35,6 +35,15 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script>
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
         jQuery.postJSON = function (url, para, contentType, callback) {
             if (contentType == null || contentType == '') contentType = "text/xml";
             $.ajax({
@@ -61,40 +70,133 @@
                 error: function (xhr, error) { callback(''); }
             });
         };
-    </script>
-
-    <style>
-    </style>
-    <script>
+        var articleId = getParameterByName('articleId');
+        if (articleId == null || articleId == '' || articleId == undefined) {
+            articleId = 0;
+        }
+      
+   
         $(function () {
             $("#postday").datepicker();
             $("#postday").datepicker("option", "dateFormat", "yy/mm/dd");
 
         });
+        var maindata; 
+        $(document).ready(function () {            
+            if (articleId > 0) {
+                var dataValue = "{articleId:'"+  articleId +"'}";             
+                    $.postJSON('article.aspx/get_tbl_article', dataValue, 'application/json; charset=utf-8', function (result) {
+                        if (result != "") {
+                           
+                            var result = result.d;
+                            result = JSON.parse(result);
+                            maindata = result;
+                            $('#subject').val(result.Subject)
+                            $('#subtitle').val(result.SubTitle);
+                            $('#postDay').val(result.PostDay);
+                            $('#keywords').val(result.Keywords);
+                            $("#status").prop("checked", result.Status  == "Y" ? true : false);
+                            $('#postDay').val(result.PostDay);
+                            CKEDITOR.instances['contents'].setData(result.Contents);
+                           
+                           
+                            //$.each(result, function (key, val) {
+                            //    alert(key);
+                            //});                           
+                    
+                        }
+                    });
+      
+               
+               
+            }
 
-        var item = new Array();
-        var itemdata = {
-            secno: "",
-            title: "",
-            subtitle: "",
-            pic: "",
-            contents: "",
+     
+            $("#preview").click(function () {
+                check_data('p');
+            });
+            $("#btn_save").click(function () {
+                check_data('s');
+            });
+            $("#btn-next").click(function () { //新增明細介面
+                CKEDITOR.instances['content'].setData('');
+                $("#secno").val('');
+                $("#title").val('');
+                $('#recent-tab a[href="#item2"]').tab('show') //SHOW 明細tab
 
-        }
+            })
+            $("#btl_add").click(function () {
+               // 新增明細資料
+                var errmsg = "";
+                var content = CKEDITOR.instances['content'].getData();
+                var subject = $("#title").val();
+                if (subject == '') {
+                    errmsg += ('請輸入主標題\r\n');
+                }
+                if (content == '') {
+                    errmsg += ('請輸入內容\r\n');
+                }
+                if (errmsg == '') {
+                    var content = CKEDITOR.instances['content'].getData();
+                    var v = '<input type="button" class="mod" value="修改">';
+                    v += '<input type="button" class="delete" value="刪除"><br>';
+                    v += '主旨: <span class="title">' + $('#title').val() + '</span> <BR>';
+                    v += '內文: <span>' + content + '</span>';
+                    v += "<input type=\"hidden\" class=\"content\" value='" + content + "' /> ";
+                    if ($("#secno").val() == "") {
+                        $('#detailitem').append('<li style="background-color: #C0C0C0">' + v + '</li>');//新增LI
+                    }
+                    else {
 
-        $(document).ready(function () {
-            var dataValue = "{ kind: 'get' }";
+                        $("ul#detailitem li").eq($("#secno").val()).html(v); //修改明細LI
+
+                    }
+
+                    $('#recent-tab a[href="#item1"]').tab('show')
+                } else {
+                    alert(errmsg);
+                }
+
+            });
+            $("#btl_cel").click(function () {
+                $('#recent-tab a[href="#item1"]').tab('show') //返回主內容
+            });
+            $("ul#detailitem").on("click", "li", function () { //取得修改的明細
+                var num = $(this).index();
+                $("#secno").val(num);
+                $("#title").val($(this).find('.title').text());
+                CKEDITOR.instances['content'].setData($(this).find('.content').val());
+                $('#recent-tab a[href="#item2"]').tab('show')
+            })
+            $(document).on('click', '.delete', function (event) { //刪掉明細li
+                if (confirm('你確定嗎?')) { $(this).parent().remove(); }
+
+            });
+                 var dataValue = "{ kind: 'get' }";
             $.postJSON('article.aspx/get_tag', dataValue, 'application/json; charset=utf-8', function (result) {
                 if (result != "") {
                     var result = result.d;
                     result = JSON.parse(result);
                     result = result.main;
                     var cb = "";
+                   
                     $.each(result, function (key, val) {
-                        cb += "<input name='tags' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'><span class=lbl>" + val.name + "</span>";
+                        var s = "";
+                        if (maindata != undefined) {       
+                            if (maindata.Tags.length == 1) {
+                                if (maindata.Tags == val.id) s = " checked ";
+                            }
+                            else if (maindata.Tags.length > 1) {
+                                for (i = 0; i < maindata.Tags.length; i++) {
+                                    if (maindata.Tags[i] == val.id) s = " checked ";
+                                }
+                            }
+                        }
+                        cb += "<input name='tags' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl>" + val.name + "</span>";
                     });
+                    
                     $("#tag").html(cb);
-
+                    
                 }
             });
             $.postJSON('article.aspx/get_writer', dataValue, 'application/json; charset=utf-8', function (result) {
@@ -103,8 +205,20 @@
                     result = JSON.parse(result);
                     result = result.main;
                     var cb = "";
+                    var s = "";
+           
                     $.each(result, function (key, val) {
-                        cb += "<input name='writer' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'><span class=lbl>" + val.name + "</span>";
+                     if (maindata != undefined) {  
+                        if (maindata.Writer.length == 1) {
+                              if (maindata.Writer == val.id) s = " checked ";
+                        }
+                        else if (maindata.Writer.length > 1){
+                            for (i = 0; i < maindata.Writer.length; i++) {
+                                if (maindata.Writer[i] == val.id) s = " checked ";
+                            }
+                        }
+                    }
+                        cb += "<input name='writer' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl>" + val.name + "</span>";
                     });
                     $("#writer").html(cb);
 
@@ -113,12 +227,14 @@
             $.postJSON('article.aspx/get_category', dataValue, 'application/json; charset=utf-8', function (result) {
                 if (result != "") {
                     var result = result.d;
-
                     result = JSON.parse(result);
                     result = result.main;
                     var cb = "";
                     $.each(result, function (key, val) {
+
+
                         if (val.detail.length > 0) {
+
                             cb += "<b>" + val.name + "</b>:";
                             for (i = 0; i < val.detail.length; i++) {
                                 cb += "<input name='categoryid' class='ace ace-checkbox-2' type='checkbox' value='" + val.detail[i].id + "'><span class=lbl>" + val.detail[i].name + "</span>";
@@ -128,54 +244,13 @@
                             cb += "<input name='categoryid' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'><span class=lbl>" + val.name + "</span>";
 
                         }
-
                         cb += "<Br>";
                     });
                     $("#category").html(cb);
-
                 }
             });
-
-            $("#preview").click(function () {
-                check_data();
-            });
-
-            $("#btn-next").click(function () {
-                CKEDITOR.instances['content'].setData('');
-                $('#recent-tab a[href="#item2"]').tab('show')
-
-            })
-
-            $("#dtl_add").click(function () {
-                check_item();
-     
-
-            });
-            $("#dtl_cel").click(function () {
-                $('#recent-tab a[href="#item1"]').tab('show')
-            });
-             $("ul#detailitem").on("click","li",function(){
-                var num=$(this).index(); 
-                 alert($(this).find('.title').text());
-                 alert($(this).find('.content').text());
-              
-
-            })
-           $("ul#detailitem li .mod").on("click","li",function(){
-             
-                alert($(this).text() + 'mod');
-
-            })
-        
-            $(document).on('click', '.delete', function(event){
-                if (confirm('你確定嗎?'))
-                    {  $(this).parent().remove();}
-               
-            });
         });
-
-
-        function check_data() {
+        function check_data(kind) {//將主資料存到SESSION       
             var errmsg = "";
             var content = CKEDITOR.instances['contents'].getData();
             var subject = $("#subject").val();
@@ -200,7 +275,7 @@
             var status = $("#status").prop("checked") == true ? "Y" : "N";
 
             var dataValue = {
-                kind: "set", id: 0, title: $("#subject").val(), subtitle: $("#subtitle").val()
+                kind: "set", id: articleId, subject: $("#subject").val(), subtitle: $("#subtitle").val()
                 , contents: content, pic: $("#logoPic").val(), keywords: $("#keywords").val()
                 , status: status, categoryid: categoryid
                 , tags: tags, writer: writer, postday: $("#postday").val()
@@ -208,67 +283,65 @@
 
             if (errmsg == '') {
                 $.postJSON('article.aspx/Set_data', JSON.stringify(dataValue), 'application/json; charset=utf-8', function (result) {
-                    if (result != "") {
-                        var result = result.d;     
-                    }
+                    result = result.d;
+                    check_item(kind);
                 });
-                var dataValue = {
-                kind: "set", id: 0, title: $("#subject").val(), subtitle: $("#subtitle").val()
-                , contents: content, pic: $("#logoPic").val(), keywords: $("#keywords").val()
-                , status: status, categoryid: categoryid
-                , tags: tags, writer: writer, postday: $("#postday").val()
-            };
-                 $.postJSON('article.aspx/Set_ItemData', JSON.stringify(dataValue), 'application/json; charset=utf-8', function (result) {
-                    if (result != "") {
-                        var result = result.d;     
-                    }
-                });
+
             } else {
                 alert(errmsg);
             }
         }
-
-        function check_item() {
-            var errmsg = "";
-            var content = CKEDITOR.instances['content'].getData();
-            var subject = $("#title").val();
-            if (subject == '') {
-                errmsg += ('請輸入主標題\r\n');
-            }
-            if (content == '') {
-                errmsg += ('請輸入內容\r\n');
-
-            }
-
-
-            var dataValue = {
-                kind: "set", id: 0, secno: 0, title: $("#subject").val()
-                , contents: content, pic: ''
-            };
-
-                if (errmsg == '') {
-                $.postJSON('article.aspx/Set_ItemData', JSON.stringify(dataValue), 'application/json; charset=utf-8', function (result) {
-                    if (result != "") {
-                        var result = result.d;
-                      
-                           var content = CKEDITOR.instances['content'].getData();
-                            $('#detailitem').append('<li style="background-color: #C0C0C0" ><input type="button" class="mod" value="修改"><input type="button" class="delete" value="刪除">主旨:<span class="title">' + $('#title').val() + '</span><BR>內文:<span class="content">' + content + '</span></li>');
-                            $('#recent-tab a[href="#item1"]').tab('show')
+        function check_item(kind) {//將明細資料存到SESSION        
+            var dataValue = "{\"kind\": \"set\", \"id\":\"" + articleId + "\",\"item\":[";
+            var i = 0;
+            $("ul#detailitem li").each(function () {
+                i++;
+                if (i != 1) { dataValue += ","; }
+                dataValue += "{\"Title\":\"" + $(this).find('.title').text() + "\"";
+                dataValue += ",\"Id\":\"" + articleId + "\"";
+                dataValue += ",\"Secno\":\"" + i + "\"";
+                dataValue += ",\"Image\":\"\",\"Layout\":\"\"";
+                dataValue += ",\"Contents\":\"" + $(this).find('.content').val().replace(/\r/, "").replace(/\n/, "") + "\"}";
+            });
+            dataValue += "]}"
+            dataValue = JSON.parse(dataValue);
+            $.postJSON('article.aspx/Set_ItemData', JSON.stringify(dataValue), 'application/json; charset=utf-8', function (result) {
+                if (result != "") {
+                    var result = result.d;
+                    $('#recent-tab a[href="#item1"]').tab('show')
+                    if (kind == "s") {
+                        save_db();
                     }
-                });
-             
-            } else {
-                alert(errmsg);
+                    else if (kind == 'p') {
+                        //preview;
+                    }
+                    return (result)
+                }
+            });
+        }
+        function ret() {  //返回上層     
+            if (confirm('你確定嗎?')) {
+                parent.$.fn.colorbox.close();
             }
         }
+        function save_db() {
+             var dataValue = "{ kind: 'get' }";
+            $.postJSON('article.aspx/Set_DB', dataValue, 'application/json; charset=utf-8', function (result) {
+                if (result != "") {
+                    var result = result.d;
+                    alert(result);
+                }
+            });
+
+        }
+       
+
     </script>
     <script src="ckeditor/ckeditor.js"></script>
 </head>
 <body>
     <form id="form1">
-
-
-        <div class="widget-box transparent" id="recent-box" >
+        <div class="widget-box transparent" id="recent-box">
             <div class="widget-header">
                 <div>
                     <ul class="nav nav-tabs" id="recent-tab">
@@ -311,9 +384,7 @@
                                             <input id="uploadfiles" type="button" value="上傳檔案" />
                                         </div>
                                         <input id="logoPic" type="hidden" />
-                                        <pre id="console" class="col-sm-9">
-
-                            </pre>
+                                        <pre id="console" class="col-sm-9"> </pre>
                                         <script type="text/javascript">
 
                                             var uploader = new plupload.Uploader({
@@ -390,9 +461,6 @@
                                             <ul id="sortable" class="gridImg">
                                             </ul>
                                         </div>
-
-
-
                                     </td>
                                 </tr>
 
@@ -411,14 +479,15 @@
                                 <tr>
                                     <td>標籤</td>
                                     <td>
-                                        <label id="tag"></label>
+                                        <label id="tag"></label><br />
+                                        <a href="Edit_tag.aspx?unitid=13" class="iframe cboxElement"><i class="icon-double-angle-right"></i>標簽管理</a>
                                     </td>
 
                                 </tr>
                                 <tr>
                                     <td>作者</td>
                                     <td>
-                                        <label id="writer"></label>
+                                        <label id="writer"></label><br /><a href="Edit_tag.aspx?unitid=14" class="iframe cboxElement"><i class="icon-double-angle-right"></i>作者管理</a>
                                     </td>
                                 </tr>
                                 <tr>
@@ -447,14 +516,8 @@
                                 <tr>
                                     <td>狀態</td>
                                     <td>
-
-
-
-
                                         <input id="status" name="status" type="checkbox" class="ace ace-switch ace-switch-6" />
                                         <span class="lbl"></span>
-
-
                                     </td>
                                 </tr>
                                 <tr>
@@ -467,7 +530,7 @@
                                 <tr>
                                     <td colspan="2">
 
-                                        <button type="button" class="btn btn-primary"  onclick="ret()">返回</button>
+                                        <button type="button" class="btn btn-primary" onclick="ret()">返回</button>
                                         <button type="button" class="btn btn-primary" id="btn_save">存 檔</button>
                                         <button type="button" class="btn btn-primary" id="preview">預覽</button>
                                         <button type="button" class="btn btn-primary" id="btn-next">新增段落</button>
@@ -480,7 +543,7 @@
                         <div id="item2" class="tab-pane">
                             <table>
                                 <tr>
-                                    <td>主標題</td>
+                                    <td>標題</td>
                                     <td>
                                         <input id="title" type="text" /></td>
                                 </tr>
@@ -492,15 +555,15 @@
                                         <script>
                                             CKEDITOR.replace('content');
                                         </script>
-
+                                        <input type="hidden" id="secno" value="" />
                                     </td>
 
                                 </tr>
                                 <tr>
                                     <td colspan="2">
 
-                                        <button type="button" class="btn btn-primary" id="dtl_add">確認</button>
-                                        <button type="button" class="btn btn-primary" id="dtl_cel">取消</button>
+                                        <button type="button" class="btn btn-primary" id="btl_add">確認</button>
+                                        <button type="button" class="btn btn-primary" id="btl_cel">取消</button>
 
                                     </td>
                                 </tr>
@@ -566,7 +629,7 @@
         <script src="assets/js/jquery.colorbox-min.js"></script>
         <script>
 
-           
+
 
             $(document).ready(function () {
 
@@ -599,16 +662,7 @@
 
             });
 
-            function itemadd() {
-                var content = CKEDITOR.instances['content'].getData();
-                $('#detailitem').append('<li>' + $('#title').val() + "<BR>" + content + '</li>');
 
-            }
-
-
-             function ret() {  //返回上層           
-                parent.$.fn.colorbox.close();
-            }
 
         </script>
     </form>

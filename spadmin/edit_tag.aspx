@@ -1,5 +1,105 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/spadmin/admin.master" AutoEventWireup="true" CodeFile="edit_tag.aspx.cs" Inherits="spadmin_edit_tag" %>
-<asp:Content ID="Content4" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+﻿<%@ Page Title="" Language="C#"   AutoEventWireup="true" CodeFile="edit_tag.aspx.cs" Inherits="spadmin_edit_tag" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title></title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- basic styles -->
+    <meta http-equiv="cache-control" content="max-age=0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css" />
+    <!-- page specific plugin styles -->
+    <link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+    <link rel="stylesheet" href="assets/css/chosen.css" />
+    <!--<link rel="stylesheet" href="assets/css/datepicker.css" />-->
+    <link rel="stylesheet" href="assets/css/bootstrap-timepicker.css" />
+    <link rel="stylesheet" href="assets/css/daterangepicker.css" />
+    <link rel="stylesheet" href="assets/css/colorpicker.css" />
+    <!-- fonts -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
+    <!-- ace styles -->
+    <link rel="stylesheet" href="assets/css/ace.min.css" />
+    <link rel="stylesheet" href="assets/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+    <script src="assets/js/ace-extra.min.js"></script>
+    <!-- basic scripts -->
+    <script src="assets/js/jquery-2.0.3.min.js"></script>
+    <!--datepicker -->
+    <script type="text/javascript" src="/js/jquery.ui.datepicker-zh-TW.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <style>
+
+ .pagenavi a, .pagenavi span
+{
+  min-width:50px;
+  min-height:20px;
+  line-height:100%;
+  text-decoration:none;
+  text-align:center;
+  margin:0 3px;
+  padding:4px 0 0;
+  vertical-align:middle;
+  display:inline-block;
+  zoom:1;*display:inline;
+  -webkit-border-radius:10em;
+  -moz-border-radius:10em;
+  border-radius:10em
+}
+.pagenavi a
+{
+  background:#666;
+  color:#fff;
+  text-decoration:none
+}
+.pagenavi a:hover
+{
+  background-color:#333;
+  text-decoration:none;
+}
+.pagenavi .current
+{
+  color:#666;
+  text-decoration:none
+}
+.post-nav
+{
+  margin:0 0 30px;
+  padding:15px 0;
+  clear:both;
+  font-size:14px;
+}
+.pagenavi
+{
+  padding:0;
+  text-align:right;
+  margin:0;
+  float:right;
+  width:100%;
+}
+ 
+
+    </style>
+
+    </head>
+<body>
+     <form id="form1" runat="server">
+         		
+
+					<div class="page-content">
+					
+
+						<div class="row">
+                            <div class="col-xs-12">
+                                <!-- PAGE CONTENT BEGINS -->
     <asp:MultiView ID="MultiView1" runat="server">
         <asp:View ID="View1" runat="server">
             <div class="box-header well" data-original-title>
@@ -108,6 +208,13 @@
         </asp:View>
 
     </asp:MultiView>
-
-
-</asp:Content>
+                       
+                                <!-- PAGE CONTENT ENDS -->
+                            </div><!-- /.col -->
+						</div><!-- /.row -->
+					</div><!-- /.page-content -->
+			
+			
+    </form>
+</body>
+</html>

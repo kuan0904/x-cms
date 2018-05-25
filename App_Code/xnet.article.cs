@@ -11,7 +11,7 @@ namespace article
 {
     public class DbHandle {
 
-        public static MainData Get_article(int id)
+    public static MainData Get_article(int id)
         {
             MainData MainData = new MainData();
             string strsql= "select * from  tbl_article where articleid =@id";
@@ -86,7 +86,30 @@ namespace article
             return MainData;
 
         }
-    public static int Article_Add()
+     
+        public static List<article.ItemData> Get_article_item(int id)
+        {
+            List <article.ItemData> ItemData = new List<article.ItemData>();
+            string strsql = "select * from  tbl_article_item where articleid =@id";
+            NameValueCollection nvc = new NameValueCollection();
+            nvc.Add("id", id.ToString());
+            DataTable dt = DbControl.Data_Get(strsql, nvc);
+            for (int i =0;i< dt.Rows.Count;i++)
+            {
+                ItemData.Add(new ItemData
+                {
+                    Title = dt.Rows[i]["subject"].ToString(),
+                     Secno = (int) dt.Rows [i]["secno"],
+                    Contents = dt.Rows[i]["contents"].ToString(),
+                    Image = "",
+                    Layout =""
+                });
+            }
+            
+            return ItemData;
+
+        }
+        public static int Article_Add()
     {
         int id = 0;
         string strsql = "insert into tbl_article ( Viewcount, FBCount, GoogleCount,PinterestCount) values (0,0,0,0);SELECT SCOPE_IDENTITY();";

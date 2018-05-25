@@ -82,33 +82,45 @@
 
         });
         var maindata; 
+        var flag;
         $(document).ready(function () {            
             if (articleId > 0) {
                 var dataValue = "{articleId:'"+  articleId +"'}";             
                     $.postJSON('article.aspx/get_tbl_article', dataValue, 'application/json; charset=utf-8', function (result) {
-                        if (result != "") {
-                           
+                        if (result != "") {                           
                             var result = result.d;
                             result = JSON.parse(result);
-                            maindata = result;
+                            maindata = result;                    
+                            $('#postday').datepicker("setDate", new Date(result.PostDay));
                             $('#subject').val(result.Subject)
-                            $('#subtitle').val(result.SubTitle);
-                            $('#postDay').val(result.PostDay);
+                            $('#subtitle').val(result.SubTitle);                          
                             $('#keywords').val(result.Keywords);
                             $("#status").prop("checked", result.Status  == "Y" ? true : false);
                             $('#postDay').val(result.PostDay);
-                            CKEDITOR.instances['contents'].setData(result.Contents);
-                           
-                           
-                            //$.each(result, function (key, val) {
-                            //    alert(key);
-                            //});                           
-                    
+                            CKEDITOR.instances['contents'].setData(result.Contents);                           
+                            document.getElementById('console').innerHTML = ("<img src=\"/webimages/article/" + result.Pic + "\">");
+                            $('#logoPic').val(result.Pic);                           
                         }
                     });
-      
-               
-               
+                    $.postJSON('article.aspx/get_tbl_article_item', dataValue, 'application/json; charset=utf-8', function (result) {
+                        if (result != "") {
+                            var result = result.d;
+                            if (result != '') {
+                              //  result = JSON.parse(result);
+                                $.each(result, function (key, val) {
+                                  
+                                    var v = '<input type="button" class="mod" value="修改">';
+                                    v += '<input type="button" class="delete" value="刪除"><br>';
+                                    v += '主旨: <span class="title">' + val.Title + '</span> <BR>';
+                                    v += '內文: <span>' + val.Contents + '</span>';
+                                    v += "<input type=\"hidden\" class=\"content\" value='" + val.Contents + "' /> ";
+                                     $('#detailitem').append('<li style="background-color: #C0C0C0">' + v + '</li>');//新增LI
+                                });     
+                            }
+
+                        }
+                    });
+
             }
 
      
@@ -123,7 +135,6 @@
                 $("#secno").val('');
                 $("#title").val('');
                 $('#recent-tab a[href="#item2"]').tab('show') //SHOW 明細tab
-
             })
             $("#btl_add").click(function () {
                // 新增明細資料
@@ -147,16 +158,12 @@
                         $('#detailitem').append('<li style="background-color: #C0C0C0">' + v + '</li>');//新增LI
                     }
                     else {
-
                         $("ul#detailitem li").eq($("#secno").val()).html(v); //修改明細LI
-
                     }
-
                     $('#recent-tab a[href="#item1"]').tab('show')
                 } else {
                     alert(errmsg);
                 }
-
             });
             $("#btl_cel").click(function () {
                 $('#recent-tab a[href="#item1"]').tab('show') //返回主內容
@@ -172,76 +179,27 @@
                 if (confirm('你確定嗎?')) { $(this).parent().remove(); }
 
             });
-                 var dataValue = "{ kind: 'get' }";
-            $.postJSON('article.aspx/get_tag', dataValue, 'application/json; charset=utf-8', function (result) {
-                if (result != "") {
-                    var result = result.d;
-                    result = JSON.parse(result);
-                    result = result.main;
-                    var cb = "";
-                   
-                    $.each(result, function (key, val) {
-                        var s = "";
-                        if (maindata != undefined) {       
-                            if (maindata.Tags.length == 1) {
-                                if (maindata.Tags == val.id) s = " checked ";
-                            }
-                            else if (maindata.Tags.length > 1) {
-                                for (i = 0; i < maindata.Tags.length; i++) {
-                                    if (maindata.Tags[i] == val.id) s = " checked ";
-                                }
-                            }
-                        }
-                        cb += "<input name='tags' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl>" + val.name + "</span>";
-                    });
-                    
-                    $("#tag").html(cb);
-                    
-                }
-            });
-            $.postJSON('article.aspx/get_writer', dataValue, 'application/json; charset=utf-8', function (result) {
-                if (result != "") {
-                    var result = result.d;
-                    result = JSON.parse(result);
-                    result = result.main;
-                    var cb = "";
-                    var s = "";
-           
-                    $.each(result, function (key, val) {
-                     if (maindata != undefined) {  
-                        if (maindata.Writer.length == 1) {
-                              if (maindata.Writer == val.id) s = " checked ";
-                        }
-                        else if (maindata.Writer.length > 1){
-                            for (i = 0; i < maindata.Writer.length; i++) {
-                                if (maindata.Writer[i] == val.id) s = " checked ";
-                            }
-                        }
-                    }
-                        cb += "<input name='writer' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl>" + val.name + "</span>";
-                    });
-                    $("#writer").html(cb);
-
-                }
-            });
+            get_tag();
+            get_writer();
+            var dataValue = "{ kind: 'get' }";
             $.postJSON('article.aspx/get_category', dataValue, 'application/json; charset=utf-8', function (result) {
                 if (result != "") {
                     var result = result.d;
                     result = JSON.parse(result);
                     result = result.main;
                     var cb = "";
-                    $.each(result, function (key, val) {
-
-
+                    var s = "";
+                    $.each(result, function (key, val) {                   
                         if (val.detail.length > 0) {
-
                             cb += "<b>" + val.name + "</b>:";
-                            for (i = 0; i < val.detail.length; i++) {
-                                cb += "<input name='categoryid' class='ace ace-checkbox-2' type='checkbox' value='" + val.detail[i].id + "'><span class=lbl>" + val.detail[i].name + "</span>";
+                            for (i = 0; i < val.detail.length; i++) {                               
+                                s = maindata ==  undefined ? "": check_cbx(maindata.Category, val.detail[i].id);                                
+                                cb += "<input name='categoryid' class='ace ace-checkbox-2' type='checkbox' value='" + val.detail[i].id + "'" + s + "><span class=lbl>" + val.detail[i].name + "</span>";
                             }
                         }
                         else {
-                            cb += "<input name='categoryid' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'><span class=lbl>" + val.name + "</span>";
+                            s = maindata ==  undefined ? "": check_cbx(maindata.Category, val.id);
+                            cb += "<input name='categoryid' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl>" + val.name + "</span>";
 
                         }
                         cb += "<Br>";
@@ -250,6 +208,57 @@
                 }
             });
         });
+        function get_tag() {
+            var dataValue = "{ kind: 'get' }";
+            $.postJSON('article.aspx/get_tag', dataValue, 'application/json; charset=utf-8', function (result) {
+                if (result != "") {
+                    var result = result.d;
+                    result = JSON.parse(result);
+                    result = result.main;
+                    var cb = "";
+                    var s = "";
+                    $.each(result, function (key, val) {        
+                        s = maindata ==  undefined ? "":check_cbx(maindata.Tags, val.id);                      
+                        cb += "<input name='tags' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl>" + val.name + "</span>";
+                    });                    
+                    $("#tag").html(cb);                    
+                }
+            });
+        }
+        function get_writer() {
+             var dataValue = "{ kind: 'get' }";
+              $.postJSON('article.aspx/get_writer', dataValue, 'application/json; charset=utf-8', function (result) {
+                if (result != "") {
+                    var result = result.d;
+                    result = JSON.parse(result);
+                    result = result.main;
+                    var cb = "";
+                    var s = "";           
+                    $.each(result, function (key, val) {
+                    s = maindata ==  undefined ? "": check_cbx(maindata.Writer, val.id);         
+                        cb += "<input name='writer' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl>" + val.name + "</span>";
+                    });
+                    $("#writer").html(cb);
+                }
+            });
+       
+        }
+
+        function check_cbx(obj, val) {//check checkbox item ,設定勾選
+            var s = "";          
+            if (obj != undefined) {
+                if (obj.length == 1) {
+                    if (obj == val) s = " checked ";
+                }
+                else if (obj.length > 1) {
+                    for (ix = 0; ix < obj.length; ix++) {
+                        if (obj[ix] == val) s = " checked ";
+                    }
+                }
+            }
+           
+            return s;
+        }
         function check_data(kind) {//將主資料存到SESSION       
             var errmsg = "";
             var content = CKEDITOR.instances['contents'].getData();
@@ -268,12 +277,12 @@
             Checked = $('input[name="categoryid"]:checked').length > 0;
             if (Checked == false) {
                 errmsg += ('請勾選分類\r\n');
-            }
+            }           
             var categoryid = $('input:checkbox:checked[name="categoryid"]').map(function () { return $(this).val(); }).get();
             var tags = $('input:checkbox:checked[name="tags"]').map(function () { return $(this).val(); }).get();
             var writer = $('input:checkbox:checked[name="writer"]').map(function () { return $(this).val(); }).get();
             var status = $("#status").prop("checked") == true ? "Y" : "N";
-
+            
             var dataValue = {
                 kind: "set", id: articleId, subject: $("#subject").val(), subtitle: $("#subtitle").val()
                 , contents: content, pic: $("#logoPic").val(), keywords: $("#keywords").val()
@@ -284,59 +293,91 @@
             if (errmsg == '') {
                 $.postJSON('article.aspx/Set_data', JSON.stringify(dataValue), 'application/json; charset=utf-8', function (result) {
                     result = result.d;
-                    check_item(kind);
+                    if (result == '')
+                        check_item(kind);
+                    else
+                        alert(result);
                 });
 
             } else {
                 alert(errmsg);
             }
         }
-        function check_item(kind) {//將明細資料存到SESSION        
+        function JSONparse(str) {
+            str = str.replace("\r\n", "");
+            str = str.replace("\r", "").replace("\n", "");
+            str = str.replace("\"", "\\\""); 
+            return str 
+        }
+        function check_item(kind) {//將明細資料存到SESSION   
+            
             var dataValue = "{\"kind\": \"set\", \"id\":\"" + articleId + "\",\"item\":[";
             var i = 0;
             $("ul#detailitem li").each(function () {
-                i++;
+                i++;              
                 if (i != 1) { dataValue += ","; }
-                dataValue += "{\"Title\":\"" + $(this).find('.title').text() + "\"";
-                dataValue += ",\"Id\":\"" + articleId + "\"";
-                dataValue += ",\"Secno\":\"" + i + "\"";
-                dataValue += ",\"Image\":\"\",\"Layout\":\"\"";
-                dataValue += ",\"Contents\":\"" + $(this).find('.content').val().replace(/\r/, "").replace(/\n/, "") + "\"}";
+                if ($(this).find('.content').val() != undefined) {
+                   
+                    dataValue += "{\"Title\":\"" + $(this).find('.title').text() + "\"";
+                    dataValue += ",\"Id\":\"" + articleId + "\"";
+                    dataValue += ",\"Secno\":\"" + i + "\"";
+                    dataValue += ",\"Image\":\"\",\"Layout\":\"\"";
+                    dataValue += ",\"Contents\":\"\"}";
+                }
             });
             dataValue += "]}"
             dataValue = JSON.parse(dataValue);
+            result =  dataValue.item;          
+            $.each(result, function (key, val) {             
+                val.Contents =  $("ul#detailitem li").eq(key).find('.content').val();
+            });
+            dataValue.item = result;
+            
             $.postJSON('article.aspx/Set_ItemData', JSON.stringify(dataValue), 'application/json; charset=utf-8', function (result) {
                 if (result != "") {
                     var result = result.d;
-                    $('#recent-tab a[href="#item1"]').tab('show')
-                    if (kind == "s") {
-                        save_db();
-                    }
-                    else if (kind == 'p') {
-                        //preview;
+                    if (result == '' ){
+                        $('#recent-tab a[href="#item1"]').tab('show')
+                        if (kind == "s") {
+                            save_db();
+                        }
+                        else if (kind == 'p') {
+                            //preview;
+                        }
                     }
                     return (result)
                 }
             });
         }
-        function ret() {  //返回上層     
-            if (confirm('你確定嗎?')) {
-                parent.$.fn.colorbox.close();
+        function ret() {  //返回上層    
+            if (flag != 'Y') {
+                if (confirm('你確定嗎?'))  {
+                    parent.$.fn.colorbox.close();
+                }
             }
+            else
+                 parent.$.fn.colorbox.close();
         }
         function save_db() {
              var dataValue = "{ kind: 'get' }";
             $.postJSON('article.aspx/Set_DB', dataValue, 'application/json; charset=utf-8', function (result) {
                 if (result != "") {
                     var result = result.d;
-                    alert(result);
+                    if (result == '')
+                    {
+                        alert('已存檔');
+                        ret();
+                    }
+                    else
+                    { alert(result); }
                 }
             });
 
         }
-       
-
+   
     </script>
+                                    
+
     <script src="ckeditor/ckeditor.js"></script>
 </head>
 <body>
@@ -346,14 +387,12 @@
                 <div>
                     <ul class="nav nav-tabs" id="recent-tab">
                         <li class="active">
-                            <a data-toggle="tab" href="#item1">主內容</a>
+                            <a data-toggle="tab" href="#item1">主 內 容</a>
                         </li>
 
                         <li>
                             <a data-toggle="tab" href="#item2">明細內容</a>
                         </li>
-
-
                     </ul>
                 </div>
             </div>
@@ -385,66 +424,6 @@
                                         </div>
                                         <input id="logoPic" type="hidden" />
                                         <pre id="console" class="col-sm-9"> </pre>
-                                        <script type="text/javascript">
-
-                                            var uploader = new plupload.Uploader({
-                                                runtimes: 'html5,flash,silverlight,html4',
-                                                browse_button: 'pickfiles', // you can pass in id...
-                                                container: document.getElementById('container'), // ... or DOM Element itself
-                                                url: '/spadmin/saveMultiUpload?kind=article',
-                                                multipart: true,
-                                                filters: {
-                                                    max_file_size: '10mb',
-                                                    mime_types: [
-                                                        { title: "Image files", extensions: "jpg,gif,png" },
-                                                        { title: "Zip files", extensions: "zip" }
-                                                    ]
-                                                },
-
-                                                init: {
-                                                    PostInit: function () {
-                                                        document.getElementById('filelist').innerHTML = '';
-                                                        document.getElementById('uploadfiles').onclick = function () {
-                                                            uploader.start();
-                                                            return false;
-                                                        };
-                                                    },
-
-                                                    FilesAdded: function (up, files) {
-                                                        plupload.each(files, function (file) {
-                                                            document.getElementById('filelist').innerHTML += '<div id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ') <b></b></div>';
-
-                                                        });
-                                                    },
-
-                                                    UploadProgress: function (up, file) {
-                                                        document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
-
-                                                    },
-
-                                                    UploadComplete: function (up, files) {
-                                                        alert('上傳完畢');
-                                                        document.getElementById('filelist').innerHTML = "";
-                                                    },
-                                                    FileUploaded: function (up, file, res) {
-                                                        // alert(up);
-                                                        //  alert(file.id);
-                                                        var json = $.parseJSON(res.response);
-                                                        document.getElementById('console').innerHTML = ("<img src=\"/webimages/article/" + json.result + "\">");
-                                                        $("#logoPic").val(json.result);
-
-                                                    },
-
-                                                    Error: function (up, err) {
-                                                        document.getElementById('console').innerHTML += "\nError #" + err.code + ": " + err.message;
-                                                    }
-
-                                                }
-                                            });
-
-                                            uploader.init();
-
-                                        </script>
 
                                         <div style="display: none" class="col-sm-9">
                                             <div id="list_menu">
@@ -468,11 +447,9 @@
                                     <td>內容</td>
                                     <td>
                                         <input id="contents" type="text" style="height: 600px" />
-
                                         <script>
                                             CKEDITOR.replace('contents');
                                         </script>
-
                                     </td>
 
                                 </tr>
@@ -480,6 +457,7 @@
                                     <td>標籤</td>
                                     <td>
                                         <label id="tag"></label><br />
+                                   
                                         <a href="Edit_tag.aspx?unitid=13" class="iframe cboxElement"><i class="icon-double-angle-right"></i>標簽管理</a>
                                     </td>
 
@@ -487,20 +465,21 @@
                                 <tr>
                                     <td>作者</td>
                                     <td>
-                                        <label id="writer"></label><br /><a href="Edit_tag.aspx?unitid=14" class="iframe cboxElement"><i class="icon-double-angle-right"></i>作者管理</a>
+                                        <label id="writer"></label><br />
+                                           <a href="Edit_tag.aspx?unitid=14" class="iframe cboxElement"><i class="icon-double-angle-right"></i>作者管理</a>
+                                   
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>關鍵字</td>
                                     <td>
-                                        <input type="text" name="keywords" id="keywords" value="" width="600px" placeholder="請輸入關鍵字 ..." />
+                                        <input type="text" name="keywords" id="keywords" value=""   placeholder="請輸入關鍵字 ..." />
 
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>發佈日</td>
                                     <td>
-
                                         <input id="postday" type="text" />
                                     </td>
 
@@ -509,7 +488,6 @@
                                     <td>所屬分類</td>
                                     <td>
                                         <label id="category"></label>
-
 
                                     </td>
                                 </tr>
@@ -529,12 +507,10 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2">
-
-                                        <button type="button" class="btn btn-primary" onclick="ret()">返回</button>
+                                        <button type="button" class="btn btn-primary" onclick="ret()">返 回</button>
                                         <button type="button" class="btn btn-primary" id="btn_save">存 檔</button>
-                                        <button type="button" class="btn btn-primary" id="preview">預覽</button>
+                                        <button type="button" class="btn btn-primary" id="preview">預 覽</button>
                                         <button type="button" class="btn btn-primary" id="btn-next">新增段落</button>
-
 
                                     </td>
                                 </tr>
@@ -561,10 +537,8 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2">
-
                                         <button type="button" class="btn btn-primary" id="btl_add">確認</button>
                                         <button type="button" class="btn btn-primary" id="btl_cel">取消</button>
-
                                     </td>
                                 </tr>
                             </table>
@@ -622,17 +596,11 @@
         </script>
 
         <!-- page specific plugin styles -->
-
         <link rel="stylesheet" href="assets/css/colorbox.css" />
         <!-- page specific plugin scripts -->
-
         <script src="assets/js/jquery.colorbox-min.js"></script>
         <script>
-
-
-
             $(document).ready(function () {
-
                 $(".group1").colorbox({ rel: 'group1' });
                 $(".group2").colorbox({ rel: 'group2', transition: "fade" });
                 $(".group3").colorbox({ rel: 'group3', transition: "none", width: "75%", height: "75%" });
@@ -640,29 +608,90 @@
                 $(".ajax").colorbox();
                 $(".youtube").colorbox({ iframe: true, innerWidth: 640, innerHeight: 390 });
                 $(".vimeo").colorbox({ iframe: true, innerWidth: 500, innerHeight: 409 });
-                $(".iframe").colorbox({ iframe: true, width: "100%", height: "100%" });
-                $(".inline").colorbox({ inline: true, width: "50%" });
-                $(".callbacks").colorbox({
-                    onOpen: function () { alert('onOpen: colorbox is about to open'); },
-                    onLoad: function () { alert('onLoad: colorbox has started to load the targeted content'); },
-                    onComplete: function () { alert('onComplete: colorbox has displayed the loaded content'); },
-                    onCleanup: function () { alert('onCleanup: colorbox has begun the close process'); },
-                    onClosed: function () { alert('onClosed: colorbox has completely closed'); }
+                $(".iframe").colorbox({
+                    iframe: true, width: "100%", height: "100%",
+                    onClosed: function () {
+                      
+                        get_tag();
+                        get_writer();
+                    }
                 });
+                $(".inline").colorbox({ inline: true, width: "50%" });
+              	$(".callbacks").colorbox({
+					onOpen:function(){ alert('onOpen: colorbox is about to open'); },
+					onLoad:function(){ alert('onLoad: colorbox has started to load the targeted content'); },
+					onComplete:function(){ alert('onComplete: colorbox has displayed the loaded content'); },
+					onCleanup:function(){ alert('onCleanup: colorbox has begun the close process'); },
+					onClosed:function(){ alert('onClosed: colorbox has completely closed'); }
+				});
 
                 $('.non-retina').colorbox({ rel: 'group5', transition: 'none' })
                 $('.retina').colorbox({ rel: 'group5', transition: 'none', retinaImage: true, retinaUrl: true });
 
 
                 $("#click").click(function () {
-                    $('#click').css({ "background-color": "#f00", "color": "#fff", "cursor": "inherit" }).text("Open this window again and this message will still be here.");
+                    alert('123');
                     return false;
                 });
 
 
             });
 
+                
+        var uploader = new plupload.Uploader({
+                    runtimes: 'html5,flash,silverlight,html4',
+                    browse_button: 'pickfiles', // you can pass in id...
+                    container: document.getElementById('container'), // ... or DOM Element itself
+                    url: '/spadmin/saveMultiUpload?kind=article',
+                    multipart: true,
+                    filters: {
+                        max_file_size: '10mb',
+                        mime_types: [
+                            { title: "Image files", extensions: "jpg,gif,png" },
+                            { title: "Zip files", extensions: "zip" }
+                        ]
+                    },
 
+                    init: {
+                        PostInit: function () {
+                            document.getElementById('filelist').innerHTML = '';
+                            document.getElementById('uploadfiles').onclick = function () {
+                                uploader.start();
+                                return false;
+                            };
+                        },
+
+                        FilesAdded: function (up, files) {
+                            plupload.each(files, function (file) {
+                                document.getElementById('filelist').innerHTML += '<div id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ') <b></b></div>';
+
+                            });
+                        },
+
+                        UploadProgress: function (up, file) {
+                            document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
+
+                        },
+
+                        UploadComplete: function (up, files) {
+                            alert('上傳完畢');
+                            document.getElementById('filelist').innerHTML = "";
+                        },
+                        FileUploaded: function (up, file, res) {                                                       
+                            var json = $.parseJSON(res.response);
+                            document.getElementById('console').innerHTML = ("<img src=\"/webimages/article/" + json.result + "\">");
+                            $("#logoPic").val(json.result);
+
+                        },
+
+                        Error: function (up, err) {
+                            document.getElementById('console').innerHTML += "\nError #" + err.code + ": " + err.message;
+                        }
+
+                    }
+                });
+
+                uploader.init();
 
         </script>
     </form>

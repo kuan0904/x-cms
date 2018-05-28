@@ -169,10 +169,15 @@
                                 <tr>
                                     <td>
                                         標題</td>
-                                    <td> <asp:TextBox  runat="server" ID="t_title"  required></asp:TextBox>
+                                    <td> <asp:TextBox  runat="server" ID="t_title"  required Width="300px"></asp:TextBox>
                                     </td>
                                 </tr>
-                                               
+                                <tr>
+                                    <td>
+                                        說明</td>
+                                    <td> <asp:TextBox  runat="server" ID="contents"  Width="700px" ></asp:TextBox>
+                                    </td>
+                                </tr>            
                                 <tr>
                                     <td>
                                         開新視窗</td>

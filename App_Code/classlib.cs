@@ -36,186 +36,7 @@ namespace unity {
         private static string smtpuid = "cairnskitchen.tw@gmail.com";
         private static string smtppwd = "ck43285929tw";
 
-        public static string[] payStatus =
-           { "未支付" , "ATM已付款", "信用卡已付款"
-            ,  "已退款"
-            ,  "待發貨"
-            ,  "已發貨"
-            ,  "已退貨"
-            ,  "已完成"
-            ,  "進行中"
-            ,  "已消" };
- 
-        public static string get_ord_status(string id )
-        {
-            string value = "";
-            using (SqlConnection conn = new SqlConnection(dbConnectionString))
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand();
-                SqlDataReader rs;
-                string strsql;
-                strsql = @"SELECT * from payStatus where id=@id ";
-                cmd = new SqlCommand(strsql, conn);
-                cmd.Parameters.Add("@id", SqlDbType.VarChar).Value = id;
-                rs = cmd.ExecuteReader();
-                if (rs.Read()) value = rs["name"].ToString();
-                rs.Close();
-                cmd.Dispose();
-                conn.Close();
-            }
-            return value;
-        }
-        public static string getPaymode(string id )
-        {
-            string value = "";
-            using (SqlConnection conn = new SqlConnection(dbConnectionString))
-            {             
-                conn.Open();
-                SqlCommand cmd = new SqlCommand();
-                SqlDataReader rs;
-                string strsql;
-                strsql = @"SELECT * from paymode where id=@id ";                       
-                cmd = new SqlCommand(strsql, conn);
-                cmd.Parameters.Add("@id", SqlDbType.VarChar).Value = id;
-                rs = cmd.ExecuteReader();
-                if (rs.Read()) value = rs["name"].ToString();
-                rs.Close();
-                cmd.Dispose();             
-                conn.Close();
 
-            }
-            return value ;
-        }
-        public static string getReceivetime(string id)
-        {
-            string value = "";
-            using (SqlConnection conn = new SqlConnection(dbConnectionString))
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand();
-                SqlDataReader rs;
-                string strsql;
-                strsql = @"SELECT * from Receivetime where id=@id ";
-                cmd = new SqlCommand(strsql, conn);
-                cmd.Parameters.Add("@id", SqlDbType.VarChar).Value = id;
-                rs = cmd.ExecuteReader();
-                if (rs.Read()) value = rs["name"].ToString();
-                rs.Close();
-                cmd.Dispose();
-                conn.Close();
-            }
-            return value;
-        }
-        public static string getInvoice(string id)
-        {
-            string value = "";
-            using (SqlConnection conn = new SqlConnection(dbConnectionString))
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand();
-                SqlDataReader rs;
-                string strsql;
-                strsql = @"SELECT * from invoice where id=@id ";
-                cmd = new SqlCommand(strsql, conn);
-                cmd.Parameters.Add("@id", SqlDbType.VarChar).Value = id;
-                rs = cmd.ExecuteReader();
-                if (rs.Read()) value = rs["name"].ToString();
-                rs.Close();
-                cmd.Dispose();
-                conn.Close();
-            }
-            return value;
-        }
-        //取訂單編號
-        // </summary>
-        // <param name="ord_date">訂單日期</param>
-        // <param name="source">訂單來源</param>
-        public static string  Get_ord_code(string ord_date)
-        {
-            string ord_code = "";
-          
-            using (SqlConnection conn = new SqlConnection(dbConnectionString))
-            {
-                string ord_code1 = DateTime.Parse(ord_date).ToString("yyyyMMdd");
-                string  ord_code2 = "";
-              
-               
-                conn.Open();
-                SqlCommand cmd = new SqlCommand();
-                SqlDataReader rs;
-                string strsql;
-                strsql = @"SELECT  count(*) FROM orderdata WHERE  CONVERT(VARCHAR(10), crtdat, 111)  
-                         = @ord_date ";
-                cmd = new SqlCommand(strsql, conn);
-                cmd.Parameters.Add("@ord_date", SqlDbType.VarChar).Value = ord_date;
-                rs = cmd.ExecuteReader();
-                if (rs.Read())   ord_code2 = ((int)rs[0] + 1).ToString().PadLeft (5,'0');               
-                rs.Close();
-                cmd.Dispose();              
-                
-                ord_code =  ord_code1 + ord_code2;
-                conn.Close();
-               
-            }
-            return ord_code;
-        }
-        public static string GetMD5(string str)
-        {
-            byte[] asciiBytes = ASCIIEncoding.ASCII.GetBytes(str);
-            byte[] hashedBytes = MD5CryptoServiceProvider.Create().ComputeHash(asciiBytes);
-            string hashedString = BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
-            return hashedString;
-
-        }
-
-        public static string CreateRandomCode(int Number)
-        {
-            string allChar = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z";
-            string[] allCharArray = allChar.Split(',');
-            string randomCode = "";
-            int temp = -1;
-
-            Random rand = new Random();
-            for (int i = 0; i < Number; i++)
-            {
-                if (temp != -1)
-                {
-                    rand = new Random(i * temp * ((int)DateTime.Now.Ticks));
-                }
-                int t = rand.Next(36);
-                if (temp != -1 && temp == t)
-                {
-                    return CreateRandomCode(Number);
-                }
-                temp = t;
-                randomCode += allCharArray[t];
-            }
-            return randomCode;
-        }
-        public static string getIP(HttpRequest rr)
-        {
-
-            // 取得本機名稱
-            string strHostName = Dns.GetHostName();
-            // 取得本機的IpHostEntry類別實體，用這個會提示已過時
-            //IPHostEntry iphostentry = Dns.GetHostByName(strHostName);
-
-            // 取得本機的IpHostEntry類別實體，MSDN建議新的用法
-            IPHostEntry iphostentry = Dns.GetHostEntry(strHostName);
-
-            // 取得所有 IP 位址
-            foreach (IPAddress ipaddress in iphostentry.AddressList)
-            {
-                // 只取得IP V4的Address
-                if (ipaddress.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-                {
-                   return  ipaddress.ToString();
-                }
-            }
-            return strHostName ;
-        }
-      
         public static string GetIPAddress(HttpRequest rr)
         {
            
@@ -240,6 +61,31 @@ namespace unity {
             }
             return urlpath;
         }
+
+        public static string getIP(HttpRequest rr)
+        {
+
+            // 取得本機名稱
+            string strHostName = Dns.GetHostName();
+            // 取得本機的IpHostEntry類別實體，用這個會提示已過時
+            //IPHostEntry iphostentry = Dns.GetHostByName(strHostName);
+
+            // 取得本機的IpHostEntry類別實體，MSDN建議新的用法
+            IPHostEntry iphostentry = Dns.GetHostEntry(strHostName);
+
+            // 取得所有 IP 位址
+            foreach (IPAddress ipaddress in iphostentry.AddressList)
+            {
+                // 只取得IP V4的Address
+                if (ipaddress.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                {
+                    return ipaddress.ToString();
+                }
+            }
+            return strHostName;
+        }
+
+
         public static string GetTextString(string filename,string kind="1")
         {
             string value = "";
@@ -524,12 +370,7 @@ namespace unity {
             return msg;
 
         }  
-        public static void InserAction2(string userid, string ip, string action, string tableName, string action_id, string subject)
-        {
-          
-            //操作記錄,先停用
-        }
-        public static bool chkPower(string userid, string unitid)
+       public static bool chkPower(string userid, string unitid)
         {
             bool result = false;
 
@@ -743,132 +584,7 @@ namespace unity {
             isNum = Double.TryParse(Convert.ToString(Expression), System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo, out retNum);
             return isNum;
         }
-        public static int get_price(int p_id,int p_num)
-        {
-            int p_price = 0;
-            using (SqlConnection conn = new SqlConnection(classlib.dbConnectionString))
-            {
-                conn.Open();
-                string strsql = "SELECT * FROM   productData  WHERE p_id = @p_id  ";
-                SqlCommand cmd = new SqlCommand();
-                SqlDataReader rs;
 
-                cmd = new SqlCommand(strsql, conn);
-                cmd.Parameters.Add("p_id", SqlDbType.Int).Value = p_id;
-                rs = cmd.ExecuteReader();
-                if (rs.Read()) p_price = (int)rs["price"];
-                cmd.Dispose();
-                rs.Close();
-
-
-                strsql = "SELECT top 1 price  FROM   productprice  WHERE p_id = @p_id  and num <>0 and num >= @num order by num  ";
-                cmd = new SqlCommand(strsql, conn);
-                cmd.Parameters.Add("p_id", SqlDbType.Int).Value = p_id;
-                cmd.Parameters.Add("num", SqlDbType.Int).Value = p_num;
-                rs = cmd.ExecuteReader();
-                if (rs.Read()) p_price = (int)rs["price"] ;
-                cmd.Dispose();
-                rs.Close();
-
-                strsql = "SELECT top 1 *  FROM   productprice  WHERE p_id = @p_id  and num <>0 and num < @num ORDER BY   num DESC  ";
-                cmd = new SqlCommand(strsql, conn);
-                cmd.Parameters.Add("p_id", SqlDbType.Int).Value = p_id;
-                cmd.Parameters.Add("num", SqlDbType.Int).Value = p_num;
-                rs = cmd.ExecuteReader();
-                if (rs.Read())
-                {
-                    if (p_num > (int)rs["num"]) p_price = (int)rs["price"];
-
-                }
-
-                cmd.Dispose();
-                rs.Close();
-
-                conn.Close();
-            }
-            return p_price;
-        }
-        public static string CData(string @string)
-        {
-            return "<![CData[" + @string + "]]>";
-        }
-        public static  DataTable  Get_promo(string id )
-        {
-            DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(dbConnectionString))
-            {
-                string strsql = "SELECT  * from promo_system where ps_id=@id";
-                SqlDataAdapter myAdapter = new SqlDataAdapter();
-                SqlCommand CMD = new SqlCommand(strsql, conn);
-                myAdapter.SelectCommand = CMD;
-                CMD.Parameters.Add("@id", SqlDbType.VarChar).Value = id;       
-                DataSet ds = new DataSet();
-                myAdapter.Fill(ds, "tbl");
-                dt = ds.Tables["tbl"].DefaultView.ToTable();
-                myAdapter.Dispose();
-                ds.Dispose();
-                conn.Close();
-
-            }
-            return dt;
-        }
-        public static string  Get_ck_atmno()
-        {
-            string  value = "";
-            using (SqlConnection conn = new SqlConnection(dbConnectionString))
-            {
-                string strsql = "SELECT  * from promo_system where ps_id=3 ";
-                conn.Open();
-                SqlDataReader rs;
-                SqlCommand cmd = new SqlCommand(strsql, conn);
-
-                rs = cmd.ExecuteReader();
-                if (rs.Read()) value = rs["contents"].ToString() ;
-                rs.Close();
-                cmd.Dispose();
-                conn.Close();
-
-            }
-            return value;
-        }
-        public static int Get_DeliveryPrice()
-        {
-            int value = 150;
-            using (SqlConnection conn = new SqlConnection(dbConnectionString))
-            {
-                string strsql = "SELECT  * from promo_system where ps_id=2";
-                conn.Open();
-                SqlDataReader rs;
-                SqlCommand cmd = new SqlCommand(strsql, conn);
-
-                rs = cmd.ExecuteReader();
-                if (rs.Read()) value = (int)rs["ps_condition"];
-                rs.Close();
-                cmd.Dispose();
-                conn.Close();
-
-            }
-            return value;
-        }
-        public static int Get_ship_free()
-        {
-            int value =1800;
-            using (SqlConnection conn = new SqlConnection(dbConnectionString))
-            {
-                string strsql = "SELECT  * from promo_system where ps_id=1 ";
-                conn.Open();
-                SqlDataReader rs;
-                SqlCommand cmd = new SqlCommand(strsql, conn);
-              
-                rs = cmd.ExecuteReader();
-                if (rs.Read()) value  = (int)rs["ps_condition"];
-                rs.Close();
-                cmd.Dispose();
-                conn.Close();
-
-            }
-            return value ;
-        }
         public static string Get_cityName(string id)
         {
 
@@ -953,6 +669,39 @@ namespace unity {
             }
             return name;
         }
+        public static string GetMD5(string str)
+        {
+            byte[] asciiBytes = ASCIIEncoding.ASCII.GetBytes(str);
+            byte[] hashedBytes = MD5CryptoServiceProvider.Create().ComputeHash(asciiBytes);
+            string hashedString = BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
+            return hashedString;
+
+        }
+
+        public static string CreateRandomCode(int Number)
+        {
+            string allChar = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z";
+            string[] allCharArray = allChar.Split(',');
+            string randomCode = "";
+            int temp = -1;
+
+            Random rand = new Random();
+            for (int i = 0; i < Number; i++)
+            {
+                if (temp != -1)
+                {
+                    rand = new Random(i * temp * ((int)DateTime.Now.Ticks));
+                }
+                int t = rand.Next(36);
+                if (temp != -1 && temp == t)
+                {
+                    return CreateRandomCode(Number);
+                }
+                temp = t;
+                randomCode += allCharArray[t];
+            }
+            return randomCode;
+        }
 
         public static string Base64Encode(string plainText)
         {
@@ -979,34 +728,7 @@ namespace unity {
             string noHTMLNormalised = Regex.Replace(noHTML, @"\s{2,}", " ");
             return noHTMLNormalised;
         }
-        public static string get_pd(string ord_id)
-        {
-            string msg = "";
-            using (SqlConnection conn = new SqlConnection(classlib.dbConnectionString))
-            {
-                conn.Open();
-                SqlDataReader rs;
-                SqlCommand cmd = new SqlCommand();
-                string strsql = @"SELECT *    FROM productdata INNER JOIN orderdetail ON  productdata.p_id = orderdetail.p_id
-                WHERE orderdetail.ord_id = @ord_id ";
-
-                cmd = new SqlCommand(strsql, conn);
-                cmd.Parameters.Add("@ord_id", SqlDbType.Int).Value = ord_id;
-                rs = cmd.ExecuteReader();
-                while (rs.Read())
-                {
-                    msg += rs["productname"].ToString() + "*" + rs["num"].ToString() + "<BR>";
-
-                }
-
-                rs.Close();
-                cmd.Dispose();
-                conn.Close();
-            }
-
-            return msg;
-        }
-       
+      
     }
   
   

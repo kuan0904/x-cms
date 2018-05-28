@@ -60,9 +60,10 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
             t_targetblank.Text  = dt.Rows[0]["targetblank"].ToString ();
             sdate.Text = DateTime.Parse(dt.Rows[0]["enabledate"].ToString ()).ToString("yyyy/MM/dd");
             stime.SelectedValue =DateTime.Parse ( dt.Rows[0]["enabledate"].ToString ()).Hour.ToString () ;
-            Literal1.Text = "<img src=\"../webimages/banner/" +  dt.Rows[0]["filename"].ToString () + "\"/>";
+            Literal1.Text = "<img src=\"../webimages/banner/" +  dt.Rows[0]["filename"].ToString () + "\" height =\"200\"/>";
             HiddenField1.Value = dt.Rows[0]["filename"].ToString();
-            if (dt.Rows[0]["disabledate"].ToString () !="")
+            contents.Text = dt.Rows[0]["contents"].ToString();
+        if (dt.Rows[0]["disabledate"].ToString () !="")
             {
 
                 DateTime ee = DateTime.Parse(dt.Rows[0]["disabledate"].ToString());
@@ -116,8 +117,8 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
         if (Btn_save.CommandArgument == "add")
         {
             strsql = @"INSERT  INTO tbl_banner(filename, path, url, targetblank, sort, enabledate, disabledate, 
-                status, title, createdate, createuserid,  classId,viewcount) VALUES (@filename, @path, @url, @targetblank,
-                @sort, @enabledate, @disabledate, @status, @title, @createdate, @createuserid,  @classId,0) ";
+                status, title, createdate, createuserid,  classId,viewcount,contents) VALUES (@filename, @path, @url, @targetblank,
+                @sort, @enabledate, @disabledate, @status, @title, @createdate, @createuserid,  @classId,0,@contents) ";
             nvc.Add("createdate", DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
             nvc.Add("createuserid", Session["userid"].ToString());
         }
@@ -125,7 +126,7 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
 
             strsql = @"UPDATE  tbl_banner SET filename =@filename, path =@path, url =@url, targetblank =@targetblank, 
             sort =@sort, enabledate =@enabledate, disabledate =@disabledate, status =@status, title =@title, 
-             classId =@classId where bannerid=@bannerid";
+             classId =@classId ,contents=@contents where bannerid=@bannerid";
             nvc.Add("bannerid", Selected_id.Value);
            
         }
@@ -144,9 +145,9 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
             nvc.Add("disabledate", edate.Text + " " + etime.SelectedValue + ":00:00");       
         else       
             nvc.Add("disabledate", "DBNull");
-     
+        nvc.Add("contents", contents.Text );
         int i = DbControl.Data_add(strsql, nvc);
-
+     
         selectSQL();
         MultiView1.ActiveViewIndex = 0;
         cleaninput();
@@ -204,7 +205,8 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
         t_url.Text  = "";
         Literal1.Text = "";
         stime.SelectedIndex = 0;
-        etime.SelectedIndex = 0;   
+        etime.SelectedIndex = 0;
+        contents.Text = "";
     }
     protected void btn_del_Click(object sender, System.EventArgs e)
     {

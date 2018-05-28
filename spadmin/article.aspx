@@ -34,6 +34,7 @@
     <script type="text/javascript" src="/js/jquery.ui.datepicker-zh-TW.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    
     <script>
     function getParameterByName(name, url) {
         if (!url) url = window.location.href;
@@ -98,7 +99,7 @@
                             $("#status").prop("checked", result.Status  == "Y" ? true : false);
                             $('#postDay').val(result.PostDay);
                             CKEDITOR.instances['contents'].setData(result.Contents);                           
-                            document.getElementById('console').innerHTML = ("<img src=\"/webimages/article/" + result.Pic + "\">");
+                            document.getElementById('console').innerHTML = ("<img src=\"/webimages/article/" + result.Pic + "\" width=300>");
                             $('#logoPic').val(result.Pic);                           
                         }
                     });
@@ -449,6 +450,7 @@
                                         <input id="contents" type="text" style="height: 600px" />
                                         <script>
                                             CKEDITOR.replace('contents');
+
                                         </script>
                                     </td>
 

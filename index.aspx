@@ -1,5 +1,50 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="index.aspx.cs" Inherits="index" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+    <script>
+           var maindata; 
+        var flag;
+        $(document).ready(function () {           
+           
+            //var dataValue = {"kind":"list","id":1,"tbl":"banner"};             
+            //$.post('/lib/Get_data.ashx', dataValue,  function (result) {
+            //    var tx = '<div class="swiper-slide item">';
+            //    tx += '<div class="image" style="background-image: url(@pic@);">';
+            //    tx += '<div class="carousel-caption">'
+            //    tx += ' <div class="container">';
+            //    tx += '<h3><a href="detail.html" title="@title@">@title@</a></h3>';
+            //    tx += '<p>@contents@</p>';
+            //    tx += ' </div>';
+            //    tx += ' </div>';
+            //    tx += ' <a href="detail?id=@id@" class="view-more" title="了解更多">我想了解</a>';
+            //    tx += ' </div>';
+            //    tx += ' </div>';
+                
+            //            if (result != '') {
+            //                result = JSON.parse(result);
+            //                var html = "";
+            //                $.each(result, function (key, val) {
+            //                    html += tx;
+            //                    html = html.replace(/@title@/, val.Subject)
+            //                    html = html.replace(/@Id@/, val.Id)
+            //                    html = html.replace(/@contents@/, val.Contents)
+            //                    html = html.replace(/@pic@/, "/webimages/banner/" + val.Pic)
+            //                    html = html.replace(/@Url@/, val.Url)
+                              
+            //                });   
+                        
+            //           //     $( ".swiper-wrapper" ).append( html );
+            //            }
+
+                  
+            //    });
+
+         
+
+     
+   
+        });
+    
+    </script>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server"> 
@@ -11,55 +56,21 @@
                         <div id="Slider" class="swiper-container">
                             <h2 class="main-title"><span>Hot News</span></h2>
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide item">
-                                    <div class="image" style="background-image: url(https://images.unsplash.com/photo-1505664194779-8beaceb93744?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=42a10871f610c84a108afd8c3750fbae&auto=format&fit=crop&w=1350&q=80);">
+                                <asp:Repeater ID="Repeater1" runat="server" EnableViewState ="false">
+                                    <ItemTemplate>
+                                    <div class="swiper-slide item">
+                                    <div class="image" style="background-image: url('/webimages/banner/<%#Eval("pic") %>');">
                                         <div class="carousel-caption">
                                             <div class="container">
-                                                <h3><a href="detail.html" title="請專業攝影師拍照與購買圖庫的差別在哪裡呢？">請專業攝影師拍照與購買圖庫的差別在哪裡呢？</a></h3>
-                                                <p>既然市面上有了這麼多專業的圖庫，到底製作網站為什麼還要額外花錢請攝影師呢？我們列舉幾個常見的理由，讓您評估自己是不是需要請個專業的攝影師來替網站形象照操刀。</p>
+                                                <h3><a href="detail.html" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
+                                                <p><%#Eval("contents") %></p>
                                             </div>
                                         </div>
                                         <a href="detail.html" class="view-more" title="了解更多">我想了解</a>
                                     </div>
                                 </div>
-
-                                <div class="swiper-slide item">
-                                    <div class="image" style="background-image: url(https://images.unsplash.com/photo-1465865321835-0e0619025923?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=00a512635bf6d5fbafb7e64b98a03060&auto=format&fit=crop&w=1350&q=80);">
-                                        <div class="carousel-caption">
-                                            <div class="container">
-                                                <h3><a href="detail.html" title="請專業攝影師拍照與購買圖庫的差別在哪裡呢？">請專業攝影師拍照與購買圖庫的差別在哪裡呢？</a></h3>
-                                                <p>既然市面上有了這麼多專業的圖庫，到底製作網站為什麼還要額外花錢請攝影師呢？我們列舉幾個常見的理由，讓您評估自己是不是需要請個專業的攝影師來替網站形象照操刀。</p>
-                                            </div>
-                                        </div>
-                                        <a href="detail.html" class="view-more" title="了解更多">我想了解</a>
-                                    </div>
-
-                                </div>
-
-                                <div class="swiper-slide item">
-                                    <div class="image" style="background-image: url(https://images.unsplash.com/photo-1516514360224-1901b14a614d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=63f49329c521c7b3980ce47839cfe874&auto=format&fit=crop&w=1350&q=80);">
-                                        <div class="carousel-caption">
-                                            <div class="container">
-                                                <h3><a href="detail.html" title="請專業攝影師拍照與購買圖庫的差別在哪裡呢？">請專業攝影師拍照與購買圖庫的差別在哪裡呢？</a></h3>
-                                                <p>既然市面上有了這麼多專業的圖庫，到底製作網站為什麼還要額外花錢請攝影師呢？我們列舉幾個常見的理由，讓您評估自己是不是需要請個專業的攝影師來替網站形象照操刀。</p>
-                                            </div>
-                                        </div>
-                                        <a href="detail.html" class="view-more" title="了解更多">我想了解</a>
-                                    </div>
-                                </div>
-
-                                <div class="swiper-slide item">
-                                    <div class="image" style="background-image: url(https://images.unsplash.com/photo-1505274574456-72a7a7c37456?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a53f971b3f4e07fdef752dd74bba3b5f&auto=format&fit=crop&w=1267&q=80);"><!-- http://dummyimage.com/940x620/7791a0/fff.jpg -->
-                                        <div class="carousel-caption">
-                                            <div class="container">
-                                                <h3><a href="detail.html" title="請專業攝影師拍照與購買圖庫的差別在哪裡呢？">請專業攝影師拍照與購買圖庫的差別在哪裡呢？</a></h3>
-                                                <p>既然市面上有了這麼多專業的圖庫，到底製作網站為什麼還要額外花錢請攝影師呢？我們列舉幾個常見的理由，讓您評估自己是不是需要請個專業的攝影師來替網站形象照操刀。</p>
-                                            </div>
-                                        </div>
-                                        <a href="detail.html" class="view-more" title="了解更多">我想了解</a>
-                                    </div>
-                                </div>
-
+                                    </ItemTemplate>
+                                </asp:Repeater>
                             </div>
                             <div class="swiper-pagination"></div>
                             <div class="swiper-button-next"></div>
@@ -260,6 +271,7 @@
                                     <div class=block-title>熱門排行榜</div>
 
                                     <div class="news-wrap news-list">
+                                    
                                         <div class="thumbnail">
                                             <div class="pic effect">
                                                 <img src="https://images.unsplash.com/photo-1509291985095-788b32582a81?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=3df807fb97311a00d38399243f18a4ab&auto=format&fit=crop&w=634&q=80" alt="" title="如何選擇適合自己的內容管理系統（CMS）">

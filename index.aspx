@@ -271,61 +271,24 @@
                                     <div class=block-title>熱門排行榜</div>
 
                                     <div class="news-wrap news-list">
-                                    
-                                        <div class="thumbnail">
-                                            <div class="pic effect">
-                                                <img src="https://images.unsplash.com/photo-1509291985095-788b32582a81?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=3df807fb97311a00d38399243f18a4ab&auto=format&fit=crop&w=634&q=80" alt="" title="如何選擇適合自己的內容管理系統（CMS）">
-                                                <a class="view-more" href="detail.html" title="了解更多"><span>more</span></a>
-                                            </div>
+                                        <asp:Repeater ID="news_hotlist" runat="server">
+                                            <ItemTemplate>
+                                            <div class="thumbnail">
+                                                <div class="pic effect">
+                                                    <img src="https://images.unsplash.com/photo-1509291985095-788b32582a81?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=3df807fb97311a00d38399243f18a4ab&auto=format&fit=crop&w=634&q=80" alt="" title="如何選擇適合自己的內容管理系統（CMS）">
+                                                    <a class="view-more" href="detail.html" title="了解更多"><span>more</span></a>
+                                                </div>
 
-                                            <div class="caption">
-                                                <h3 class="title"><a href="detail.html" title="如何選擇適合自己的內容管理系統（CMS）">如何選擇適合自己的內容管理系統（CMS）</a></h3>
+                                                <div class="caption">
+                                                    <h3 class="title"><a href="detail.html" title="如何選擇適合自己的內容管理系統（CMS）">如何選擇適合自己的內容管理系統（CMS）</a></h3>
+                                                </div>
                                             </div>
-                                        </div>
+                                            </ItemTemplate>
+                                        </asp:Repeater>
+                                        
 
-                                        <div class="thumbnail">
-                                            <div class="pic effect">
-                                                <img src="https://images.unsplash.com/photo-1509569785882-4c160654309e?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=50a017034806c9eaf81d0477181f7f4b&auto=format&fit=crop&w=1350&q=80" alt="" title="如何選擇適合自己的內容管理系統（CMS）">
-                                                <a class="view-more" href="detail.html" title="了解更多"><span>more</span></a>
-                                            </div>
 
-                                            <div class="caption">
-                                                <h3 class="title"><a href="detail.html" title="如何選擇適合自己的內容管理系統（CMS）">如何選擇適合自己的內容管理系統（CMS）</a></h3>
-                                            </div>
-                                        </div>
-
-                                        <div class="thumbnail">
-                                            <div class="pic effect">
-                                                <img src="https://images.unsplash.com/photo-1507587396692-5afe1f777676?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f4896d6d5ff445224485ff22493e423c&auto=format&fit=crop&w=634&q=80" alt="" title="如何選擇適合自己的內容管理系統（CMS）">
-                                                <a class="view-more" href="detail.html" title="了解更多"><span>more</span></a>
-                                            </div>
-
-                                            <div class="caption">
-                                                <h3 class="title"><a href="detail.html" title="如何選擇適合自己的內容管理系統（CMS）">如何選擇適合自己的內容管理系統（CMS）</a></h3>
-                                            </div>
-                                        </div>
-
-                                        <div class="thumbnail">
-                                            <div class="pic effect">
-                                                <img src="https://images.unsplash.com/photo-1489809415321-e23671dcbc81?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=fa140a740b16c639cd62930f158469ea&auto=format&fit=crop&w=1350&q=80" alt="" title="如何選擇適合自己的內容管理系統（CMS）">
-                                                <a class="view-more" href="detail.html" title="了解更多"><span>more</span></a>
-                                            </div>
-
-                                            <div class="caption">
-                                                <h3 class="title"><a href="detail.html" title="如何選擇適合自己的內容管理系統（CMS）">如何選擇適合自己的內容管理系統（CMS）</a></h3>
-                                            </div>
-                                        </div>
-
-                                        <div class="thumbnail">
-                                            <div class="pic effect">
-                                                <img src="https://dummyimage.com/100x70/6b6b6b/fff.jpg" alt="" title="如何選擇適合自己的內容管理系統（CMS）">
-                                                <a class="view-more" href="detail.html" title="了解更多"><span>more</span></a>
-                                            </div>
-
-                                            <div class="caption">
-                                                <h3 class="title"><a href="detail.html" title="如何選擇適合自己的內容管理系統（CMS）">如何選擇適合自己的內容管理系統（CMS）</a></h3>
-                                            </div>
-                                        </div>
+                                        
 
                                     </div><!-- news-list END -->
                                 </div>

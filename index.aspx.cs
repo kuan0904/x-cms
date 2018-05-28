@@ -13,8 +13,12 @@ public partial class index : System.Web.UI.Page
         banner1 = Banner.DbHandle.Banner_Get_list(1);
         Repeater1.DataSource  = banner1;
         Repeater1.DataBind();
+        List<article.MainData> hotlist = new List<article.MainData>();
+        hotlist = article.DbHandle.Get_article_list("","");
 
-        
+        news_hotlist.DataSource = hotlist;
+        news_hotlist.DataBind();
+
     }
 
 }

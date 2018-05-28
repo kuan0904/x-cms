@@ -9,6 +9,43 @@ using System.Collections.Specialized;
 
 namespace article
 {
+    public class Web
+    {
+        public static string Get_Keyword_link(string id)
+        {
+            string result = "";
+            string[] k = id.Split(',');
+            foreach (string s in k)
+            {
+                result += "<a href = \"#\">" + s + "</a>";
+            }
+            return result;
+        }
+        public static string Get_writer_link(string[] tags)
+        {
+            List<Tags> ItemData = new List<Tags>();
+            ItemData = DbHandle.Get_tag_list(tags);
+            string result = "";
+            foreach (var s in ItemData)
+            {
+                result += "<a href = \"#\">" +  s.Name  +"</a>";
+            } 
+            return result;
+        }
+
+        public static string Get_tag_link(string[] tags)
+        {
+            List<Tags> ItemData = new List<Tags>();
+            ItemData = DbHandle.Get_tag_list(tags);
+            string result = "";
+            foreach (var s in ItemData)
+            {
+                result += result == "" ? "" : "/";
+                result +=  s.Name ;
+            }
+            return result;
+        }
+    }
     public class DbHandle {
         public static MainData Get_article(int id)
             {
@@ -85,11 +122,36 @@ namespace article
                 return MainData;
 
             }
+   
+        public static DataTable Get_tbl_tag (int id)
+        {
+            NameValueCollection nvc = new NameValueCollection();
+            string strsql = "select * from       tbl_tag  where tagid =@id  ";
+            nvc.Add("id", id.ToString());
+            DataTable    dt = DbControl.Data_Get(strsql, nvc);
+            return dt;
+        }
+        public static List<Tags>  Get_tag_list(string[] id)
+        {
+            List<Tags> ItemData = new List<Tags>();
+            foreach (string s in id)
+            {
+                DataTable dt = Get_tbl_tag(int.Parse(s));
+                ItemData.Add(new Tags
+                {
+                    TagId = (int)   dt.Rows[0]["tagid"],
+                    Name = dt.Rows[0]["tagName"].ToString()
+                });
+            }
+            return ItemData;
+        }
 
-        public static List<article.MainData > Get_article_list(string kind,string KeyWords )
+   
+        public static List<article.MainData> Get_article_list(string kind, string KeyWords, int rows=10, int page = 0)
         {
             List<article.MainData> MainData = new List<article.MainData>();
-            string strsql = "select * from  tbl_article where status='Y' ";
+            string get_row =  rows !=0 ? "top " + rows.ToString () :""; 
+            string strsql = "select " + get_row + "  * from  tbl_article where status='Y' ";
             NameValueCollection nvc = new NameValueCollection();
             string[] tags;
             string[] writer;
@@ -102,58 +164,54 @@ namespace article
                 Id = (int)dt.Rows[idx]["articleid"];
                 MainData.Add(new MainData
                 {
-                    Id =Id,
+                    Id = Id,
                     Subject = dt.Rows[idx]["Subject"].ToString(),
                     SubTitle = dt.Rows[idx]["SubTitle"].ToString(),
                     Contents = dt.Rows[idx]["Contents"].ToString().Replace("\r", "").Replace("\n", ""),
                     Pic = dt.Rows[idx]["pic"].ToString(),
                     PostDay = DateTime.Parse(dt.Rows[idx]["PostDay"].ToString()),
                     Status = dt.Rows[idx]["Status"].ToString(),
-                    Keywords = dt.Rows[idx]["Keywords"].ToString()
+                    Keywords = dt.Rows[idx]["Keywords"].ToString(),
+                    Viewcount = (int)dt.Rows[idx]["viewcount"] 
                 });
-
+                nvc = new NameValueCollection();
+                nvc.Add("id", Id.ToString());
                 DataTable dt1 = DbControl.Data_Get(strsql, nvc);
                 List<string> termsList = new List<string>();
-                strsql = "select * from  tbl_article_tag  where articleid =@id and unitid=13";
-                nvc.Add("id",Id.ToString());
+                strsql = "select * from  tbl_article_tag  where articleid =@id and unitid=13";               
                 dt1 = DbControl.Data_Get(strsql, nvc);
                 int i = 0;
-                for (i = 0; i < dt.Rows.Count; i++)
+                for (i = 0; i < dt1.Rows.Count; i++)
                 {
-                    termsList.Add(dt.Rows[i]["tagid"].ToString());
+                    termsList.Add(dt1.Rows[i]["tagid"].ToString());
 
                 }
-                tags = termsList.ToArray();
-                nvc.Clear();
+                tags = termsList.ToArray();             
                 dt1.Dispose();
-             
-                strsql = "select * from  tbl_article_tag  where articleid =@id and unitid=14";
-                nvc.Add("id", dt.Rows[idx]["articleid"].ToString());
+               
+                strsql = "select * from  tbl_article_tag  where articleid =@id and unitid=14";             
                 dt1 = DbControl.Data_Get(strsql, nvc);               
                 termsList.Clear();
-                for (i = 0; i < dt.Rows.Count; i++)
+                for (i = 0; i < dt1.Rows.Count; i++)
                 {
-                    termsList.Add(dt.Rows[i]["tagid"].ToString());
+                    termsList.Add(dt1.Rows[i]["tagid"].ToString());
 
                 }
                 writer = termsList.ToArray();               
-                termsList.Clear();
-                nvc.Clear();
+                termsList.Clear();              
                 dt1.Dispose();
-
-                strsql = "select * from Tbl_article_category  where articleid =@id  ";
-                nvc.Add("id", Id.ToString());
-                dt = DbControl.Data_Get(strsql, nvc);
-                for (i = 0; i < dt.Rows.Count; i++)
+               
+                strsql = "select * from Tbl_article_category  where articleid =@id  ";               
+                dt1 = DbControl.Data_Get(strsql, nvc);
+                for (i = 0; i < dt1.Rows.Count; i++)
                 {
-                    termsList.Add(dt.Rows[i]["categoryid"].ToString());
+                    termsList.Add(dt1.Rows[i]["categoryid"].ToString());
 
                 }
-                categoryid = termsList.ToArray();
-            
-                nvc.Clear();
+                categoryid = termsList.ToArray();    
                 dt1.Dispose();
-
+                nvc.Clear();
+              
                 //if (MainData.Exists(x =>  x.Id  == (int)dt.Rows[idx]["articleid"]) == true)
                 // {
                 var s = MainData.Find(p => p.Id == Id);
@@ -161,8 +219,9 @@ namespace article
                 s.Category = categoryid;
                 s.Writer = writer;
                 //}
-
+              
             }
+            dt.Dispose();
 
             return MainData;
 
@@ -326,21 +385,22 @@ namespace article
     }
     public class Writer
     {
-        public int Id { get; set; }
-        public int Secno { get; set; }
+        public int Id { get; set; }      
         public int WriterId { get; set; }
+        public string Name { get; set; }
     }
     public class Category
     {
         public int Id { get; set; }
         public int categoryId { get; set; }
-       
+        public string Name { get; set; }
+
     }
     public class Tags
     {
-        public int Id { get; set; }
-        public int Secno { get; set; }
+        public int Id { get; set; }      
         public int TagId { get; set; }
+        public string Name { get; set; }
     }
     public class KeyWords
     {

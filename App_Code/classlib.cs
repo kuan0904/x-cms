@@ -30,12 +30,21 @@ namespace unity {
         public static string dbConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["dbconnConnection"].ConnectionString;
  
         private static string ZipRegex = "<(.|\\n)+?>";
-        public  static int GetGlobalEvn = 0; //1正式/0測試
+    
         private static string delivername = "cairnskitchen";
         private static string servicemail = "cairnskitchen.tw@gmail.com";
         private static string smtpuid = "cairnskitchen.tw@gmail.com";
         private static string smtppwd = "ck43285929tw";
-
+        
+        public static string SubString (string str,int length,string kind)
+        {
+            if (str  == "notag") str = noHTML(str);
+            if (str.Length > length)           
+            {
+                str = str.Substring(0, length);
+            }
+            return str;
+        }
 
         public static string GetIPAddress(HttpRequest rr)
         {

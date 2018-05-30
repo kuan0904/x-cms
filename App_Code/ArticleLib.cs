@@ -13,7 +13,9 @@ namespace article
     {
         public static string Get_Keyword_link(string id)
         {
+            if (id == null) id = "";
             string result = "";
+
             string[] k = id.Split(',');
             foreach (string s in k)
             {
@@ -32,7 +34,6 @@ namespace article
             } 
             return result;
         }
-
         public static string Get_tag_link(string[] tags)
         {
             List<Tags> ItemData = new List<Tags>();
@@ -45,8 +46,19 @@ namespace article
             }
             return result;
         }
+       
     }
     public class DbHandle {
+        public static int Add_views(int id)
+        {
+            string strsql = @"update  tbl_article  set  Viewcount=Viewcount + 1 
+            where  articleid=@id ";     
+            NameValueCollection nvc = new NameValueCollection();
+            nvc.Add("id", id.ToString());
+            id = DbControl.Data_add(strsql, nvc);
+            nvc.Clear();
+            return id;
+        }
         public static MainData Get_article(int id)
             {
                 MainData MainData = new MainData();
@@ -69,9 +81,12 @@ namespace article
                     MainData.PostDay = DateTime.Parse ( dt.Rows[0]["PostDay"].ToString());
                     MainData.Status = dt.Rows[0]["Status"].ToString();
                     MainData.Keywords = dt.Rows[0]["Keywords"].ToString();
-             
-             
-                }
+                    MainData.Viewcount  = (int)dt.Rows[0]["Viewcount"];
+                MainData.FBcount  = (int)dt.Rows[0]["FBCount"];
+                MainData.Googlecount  = (int)dt.Rows[0]["GoogleCount"];
+                MainData.Pinterestcount  = (int)dt.Rows[0]["PinterestCount"];
+                MainData.Twittercount = (int)dt.Rows[0]["Twittercount"];
+            }
                 dt.Dispose();
                 nvc.Clear();
 
@@ -122,7 +137,6 @@ namespace article
                 return MainData;
 
             }
-   
         public static DataTable Get_tbl_tag (int id)
         {
             NameValueCollection nvc = new NameValueCollection();
@@ -134,19 +148,21 @@ namespace article
         public static List<Tags>  Get_tag_list(string[] id)
         {
             List<Tags> ItemData = new List<Tags>();
-            foreach (string s in id)
+            if (id != null)
             {
-                DataTable dt = Get_tbl_tag(int.Parse(s));
-                ItemData.Add(new Tags
+               
+                foreach (string s in id)
                 {
-                    TagId = (int)   dt.Rows[0]["tagid"],
-                    Name = dt.Rows[0]["tagName"].ToString()
-                });
+                    DataTable dt = Get_tbl_tag(int.Parse(s));
+                    ItemData.Add(new Tags
+                    {
+                        TagId = (int)dt.Rows[0]["tagid"],
+                        Name = dt.Rows[0]["tagName"].ToString()
+                    });
+                }
             }
             return ItemData;
         }
-
-   
         public static List<article.MainData> Get_article_list(string kind, string KeyWords, int rows=10, int page = 0)
         {
             List<article.MainData> MainData = new List<article.MainData>();
@@ -251,7 +267,8 @@ namespace article
         public static int Article_Add()
         {
         int id = 0;
-        string strsql = "insert into tbl_article ( Viewcount, FBCount, GoogleCount,PinterestCount) values (0,0,0,0);SELECT SCOPE_IDENTITY();";
+        string strsql = @"insert into tbl_article ( Viewcount, FBCount, GoogleCount,PinterestCount,Twittercount) 
+        values (0,0,0,0,0);";//SELECT SCOPE_IDENTITY();
         NameValueCollection nvc = new NameValueCollection();
         id = DbControl.Data_add(strsql, nvc);
         nvc.Clear();

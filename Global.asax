@@ -9,6 +9,7 @@
     {
         RouteConfig.RegisterRoutes(RouteTable.Routes);
         BundleConfig.RegisterBundles(BundleTable.Bundles);
+
     }
     protected void Application_BeginRequest()
     {
@@ -17,9 +18,18 @@
             // 轉到SSL 看要REWRITE還是GLOBAL設定   
             string url = Request.Url.ToString().Replace("http://", "https://");
        
+      //  RegisterRoutes(RouteTable.Routes);
       //      Response.Redirect(url);
         //   Response.Redirect(Context.Request.Url.ToString().Replace("http://", "https://"));
 
         }
     }
+    void RegisterRoutes(RouteCollection routes)
+{
+    /*  Create a routing which maps SayHello to ShowGreeting.aspx
+        and defines 2 parameters, greeting and name. */
+    routes.MapPageRoute("ShowGreetingRoute",
+        "SayHello/{greeting}/{name}", 
+        "~/ShowGreeting.aspx");
+} 
  </script>

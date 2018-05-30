@@ -18,14 +18,7 @@ public partial class index : System.Web.UI.Page
         Repeater1.DataBind();
         banner1.Clear();
         List<article.MainData> hotlist = new List<article.MainData>();
-        hotlist = article.DbHandle.Get_article_list("","",5);
-
-        news_hotlist.DataSource = hotlist;
-        news_hotlist.DataBind();
-        hotlist.Clear();
-
         hotlist = article.DbHandle.Get_article_list("", "", 5);
-
         hot_list_detail.DataSource = hotlist;
         hot_list_detail.DataBind();
         hotlist.Clear();

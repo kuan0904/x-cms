@@ -11,7 +11,7 @@ namespace MyPublic
         public static void RegisterRoutes(RouteCollection routes)
         {
             var settings = new FriendlyUrlSettings();
-           settings.AutoRedirectMode = RedirectMode.Permanent;
+            settings.AutoRedirectMode = RedirectMode.Permanent;
             // settings.AutoRedirectMode = RedirectMode.Off;
             routes.MapPageRoute("all", "all", "~/list.aspx");
             routes.MapPageRoute("news", "news/{id}", "~/detail.aspx"             );

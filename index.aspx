@@ -58,11 +58,11 @@
                                         <div class="thumbnail">
                                             <div class="pic effect col-xs-4">
                                                 <img src="/webimages/article/<%#Eval("pic") %>" alt="" title="<%#Eval("subject") %>">
-                                                <a class="view-more" href="detail?id=<%#Eval("id") %>" title="了解更多"><span>more</span></a>
+                                                <a class="view-more" href="/detail?id=<%#Eval("id") %>" title="了解更多"><span>more</span></a>
                                             </div>
 
                                             <div class="caption col-xs-8">
-                                                <h3 class="title"><a href="detail.html" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
+                                                <h3 class="title"><a href="/detail?id=<%#Eval("id") %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
                                                 <div class=meta-info>
                                                     <a href="list.html" class="post-category"> <%# article.Web. Get_tag_link ((string[]) Eval("Tags"))%></a>
                                                     <div class=post-author>
@@ -83,9 +83,9 @@
                                                     </div>
                                                 </div><!-- meta-info END -->
                                                 <p class="description">
-                                                    <%# unity.classlib.SubString ( Eval("contents").ToString (),100,"notag") %><
+                                                    <%# unity.classlib.SubString ( Eval("contents").ToString (),100,"notag") %>
                                                 </p>
-                                                <a class="btn-read-more" href="detail?id=<%#Eval("id") %>">繼續閱讀</a>
+                                                <a class="btn-read-more" href="/detail?id=<%#Eval("id") %>">繼續閱讀</a>
                                             </div>
                                         </div>
                                     </div><!-- col-md-12 END -->

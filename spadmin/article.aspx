@@ -343,7 +343,8 @@
                             save_db();
                         }
                         else if (kind == 'p') {
-                            //preview;
+                            window.open('/detail');
+
                         }
                     }
                     return (result)

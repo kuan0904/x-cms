@@ -14,5 +14,11 @@ public partial class list : System.Web.UI.Page
         Repeater1.DataSource = banner1;
         Repeater1.DataBind();
         banner1.Clear();
+
+        List<article.MainData> hotlist = new List<article.MainData>();
+        hotlist = article.DbHandle.Get_article_list("", "", 5);
+        hot_list_detail.DataSource = hotlist;
+        hot_list_detail.DataBind();
+        hotlist.Clear();
     }
 }

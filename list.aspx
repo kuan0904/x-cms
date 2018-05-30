@@ -66,252 +66,50 @@
                     <!-- Slider END -->
 
                     <div class="news-wrap news-list">
-
+                    <asp:Repeater ID="hot_list_detail" runat="server" EnableViewState ="false" >
+                        <ItemTemplate>
                         <div class="col-md-12">
                             <div class="thumbnail">
                                 <div class="pic effect col-xs-4">
-                                    <img src="https://dummyimage.com/280x210/6b6b6b/fff.jpg" alt="" title="如何選擇適合自己的內容管理系統（CMS）">
-                                    <a class="view-more" href="detail.html" title="了解更多"><span>more</span></a>
+                                    <img src="/webimages/article/<%#Eval("pic") %>" alt="" title="<%#Eval("subject") %>">
+                                    <a class="view-more" href="/detail?id=<%#Eval("id") %>" title="了解更多"><span>more</span></a>
                                 </div>
 
                                 <div class="caption col-md-8 col-sm-8 col-xs-12">
-                                    <h3 class="title"><a href="detail.html" title="如何選擇適合自己的內容管理系統（CMS）">如何選擇適合自己的內容管理系統（CMS）</a></h3>
+                                    <h3 class="title"><a href="/detail?id=<%#Eval("id") %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
                                     <div class="meta-info">
-                                        <a href="list.html" class="post-category">人物/職場</a>
+                                        <a href="list.html" class="post-category"> <%# article.Web. Get_tag_link ((string[]) Eval("Tags"))%></a>
                                         <div class="post-author">
                                             <span>By</span>
-                                            <a href="#/author/admin/">ALPHA Camp</a>
+                                            <a href="#/author/admin/"> <%# article.Web. Get_writer_link((string[]) Eval("Writer"))%></a>
                                             <span>- </span>
                                         </div>
-                                        <span class="post-date"><time datetime="2017-07-26T14:17:05+00:00">2017/7/26</time></span>
+                                        <span class="post-date"><time datetime="<%#Eval("PostDay") %>"><%# DateTime.Parse ( Eval("PostDay").ToString()).ToString ("yyyy/MM/dd")  %></time></span>
                                         <div class="post-views">
-                                            <i class="fa fa-eye"></i>405
+                                            <i class="fa fa-eye"></i><%#Eval("Viewcount") %>
                                         </div>
                                         <div class="post-comments">
                                             <a href="#respond"><i class="fa fa-comments"></i>0</a>
                                         </div>
                                         <div class="post-keywords">
                                             <i class="fa fa-tags"></i>
-                                            <a href="#">搜尋引擎</a>
-                                            <a href="#">網站維護</a>
-                                            <a href="#">SEO</a>
-                                            <a href="#">CMS</a>
+                                             <%#article.Web.Get_Keyword_link ( Eval("keywords").ToString ())%>
                                         </div>
                                     </div>
                                     <!-- meta-info END -->
                                     <p class="description">
-                                        「要選擇哪一種內容管理系統（CMS）？哪套CMS適合我？」這個問題一直是網頁設計師、中小企業主、一般公司所詢問的重要問題。網際網路誕生以來，從靜態HTML開始，至今已經演變為以內容管理系統（CMS）為主流。它被用來當做創建新網站的強大工具。
+                                        <%# unity.classlib.SubString ( Eval("contents").ToString (),100,"notag") %>
                                     </p>
-                                    <a class="btn-read-more" href="detail.html">繼續閱讀</a>
+                                    <a class="btn-read-more" href="/detail?id=<%#Eval("id") %>">繼續閱讀</a>
                                 </div>
                             </div>
                         </div>
                         <!-- col-md-12 END -->
+                        </ItemTemplate>
+                        </asp:Repeater>
+            
 
-                        <div class="col-md-12">
-                            <div class="thumbnail">
-                                <div class="pic effect col-md-4 col-sm-4 col-xs-12">
-                                    <img src="https://dummyimage.com/280x210/6b6b6b/fff.jpg" alt="" title="如何選擇適合自己的內容管理系統（CMS）">
-                                    <a class="view-more" href="detail.html" title="了解更多"><span>more</span></a>
-                                </div>
-
-                                <div class="caption col-md-8 col-sm-8 col-xs-12">
-                                    <h3 class="title"><a href="detail.html" title="如何選擇適合自己的內容管理系統（CMS）">如何選擇適合自己的內容管理系統（CMS）</a></h3>
-                                    <div class="meta-info">
-                                        <a href="list.html" class="post-category">人物/職場</a>
-                                        <div class="post-author">
-                                            <span>By</span>
-                                            <a href="#/author/admin/">ALPHA Camp</a>
-                                            <span>- </span>
-                                        </div>
-                                        <span class="post-date"><time datetime="2017-07-26T14:17:05+00:00">2017/7/26</time></span>
-                                        <div class="post-views">
-                                            <i class="fa fa-eye"></i>405
-                                        </div>
-                                        <div class="post-comments">
-                                            <a href="#respond"><i class="fa fa-comments"></i>0</a>
-                                        </div>
-                                        <div class="post-keywords">
-                                            <i class="fa fa-tags"></i>
-                                            <a href="#">搜尋引擎</a>
-                                            <a href="#">網站維護</a>
-                                            <a href="#">SEO</a>
-                                            <a href="#">CMS</a>
-                                        </div>
-                                    </div>
-                                    <!-- meta-info END -->
-                                    <p class="description">
-                                        「要選擇哪一種內容管理系統（CMS）？哪套CMS適合我？」這個問題一直是網頁設計師、中小企業主、一般公司所詢問的重要問題。網際網路誕生以來，從靜態HTML開始，至今已經演變為以內容管理系統（CMS）為主流。它被用來當做創建新網站的強大工具。
-                                    </p>
-                                    <a class="btn-read-more" href="detail.html">繼續閱讀</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- col-md-12 END -->
-
-                        <div class="col-md-12">
-                            <div class="thumbnail">
-                                <div class="pic effect col-md-4 col-sm-4 col-xs-12">
-                                    <img src="https://dummyimage.com/280x210/6b6b6b/fff.jpg" alt="" title="如何選擇適合自己的內容管理系統（CMS）">
-                                    <a class="view-more" href="detail.html" title="了解更多"><span>more</span></a>
-                                </div>
-
-                                <div class="caption col-md-8 col-sm-8 col-xs-12">
-                                    <h3 class="title"><a href="detail.html" title="如何選擇適合自己的內容管理系統（CMS）">如何選擇適合自己的內容管理系統（CMS）</a></h3>
-                                    <div class="meta-info">
-                                        <a href="list.html" class="post-category">人物/職場</a>
-                                        <div class="post-author">
-                                            <span>By</span>
-                                            <a href="#/author/admin/">ALPHA Camp</a>
-                                            <span>- </span>
-                                        </div>
-                                        <span class="post-date"><time datetime="2017-07-26T14:17:05+00:00">2017/7/26</time></span>
-                                        <div class="post-views">
-                                            <i class="fa fa-eye"></i>405
-                                        </div>
-                                        <div class="post-comments">
-                                            <a href="#respond"><i class="fa fa-comments"></i>0</a>
-                                        </div>
-                                        <div class="post-keywords">
-                                            <i class="fa fa-tags"></i>
-                                            <a href="#">搜尋引擎</a>
-                                            <a href="#">網站維護</a>
-                                            <a href="#">SEO</a>
-                                            <a href="#">CMS</a>
-                                        </div>
-                                    </div>
-                                    <!-- meta-info END -->
-                                    <p class="description">
-                                        「要選擇哪一種內容管理系統（CMS）？哪套CMS適合我？」這個問題一直是網頁設計師、中小企業主、一般公司所詢問的重要問題。網際網路誕生以來，從靜態HTML開始，至今已經演變為以內容管理系統（CMS）為主流。它被用來當做創建新網站的強大工具。
-                                    </p>
-                                    <a class="btn-read-more" href="detail.html">繼續閱讀</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- col-md-12 END -->
-
-                        <div class="col-md-12">
-                            <div class="thumbnail">
-                                <div class="pic effect col-md-4 col-sm-4 col-xs-12">
-                                    <img src="https://dummyimage.com/280x210/6b6b6b/fff.jpg" alt="" title="如何選擇適合自己的內容管理系統（CMS）">
-                                    <a class="view-more" href="detail.html" title="了解更多"><span>more</span></a>
-                                </div>
-
-                                <div class="caption col-md-8 col-sm-8 col-xs-12">
-                                    <h3 class="title"><a href="detail.html" title="如何選擇適合自己的內容管理系統（CMS）">如何選擇適合自己的內容管理系統（CMS）</a></h3>
-                                    <div class="meta-info">
-                                        <a href="list.html" class="post-category">人物/職場</a>
-                                        <div class="post-author">
-                                            <span>By</span>
-                                            <a href="#/author/admin/">ALPHA Camp</a>
-                                            <span>- </span>
-                                        </div>
-                                        <span class="post-date"><time datetime="2017-07-26T14:17:05+00:00">2017/7/26</time></span>
-                                        <div class="post-views">
-                                            <i class="fa fa-eye"></i>405
-                                        </div>
-                                        <div class="post-comments">
-                                            <a href="#respond"><i class="fa fa-comments"></i>0</a>
-                                        </div>
-                                        <div class="post-keywords">
-                                            <i class="fa fa-tags"></i>
-                                            <a href="#">搜尋引擎</a>
-                                            <a href="#">網站維護</a>
-                                            <a href="#">SEO</a>
-                                            <a href="#">CMS</a>
-                                        </div>
-                                    </div>
-                                    <!-- meta-info END -->
-                                    <p class="description">
-                                        「要選擇哪一種內容管理系統（CMS）？哪套CMS適合我？」這個問題一直是網頁設計師、中小企業主、一般公司所詢問的重要問題。網際網路誕生以來，從靜態HTML開始，至今已經演變為以內容管理系統（CMS）為主流。它被用來當做創建新網站的強大工具。
-                                    </p>
-                                    <a class="btn-read-more" href="detail.html">繼續閱讀</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- col-md-12 END -->
-
-                        <div class="col-md-12">
-                            <div class="thumbnail">
-                                <div class="pic effect col-md-4 col-sm-4 col-xs-12">
-                                    <img src="https://dummyimage.com/280x210/6b6b6b/fff.jpg" alt="" title="如何選擇適合自己的內容管理系統（CMS）">
-                                    <a class="view-more" href="detail.html" title="了解更多"><span>more</span></a>
-                                </div>
-
-                                <div class="caption col-md-8 col-sm-8 col-xs-12">
-                                    <h3 class="title"><a href="detail.html" title="如何選擇適合自己的內容管理系統（CMS）">如何選擇適合自己的內容管理系統（CMS）</a></h3>
-                                    <div class="meta-info">
-                                        <a href="list.html" class="post-category">人物/職場</a>
-                                        <div class="post-author">
-                                            <span>By</span>
-                                            <a href="#/author/admin/">ALPHA Camp</a>
-                                            <span>- </span>
-                                        </div>
-                                        <span class="post-date"><time datetime="2017-07-26T14:17:05+00:00">2017/7/26</time></span>
-                                        <div class="post-views">
-                                            <i class="fa fa-eye"></i>405
-                                        </div>
-                                        <div class="post-comments">
-                                            <a href="#respond"><i class="fa fa-comments"></i>0</a>
-                                        </div>
-                                        <div class="post-keywords">
-                                            <i class="fa fa-tags"></i>
-                                            <a href="#">搜尋引擎</a>
-                                            <a href="#">網站維護</a>
-                                            <a href="#">SEO</a>
-                                            <a href="#">CMS</a>
-                                        </div>
-                                    </div>
-                                    <!-- meta-info END -->
-                                    <p class="description">
-                                        「要選擇哪一種內容管理系統（CMS）？哪套CMS適合我？」這個問題一直是網頁設計師、中小企業主、一般公司所詢問的重要問題。網際網路誕生以來，從靜態HTML開始，至今已經演變為以內容管理系統（CMS）為主流。它被用來當做創建新網站的強大工具。
-                                    </p>
-                                    <a class="btn-read-more" href="detail.html">繼續閱讀</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- col-md-12 END -->
-
-                        <div class="col-md-12">
-                            <div class="thumbnail">
-                                <div class="pic effect col-md-4 col-sm-4 col-xs-12">
-                                    <img src="https://dummyimage.com/280x210/6b6b6b/fff.jpg" alt="" title="如何選擇適合自己的內容管理系統（CMS）">
-                                    <a class="view-more" href="detail.html" title="了解更多"><span>more</span></a>
-                                </div>
-
-                                <div class="caption col-md-8 col-sm-8 col-xs-12">
-                                    <h3 class="title"><a href="detail.html" title="如何選擇適合自己的內容管理系統（CMS）">如何選擇適合自己的內容管理系統（CMS）</a></h3>
-                                    <div class="meta-info">
-                                        <a href="list.html" class="post-category">人物/職場</a>
-                                        <div class="post-author">
-                                            <span>By</span>
-                                            <a href="#/author/admin/">ALPHA Camp</a>
-                                            <span>- </span>
-                                        </div>
-                                        <span class="post-date"><time datetime="2017-07-26T14:17:05+00:00">2017/7/26</time></span>
-                                        <div class="post-views">
-                                            <i class="fa fa-eye"></i>405
-                                        </div>
-                                        <div class="post-comments">
-                                            <a href="#respond"><i class="fa fa-comments"></i>0</a>
-                                        </div>
-                                        <div class="post-keywords">
-                                            <i class="fa fa-tags"></i>
-                                            <a href="#">搜尋引擎</a>
-                                            <a href="#">網站維護</a>
-                                            <a href="#">SEO</a>
-                                            <a href="#">CMS</a>
-                                        </div>
-                                    </div>
-                                    <!-- meta-info END -->
-                                    <p class="description">
-                                        「要選擇哪一種內容管理系統（CMS）？哪套CMS適合我？」這個問題一直是網頁設計師、中小企業主、一般公司所詢問的重要問題。網際網路誕生以來，從靜態HTML開始，至今已經演變為以內容管理系統（CMS）為主流。它被用來當做創建新網站的強大工具。
-                                    </p>
-                                    <a class="btn-read-more" href="detail.html">繼續閱讀</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- col-md-12 END -->
+      
 
                     </div>
                     <!-- news-list END -->

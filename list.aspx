@@ -81,7 +81,7 @@
                                         <a href="list.html" class="post-category"> <%# article.Web. Get_tag_link ((string[]) Eval("Tags"))%></a>
                                         <div class="post-author">
                                             <span>By</span>
-                                            <a href="#/author/admin/"> <%# article.Web. Get_writer_link((string[]) Eval("Writer"))%></a>
+                                            <a href="#/author/admin/"> <%# article.Web.Get_Keyword_link ((string) Eval("author"))%></a>
                                             <span>- </span>
                                         </div>
                                         <span class="post-date"><time datetime="<%#Eval("PostDay") %>"><%# DateTime.Parse ( Eval("PostDay").ToString()).ToString ("yyyy/MM/dd")  %></time></span>
@@ -113,16 +113,11 @@
 
                     </div>
                     <!-- news-list END -->
-
+              
                     <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span><span class="sr-only">Previous</span></a></li>
-
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-
-                        <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
-                    </ul>
+                        
+                        <%=PagePaging () %>
+                        </ul>
 
 
                     <div class="clearfix"></div>

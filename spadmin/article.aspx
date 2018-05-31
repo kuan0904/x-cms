@@ -96,6 +96,7 @@
                             $('#subject').val(result.Subject)
                             $('#subtitle').val(result.SubTitle);                          
                             $('#keywords').val(result.Keywords);
+                            $('#author').val(result.Author);
                             $("#status").prop("checked", result.Status  == "Y" ? true : false);
                             $('#postDay').val(result.PostDay);
                             CKEDITOR.instances['contents'].setData(result.Contents);                           
@@ -181,7 +182,7 @@
 
             });
             get_tag();
-            get_writer();
+          
             var dataValue = "{ kind: 'get' }";
             $.postJSON('article.aspx/get_category', dataValue, 'application/json; charset=utf-8', function (result) {
                 if (result != "") {
@@ -219,6 +220,7 @@
                     var cb = "";
                     var s = "";
                     $.each(result, function (key, val) {        
+                     
                         s = maindata ==  undefined ? "":check_cbx(maindata.Tags, val.id);                      
                         cb += "<input name='tags' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl>" + val.name + "</span>";
                     });                    
@@ -226,25 +228,7 @@
                 }
             });
         }
-        function get_writer() {
-             var dataValue = "{ kind: 'get' }";
-              $.postJSON('article.aspx/get_writer', dataValue, 'application/json; charset=utf-8', function (result) {
-                if (result != "") {
-                    var result = result.d;
-                    result = JSON.parse(result);
-                    result = result.main;
-                    var cb = "";
-                    var s = "";           
-                    $.each(result, function (key, val) {
-                    s = maindata ==  undefined ? "": check_cbx(maindata.Writer, val.id);         
-                        cb += "<input name='writer' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl>" + val.name + "</span>";
-                    });
-                    $("#writer").html(cb);
-                }
-            });
-       
-        }
-
+    
         function check_cbx(obj, val) {//check checkbox item ,設定勾選
             var s = "";          
             if (obj != undefined) {
@@ -278,17 +262,23 @@
             Checked = $('input[name="categoryid"]:checked').length > 0;
             if (Checked == false) {
                 errmsg += ('請勾選分類\r\n');
-            }           
+            }       
+           if (("#keywords").val() == '') {
+                errmsg += ('請輸入發佈日期\r\n');
+            }
+            if ( $("#logoPic").val() == '') {
+                errmsg += ('文章主圖未上傳\r\n');
+            }
+
             var categoryid = $('input:checkbox:checked[name="categoryid"]').map(function () { return $(this).val(); }).get();
-            var tags = $('input:checkbox:checked[name="tags"]').map(function () { return $(this).val(); }).get();
-            var writer = $('input:checkbox:checked[name="writer"]').map(function () { return $(this).val(); }).get();
+            var tags = $('input:checkbox:checked[name="tags"]').map(function () { return $(this).val(); }).get();           
             var status = $("#status").prop("checked") == true ? "Y" : "N";
             
             var dataValue = {
                 kind: "set", id: articleId, subject: $("#subject").val(), subtitle: $("#subtitle").val()
                 , contents: content, pic: $("#logoPic").val(), keywords: $("#keywords").val()
                 , status: status, categoryid: categoryid
-                , tags: tags, writer: writer, postday: $("#postday").val()
+                , tags: tags, author: $("#author").val(), postday: $("#postday").val()
             };
 
             if (errmsg == '') {
@@ -468,9 +458,8 @@
                                 <tr>
                                     <td>作者</td>
                                     <td>
-                                        <label id="writer"></label><br />
-                                           <a href="Edit_tag.aspx?unitid=14" class="iframe cboxElement"><i class="icon-double-angle-right"></i>作者管理</a>
-                                   
+                                        <input type="text" name="author" id="author" value=""   placeholder="請輸入作者 ..." />
+
                                     </td>
                                 </tr>
                                 <tr>
@@ -592,7 +581,21 @@
                     tag_input.after('<textarea id="' + tag_input.attr('id') + '" name="' + tag_input.attr('name') + '" rows="3">' + tag_input.val() + '</textarea>').remove();
                     //$('#form-field-tags').autosize({append: "\n"});
                 }
-
+                var tag_input1 = $('#author');
+                if (!(/msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase()))) {
+                    tag_input1.tag(
+                        {
+                            placeholder: tag_input.attr('placeholder'),
+                            //enable typeahead by specifying the source array
+                            source: ace.variable_US_STATES,//defined in ace.js >> ace.enable_search_ahead
+                        }
+                    );
+                }
+                else {
+                    //display a textarea for old IE, because it doesn't support this plugin or another one I tried!
+                    tag_input1.after('<textarea id="' + tag_input.attr('id') + '" name="' + tag_input.attr('name') + '" rows="3">' + tag_input.val() + '</textarea>').remove();
+                    //$('#form-field-tags').autosize({append: "\n"});
+                }
 
 
             });
@@ -613,10 +616,9 @@
                 $(".vimeo").colorbox({ iframe: true, innerWidth: 500, innerHeight: 409 });
                 $(".iframe").colorbox({
                     iframe: true, width: "100%", height: "100%",
-                    onClosed: function () {
-                      
+                    onClosed: function () {                      
                         get_tag();
-                        get_writer();
+                     
                     }
                 });
                 $(".inline").colorbox({ inline: true, width: "50%" });
@@ -632,10 +634,7 @@
                 $('.retina').colorbox({ rel: 'group5', transition: 'none', retinaImage: true, retinaUrl: true });
 
 
-                $("#click").click(function () {
-                    alert('123');
-                    return false;
-                });
+          
 
 
             });

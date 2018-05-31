@@ -67,7 +67,7 @@
                                                     <a href="list.html" class="post-category"> <%# article.Web. Get_tag_link ((string[]) Eval("Tags"))%></a>
                                                     <div class=post-author>
                                                         <span>By</span>
-                                                        <a href="#/author/admin/"> <%# article.Web. Get_writer_link((string[]) Eval("Writer"))%></a>
+                                                        <a href="#/author/admin/"> <%# article.Web.Get_author_link ((string) Eval("author"))%></a>
                                                         <span> - </span>
                                                     </div>
                                                     <span class=post-date><time datetime="<%#Eval("PostDay") %>"><%# DateTime.Parse ( Eval("PostDay").ToString()).ToString ("yyyy/MM/dd")  %></time></span>

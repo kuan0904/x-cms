@@ -76,32 +76,7 @@ public partial class spadmin_article : System.Web.UI.Page
        return (result);
 
     }
-    [WebMethod()]
-    public static string get_writer(string kind)
-    {
-        string result = "{ \"main\":[";
-
-        if (kind == "get")
-        {
-            string strsql = "SELECT *  FROM tbl_tag where status='Y' and unitid=14 ";
-            NameValueCollection nvc = new NameValueCollection();
-            DataTable dt = DbControl.Data_Get(strsql, nvc);
-            //result = JsonConvert.SerializeObject(dt);
-            int i = 0;
-            for (i = 0; i < dt.Rows.Count; i++)
-            {
-                if (i != 0) result += ",";
-                result += "{\"name\":\"" + dt.Rows[i]["tagname"].ToString() + "\",\"id\":\"" + dt.Rows[i]["tagid"].ToString() + "\"}";
-
-            }
-            //result = result.Replace("[", "").Replace("]", "").Replace("\r\n", "");
-            // result = JsonConvert.SerializeObject(result);
-            dt.Dispose();
-        }
-        result += "]}";
-        return (result);
-
-    }
+ 
     [WebMethod]
     public static string get_category(string kind)    {
         string result = "{ \"main\":[";
@@ -182,7 +157,7 @@ public partial class spadmin_article : System.Web.UI.Page
     [WebMethod(EnableSession = true)]
     public static string Set_data(string kind, string id,string[] categoryid
         , string subject, string subtitle,string contents, string pic,string postday 
-        , string[] tags, string[] writer,string keywords, string status)
+        , string[] tags, string author, string keywords, string status)
     {
 
         MainData MainData = new MainData
@@ -202,8 +177,8 @@ public partial class spadmin_article : System.Web.UI.Page
             Keywords = keywords,
             Tags = tags,
             Category = categoryid,
-            Writer = writer
-           
+            Author= author
+
         };
    
         HttpContext.Current.Session["MainData"] = MainData;

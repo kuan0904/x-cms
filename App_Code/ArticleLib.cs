@@ -23,15 +23,16 @@ namespace article
             }
             return result;
         }
-        public static string Get_writer_link(string[] tags)
+        public static string Get_author_link(string id)
         {
-            List<Tags> ItemData = new List<Tags>();
-            ItemData = DbHandle.Get_tag_list(tags);
+            if (id == null) id = "";
             string result = "";
-            foreach (var s in ItemData)
+
+            string[] k = id.Split(',');
+            foreach (string s in k)
             {
-                result += "<a href = \"#\">" +  s.Name  +"</a>";
-            } 
+                result += "<a href = \"#\">" + s + "</a>";
+            }
             return result;
         }
         public static string Get_tag_link(string[] tags)
@@ -68,7 +69,7 @@ namespace article
                 DataTable dt = DbControl.Data_Get (strsql, nvc);
            
                 string[] tags;
-                string[] writer;
+                
                 string[] categoryid;
 
                 if (dt.Rows.Count > 0)
@@ -81,7 +82,8 @@ namespace article
                     MainData.PostDay = DateTime.Parse ( dt.Rows[0]["PostDay"].ToString());
                     MainData.Status = dt.Rows[0]["Status"].ToString();
                     MainData.Keywords = dt.Rows[0]["Keywords"].ToString();
-                    MainData.Viewcount  = (int)dt.Rows[0]["Viewcount"];
+                    MainData.Author = dt.Rows[0]["Author"].ToString();
+                MainData.Viewcount  = (int)dt.Rows[0]["Viewcount"];
                 MainData.FBcount  = (int)dt.Rows[0]["FBCount"];
                 MainData.Googlecount  = (int)dt.Rows[0]["GoogleCount"];
                 MainData.Pinterestcount  = (int)dt.Rows[0]["PinterestCount"];
@@ -101,25 +103,11 @@ namespace article
                
                 }
                 tags = termsList.ToArray();
-                nvc.Clear();
-                dt.Dispose();
-
-                strsql = "select * from  tbl_article_tag  where articleid =@id and unitid=14";
-                nvc.Add("id", id.ToString());
-                dt = DbControl.Data_Get(strsql, nvc);
                 MainData.Tags = tags;
-                termsList.Clear();    
-            
-                for (i = 0; i < dt.Rows.Count; i++)
-                {
-                    termsList.Add(dt.Rows[i]["tagid"].ToString());
-
-                }
-                writer  = termsList.ToArray();
-                MainData.Writer = writer;
-                termsList.Clear();
                 nvc.Clear();
                 dt.Dispose();
+
+          
 
                 strsql = "select * from Tbl_article_category  where articleid =@id  ";
                 nvc.Add("id", id.ToString());
@@ -167,19 +155,21 @@ namespace article
         {
             List<article.MainData> MainData = new List<article.MainData>();
             string get_row =  rows !=0 ? "top " + rows.ToString () :""; 
-            string strsql = "select " + get_row + "  * from  tbl_article where status='Y' ";
+            string strsql = "select  * from  tbl_article where status='Y' ";
             NameValueCollection nvc = new NameValueCollection();
-            string[] tags;
-            string[] writer;
+            string[] tags;    
             string[] categoryid;
             int idx = 0;
             int Id = 0;
             DataTable dt = DbControl.Data_Get(strsql, nvc);
+            int totalrow = dt.Rows.Count;
+            dt = DbControl.GetPagedTable(dt, page, rows);
             for (idx=0; idx < dt.Rows.Count; idx++)
             {
                 Id = (int)dt.Rows[idx]["articleid"];
                 MainData.Add(new MainData
                 {
+                    TotalRows = totalrow,
                     Id = Id,
                     Subject = dt.Rows[idx]["Subject"].ToString(),
                     SubTitle = dt.Rows[idx]["SubTitle"].ToString(),
@@ -188,7 +178,8 @@ namespace article
                     PostDay = DateTime.Parse(dt.Rows[idx]["PostDay"].ToString()),
                     Status = dt.Rows[idx]["Status"].ToString(),
                     Keywords = dt.Rows[idx]["Keywords"].ToString(),
-                    Viewcount = (int)dt.Rows[idx]["viewcount"] 
+                    Viewcount = (int)dt.Rows[idx]["viewcount"],
+                    Author = dt.Rows[idx]["Author"].ToString()
                 });
                 nvc = new NameValueCollection();
                 nvc.Add("id", Id.ToString());
@@ -205,17 +196,7 @@ namespace article
                 tags = termsList.ToArray();             
                 dt1.Dispose();
                
-                strsql = "select * from  tbl_article_tag  where articleid =@id and unitid=14";             
-                dt1 = DbControl.Data_Get(strsql, nvc);               
-                termsList.Clear();
-                for (i = 0; i < dt1.Rows.Count; i++)
-                {
-                    termsList.Add(dt1.Rows[i]["tagid"].ToString());
-
-                }
-                writer = termsList.ToArray();               
-                termsList.Clear();              
-                dt1.Dispose();
+    
                
                 strsql = "select * from Tbl_article_category  where articleid =@id  ";               
                 dt1 = DbControl.Data_Get(strsql, nvc);
@@ -233,7 +214,7 @@ namespace article
                 var s = MainData.Find(p => p.Id == Id);
                 s.Tags = tags;
                 s.Category = categoryid;
-                s.Writer = writer;
+              
                 //}
               
             }
@@ -282,7 +263,7 @@ namespace article
         {
             string strsql = @"update  tbl_article set 
                     subject =@subject,pic=@pic,subtitle=@subtitle,postday=@postday,contents=@contents ,
-                    keywords=@keywords,status=@status
+                    keywords=@keywords,status=@status,author=@author
                     where articleId =@id ";
             NameValueCollection nvc = new NameValueCollection();
             nvc.Add("subject", ad.Subject  );
@@ -291,6 +272,7 @@ namespace article
             nvc.Add("postday", ad.PostDay.ToString("yyyy/MM/dd"));
             nvc.Add("contents", ad.Contents);
             nvc.Add("keywords", ad.Keywords);
+            nvc.Add("author", ad.Author);
             nvc.Add("status", ad.Status);
             int i =DbControl. Data_Update(strsql, nvc, ad.Id.ToString());
             nvc.Clear();
@@ -298,7 +280,7 @@ namespace article
             i = DbControl.Data_delete(strsql, ad.Id.ToString());
 
             string[] tags = ad.Tags;
-            foreach (string s in tags)
+           foreach (string s in tags)
             {
                 nvc.Clear();
                 strsql = @"insert into tbl_article_tag (articleId,tagid,unitid)
@@ -306,18 +288,6 @@ namespace article
                 nvc.Add("articleId", ad.Id.ToString());
                 nvc.Add("tagid", s);
                 nvc.Add("unitid", "13");
-                i = DbControl.Data_add(strsql, nvc);
-            }
-
-            tags = ad.Writer;
-            foreach (string s in tags)
-            {
-                nvc.Clear();
-                strsql = @"insert into tbl_article_tag (articleId,tagid,unitid)
-                    values (@articleId,@tagid,@unitid)";
-                nvc.Add("articleId", ad.Id.ToString());
-                nvc.Add("tagid", s);
-                nvc.Add("unitid", "14");
                 i = DbControl.Data_add(strsql, nvc);
             }
             strsql = "delete from Tbl_article_category where articleId =@id";
@@ -385,10 +355,11 @@ namespace article
         public int Twittercount { get; set; }
         public int Pinterestcount { get; set; }
         public string Status { get; set; }
-        public string[] Writer { get; set; }
+        public string Author { get; set; }
         public string[] Category { get; set; }
         public string[] Tags { get; set; }
         public string Keywords { get; set; }
+        public int TotalRows { get; set; }
     }
     public class ItemData
     {
@@ -400,12 +371,7 @@ namespace article
         public string Layout { get; set; }
 
     }
-    public class Writer
-    {
-        public int Id { get; set; }      
-        public int WriterId { get; set; }
-        public string Name { get; set; }
-    }
+  
     public class Category
     {
         public int Id { get; set; }

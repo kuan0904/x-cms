@@ -86,14 +86,14 @@
 
             <div class="mobile-content">
                 <ul class="mobile-main-menu">
-                    <li class="menu-item sf-dropdown"><a href="list.html">最新消息<i class="fa fa-chevron-down"></i></a>
+                    <li class="menu-item sf-dropdown"><a href="/News">最新消息<i class="fa fa-chevron-down"></i></a>
                         <ul class=sub-menu>
                             <li><a href="list.html">產業動態</a></li>
                             <li><a href="list.html">文化政策</a></li>
                             <li><a href="list.html">民間文藝</a></li>
                         </ul>
                     </li>
-                    <li class="menu-item sf-dropdown"><a href="list.html">活動<i class="fa fa-chevron-down"></i></a>
+                    <li class="menu-item sf-dropdown"><a href="/Events">活動<i class="fa fa-chevron-down"></i></a>
                         <ul class=sub-menu>
                             <li><a href="list.html">展覽</a></li>
                             <li><a href="list.html">表演</a></li>
@@ -225,14 +225,14 @@
 
                             <div class="main-menu">
                                 <ul class="sf-menu">
-                                    <li class="menu-item sf-dropdown"><a href="list.html">最新消息</a>
+                                    <li class="menu-item sf-dropdown"><a href="/News">最新消息</a>
                                         <ul class="sub-menu">
                                             <li class="menu-item"><a href="list.html">產業動態</a></li>
                                             <li class="menu-item"><a href="list.html">文化政策</a></li>
                                             <li class="menu-item"><a href="list.html">民間文藝</a></li>
                                         </ul>
                                     </li>
-                                    <li class="menu-item sf-dropdown"><a href="list.html">活動</a>
+                                    <li class="menu-item sf-dropdown"><a href="/Events">活動</a>
                                         <ul class="sub-menu">
                                             <li class="menu-item"><a href="list.html">展覽</a></li>
                                             <li class="menu-item"><a href="list.html">表演</a></li>
@@ -409,7 +409,15 @@
     </script>
   <script src="http://xa.xnet.world/track/ua.js"></script>
     <script>//ua("5234239106","emba",'','nationpaper','12118');</script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-120063352-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  gtag('config', 'UA-120063352-1');
+</script>
     </form>
 </body>
 </html>

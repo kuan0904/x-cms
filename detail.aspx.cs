@@ -15,16 +15,17 @@ public partial class detail : System.Web.UI.Page
     public string keywords = "";
     public string viewcount = "";
     public string tags = "";
-    public string writer = "";
+  
+    public string author = "";
     protected void Page_Load(object sender, EventArgs e)
     {
         string Articlid = Request.QueryString["id"];
         Route myRoute = RouteData.Route as Route;     
-        if (myRoute != null && myRoute.Url == "news/{id}")
+        if (myRoute != null )
         {
 
             Articlid = RouteData.Values["id"].ToString();
-        
+           // string verder = (string)Page.RouteData.Values["verder"];
         }
        
         article.MainData MainData = new article.MainData();
@@ -50,7 +51,7 @@ public partial class detail : System.Web.UI.Page
             keywords = article.Web.Get_Keyword_link(  MainData.Keywords );
             viewcount = MainData.Viewcount.ToString();
             tags = article.Web.Get_tag_link((string[])MainData.Tags);
-            writer = article.Web.Get_writer_link((string[])MainData.Writer );
+            author = article.Web.Get_author_link(MainData.Author );
             ItemData = article.DbHandle. Get_article_item(MainData.Id);
             foreach (var s in ItemData)
             {

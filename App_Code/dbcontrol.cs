@@ -19,6 +19,40 @@ public class DbControl
         // TODO: 在這裡新增建構函式邏輯
         //
     }
+    public static DataTable GetPagedTable(DataTable dt, int PageIndex, int PageSize)
+    {
+        if (PageIndex == 0)
+        {
+            return dt;
+        }
+        DataTable NewDt = dt.Copy();
+        NewDt.Clear();
+        //起始列
+        int rowbegin = (PageIndex - 1) * PageSize;
+        //結束列
+        int rowend = PageIndex * PageSize;
+        if (rowbegin >= dt.Rows.Count)
+        {
+            return NewDt;
+        }
+
+        if (rowend > dt.Rows.Count)
+        {
+            rowend = dt.Rows.Count;
+        }
+        //產生新的DataTable
+        for (int i = rowbegin; i <= rowend - 1; i++)
+        {
+            DataRow newdr = NewDt.NewRow();
+            DataRow dr = dt.Rows[i];
+            foreach (DataColumn column in dt.Columns)
+            {
+                newdr[column.ColumnName] = dr[column.ColumnName];
+            }
+            NewDt.Rows.Add(newdr);
+        }
+        return NewDt;
+    }
     public static int Article_Add()
     {
         int id = 0;
@@ -36,8 +70,9 @@ public class DbControl
     public static int  Article_Update(article.MainData  ad)
     {
         string strsql = @"update  tbl_article set 
-                subject =@subject,pic=@pic,subtitle=@subtitle,postday=@postday,contents=@contents ,
-                keyword=@keyword,status=@status
+                subject =@subject,pic=@pic,subtitle=@subtitle,postday=@postday
+                ,contents=@contents ,
+                keyword=@keyword,author=@author,status=@status
                 where articleId =@id ";
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("subject", ad.Subject );
@@ -46,6 +81,7 @@ public class DbControl
         nvc.Add("postday", ad.PostDay.ToString ("yyyy/MM/dd"));
         nvc.Add("contents", ad.Contents );
         nvc.Add("keyword", ad.Keywords);
+        nvc.Add("author", ad.Author);
         nvc.Add("status", ad.Status);
         int i = Data_Update(strsql, nvc, ad.Id.ToString());
         nvc.Clear();
@@ -64,17 +100,7 @@ public class DbControl
             i = Data_add(strsql, nvc);
         }
         
-        tags = ad.Writer;
-        foreach (string s in tags)
-        {
-            nvc.Clear();
-            strsql = @"insert into tbl_article_tag (articleId,tagid,unitid)
-                values (@articleId,@tagid,@unitid)";
-            nvc.Add("articleId", ad.Id.ToString());
-            nvc.Add("tagid", s);
-            nvc.Add("unitid", "14");
-            i = Data_add(strsql, nvc);
-        }
+      
         strsql = "delete from Tbl_article_category where articleId =@id";
         i = Data_delete(strsql, ad.Id.ToString());
        

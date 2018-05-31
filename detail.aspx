@@ -47,7 +47,7 @@
                                             <div class="meta-info">
                                                 <div class="post-author">
                                                     <span>By</span>
-                                                    <a href="#/author/admin/">ALPHA Camp</a>
+                                                    <a href="#/author/admin/"> <%= author  %></a>
                                                     <span> - </span>
                                                 </div>
                                                 <span class="post-date"><time datetime="<%=postday %>"><%=postday %></time></span>

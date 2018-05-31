@@ -37,84 +37,8 @@ namespace Banner {
         }
 
 
-        public static int Banner_Add()
-        {
-            int id = 0;
-            string strsql = "insert into tbl_article ( Viewcount, FBCount, GoogleCount,PinterestCount) values (0,0,0,0);SELECT SCOPE_IDENTITY();";
-            NameValueCollection nvc = new NameValueCollection();
-            id = DbControl.Data_add(strsql, nvc);
-            nvc.Clear();
-            strsql = "select max(articleId) from  tbl_article ";
-            DataTable dt = DbControl.Data_Get(strsql, nvc);
-            if (dt.Rows.Count > 0) id = (int)dt.Rows[0][0];
-            dt.Dispose();
-            return id;
-        }
-
-        public static int Banner_Update(article.MainData ad)
-        {
-            string strsql = @"update  tbl_article set 
-                subject =@subject,pic=@pic,subtitle=@subtitle,postday=@postday,contents=@contents ,
-                keywords=@keywords,status=@status
-                where articleId =@id ";
-            NameValueCollection nvc = new NameValueCollection();
-            nvc.Add("subject", ad.Subject);
-            nvc.Add("pic", ad.Pic);
-            nvc.Add("subtitle", ad.SubTitle);
-            nvc.Add("postday", ad.PostDay.ToString("yyyy/MM/dd"));
-            nvc.Add("contents", ad.Contents);
-            nvc.Add("keywords", ad.Keywords);
-            nvc.Add("status", ad.Status);
-            int i = DbControl.Data_Update(strsql, nvc, ad.Id.ToString());
-            nvc.Clear();
-            strsql = "delete from tbl_article_tag where articleId =@id";
-            i = DbControl.Data_delete(strsql, ad.Id.ToString());
-
-            string[] tags = ad.Tags;
-            foreach (string s in tags)
-            {
-                nvc.Clear();
-                strsql = @"insert into tbl_article_tag (articleId,tagid,unitid)
-                values (@articleId,@tagid,@unitid)";
-                nvc.Add("articleId", ad.Id.ToString());
-                nvc.Add("tagid", s);
-                nvc.Add("unitid", "13");
-                i = DbControl.Data_add(strsql, nvc);
-            }
-
-            tags = ad.Writer;
-            foreach (string s in tags)
-            {
-                nvc.Clear();
-                strsql = @"insert into tbl_article_tag (articleId,tagid,unitid)
-                values (@articleId,@tagid,@unitid)";
-                nvc.Add("articleId", ad.Id.ToString());
-                nvc.Add("tagid", s);
-                nvc.Add("unitid", "14");
-                i = DbControl.Data_add(strsql, nvc);
-            }
-            strsql = "delete from Tbl_article_category where articleId =@id";
-            i = DbControl.Data_delete(strsql, ad.Id.ToString());
-
-            string[] categoryid = ad.Category;
-            foreach (string s in categoryid)
-            {
-                nvc.Clear();
-                strsql = @"insert into Tbl_article_category (articleId,categoryid)
-                values (@articleId,@categoryid)";
-                nvc.Add("articleId", ad.Id.ToString());
-                nvc.Add("categoryid", s);
-                i = DbControl.Data_add(strsql, nvc);
-            }
-            nvc.Clear();
-
-
-            return i;
-
-
-
-        }
-
+    
+    
        
     }
 

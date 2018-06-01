@@ -20,8 +20,10 @@ public class unitlib
     {
         string unitname = "";
         string strsql = "SELECT unitname  FROM unitdata  where unitid =  @unitid  ";
-        NameValueCollection nvc = new NameValueCollection();
-        nvc.Add("unitid", unitid.ToString ());
+        NameValueCollection nvc = new NameValueCollection
+        {
+            { "unitid", unitid.ToString() }
+        };
         DataTable dt = DbControl.Data_Get(strsql, nvc);
         if (dt.Rows.Count >0)        unitname = dt.Rows[0]["unitname"].ToString();
         dt.Dispose();

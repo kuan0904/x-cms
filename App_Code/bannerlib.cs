@@ -14,8 +14,10 @@ namespace Banner {
         {
             List< Banner.MainData > MainData = new List<Banner.MainData>();       
             string strsql = "select * from  tbl_banner where ClassId =@ClassId and status='Y'";
-            NameValueCollection nvc = new NameValueCollection();
-            nvc.Add("ClassId", ClassId.ToString());
+            NameValueCollection nvc = new NameValueCollection
+            {
+                { "ClassId", ClassId.ToString() }
+            };
             DataTable dt = DbControl.Data_Get(strsql, nvc);
             int i = 0;
             for (i=0;i<dt.Rows.Count;i++)

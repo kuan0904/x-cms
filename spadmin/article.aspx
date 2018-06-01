@@ -263,7 +263,8 @@
             if (Checked == false) {
                 errmsg += ('請勾選分類\r\n');
             }       
-           if (("#keywords").val() == '') {
+        
+           if ( $("#postDay").val() == '') {
                 errmsg += ('請輸入發佈日期\r\n');
             }
             if ( $("#logoPic").val() == '') {

@@ -72,11 +72,11 @@
                             <div class="thumbnail">
                                 <div class="pic effect col-xs-4">
                                     <img src="/webimages/article/<%#Eval("pic") %>" alt="" title="<%#Eval("subject") %>">
-                                    <a class="view-more" href="/detail?id=<%#Eval("id") %>" title="了解更多"><span>more</span></a>
+                                    <a class="view-more" href="/Article/<%#Eval("id") %>" title="了解更多"><span>more</span></a>
                                 </div>
 
                                 <div class="caption col-md-8 col-sm-8 col-xs-12">
-                                    <h3 class="title"><a href="/detail?id=<%#Eval("id") %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
+                                    <h3 class="title"><a href="/Article/<%#Eval("id") %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
                                     <div class="meta-info">
                                         <a href="list.html" class="post-category"> <%# article.Web. Get_tag_link ((string[]) Eval("Tags"))%></a>
                                         <div class="post-author">
@@ -100,7 +100,7 @@
                                     <p class="description">
                                         <%# unity.classlib.SubString ( Eval("contents").ToString (),100,"notag") %>
                                     </p>
-                                    <a class="btn-read-more" href="/detail?id=<%#Eval("id") %>">繼續閱讀</a>
+                                    <a class="btn-read-more" href="/Article/<%#Eval("id") %>">繼續閱讀</a>
                                 </div>
                             </div>
                         </div>

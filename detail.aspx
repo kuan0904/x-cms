@@ -9,8 +9,27 @@
             dataValue = {"classid":"2"};             
             $.post('/AdBanner', dataValue, function (result) { $("#ad_banner1").html(result); });
             $.post('/AdBanner', dataValue, function (result) { $("#ad_banner2").html(result); });
-        });
-    
+              //分享至臉書
+	        $("a.btn-share.facebook").click(function () {
+	        window.open('https://www.facebook.com/share.php?u='.concat(encodeURIComponent(location.href)), "_blank", "toolbar=yes,location=yes, directories=no, status=no,menubar=yes,scrollbars=yes,esizable=no, copyhistory=yes, width=600,  height=400")
+            })
+            $("a.btn-share.twitter").click(function () {
+                text=   $(document).find("title").text();
+	            window.open('http://twitter.com/share?text='+ text +'&url='.concat(encodeURIComponent(location.href)), "_blank", "toolbar=yes,location=yes, directories=no, status=no,menubar=yes,scrollbars=yes,esizable=no, copyhistory=yes, width=600,  height=400")
+            })
+            $("a.btn-share.google").click(function () {
+	            window.open('https://plus.google.com/share?url='.concat(encodeURIComponent(location.href)), "_blank", "toolbar=yes,location=yes, directories=no, status=no,menubar=yes,scrollbars=yes,esizable=no, copyhistory=yes, width=600,  height=400")
+            })
+
+            $("a.btn-share.pinterest").click(function () {
+                text=   $(document).find("title").text();
+	            window.open('http://pinterest.com/pin/create/button/?description='+ text + '&url='.concat(encodeURIComponent(location.href)), "_blank", "toolbar=yes,location=yes, directories=no, status=no,menubar=yes,scrollbars=yes,esizable=no, copyhistory=yes, width=600,  height=400")
+            })
+
+          
+
+    });
+    
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
@@ -67,16 +86,16 @@
                                         <div class="post-sharing">
                                             <span class="post-share-title">SHARE</span>
                                             <div class="sharing-group">
-                                                <a class="btn-share facebook" href="#" onclick="window.open(this.href, 'mywin','left=50,top=50,width=600,height=350,toolbar=0'); return false;">
+                                                <a class="btn-share facebook" href="#" >
                                                     <div class="icon-elements facebook"></div>
                                                     <div class="social-text">Facebook</div>
                                                 </a>
 
                                                 <a class="btn-share twitter" href="#"><div class="icon-elements twitter"></div><div class="social-text">Twitter</div></a>
 
-                                                <a class="btn-share google" href="#" onclick="window.open(this.href, 'mywin','left=50,top=50,width=600,height=350,toolbar=0'); return false;"><div class="icon-elements googleplus"></div></a>
+                                                <a class="btn-share google" href="#" ><div class="icon-elements googleplus"></div></a>
 
-                                                <a class="btn-share pinterest" href="#" onclick="window.open(this.href, 'mywin','left=50,top=50,width=600,height=350,toolbar=0'); return false;"><div class="icon-elements pinterest"></div></a>
+                                                <a class="btn-share pinterest" href="#" ><div class="icon-elements pinterest"></div></a>
 
                                                 <a class="btn-share whatsapp" href="#"><div class="icon-elements whatsapp"></div></a>
 
@@ -92,16 +111,16 @@
                                         <div class="post-sharing">
                                             <span class="post-share-title">SHARE</span>
                                             <div class="sharing-group">
-                                                <a class="btn-share facebook" href="#" onclick="window.open(this.href, 'mywin','left=50,top=50,width=600,height=350,toolbar=0'); return false;">
+                                                <a class="btn-share facebook" href="#" >
                                                     <div class="icon-elements facebook"></div>
                                                     <div class="social-text">Facebook</div>
                                                 </a>
 
                                                 <a class="btn-share twitter" href="#"><div class="icon-elements twitter"></div><div class="social-text">Twitter</div></a>
 
-                                                <a class="btn-share google" href="#" onclick="window.open(this.href, 'mywin','left=50,top=50,width=600,height=350,toolbar=0'); return false;"><div class="icon-elements googleplus"></div></a>
+                                                <a class="btn-share google" href="#" ><div class="icon-elements googleplus"></div></a>
 
-                                                <a class="btn-share pinterest" href="#" onclick="window.open(this.href, 'mywin','left=50,top=50,width=600,height=350,toolbar=0'); return false;"><div class="icon-elements pinterest"></div></a>
+                                                <a class="btn-share pinterest" href="#"><div class="icon-elements pinterest"></div></a>
 
                                                 <a class="btn-share whatsapp" href="#"><div class="icon-elements whatsapp"></div></a>
 

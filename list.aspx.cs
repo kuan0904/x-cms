@@ -4,31 +4,51 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.Routing;
 
 public partial class list : System.Web.UI.Page
 {
     public static  int Totalrow  = 0;
     public static int Pagecount = 0;
-    public static int PageSize = 10;
+    public static int PageSize = 5;
     public static int PageIdx = 1;
     public static string unitname = "";
     protected void Page_Load(object sender, EventArgs e)
     {
-      
-        string[] Segments = Request.Url.Segments;
-        string idx = Segments[Segments.Length - 1];
-        if (int.TryParse(idx, out PageIdx))
+        string cid = "";
+        Route myRoute = RouteData.Route as Route;
+        if (myRoute != null)
         {
-            int.TryParse(idx, out PageIdx);
-            unitname= Segments[Segments.Length - 2];
+    
+            PageIdx  = RouteData.Values["pageindex"]==null ? 1:int.Parse ( RouteData.Values["pageindex"].ToString () );
+             cid =  RouteData.Values["id"].ToString ();
+           
         }
         else
         {
-            PageIdx = 1;
-            unitname = Segments[Segments.Length - 1];
-
+            cid = Request.QueryString["cid"];
+            PageIdx = Request.QueryString["pageindex"] == null ? 1 : int.Parse (Request.QueryString["pageindex"]);
         }
-        unitname = unitname.Replace("/", "");
+       // string[] Segments = Request.Url.Segments;
+       // foreach (string s in Segments)
+       // {
+       //     Response.Write(s + "<BR>");
+       // }
+       // string idx = Segments[Segments.Length - 1];
+      
+       // if (int.TryParse(idx, out PageIdx))
+       // {
+       //     int.TryParse(idx, out PageIdx);
+                      
+       // }
+       // else
+       // {
+       //     PageIdx = 1;
+       //    cid= Segments[Segments.Length - 2];
+
+       // }
+       //cid = kind.Replace("/", "");
+        unitname =  cid + "/catalog";
       
         List<Banner.MainData> banner1 = new List<Banner.MainData>();
         banner1 = Banner.DbHandle.Banner_Get_list(1);
@@ -37,8 +57,8 @@ public partial class list : System.Web.UI.Page
         banner1.Clear();
      
         List<article.MainData> hotlist = new List<article.MainData>();  
-        hotlist = article.DbHandle.Get_article_list("", "", 5, PageIdx);
-        PageSize = 5;
+        hotlist = article.DbHandle.Get_article_list(cid, "", PageSize, PageIdx);
+       
         foreach (var p in hotlist)
         {
             Totalrow  = p.TotalRows;

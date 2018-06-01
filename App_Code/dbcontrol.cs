@@ -74,15 +74,17 @@ public class DbControl
                 ,contents=@contents ,
                 keyword=@keyword,author=@author,status=@status
                 where articleId =@id ";
-        NameValueCollection nvc = new NameValueCollection();
-        nvc.Add("subject", ad.Subject );
-        nvc.Add("pic", ad.Pic );
-        nvc.Add("subtitle", ad.SubTitle );
-        nvc.Add("postday", ad.PostDay.ToString ("yyyy/MM/dd"));
-        nvc.Add("contents", ad.Contents );
-        nvc.Add("keyword", ad.Keywords);
-        nvc.Add("author", ad.Author);
-        nvc.Add("status", ad.Status);
+        NameValueCollection nvc = new NameValueCollection
+        {
+            { "subject", ad.Subject },
+            { "pic", ad.Pic },
+            { "subtitle", ad.SubTitle },
+            { "postday", ad.PostDay.ToString("yyyy/MM/dd") },
+            { "contents", ad.Contents },
+            { "keyword", ad.Keywords },
+            { "author", ad.Author },
+            { "status", ad.Status }
+        };
         int i = Data_Update(strsql, nvc, ad.Id.ToString());
         nvc.Clear();
         strsql = "delete from tbl_article_tag where articleId =@id";
@@ -278,7 +280,7 @@ public class DbControl
             myAdapter.SelectCommand = CMD;
             for (int i = 0; i < Parameters.Count; i++)
             {
-                CMD.Parameters.Add("@" + Parameters.Keys[i], SqlDbType.VarChar).Value = Parameters[i]; //(參數,宣考型態,長度)      
+                CMD.Parameters.Add("@" + Parameters.Keys[i], SqlDbType.NVarChar ).Value = Parameters[i]; //(參數,宣考型態,長度)      
 
             }
             DataSet ds = new DataSet();

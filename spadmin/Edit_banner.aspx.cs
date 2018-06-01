@@ -3,7 +3,7 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.IO;
 using System.Collections.Specialized;
-
+using System.Collections.Generic;
 public partial class spadmin_Edit_banner : System.Web.UI.Page    
 {
     string unitid = "";
@@ -25,7 +25,13 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
         DropDownList1.DataSource = dt;
         DropDownList1.DataBind();
 
-
+        nvc.Clear();
+        strsql = "select *   FROM    tbl_category";
+        dt = DbControl.Data_Get(strsql, nvc);
+        DropDownList2.DataSource = dt;
+        DropDownList2.DataBind();
+        DropDownList2.Items.Insert(0, new ListItem("全部", ""));
+        DropDownList2_SelectedIndexChanged(sender, e);
     }
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -245,4 +251,14 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
         selectSQL();
     }
 
+
+    protected void DropDownList2_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+        List<article.MainData> ar= new List<article.MainData>();
+        ar = article.DbHandle.Get_article_list(DropDownList2.SelectedValue, "", 10, 0);
+        DropDownList3.DataSource=ar;
+        DropDownList3.DataBind();
+    }
+  
 }

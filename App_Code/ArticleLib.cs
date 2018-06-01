@@ -53,9 +53,11 @@ namespace article
         public static int Add_views(int id)
         {
             string strsql = @"update  tbl_article  set  Viewcount=Viewcount + 1 
-            where  articleid=@id ";     
-            NameValueCollection nvc = new NameValueCollection();
-            nvc.Add("id", id.ToString());
+            where  articleid=@id ";
+            NameValueCollection nvc = new NameValueCollection
+            {
+                { "id", id.ToString() }
+            };
             id = DbControl.Data_add(strsql, nvc);
             nvc.Clear();
             return id;
@@ -64,9 +66,11 @@ namespace article
             {
                 MainData MainData = new MainData();
                 string strsql= "select * from  tbl_article where articleid =@id";
-                NameValueCollection nvc = new NameValueCollection();
-                nvc.Add("id", id.ToString());
-                DataTable dt = DbControl.Data_Get (strsql, nvc);
+            NameValueCollection nvc = new NameValueCollection
+            {
+                { "id", id.ToString() }
+            };
+            DataTable dt = DbControl.Data_Get (strsql, nvc);
            
                 string[] tags;
                 
@@ -151,17 +155,29 @@ namespace article
             }
             return ItemData;
         }
-        public static List<article.MainData> Get_article_list(string kind, string KeyWords, int rows=10, int page = 0)
+        public static List<article.MainData> Get_article_list(string cid, string KeyWords, int rows=10, int page = 0)
         {
+            
             List<article.MainData> MainData = new List<article.MainData>();
-            string get_row =  rows !=0 ? "top " + rows.ToString () :""; 
-            string strsql = "select  * from  tbl_article where status='Y' ";
-            NameValueCollection nvc = new NameValueCollection();
+            DataTable dt;
+            string strsql = @"select  * from  tbl_article  where tbl_article.status='Y'  ";
+            if (cid != "") {
+                strsql += @" and articleId  in (select articleId FROM Tbl_article_category
+                          WHERE categoryid IN(SELECT categoryid  FROM tbl_category   WHERE parentid = @cid  
+                    or ( categoryid = @cid AND parentid = 0)))";
+              
+                }
+            NameValueCollection nvc = new NameValueCollection
+            {
+                { "cid", cid }
+            };
+            dt = DbControl.Data_Get(strsql, nvc);
+            
             string[] tags;    
             string[] categoryid;
             int idx = 0;
             int Id = 0;
-            DataTable dt = DbControl.Data_Get(strsql, nvc);
+           
             int totalrow = dt.Rows.Count;
             dt = DbControl.GetPagedTable(dt, page, rows);
             for (idx=0; idx < dt.Rows.Count; idx++)
@@ -181,9 +197,12 @@ namespace article
                     Viewcount = (int)dt.Rows[idx]["viewcount"],
                     Author = dt.Rows[idx]["Author"].ToString()
                 });
-                nvc = new NameValueCollection();
-                nvc.Add("id", Id.ToString());
-                DataTable dt1 = DbControl.Data_Get(strsql, nvc);
+                nvc.Clear();
+                nvc = new NameValueCollection
+                {
+                    { "id", Id.ToString() }
+                };
+                DataTable dt1;
                 List<string> termsList = new List<string>();
                 strsql = "select * from  tbl_article_tag  where articleid =@id and unitid=13";               
                 dt1 = DbControl.Data_Get(strsql, nvc);
@@ -227,9 +246,11 @@ namespace article
             {
                 List <article.ItemData> ItemData = new List<article.ItemData>();
                 string strsql = "select * from  tbl_article_item where articleid =@id";
-                NameValueCollection nvc = new NameValueCollection();
-                nvc.Add("id", id.ToString());
-                DataTable dt = DbControl.Data_Get(strsql, nvc);
+            NameValueCollection nvc = new NameValueCollection
+            {
+                { "id", id.ToString() }
+            };
+            DataTable dt = DbControl.Data_Get(strsql, nvc);
                 for (int i =0;i< dt.Rows.Count;i++)
                 {
                     ItemData.Add(new ItemData
@@ -265,15 +286,17 @@ namespace article
                     subject =@subject,pic=@pic,subtitle=@subtitle,postday=@postday,contents=@contents ,
                     keywords=@keywords,status=@status,author=@author
                     where articleId =@id ";
-            NameValueCollection nvc = new NameValueCollection();
-            nvc.Add("subject", ad.Subject  );
-            nvc.Add("pic", ad.Pic);
-            nvc.Add("subtitle", ad.SubTitle);
-            nvc.Add("postday", ad.PostDay.ToString("yyyy/MM/dd"));
-            nvc.Add("contents", ad.Contents);
-            nvc.Add("keywords", ad.Keywords);
-            nvc.Add("author", ad.Author);
-            nvc.Add("status", ad.Status);
+            NameValueCollection nvc = new NameValueCollection
+            {
+                { "subject", ad.Subject },
+                { "pic", ad.Pic },
+                { "subtitle", ad.SubTitle },
+                { "postday", ad.PostDay.ToString("yyyy/MM/dd") },
+                { "contents", ad.Contents },
+                { "keywords", ad.Keywords },
+                { "author", ad.Author },
+                { "status", ad.Status }
+            };
             int i =DbControl. Data_Update(strsql, nvc, ad.Id.ToString());
             nvc.Clear();
             strsql = "delete from tbl_article_tag where articleId =@id";
@@ -340,6 +363,7 @@ namespace article
 
 
         }
+    
     }
     public class MainData
     {

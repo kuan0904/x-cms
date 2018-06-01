@@ -17,29 +17,23 @@ namespace MyPublic
             //routes.EnableFriendlyUrls(settings);
             routes.EnableFriendlyUrls(settings, new Microsoft.AspNet.FriendlyUrls.Resolvers.IFriendlyUrlResolver[] { new MyWebFormsFriendlyUrlResolver() });
 
-            routes.MapPageRoute("article", "{unitname}/{id}", "~/detail.aspx",
+            routes.MapPageRoute("article", "Article/{id}", "~/detail.aspx",
                 false, null,
-                new RouteValueDictionary { { "id", "^[0-9]*$" }, { "unitname", "industry|culture|folkture|exhibtion|operate|design|crossborder|localizationLclassess" } });
-   
+                new RouteValueDictionary { { "id", "^[0-9]*$" } });
+
+                routes.MapPageRoute("catalog", "{id}/catalog/{*pageindex}", "~/list.aspx",
+                     false, null,
+                    new RouteValueDictionary { { "id", "^[0-9]*$" }, { "pageindex", "^[0-9]*$" } }
+                    );
 
             routes.MapPageRoute("listpage", "{unitname}/{*pageindex}", "~/list.aspx",
                  false, null,                 
-                    new RouteValueDictionary { { "unitname", "News|Events|ArtMBA" }, { "pageindex", "^[0-9]*$" } }
+                    new RouteValueDictionary { { "unitname", "catalog|industry|culture|folkart|exhibtion|perform|practice|operate|design|crossborder|localization|classess|News|Events|ArtMBA" }, { "pageindex", "^[0-9]*$" } }
                 );
 
-            routes.MapPageRoute("issue", "issue/{id}", "~/detail.aspx",
-           false, null,
-           new RouteValueDictionary { { "id", "[0-9]*" } });
+          
 
-            routes.MapPageRoute("integration", "integration/{id}", "~/detail.aspx",
-           false, null,
-           new RouteValueDictionary { { "id", "[0-9]*" } });
-
-
-            routes.MapPageRoute("talent", "talent/{id}", "~/detail.aspx",
-           false, null,
-           new RouteValueDictionary { { "id", "[0-9]*" } });
-
+     
             routes.MapPageRoute("fundraising", "fundraising/{id}", "~/detail.aspx",
            false, null,
            new RouteValueDictionary { { "id", "[0-9]*" } });

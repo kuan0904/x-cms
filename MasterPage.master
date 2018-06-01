@@ -12,6 +12,7 @@
 <meta name="author" content="Xnet 智媒科技"/>
 <meta name="keywords" content="" />
 <meta name="description" content="" />
+<meta property="fb:app_id" content="164103481107660" />
 <meta property="og:title" content="" />
 <meta property="og:description" content="" />
 <meta property="og:site_name" content="藝時代 Cultural Launch" />
@@ -86,32 +87,39 @@
 
             <div class="mobile-content">
                 <ul class="mobile-main-menu">
-                    <li class="menu-item sf-dropdown"><a href="/News">最新消息<i class="fa fa-chevron-down"></i></a>
+                    <li class="menu-item sf-dropdown"><a href="/1/catalog">最新消息<i class="fa fa-chevron-down"></i></a>
                         <ul class=sub-menu>
-                            <li><a href="list.html">產業動態</a></li>
-                            <li><a href="list.html">文化政策</a></li>
-                            <li><a href="list.html">民間文藝</a></li>
+                            <li><a href="/7/catalog">產業動態</a></li>
+                            <li><a href="/8/catalog">文化政策</a></li>
+                            <li><a href="/9/catalog">民間文藝</a></li>
                         </ul>
                     </li>
-                    <li class="menu-item sf-dropdown"><a href="/Events">活動<i class="fa fa-chevron-down"></i></a>
+                    <li class="menu-item sf-dropdown"><a href="/2/catalog">活動<i class="fa fa-chevron-down"></i></a>
                         <ul class=sub-menu>
-                            <li><a href="list.html">展覽</a></li>
-                            <li><a href="list.html">表演</a></li>
-                            <li><a href="list.html">體驗</a></li>
+                            <li><a href="/10/catalog">展覽</a></li>
+                            <li><a href="/11/catalog">表演</a></li>
+                            <li><a href="/12/catalog">體驗</a></li>
                         </ul>
                     </li>
-                    <li class="menu-item sf-dropdown"><a href="list.html">藝MBA<i class="fa fa-chevron-down"></i></a>
+                     
+                    <li class="menu-item sf-dropdown"><a href="/3/catalog">藝MBA<i class="fa fa-chevron-down"></i></a>
                         <ul class=sub-menu>
-                            <li><a href="list.html">產業經營</a></li>
-                            <li><a href="list.html">設計</a></li>
-                            <li><a href="list.html">跨界創新</a></li>
-                            <li><a href="list.html">在地創生</a></li>
+                            <li><a href="/13/catalog">產業經營</a></li>
+                            <li><a href="/14/catalog">設計</a></li>
+                            <li><a href="/15/catalog">跨界創新</a></li>
+                            <li><a href="/16/catalog">在地創生</a></li>
                         </ul>
                     </li>
-                    <li class="menu-item sf-dropdown"><a href="list.html">跨界媒合<i class="fa fa-chevron-down"></i></a>
+                     <li class="menu-item sf-dropdown"><a href="/4/catalog">專題報導<i class="fa fa-chevron-down"></i></a>
+                        
+                    </li>
+                     <li class="menu-item sf-dropdown"><a href="/5/catalog">人物<i class="fa fa-chevron-down"></i></a>
+                        
+                    </li>
+                    <li class="menu-item sf-dropdown"><a href="/6catalog">跨界媒合<i class="fa fa-chevron-down"></i></a>
                         <ul class=sub-menu>
-                            <li><a href="list.html">文創人才</a></li>
-                            <li><a href="list.html">群眾募資</a></li>
+                            <li><a href="/17/catalog">文創人才</a></li>
+                            <li><a href="/18/catalog">群眾募資</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -198,7 +206,7 @@
 
                 <!-- logo center -->
                 <div class="logo">
-                    <a href="hp.html" title="藝時代 Cultural Launch">
+                    <a href="/index" title="藝時代 Cultural Launch">
                         <span class="visual-hidden">藝時代 Cultural Launch</span>
                     </a>
                 </div>
@@ -217,7 +225,7 @@
                                 </button>
 
                                 <div class="navbar-brand">
-                                    <a href="hp.html">
+                                    <a href="/index">
                                         <span class="visual-hidden">藝時代 Cultural Launch</span>
                                     </a>
                                 </div>
@@ -225,33 +233,33 @@
 
                             <div class="main-menu">
                                 <ul class="sf-menu">
-                                    <li class="menu-item sf-dropdown"><a href="/News">最新消息</a>
+                                    <li class="menu-item sf-dropdown"><a href="/1/catalog">最新消息</a>
                                         <ul class="sub-menu">
-                                            <li class="menu-item"><a href="list.html">產業動態</a></li>
-                                            <li class="menu-item"><a href="list.html">文化政策</a></li>
-                                            <li class="menu-item"><a href="list.html">民間文藝</a></li>
+                                            <li class="menu-item"><a href="/7/catalog">產業動態</a></li>
+                                            <li class="menu-item"><a href="/8/catalog">文化政策</a></li>
+                                            <li class="menu-item"><a href="/9/catalog">民間文藝</a></li>
                                         </ul>
                                     </li>
-                                    <li class="menu-item sf-dropdown"><a href="/Events">活動</a>
+                                    <li class="menu-item sf-dropdown"><a href="/2/catalog">活動</a>
                                         <ul class="sub-menu">
-                                            <li class="menu-item"><a href="list.html">展覽</a></li>
-                                            <li class="menu-item"><a href="list.html">表演</a></li>
-                                            <li class="menu-item"><a href="list.html">體驗</a></li>
+                                            <li class="menu-item"><a href="/10/catalog">展覽</a></li>
+                                            <li class="menu-item"><a href="/11/catalog">表演</a></li>
+                                            <li class="menu-item"><a href="/12/catalog">體驗</a></li>
                                         </ul>
                                     </li>
-                                    <li class="menu-item sf-dropdown"><a href="list.html">藝MBA</a>
+                                    <li class="menu-item sf-dropdown"><a href="/3/catalog">藝MBA</a>
                                         <ul class="sub-menu">
-                                            <li class="menu-item"><a href="list.html">產業經營</a></li>
-                                            <li class="menu-item"><a href="list.html">設計</a></li>
-                                            <li class="menu-item"><a href="list.html">跨界創新</a></li>
-                                            <li class="menu-item"><a href="list.html">在地創生</a></li>
+                                            <li class="menu-item"><a href="/13/catalog">產業經營</a></li>
+                                            <li class="menu-item"><a href="/14/catalog">設計</a></li>
+                                            <li class="menu-item"><a href="/15/catalog">跨界創新</a></li>
+                                            <li class="menu-item"><a href="/16/catalog">在地創生</a></li>
                                         </ul>
                                     </li>
-                                    <li class="menu-item"><a href="list.html">專題報導</a></li>
-                                    <li class="menu-item"><a href="list.html">人物</a></li><li class="menu-item sf-dropdown"><a href="list.html">跨界媒合</a>
+                                    <li class="menu-item"><a href="/4/catalog">專題報導</a></li>
+                                    <li class="menu-item"><a href="/5/catalog">人物</a></li><li class="menu-item sf-dropdown"><a href="/6/catalog">跨界媒合</a>
                                         <ul class="sub-menu">
-                                            <li class="menu-item"><a href="list.html">文創人才</a></li>
-                                            <li class="menu-item"><a href="list.html">群眾募資</a></li>
+                                            <li class="menu-item"><a href="/17/catalog">文創人才</a></li>
+                                            <li class="menu-item"><a href="/18/catalog">群眾募資</a></li>
                                         </ul>
                                     </li>
                                 </ul><!-- menu-main-1 END -->

@@ -264,7 +264,7 @@
                 errmsg += ('請勾選分類\r\n');
             }       
         
-           if ( $("#postDay").val() == '') {
+           if ( $("#postday").val() == '') {
                 errmsg += ('請輸入發佈日期\r\n');
             }
             if ( $("#logoPic").val() == '') {
@@ -371,7 +371,7 @@
     </script>
                                     
 
-    <script src="ckeditor/ckeditor.js"></script>
+    <script src="ckeditor/ckeditor.js?v=3"></script>
 </head>
 <body>
     <form id="form1">

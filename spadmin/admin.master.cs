@@ -19,37 +19,9 @@ public partial class spadmin_admin : System.Web.UI.MasterPage
                 Response.End();
             }
 
-    
-           
+        Repeater1.DataSource = (DataTable)Session["menu"];
+        Repeater1.DataBind();
 
-
-                //------第一層------
-                string strsql = "";
-               
-                if (Session["userid"].ToString() == "1")
-                {
-                    //不分權限
-                    strsql = @"SELECT *,(select count(*) from unitdata a where a.upperid= b.unitid) as rows 
-                    FROM  UnitData b
-                     where  adminpage is  not null  and b.upperid = 0  and adminpage <> ''
-                      order by sort ";
-                }
-                else {
-                    //第二層有權限的
-                    strsql = @"SELECT distinct u1.unitname, u1.unitid,
-                    (select count(*) from unitdata a where a.upperid= b.unitid) as rows 
-                    FROM  UnitData b FROM UnitData as u1
-                            INNER JOIN UnitData as u2 on u2.upperid = u1.unitid  
-                            INNER JOIN PowerList ON PowerList.unitid = u2.unitid 
-                            where  u1.upperid = 0  and u1.adminpage <> '' and u2.adminpage <> '' 
-                            and u1.adminpage is not null  and u2.adminpage is not null 
-                            and user_id = ";
-
-                  strsql  += Session["userid"].ToString() + " and u1.status<>'D' and u2.status<>'D'  ";
-                }
-
-               SqlDataSource1.SelectCommand = strsql;
-                SqlDataSource1.DataBind();
 
     }
 
@@ -88,18 +60,19 @@ public partial class spadmin_admin : System.Web.UI.MasterPage
         if (userid == "1")
         {
             //不分權限
-            strsql = "SELECT * FROM UnitData ";
-            strsql += " where  unitdata.upperid=" + unitid + " and  adminpage is not null  and adminpage <> '' ";
-            strsql += "and status<>'D'  order by sort ";
+            strsql = @"SELECT * FROM UnitData 
+            where  unitdata.upperid=@unitid and  adminpage is not null  and adminpage <> ''
+            and status<>'D'  order by sort ";
         }
         else
-        {
-            strsql = "SELECT * FROM PowerList INNER JOIN UnitData ON PowerList.unitid = UnitData.unitid ";
-            strsql += " where  adminpage is not null  and adminpage <> '' ";
-            strsql += " and  unitdata.upperid=" + unitid;
-            strsql += " and user_id = " + userid + " and status<>'D' order by sort ";
+        { 
+            strsql = @"SELECT * FROM PowerList INNER JOIN UnitData ON PowerList.unitid = UnitData.unitid 
+            where  adminpage is not null  and adminpage <> '' 
+             and  unitdata.upperid=@unitid
+          and status<>'D' order by sort "; 
         }
         NameValueCollection nvc = new NameValueCollection();
+        nvc.Add("unitid", unitid);
         DataTable dt = DbControl.Data_Get(strsql, nvc);
         string itemdata = "";
         if (dt.Rows.Count > 0)    

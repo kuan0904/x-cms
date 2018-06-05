@@ -6,7 +6,7 @@ using System.Web.UI;
 using MyPublic;
 using System.Data;
 using System.Data.SqlClient;
-
+using System.Collections.Specialized;
 
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -140,14 +140,57 @@ public partial class Account_Login : Page
                 }
                 rs.Close();
                 cmd.Dispose();
+
+
+
+
+
+                //------第一層------
+                string strsql = "";
+                if (Session["userid"].ToString() == "1")
+                {
+                    //不分權限
+                    strsql = @"SELECT *,(select count(*) from unitdata a where a.upperid= b.unitid) as rows 
+                FROM  UnitData b
+                    where  adminpage is  not null  and b.upperid = 0  and adminpage <> ''
+                    order by sort ";
+                }
+                else
+                {
+                    //第二層有權限的               
+                    strsql = @"SELECT DISTINCT u1.unitname, u1.unitid, u1.adminpage, 1 AS rows
+                    FROM              UnitData AS u1 INNER JOIN
+                                                UnitData AS u2 ON u2.upperid = u1.unitid INNER JOIN
+                                                Powerlist ON Powerlist.unitid = u2.unitid
+                    WHERE          (Powerlist.user_id = @uid) AND (u1.status <> 'D') AND (u1.adminpage <> '') AND (u1.adminpage IS NOT NULL) AND 
+                                                (u2.adminpage <> '') AND (u2.adminpage IS NOT NULL) AND (u1.upperid = 0) AND (u2.status <> 'D')
+                    UNION ALL
+                    SELECT          UnitData.unitname, Powerlist_1.unitid, UnitData.adminpage, 0 AS rows
+                    FROM              UnitData INNER JOIN
+                                                Powerlist AS Powerlist_1 ON UnitData.unitid = Powerlist_1.unitid
+                    WHERE          (Powerlist_1.user_id = @uid) AND (UnitData.upperid = 0) AND (UnitData.unitid NOT IN
+                                (SELECT          upperid
+                                  FROM               UnitData AS UnitData_1))     ";
+
+
+                }
+                NameValueCollection nvc = new NameValueCollection
+                {
+                    { "uid",  Session["userid"].ToString() }
+                };
+
+                DataTable menu = DbControl.Data_Get(strsql, nvc);
+                Session["menu"] = menu;
+                menu.Dispose();
+
                 conn.Close();
                 // Validate the user password
                 var manager = new UserManager();
-                ApplicationUser user = manager.Find(UserName.Text, "superlucky");
+                ApplicationUser user = manager.Find(UserName.Text, "xnet1234");
                 if (results == true && user == null)
                 {
                     user = new ApplicationUser() { UserName = UserName.Text };
-                    IdentityResult result = manager.Create(user, "superlucky");
+                    IdentityResult result = manager.Create(user, "xnet1234");
                     //新增一個帳號（與密碼）            
                     if (result.Succeeded)
                     {

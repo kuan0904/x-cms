@@ -13,7 +13,7 @@ public partial class spadmin_authority : System.Web.UI.Page
 {
     string FILEPATH = "upload/userPhoto/";
     string strsql;
-    string unitid = "8";
+    string unitid =""  ;
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Request.QueryString["unitid"] != null)
@@ -95,25 +95,27 @@ public partial class spadmin_authority : System.Web.UI.Page
         SqlDataReader rs = default(SqlDataReader);
         conn.Open();
 
-        strsql = "select * from  admin_account where user_id= " + Selected_id.Value + " ";
-
+        strsql = "select * from  admin_account where user_id= @user_id ";
         cmd = new SqlCommand(strsql, conn);
+        cmd.Parameters.Add("@user_id", SqlDbType.Int).Value = Selected_id.Value;
         rs = cmd.ExecuteReader();
         if (rs.Read())
         {
          
             user_name.Text = rs["name"].ToString();
             account_pid.Text = rs["account_pid"].ToString();
-            account_pwd.Text = rs["account_pwd"].ToString();
+           // account_pwd.Text = rs["account_pwd"].ToString();
             memo.Text = rs["memo"].ToString();
+            account_pwd.Attributes.Add("Value", rs["account_pwd"].ToString());
         }
         rs.Close();
         cmd.Dispose();
         conn.Close();
         conn = new SqlConnection(classlib.dbConnectionString  );
         conn.Open();
-        strsql = "select * from  powerlist  where user_id = '" + Selected_id.Value + "' ";
+        strsql = "select * from  powerlist  where user_id = @user_id ";
         cmd = new SqlCommand(strsql, conn);
+        cmd.Parameters.Add("@user_id", SqlDbType.Int).Value = Selected_id.Value;
         rs = cmd.ExecuteReader();
 
         while (rs.Read())
@@ -148,8 +150,8 @@ public partial class spadmin_authority : System.Web.UI.Page
             strsql += "(@user_name, @account_pwd, @account_pid, @memo ) ";
         }
         else {
-            strsql = "update admin_account set name=@user_name, account_pwd=@account_pwd, account_pid=@account_pid, memo=@memo ";           
-            strsql += " where user_id =" + Selected_id.Value + " ";
+            strsql = "update admin_account set name=@user_name, account_pwd=@account_pwd, account_pid=@account_pid, memo=@memo ";
+            strsql += " where user_id =" + Selected_id.Value;
         }
         cmd = new SqlCommand(strsql, conn);
         cmd.Parameters.Add("@user_name", SqlDbType.NVarChar).Value = user_name.Text;
@@ -198,16 +200,18 @@ public partial class spadmin_authority : System.Web.UI.Page
         SqlCommand cmd = new SqlCommand();
         conn.Open();
 
-        strsql = "delete from  admin_account  where user_id=" + Selected_id.Value + " ";
+        strsql = "delete from  admin_account  where user_id=@user_id ";
         cmd = new SqlCommand(strsql, conn);
+        cmd.Parameters.Add("@user_id", SqlDbType.Int).Value = Session["userid"].ToString();
         cmd.ExecuteNonQuery();
         cmd.Dispose();
         conn.Close();
         conn = new SqlConnection(classlib.dbConnectionString );
         conn.Open();
         //權限表全部清空
-        strsql = "delete from  powerlist where user_id = '" + Selected_id.Value + "' ";
+        strsql = "delete from  powerlist where user_id =@user_id ";
         cmd = new SqlCommand(strsql, conn);
+        cmd.Parameters.Add("@user_id", SqlDbType.Int).Value = Session["userid"].ToString();
         cmd.ExecuteNonQuery();
         cmd.Dispose();
         conn.Close();
@@ -269,13 +273,10 @@ public partial class spadmin_authority : System.Web.UI.Page
     {
         foreach (RepeaterItem item in Repeater_power1.Items)
         {
-            //Dim chk As CheckBox = CType(item.FindControl("chk"), CheckBox)
-            //Dim Hidden_id As HiddenField = CType(item.FindControl("Hidden_id"), HiddenField)
+            CheckBox chk = (CheckBox)item.FindControl("chk");
+            HiddenField Hidden_id = (HiddenField)item.FindControl("Hidden_id");
 
-            //If Hidden_id.Value = unitid Then
-            //    chk.Checked = True
-            //    Exit Sub
-            //End If
+            if (Hidden_id.Value == unitid) chk.Checked = true;
 
 
             Repeater Repeater_power2 = (Repeater)item.FindControl("Repeater_power2");
@@ -302,23 +303,26 @@ public partial class spadmin_authority : System.Web.UI.Page
         SqlCommand cmd = new SqlCommand();
         conn.Open();
         //權限表全部清空 再重新新增
-        strsql = "delete from  powerlist where user_id = '" + user_id + "' ";
+        strsql = "delete from  powerlist where user_id = @user_id ";
         cmd = new SqlCommand(strsql, conn);
+        cmd.Parameters.Add("@user_id", SqlDbType.Int).Value = user_id ;
         cmd.ExecuteNonQuery();
         cmd.Dispose();
         foreach (RepeaterItem item in Repeater_power1.Items)
         {
-            //Dim chk As CheckBox = CType(item.FindControl("chk"), CheckBox)
-            //Dim Hidden_id As HiddenField = CType(item.FindControl("Hidden_id"), HiddenField)
+            CheckBox chk = (CheckBox)item.FindControl("chk");
+            HiddenField Hidden_id = (HiddenField)item.FindControl("Hidden_id");
 
-            //If chk.Checked Then
-            //    strsql = "insert into powerlist ( user_id, unitid ) "
-            //    strsql += " values (" & user_id & ", '" & Hidden_id.Value & "'); "
-            //    cmd = New SqlCommand(strsql, conn)
-            //    cmd.ExecuteNonQuery()
-            //    cmd.Dispose()
+            if (chk.Checked)
+            {
+                strsql = @"insert into powerlist ( user_id, unitid )  values (@user_id, @unitid) ";
+                cmd = new SqlCommand(strsql, conn);
+                cmd.Parameters.Add("@user_id", SqlDbType.Int).Value  = user_id;
+                cmd.Parameters.Add("@unitid", SqlDbType.VarChar).Value = Hidden_id.Value ;
+                cmd.ExecuteNonQuery();
+                cmd.Dispose();
 
-            //End If
+            }
 
 
             Repeater Repeater_power2 = (Repeater)item.FindControl("Repeater_power2");
@@ -326,14 +330,12 @@ public partial class spadmin_authority : System.Web.UI.Page
             {
                 CheckBox chk2 = (CheckBox)item2.FindControl("chk");
                 HiddenField Hidden_id2 = (HiddenField)item2.FindControl("Hidden_id");
-              
-             
-
                 if (chk2.Checked)
                 {
-                    strsql = "insert into powerlist ( user_id, unitid ) ";
-                    strsql += " values (" + user_id + ", '" + Hidden_id2.Value + "'); ";
+                    strsql = @"insert into powerlist ( user_id, unitid )  values (@user_id, @unitid) ";
                     cmd = new SqlCommand(strsql, conn);
+                    cmd.Parameters.Add("@user_id", SqlDbType.Int).Value = user_id;
+                    cmd.Parameters.Add("@unitid", SqlDbType.VarChar ).Value = Hidden_id2.Value;
                     cmd.ExecuteNonQuery();
                     cmd.Dispose();
                 }

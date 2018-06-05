@@ -62,7 +62,7 @@
                                             </div>
 
                                             <div class="caption col-xs-8">
-                                                <h3 class="title"><a href="/detail?id=<%#Eval("id") %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
+                                                <h3 class="title"><a href="/Article/<%#Eval("id") %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
                                                 <div class=meta-info>
                                                     <a href="list.html" class="post-category"> <%# article.Web. Get_tag_link ((string[]) Eval("Tags"))%></a>
                                                     <div class=post-author>

@@ -26,10 +26,12 @@
 	            window.open('http://pinterest.com/pin/create/button/?description='+ text + '&url='.concat(encodeURIComponent(location.href)), "_blank", "toolbar=yes,location=yes, directories=no, status=no,menubar=yes,scrollbars=yes,esizable=no, copyhistory=yes, width=600,  height=400")
             })
 
-          
+          
+
 
     });
-    
+    
+
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">

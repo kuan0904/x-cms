@@ -36,7 +36,7 @@
     </script>
 
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server" >
     <asp:MultiView ID="MultiView1" runat="server">
         <asp:View ID="View1" runat="server">
           
@@ -153,7 +153,7 @@
                                                                 <label class="checkbox inline" style="font-weight: bold;">
                                                                     <asp:CheckBox ID="chk" runat="server" />
                                                                     <%# Eval("unitname") %>
-                                                                    <asp:HiddenField ID="Hidden_id" runat="server" />
+                                                                    <asp:HiddenField ID="Hidden_id" runat="server" Value='<%# Eval("unitid") %>' />
                                                                 </label>
                                                             </td>
                                                         </tr>

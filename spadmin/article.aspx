@@ -395,9 +395,9 @@
                         <div id="item1" class="tab-pane active">
                             <table style="background-color: #FFFFFF">
                                 <tr>
-                                    <td>主標題</td>
+                                    <td>主標題(*)</td>
                                     <td>
-                                        <input id="subject" type="text" style="width: 500px" /></td>
+                                        <input id="subject" type="text" style="width: 500px" placeholder="必填"  /></td>
                                 </tr>
                                 <tr>
                                     <td>次標題</td>
@@ -405,7 +405,7 @@
                                         <input id="subtitle" type="text" style="width: 500px" /></td>
                                 </tr>
                                 <tr>
-                                    <td>主圖示</td>
+                                    <td>主圖示(750x500)(*)</td>
                                     <td>
                                         <script type="text/javascript" src="js/plupload.full.min.js"></script>
                                         <div id="filelist" class="col-sm-9">
@@ -435,9 +435,15 @@
                                         </div>
                                     </td>
                                 </tr>
-
                                 <tr>
-                                    <td>內容</td>
+                                    <td>文章所屬分類(*)</td>
+                                    <td>
+                                        <label id="category"></label>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>內容(*)</td>
                                     <td>
                                         <input id="contents" type="text" style="height: 600px" />
                                         <script>
@@ -447,15 +453,7 @@
                                     </td>
 
                                 </tr>
-                                <tr>
-                                    <td>標籤</td>
-                                    <td>
-                                        <label id="tag"></label><br />
-                                   
-                                        <a href="Edit_tag.aspx?unitid=13" class="iframe cboxElement"><i class="icon-double-angle-right"></i>標簽管理</a>
-                                    </td>
-
-                                </tr>
+                   
                                 <tr>
                                     <td>作者</td>
                                     <td>
@@ -471,18 +469,20 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>發佈日</td>
+                                    <td>發佈日(*)</td>
                                     <td>
                                         <input id="postday" type="text" />
                                     </td>
 
                                 </tr>
                                 <tr>
-                                    <td>所屬分類</td>
+                                    <td>標籤</td>
                                     <td>
-                                        <label id="category"></label>
-
+                                        <label id="tag"></label><br />
+                                   
+                                        <a href="Edit_tag.aspx?unitid=13" class="iframe cboxElement"><i class="icon-double-angle-right"></i>標簽管理</a>
                                     </td>
+
                                 </tr>
                                 <tr>
                                     <td>狀態</td>

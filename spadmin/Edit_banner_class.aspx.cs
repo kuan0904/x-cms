@@ -15,11 +15,19 @@ public partial class spadmin_Edit_banner_class : System.Web.UI.Page
 
 {
     static string strsql = "";
-
+    public string unitid = "";
 
     protected void Page_Init(object sender, EventArgs e)
     {
-  
+        string strsql = @"SELECT  upperid FROM      UnitData WHERE (unitid = @id) ";
+        NameValueCollection nvc = new NameValueCollection
+        {
+            { "id", Request.QueryString["unitid"] }
+        };
+        DataTable dt = DbControl.Data_Get(strsql, nvc);
+        unitid = dt.Rows[0][0].ToString();
+        dt.Dispose();
+
     }
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -40,10 +48,12 @@ public partial class spadmin_Edit_banner_class : System.Web.UI.Page
     public void selectSQL()
     {
 
-        strsql = "select * from   tbl_banner_class ";
-        strsql += " where   classId >@id   order by  classId ";
-        NameValueCollection nvc = new NameValueCollection();
-        nvc.Add("id", "0");
+        strsql = @"SELECT * FROM tbl_banner_class
+                    WHERE unitid =  @unitid  ORDER BY   sort ";
+        NameValueCollection nvc = new NameValueCollection
+        {
+            { "unitid", unitid }
+        };
         DataTable dt = DbControl.Data_Get(strsql, nvc);
         ListView1.DataSource = dt;
         ListView1.DataBind();
@@ -74,19 +84,14 @@ public partial class spadmin_Edit_banner_class : System.Web.UI.Page
         if (rs.Read())
         {
 
-            
-            class_title .Text = rs["title"].ToString();
-            class_sort.Text = rs["sort"].ToString();
-            class_ads.SelectedValue  = rs["ads"].ToString();
-           class_fx.SelectedValue = rs["fx"].ToString();
-          class_speed.SelectedValue = rs["speed"].ToString();
-           class_title .Text = rs["title"].ToString();
-            class_rotator.SelectedValue  = rs["rotator"].ToString();
-        }
-        rs.Close();
-        cmd.Dispose();
-        conn.Close();
 
+            class_title.Text = rs["title"].ToString();
+            class_sort.Text = rs["sort"].ToString();
+
+            rs.Close();
+            cmd.Dispose();
+            conn.Close();
+        }
        
 
 
@@ -102,35 +107,32 @@ public partial class spadmin_Edit_banner_class : System.Web.UI.Page
 
         if (Btn_save.CommandArgument == "add")
         {
-            strsql = " insert into  tbl_banner_class( title, rotator, ads, fx,speed, createdate, createuserid, sort) values ";
-            strsql += "(@title, @rotator, @ads,@fx,@speed,  getdate(), '" + Session["userid"].ToString() + "', @sort ) ";
+            strsql = " insert into  tbl_banner_class( title,unitid, createdate, createuserid, sort) values ";
+            strsql += "(@title, @unitid,  getdate(), '" + Session["userid"].ToString() + "', @sort ) ";
         }
         else {
-            strsql = "update  tbl_banner_class set title=@title,rotator=@rotator,ads=@ads,fx=@fx,speed=@speed";
+            strsql = "update  tbl_banner_class set title=@title";
             strsql += ",sort=@sort ";
             strsql += " where classId =@classId";
         }
 
 
+
+
+
+
         SqlConnection conn = new SqlConnection(classlib.dbConnectionString);
         SqlCommand cmd = new SqlCommand();
-
         conn.Open();
-
-
-
         cmd = new SqlCommand(strsql, conn);
 
 
-        cmd.Parameters.Add("rotator", SqlDbType.NVarChar).Value = class_rotator.SelectedValue;
-        cmd.Parameters.Add("title", SqlDbType.NVarChar).Value = class_title.Text;       
-        cmd.Parameters.Add("ads", SqlDbType.NVarChar).Value = class_ads.Text;
-        cmd.Parameters.Add("fx", SqlDbType.NVarChar).Value = class_fx.Text;
-        cmd.Parameters.Add("speed", SqlDbType.NVarChar).Value = class_speed.Text;
+       
+        cmd.Parameters.Add("title", SqlDbType.NVarChar).Value = class_title.Text;    
         cmd.Parameters.Add("sort", SqlDbType.NVarChar).Value = class_sort.Text;
         if (Btn_save.CommandArgument == "add")
         {
-
+        cmd.Parameters.Add("unitid", SqlDbType.NVarChar).Value =unitid;
         }
         else {
              cmd.Parameters.Add("classId", SqlDbType.Int ).Value =Selected_id.Value ;
@@ -177,15 +179,7 @@ public partial class spadmin_Edit_banner_class : System.Web.UI.Page
     public void cleaninput()
     {
         Selected_id.Value = "";
-
-        class_fx.SelectedIndex =-1;
-        class_ads.SelectedIndex = -1;
-        class_speed.SelectedIndex = -1;
-        class_title.Text  = "";
-        class_rotator.SelectedIndex = -1;
-       
-
-       
+        class_title.Text  = "";              
        
 
     }

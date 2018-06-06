@@ -50,7 +50,7 @@ public partial class detail : System.Web.UI.Page
             contents = MainData.Contents;
             keywords = article.Web.Get_Keyword_link(  MainData.Keywords );
             viewcount = MainData.Viewcount.ToString();
-            tags = article.Web.Get_tag_link((string[])MainData.Tags);
+            tags = article.Web.Get_category_link(MainData.Id);
             author = article.Web.Get_author_link(MainData.Author );
             ItemData = article.DbHandle. Get_article_item(MainData.Id);
             foreach (var s in ItemData)

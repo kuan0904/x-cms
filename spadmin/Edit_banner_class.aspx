@@ -45,18 +45,7 @@
                                     <td>
                                         <%#Eval("title")%>
                                     </td>
-                                    <td>
-                                        <%#Eval("ads")%>
-                                    </td>
-                                    <td>
-                                        <%#Eval("fx")%>
-                                    </td>
-                                    <td>
-                                        <%#Eval("speed")%>
-                                    </td>
-                                    <td>
-                                        <%#Eval("rotator")%>
-                                    </td>
+                                   
 
 
 
@@ -75,14 +64,7 @@
 
                                                         <th runat="server">名稱
                                                         </th>
-                                                        <th runat="server">輪撥方式
-                                                        </th>
-                                                        <th runat="server">特效
-                                                        </th>
-                                                        <th runat="server">輪撥速度(Sec)
-                                                        </th>
-                                                        <th runat="server">是否輪撥
-                                                        </th>
+                                                      
 
 
                                                     </tr>
@@ -127,69 +109,9 @@
                                         <asp:TextBox ID="class_title" runat="server"></asp:TextBox>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        輪撥方式</td>
-                                    <td>
-                                        <asp:DropDownList ID="class_ads" runat="server">
-
-                                            <asp:ListItem Value="0">0</asp:ListItem>
-                                            <asp:ListItem Value="1">1</asp:ListItem>
-                                            <asp:ListItem Value="2">2</asp:ListItem>
-                                            <asp:ListItem Value="3">3</asp:ListItem>
-                                            <asp:ListItem Value="4">4</asp:ListItem>
-                                            <asp:ListItem Value="5">5</asp:ListItem>
-                                        </asp:DropDownList>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                    <label class="control-label">
-                                        特效</label>
-                                     </td> 
-                                    <td>
-                                        <asp:DropDownList ID="class_fx" runat="server" >
-                                            <asp:ListItem Value="none">none</asp:ListItem>
-                                            <asp:ListItem Value="fade">fade</asp:ListItem>
-                                        </asp:DropDownList>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                    <label class="control-label">
-                                        輪撥速度</label>
-                                        </td> 
-                                    <td>
-                                        <asp:DropDownList ID="class_speed" runat="server">
-                                            <asp:ListItem>0</asp:ListItem>
-                                            <asp:ListItem>1</asp:ListItem>
-                                            <asp:ListItem>2</asp:ListItem>
-                                            <asp:ListItem>3</asp:ListItem>
-                                            <asp:ListItem>4</asp:ListItem>
-                                            <asp:ListItem>5</asp:ListItem>
-                                            <asp:ListItem>6</asp:ListItem>
-                                            <asp:ListItem>7</asp:ListItem>
-                                            <asp:ListItem>8</asp:ListItem>
-                                            <asp:ListItem>9</asp:ListItem>
-                                            <asp:ListItem>10</asp:ListItem>
-                                        </asp:DropDownList>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                    <label class="control-label">
-                                        是否輪撥</label>
-                                        </td> 
-                                    <td>
-                                        <asp:DropDownList ID="class_rotator" runat="server" RepeatDirection="Horizontal">
-                                              <asp:ListItem Value="N">N</asp:ListItem>
-                                                <asp:ListItem Value="Y">Y</asp:ListItem>
-                                          
-                                        </asp:DropDownList>
-                                    </td>
-
-
-                                </tr>
+                          
+                       
+                          
                                 <tr>
                                     <td>
                                     <label class="control-label">

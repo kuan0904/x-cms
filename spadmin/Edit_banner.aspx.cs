@@ -18,9 +18,9 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
         }
         unitid = Request.QueryString["unitid"];
         unitname = unitlib.Get_UnitName(int.Parse(unitid));
-        string strsql = "SELECT *  FROM tbl_banner_class where classid > @id order by  sort ";
+        string strsql = "SELECT *  FROM tbl_banner_class where unitid = (select upperid from unitdata where unitid= @id) order by  sort ";
         NameValueCollection nvc = new NameValueCollection();
-        nvc.Add("id", Selected_id.Value);
+        nvc.Add("id", Request.QueryString ["unitid"]);
         DataTable dt = DbControl.Data_Get (strsql, nvc);
         DropDownList1.DataSource = dt;
         DropDownList1.DataBind();

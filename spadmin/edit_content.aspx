@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/spadmin/admin.master" AutoEventWireup="true" CodeFile="edit_content.aspx.cs" Inherits="spadmin_edit_content" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/spadmin/admin.master" AutoEventWireup="true" CodeFile="edit_content.aspx.cs" Inherits="spadmin_edit_content"  %>
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">

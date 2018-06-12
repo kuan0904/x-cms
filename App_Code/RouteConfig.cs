@@ -31,12 +31,10 @@ namespace MyPublic
                     new RouteValueDictionary { { "unitname", "catalog|industry|culture|folkart|exhibtion|perform|practice|operate|design|crossborder|localization|classess|News|Events|ArtMBA" }, { "pageindex", "^[0-9]*$" } }
                 );
 
-          
 
-     
-            routes.MapPageRoute("fundraising", "fundraising/{id}", "~/detail.aspx",
-           false, null,
-           new RouteValueDictionary { { "id", "[0-9]*" } });
+            routes.MapPageRoute("Copyright", "CopyRight/{id}", "~/unitdata.aspx", true, new RouteValueDictionary { { "id", "22" } });
+            routes.MapPageRoute("aboutus", "AboutUs/{id}", "~/unitdata.aspx", true,new RouteValueDictionary { { "id", "20" } });
+            routes.MapPageRoute("Advertisement", "Advertisement/{id}", "~/unitdata.aspx", true, new RouteValueDictionary { { "id", "21" } });
         }
     }
   

@@ -5,7 +5,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.Routing;
-
+using System.Data;
+using System.Data.SqlClient;
+using System.Collections.Specialized;
 public partial class detail : System.Web.UI.Page
 {
     public string subject = "";
@@ -15,10 +17,21 @@ public partial class detail : System.Web.UI.Page
     public string keywords = "";
     public string viewcount = "";
     public string tags = "";
-  
+    public string pagetitle = "";
+    public string pageunit = "";
     public string author = "";
     protected void Page_Load(object sender, EventArgs e)
     {
+
+        if (Session["category"] == null)
+        {
+            DataTable dt;
+            string strsql = "SELECT * FROM  tbl_category where status='Y' ";
+            NameValueCollection nvc = new NameValueCollection();
+            dt = DbControl.Data_Get(strsql, nvc);
+            Session["category"] = dt;
+        }
+
         string Articlid = Request.QueryString["id"];
         Route myRoute = RouteData.Route as Route;     
         if (myRoute != null )
@@ -59,6 +72,29 @@ public partial class detail : System.Web.UI.Page
                 contents += s.Contents;
             }
             article.DbHandle.Add_views(MainData.Id);
+   
+            List<article.Category>  cate = new List<article.Category >();
+            cate = (List<article.Category>) article.DbHandle.Get_article_category(MainData.Id,"list");         
+
+            foreach (var a in cate)
+            {
+                DataTable dt,dt1;
+                dt = (DataTable)Session["category"];
+                dt.DefaultView.RowFilter = "categoryid=" + a.CategoryId;
+              
+                dt1 = dt.DefaultView.ToTable();
+                pageunit = "<li class=\"active\"><a href=\"/" + dt1.Rows[0]["CategoryId"].ToString()  + "/catalog\">" + dt1.Rows[0]["title"].ToString() + "</a></li>";
+                if (dt1.Rows[0]["parentid"].ToString() != "0")
+                {
+                    dt.DefaultView.RowFilter = "categoryid=" + dt1.Rows[0]["parentid"].ToString();
+                    dt1 = dt.DefaultView.ToTable();
+                    pageunit = "<li><a href=\"/" + dt1.Rows[0]["CategoryId"].ToString() + "/catalog\">" + dt1.Rows[0]["title"].ToString() + "</a></li>" + pageunit;
+                    dt1.Dispose();
+                    dt.Dispose();
+                   
+                }
+                break;
+            }
         }
     }
 }

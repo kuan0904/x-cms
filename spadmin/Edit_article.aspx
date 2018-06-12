@@ -9,13 +9,21 @@
           $("#postday").datepicker();
           $("#postday").datepicker("option", "dateFormat", "yy/mm/dd");
 
-      });
+       });
+       $(document).ready(function () {
+           $(".iframe1").colorbox({
+               iframe: true, width: "100%", height: "100%",
+               onClosed: function () {
+                  Page.Response.Redirect(Page.Request.Url.ToString(), true);
 
+               }
+           });
+      });
 </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-      <span class="btn btn-large"><a href="article.aspx" class='iframe' ><i class="icon-plus"></i>新增資料</a></span>
-                         
+         <div class="box-header well" data-original-title>   <span class="btn btn-large"><a href="article.aspx" class='iframe' ><i class="icon-plus"></i>新增資料</a></span>
+                </div>          
     <div class="row-fluid">
         <div class="box span12">
           <div class="box-content">
@@ -69,7 +77,7 @@
                         <ItemTemplate>
                             <tr>
                                 <td>
-                                    <a href="article.aspx?articleId=<%# Eval("articleId")%>" class='iframe' ><button class="btn btn-info"><i class="icon-edit icon-white"></i>編輯</button></a>
+                                    <a href="article.aspx?articleId=<%# Eval("articleId")%>" class='iframe1' ><button class="btn btn-info"><i class="icon-edit icon-white"></i>編輯</button></a>
 
                                 </td>
                                 <td>

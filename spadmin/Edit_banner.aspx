@@ -138,7 +138,7 @@
                                         連結網址</td>
                                     <td>
                                         <asp:DropDownList ID="DropDownList2" runat="server" DataTextField="title" DataValueField="categoryid" AutoPostBack="True" OnSelectedIndexChanged="DropDownList2_SelectedIndexChanged"></asp:DropDownList>
-                                        <asp:DropDownList ID="DropDownList3" runat="server"  DataTextField="Subject" DataValueField="Id"></asp:DropDownList>
+                                        <asp:DropDownList ID="DropDownList3" runat="server"  OnDataBound="LiteDropDownList_DataBound"  DataTextField="Subject" DataValueField="Id"></asp:DropDownList>
                                        <br />
                                         <asp:TextBox ID="t_url" runat="server" Width="500px"></asp:TextBox>
                                     </td>

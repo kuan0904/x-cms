@@ -38,8 +38,9 @@
        <div class="breadArea">
                     <div class="container">
                         <ol class="breadcrumb">
-                            <li><a href="hp.html">HOME</a></li>
-                            <li class="active">最新消息</li>
+                            <li><a href="/">HOME</a></li>
+                            <%=pageunit %>
+                           
                         </ol>
                     </div>
                 </div><!-- breadArea END -->

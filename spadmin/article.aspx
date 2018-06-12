@@ -371,7 +371,7 @@
     </script>
                                     
 
-    <script src="ckeditor/ckeditor.js?v=3"></script>
+    <script src="ckeditor/ckeditor.js?v=5"></script>
 </head>
 <body>
     <form id="form1">

@@ -30,6 +30,8 @@ namespace Banner {
                     Pic = dt.Rows[i]["filename"].ToString(),
                     Path = dt.Rows[i]["path"].ToString(),
                     Url = dt.Rows[i]["url"].ToString(),
+                    Categoryid = dt.Rows[i]["Categoryid"].ToString(),
+                    ArticleId = dt.Rows[i]["ArticleId"].ToString(),
                 });              
             }
             dt.Dispose();
@@ -55,6 +57,7 @@ namespace Banner {
             public string Url { get; set; }
             public int ClassId { get; set; }
             public string Path { get; set; }
-       
+            public string Categoryid { get; set; }
+            public string ArticleId { get; set; }
     }
 }

@@ -34,6 +34,6 @@ CKEDITOR.editorConfig = function( config ) {
     config.filebrowserUploadUrl = '../../spadmin/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Files';
     config.filebrowserImageUploadUrl = '../../spadmin/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Images';
   
-    config.height = '600px'; //可以這樣寫
-    config.width = 800; //也可以這樣寫
+    config.height = '700px'; //可以這樣寫
+    config.width = 1000; //也可以這樣寫
 };

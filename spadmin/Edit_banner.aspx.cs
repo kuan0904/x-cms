@@ -8,6 +8,8 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
 {
     string unitid = "";
     public static string unitname = "";
+    public static string articleId = "";
+
 
     protected void Page_Init(object sender, EventArgs e)
     {
@@ -69,6 +71,14 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
             Literal1.Text = "<img src=\"../webimages/banner/" +  dt.Rows[0]["filename"].ToString () + "\" height =\"200\"/>";
             HiddenField1.Value = dt.Rows[0]["filename"].ToString();
             contents.Text = dt.Rows[0]["contents"].ToString();
+           
+            DropDownList2.SelectedIndex = 
+            DropDownList2.Items.IndexOf(DropDownList2.Items.FindByValue(dt.Rows[0]["categoryid"].ToString()));
+
+            DropDownList3.SelectedIndex = 
+            DropDownList3.Items.IndexOf(DropDownList3.Items.FindByValue(dt.Rows[0]["articleId"].ToString()));
+            articleId = dt.Rows[0]["articleId"].ToString();
+
         if (dt.Rows[0]["disabledate"].ToString () !="")
             {
 
@@ -123,8 +133,10 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
         if (Btn_save.CommandArgument == "add")
         {
             strsql = @"INSERT  INTO tbl_banner(filename, path, url, targetblank, sort, enabledate, disabledate, 
-                status, title, createdate, createuserid,  classId,viewcount,contents) VALUES (@filename, @path, @url, @targetblank,
-                @sort, @enabledate, @disabledate, @status, @title, @createdate, @createuserid,  @classId,0,@contents) ";
+                status, title, createdate, createuserid,  classId,viewcount,contents,categoryid,articleId
+                ) VALUES (@filename, @path, @url, @targetblank,
+                @sort, @enabledate, @disabledate, @status, @title, @createdate
+                , @createuserid,  @classId,0,@contents, @categoryid, @articleId) ";
             nvc.Add("createdate", DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
             nvc.Add("createuserid", Session["userid"].ToString());
         }
@@ -132,7 +144,7 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
 
             strsql = @"UPDATE  tbl_banner SET filename =@filename, path =@path, url =@url, targetblank =@targetblank, 
             sort =@sort, enabledate =@enabledate, disabledate =@disabledate, status =@status, title =@title, 
-             classId =@classId ,contents=@contents where bannerid=@bannerid";
+             classId =@classId ,contents=@contents,categoryid=@categoryid,articleId=@articleId where bannerid=@bannerid";
             nvc.Add("bannerid", Selected_id.Value);
            
         }
@@ -147,6 +159,8 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
         nvc.Add("status", t_status.SelectedValue);
         nvc.Add("title", t_title.Text);      
         nvc.Add("classId", DropDownList1.SelectedValue);
+        nvc.Add("categoryid", DropDownList2.SelectedValue);
+        nvc.Add("articleId", DropDownList3.SelectedValue);
         if (edate.Text != "")           
             nvc.Add("disabledate", edate.Text + " " + etime.SelectedValue + ":00:00");       
         else       
@@ -257,8 +271,25 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
 
         List<article.MainData> ar= new List<article.MainData>();
         ar = article.DbHandle.Get_article_list(DropDownList2.SelectedValue, "", 10, 0);
-        DropDownList3.DataSource=ar;
-        DropDownList3.DataBind();
+        DropDownList3.Items.Clear();
+        if (ar.Count > 0) { 
+            DropDownList3.DataSource=ar;
+            DropDownList3.DataBind();
+        }
+        else { DropDownList3.Items.Insert(0, new ListItem("無資料", "")); }
     }
-  
+    protected void LiteDropDownList_DataBound(object sender, EventArgs e)
+    {
+       DropDownList LiteDropDownList = (DropDownList ) sender;
+        LiteDropDownList.Items.Insert(0, new ListItem("無", ""));
+        if (LiteDropDownList.Items.Count > 0)
+        {
+            LiteDropDownList.SelectedIndex =
+            LiteDropDownList.Items.IndexOf(LiteDropDownList.Items.FindByValue(articleId));
+            foreach (ListItem li in LiteDropDownList.Items)
+            {
+              
+            }
+        }
+    }
 }

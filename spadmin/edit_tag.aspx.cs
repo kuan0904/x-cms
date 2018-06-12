@@ -10,7 +10,7 @@ using System.Diagnostics;
 using System.Data.SqlClient;
 using unity;
 using System.Collections.Specialized;
-
+using System.IO;
 
 public partial class spadmin_edit_tag : System.Web.UI.Page
 {
@@ -64,7 +64,7 @@ public partial class spadmin_edit_tag : System.Web.UI.Page
         MultiView1.ActiveViewIndex = 1;
         Btn_save.CommandArgument = "edit";
         string strsql = "";
-
+     
         SqlConnection conn = new SqlConnection(unity.classlib.dbConnectionString);
         SqlDataReader rs = default(SqlDataReader);
         SqlCommand cmd = new SqlCommand();
@@ -78,6 +78,12 @@ public partial class spadmin_edit_tag : System.Web.UI.Page
         {
             tagname.Text = rs["tagname"].ToString();
             status.SelectedValue = rs["status"].ToString();
+            contents.Text = rs["contents"].ToString();
+            HiddenField1.Value = rs["pic"].ToString();
+            if (rs["pic"].ToString () != "")
+            {
+                Literal1.Text = "<img src=\"../webimages/people/" + rs["pic"].ToString () + "\" height =\"200\"/>";
+            }
 
         }
         rs.Close();
@@ -87,18 +93,40 @@ public partial class spadmin_edit_tag : System.Web.UI.Page
     }
     protected void Btn_save_Click(object sender, System.EventArgs e)
     {
+
+        string uploadPath = Server.MapPath("~/webimages/people/");
+        string Filename = "";
+        string[] allowedExtensions = { ".jpg", ".jpeg", ".png", ".gif" };
+
+        string fileExtension;
+        if (FileUpload1.HasFile)
+        {
+            fileExtension = Path.GetExtension(FileUpload1.FileName.ToLower());
+            if (Array.IndexOf(allowedExtensions, fileExtension) >= 0)
+            {
+                Filename = DateTime.Now.ToString("yyyyMMddhhmmssfff") + fileExtension;
+                FileUpload1.PostedFile.SaveAs(uploadPath + Filename);
+                HiddenField1.Value = Filename;
+            }
+            else
+            {
+                Response.Write("檔案格式有誤");
+
+            }
+
+        }
         string strsql = "";
 
         //-----------------------------------------------------------------------
 
         if (Btn_save.CommandArgument == "add")
         {
-            strsql = " insert into  tbl_tag( tagname, status, unitid) values ";
-            strsql += "(@tagname, @status, @unitid ) ";
+            strsql = " insert into  tbl_tag( tagname, status, unitid,pic,contents) values ";
+            strsql += "(@tagname, @status, @unitid,@pic,@contents ) ";
         }
         else
         {
-            strsql = @"update  tbl_tag set tagname=@tagname,status=@status
+            strsql = @"update  tbl_tag set tagname=@tagname,status=@status,pic=@pic,contents=@contents
             where tagid =@tagid";
         }
 
@@ -109,6 +137,8 @@ public partial class spadmin_edit_tag : System.Web.UI.Page
         cmd = new SqlCommand(strsql, conn);     
         cmd.Parameters.Add("status", SqlDbType.VarChar).Value = status.SelectedValue;    
         cmd.Parameters.Add("tagname", SqlDbType.NVarChar).Value = tagname.Text;
+        cmd.Parameters.Add("pic", SqlDbType.NVarChar).Value = HiddenField1.Value;
+        cmd.Parameters.Add("contents", SqlDbType.NVarChar).Value = contents.Text;
         if (Btn_save.CommandArgument == "add")
         {
             cmd.Parameters.Add("unitid", SqlDbType.VarChar).Value =unitid;

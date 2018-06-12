@@ -5,7 +5,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.Routing;
-
+using System.Data;
+using System.Data.SqlClient;
+using System.Collections.Specialized;
 public partial class list : System.Web.UI.Page
 {
     public static  int Totalrow  = 0;
@@ -13,43 +15,43 @@ public partial class list : System.Web.UI.Page
     public static int PageSize = 5;
     public static int PageIdx = 1;
     public static string unitname = "";
+    public string pagetitle = "";
     protected void Page_Load(object sender, EventArgs e)
     {
         string cid = "";
         Route myRoute = RouteData.Route as Route;
         if (myRoute != null)
-        {
-    
+        {    
             PageIdx  = RouteData.Values["pageindex"]==null ? 1:int.Parse ( RouteData.Values["pageindex"].ToString () );
-             cid =  RouteData.Values["id"].ToString ();
-           
+            cid =  RouteData.Values["id"].ToString ();          
         }
         else
         {
             cid = Request.QueryString["cid"];
             PageIdx = Request.QueryString["pageindex"] == null ? 1 : int.Parse (Request.QueryString["pageindex"]);
         }
-       // string[] Segments = Request.Url.Segments;
-       // foreach (string s in Segments)
-       // {
-       //     Response.Write(s + "<BR>");
-       // }
-       // string idx = Segments[Segments.Length - 1];
-      
-       // if (int.TryParse(idx, out PageIdx))
-       // {
-       //     int.TryParse(idx, out PageIdx);
-                      
-       // }
-       // else
-       // {
-       //     PageIdx = 1;
-       //    cid= Segments[Segments.Length - 2];
+        if (cid == null) Response.Redirect("/index");
 
-       // }
-       //cid = kind.Replace("/", "");
-        unitname =  cid + "/catalog";
-      
+        // string[] Segments = Request.Url.Segments;
+        // foreach (string s in Segments)
+        // {
+        //     Response.Write(s + "<BR>");
+        // }
+        // string idx = Segments[Segments.Length - 1];
+
+        // if (int.TryParse(idx, out PageIdx))
+        // {
+        //     int.TryParse(idx, out PageIdx);
+
+        // }
+        // else
+        // {
+        //     PageIdx = 1;
+        //    cid= Segments[Segments.Length - 2];
+
+        // }
+        //cid = kind.Replace("/", "");
+        unitname =  cid + "/catalog";      
         List<Banner.MainData> banner1 = new List<Banner.MainData>();
         banner1 = Banner.DbHandle.Banner_Get_list(1);
         Repeater1.DataSource = banner1;
@@ -68,6 +70,15 @@ public partial class list : System.Web.UI.Page
         hot_list_detail.DataSource = hotlist;
         hot_list_detail.DataBind();
         hotlist.Clear();
+
+      
+        DataTable dt;    
+        dt = (DataTable)Session["category"];
+        dt.DefaultView.RowFilter = "categoryid=" + cid;
+        dt = dt.DefaultView.ToTable();
+        pagetitle = dt.Rows[0]["title"].ToString();
+
+        dt.Dispose();
     }
 
     public static string PagePaging()

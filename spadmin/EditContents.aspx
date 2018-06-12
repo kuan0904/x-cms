@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/spadmin/admin.master" AutoEventWireup="true" CodeFile="EditContents.aspx.cs" Inherits="spadmin_EditContents" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/spadmin/admin.master" AutoEventWireup="true" CodeFile="EditContents.aspx.cs" Inherits="spadmin_EditContents" validateRequest="False" %>
 <%@ Register Assembly="CKFinder" Namespace="CKFinder" TagPrefix="CKFinder" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
     

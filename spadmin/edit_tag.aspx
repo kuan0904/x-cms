@@ -183,7 +183,19 @@
                                     <td>
                                         <asp:TextBox ID="tagname" runat="server"  required></asp:TextBox>
                                     </td>
-                                </tr>                        
+                                </tr>        
+                               <tr>
+                                   <td>圖片</td>
+                                   <td>
+                                       <asp:HiddenField ID="HiddenField1" runat="server" />
+                                       <asp:FileUpload ID="FileUpload1" runat="server" /><asp:Literal ID="Literal1" runat="server"></asp:Literal>
+                                   </td>
+                               </tr>
+                                <tr>
+                                    <td>說明</td>
+                                    <td>
+                                        <asp:TextBox ID="contents" runat="server" TextMode="MultiLine" Width="200"></asp:TextBox></td> 
+                                </tr>
                                 <tr>
                                     <td>
                                         狀態</td>
@@ -198,7 +210,7 @@
                                     <td colspan ="2">
                                     <asp:Button ID="Btn_save" runat="server" class="btn btn-primary" Text="存 檔" OnClick="Btn_save_Click" />
                                     <button onclick ="history.back();"  class="btn">取消</button>
-                                  
+                                   <asp:Button ID="Btn_cancel" runat="server" class="btn btn-primary" Text="取 消" OnClick="Btn_cancel_Click" />
                                   </td>
                                 </tr>
                             </table>

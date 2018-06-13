@@ -182,6 +182,7 @@
 
             });
             get_tag();
+            get_lesson();
           
             var dataValue = "{ kind: 'get' }";
             $.postJSON('article.aspx/get_category', dataValue, 'application/json; charset=utf-8', function (result) {
@@ -228,7 +229,24 @@
                 }
             });
         }
-    
+         function get_lesson() {
+            var dataValue = "{ kind: 'get' }";
+            $.postJSON('article.aspx/get_lesson', dataValue, 'application/json; charset=utf-8', function (result) {
+                if (result != "") {
+                    var result = result.d;
+                    result = JSON.parse(result);
+                    result = result.main;
+                    var cb = "";
+                    var s = "";
+                    $.each(result, function (key, val) {        
+                   
+                        s = maindata ==  undefined ? "":check_cbx(maindata.Lession, val.id);                      
+                        cb += "<input name='lessonid' class='ace ace-checkbox-2' type='radio' value='" + val.id + "'" + s + "><span class=lbl>" + val.name + "</span>";
+                    });                    
+                    $("#lesson").html(cb);                    
+                }
+            });
+        }
         function check_cbx(obj, val) {//check checkbox item ,設定勾選
             var s = "";          
             if (obj != undefined) {
@@ -274,11 +292,11 @@
             var categoryid = $('input:checkbox:checked[name="categoryid"]').map(function () { return $(this).val(); }).get();
             var tags = $('input:checkbox:checked[name="tags"]').map(function () { return $(this).val(); }).get();           
             var status = $("#status").prop("checked") == true ? "Y" : "N";
-            
+            var lessonid = $('input:checkbox:checked[name="lessonid"]').map(function () { return $(this).val(); }).get();
             var dataValue = {
                 kind: "set", id: articleId, subject: $("#subject").val(), subtitle: $("#subtitle").val()
                 , contents: content, pic: $("#logoPic").val(), keywords: $("#keywords").val()
-                , status: status, categoryid: categoryid
+                , status: status, categoryid: categoryid,lessonid:lessonid
                 , tags: tags, author: $("#author").val(), postday: $("#postday").val()
             };
 
@@ -472,6 +490,14 @@
                                     <td>發佈日(*)</td>
                                     <td>
                                         <input id="postday" type="text" />
+                                    </td>
+
+                                </tr>
+                                  <tr>
+                                    <td>課程選擇</td>
+                                    <td>
+                                   <label id="lesson"></label>
+                                
                                     </td>
 
                                 </tr>

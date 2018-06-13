@@ -26,6 +26,7 @@ public partial class spadmin_article : System.Web.UI.Page
             articleId = Request.QueryString["articleId"];
           
         }
+      
 
     }
     protected void Page_Load(object sender, EventArgs e)
@@ -35,21 +36,7 @@ public partial class spadmin_article : System.Web.UI.Page
         {
            
         }
-        //if (Session["ItemData"] != null)
-        //{
-
-        //    List<ItemData> ItemData = new List<ItemData>();
-        //    ItemData = Session["ItemData"] as List<ItemData>;
-        //    foreach (ItemData idx in ItemData)
-        //    {
-        //        Response.Write(idx.Contents);
-        //        //string[] tags = idx.Tags;
-        //        //foreach (string s in tags)
-        //        //{
-        //        //    Response.Write(s);
-        //        //}
-        //    }
-        //}
+    
     }
     [WebMethod]    
     public static string get_tag(string kind)
@@ -113,6 +100,32 @@ public partial class spadmin_article : System.Web.UI.Page
         return (result);
 
     }
+    [WebMethod]
+    public static string get_lesson(string kind)
+    {
+        string result = "{ \"main\":[";
+
+        if (kind == "get")
+        {
+            string strsql = "SELECT *  FROM tbl_Lesson where status='Y'  ";
+            NameValueCollection nvc = new NameValueCollection();
+            DataTable dt = DbControl.Data_Get(strsql, nvc);
+            //result = JsonConvert.SerializeObject(dt);
+            int i = 0;
+            for (i = 0; i < dt.Rows.Count; i++)
+            {
+                if (i != 0) result += ",";
+                result += "{\"name\":\"" + dt.Rows[i]["subject"].ToString() + "\",\"id\":\"" + dt.Rows[i]["lessonid"].ToString() + "\"}";
+
+            }
+       
+            dt.Dispose();
+        }
+        result += "]}";
+        return (result);
+
+    }
+
 
     [WebMethod]
     public static string get_tbl_article(string articleId)
@@ -157,7 +170,7 @@ public partial class spadmin_article : System.Web.UI.Page
     [WebMethod(EnableSession = true)]
     public static string Set_data(string kind, string id,string[] categoryid
         , string subject, string subtitle,string contents, string pic,string postday 
-        , string[] tags, string author, string keywords, string status)
+        , string[] tags, string  lessonid, string author, string keywords, string status)
     {
 
         MainData MainData = new MainData
@@ -177,6 +190,7 @@ public partial class spadmin_article : System.Web.UI.Page
             Keywords = keywords,
             Tags = tags,
             Category = categoryid,
+            Lession =lessonid ,
             Author= author
 
         };

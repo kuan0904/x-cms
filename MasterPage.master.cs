@@ -11,7 +11,7 @@ using System.Collections.Specialized;
 public partial class MasterPage : System.Web.UI.MasterPage
 {
     public string logo = "";
-
+    public string[] active = { "", "", "", "", "", "","" };
     protected void Page_Load(object sender, EventArgs e)
     {
         string cid = "";
@@ -31,7 +31,28 @@ public partial class MasterPage : System.Web.UI.MasterPage
         if (array.Contains(cid))
         {
             logo = " emba";
+            active[3] = " active";
         }
+        array = new string [4]  { "1", "7","8","9" };
+        if (array.Contains(cid))
+        {    
+            active[1] = " active";
+        }
+        array = new string[4] { "2", "10", "11", "12" };
+        if (array.Contains(cid))
+        {
+         
+            active[2] = " active";
+        }
+        if (cid =="5") active[5] = " active";
+        if (cid == "4")active[4] = " active";
+        array = new string[3] { "6", "17", "18" };
+        if (array.Contains(cid))
+        {
+
+            active[6] = " active";
+        }
+
         if (Session["category"] == null)
         {
             DataTable dt;

@@ -156,7 +156,7 @@ namespace article
             string[] tags;
 
             string[] categoryid;
-
+            string  Lessonid;
             if (dt.Rows.Count > 0)
             {
                 MainData.Id = id;
@@ -188,12 +188,12 @@ namespace article
 
             }
             tags = termsList.ToArray();
+            termsList.Clear();
             MainData.Tags = tags;
             nvc.Clear();
             dt.Dispose();
 
-
-
+            //取目錄
             strsql = "select * from Tbl_article_category  where articleid =@id  ";
             nvc.Add("id", id.ToString());
             dt = DbControl.Data_Get(strsql, nvc);
@@ -203,7 +203,19 @@ namespace article
 
             }
             categoryid = termsList.ToArray();
+            termsList.Clear();
             MainData.Category = categoryid;
+
+            //取課程
+            nvc.Clear();
+            strsql = "select * from tbl_article_lesson where articleid =@id  ";
+            nvc.Add("id", id.ToString());
+            dt = DbControl.Data_Get(strsql, nvc);
+            for (i = 0; i < dt.Rows.Count; i++)
+            {
+                MainData.Lession  =dt.Rows[i]["lessonId"].ToString();
+
+            }
             nvc.Clear();
             dt.Dispose();
 
@@ -270,8 +282,8 @@ namespace article
             if (cid != "")
             {
                 strsql += @" and articleId  in (select articleId FROM Tbl_article_category
-                          WHERE categoryid IN(SELECT categoryid  FROM tbl_category   WHERE parentid = @cid  
-                    or ( categoryid = @cid AND parentid = 0)))";
+                          WHERE categoryid IN(SELECT categoryid  FROM   tbl_category  WHERE parentid = @cid  
+                    or   categoryid = @cid ))";
 
             }
             NameValueCollection nvc = new NameValueCollection
@@ -435,6 +447,19 @@ namespace article
             }
             nvc.Clear();
 
+            strsql = "delete from  tbl_article_lesson where articleId =@id";
+            i = DbControl.Data_delete(strsql, ad.Id.ToString());
+
+            string lessonId = ad.Lession;
+         
+                nvc.Clear();
+                strsql = @"insert into tbl_article_lesson (articleId,lessonId)
+                    values (@articleId,@lessonId)";
+                nvc.Add("articleId", ad.Id.ToString());
+                nvc.Add("lessonId", ad.Lession);
+                i = DbControl.Data_add(strsql, nvc);
+          
+            nvc.Clear();
 
             return i;
 
@@ -488,6 +513,7 @@ namespace article
         public string Author { get; set; }
         public string[] Category { get; set; }
         public string[] Tags { get; set; }
+        public string Lession { get; set; }
         public string Keywords { get; set; }
         public int TotalRows { get; set; }
     }

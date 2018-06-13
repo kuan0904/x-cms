@@ -16,6 +16,14 @@ public partial class list : System.Web.UI.Page
     public static int PageIdx = 1;
     public static string unitname = "";
     public string pagetitle = "";
+      protected void Page_Init(object sender, EventArgs e)
+    {
+        if (Session["category"] == null)
+        {
+            Response.Redirect("/");
+        }
+
+    }
     protected void Page_Load(object sender, EventArgs e)
     {
         string cid = "";
@@ -32,25 +40,6 @@ public partial class list : System.Web.UI.Page
         }
         if (cid == null) Response.Redirect("/index");
 
-        // string[] Segments = Request.Url.Segments;
-        // foreach (string s in Segments)
-        // {
-        //     Response.Write(s + "<BR>");
-        // }
-        // string idx = Segments[Segments.Length - 1];
-
-        // if (int.TryParse(idx, out PageIdx))
-        // {
-        //     int.TryParse(idx, out PageIdx);
-
-        // }
-        // else
-        // {
-        //     PageIdx = 1;
-        //    cid= Segments[Segments.Length - 2];
-
-        // }
-        //cid = kind.Replace("/", "");
         unitname =  cid + "/catalog";      
         List<Banner.MainData> banner1 = new List<Banner.MainData>();
         banner1 = Banner.DbHandle.Banner_Get_list(1);
@@ -63,10 +52,12 @@ public partial class list : System.Web.UI.Page
        
         foreach (var p in hotlist)
         {
+        
+
             Totalrow  = p.TotalRows;
             break;
         }
-
+     
         hot_list_detail.DataSource = hotlist;
         hot_list_detail.DataBind();
         hotlist.Clear();

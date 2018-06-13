@@ -11,8 +11,12 @@ public partial class spadmin_Edit_lesson : System.Web.UI.Page
   
     protected void Page_Init(object sender, EventArgs e)
     {
- 
-      
+        DataTable dt  =(DataTable ) LessonLib.DbHandle.Get_lecturer  ();
+
+        tags.DataSource = dt;
+        tags.DataBind();
+        dt.Dispose();
+
     }
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -49,17 +53,21 @@ public partial class spadmin_Edit_lesson : System.Web.UI.Page
         address.Text = dt.Rows[0]["address"].ToString();
         price.Text = dt.Rows[0]["price"].ToString();
         sellprice.Text = dt.Rows[0]["sellprice"].ToString();
-
-
-
-
-
-
         dt.Dispose();
 
-
-
-
+        dt =(DataTable ) LessonLib.Web.Tbl_article_tag (int.Parse(Selected_id.Value));
+        for (int i= 0; i < dt.Rows.Count ;i++)
+        {
+           
+            foreach (ListItem item in tags.Items)
+            {
+                if (item.Value == dt.Rows[i]["tagid"].ToString())
+                {
+                 
+                    item.Selected = true; 
+                }
+            }
+        }
     }
     protected void Btn_save_Click(object sender, System.EventArgs e)
     {
@@ -76,7 +84,7 @@ public partial class spadmin_Edit_lesson : System.Web.UI.Page
             strsql = @"insert into tbl_Lesson( subject, contents, startday, endday, lessontime, address, price,
             sellprice, status, sort) values  ( @subject, @contents, @startday, @endday, @lessontime, @address, @price,
             @sellprice, @status, @sort) ";
-           
+            Selected_id.Value = "";
         }
         else
         {
@@ -98,11 +106,32 @@ public partial class spadmin_Edit_lesson : System.Web.UI.Page
         nvc.Add("sort", "1");  
         nvc.Add("sellprice", sellprice.Text);      
         nvc.Add("address", address.Text);
-        nvc.Add("price", price.Text);
-   
+        nvc.Add("price", price.Text);   
         nvc.Add("status", t_status.SelectedValue);
         int i = DbControl.Data_add(strsql, nvc);
+        if (Selected_id.Value == "")
+        {
+            strsql = "select max( articleid) from tbl_article_tag ";          
+            DataTable  dt = DbControl.Data_Get (strsql, nvc);
+            Selected_id.Value = dt.Rows[0][0].ToString();
+            dt.Dispose();
+        }
 
+        strsql = "delete from tbl_article_tag where articleid=@id and unitid=14";
+        nvc.Clear();
+        nvc.Add("id", Selected_id.Value);
+        i = DbControl.Data_add(strsql, nvc);
+
+          foreach (ListItem item in tags.Items)            {
+            if (item.Selected == true)
+            {
+                strsql = "insert into tbl_article_tag (articleId, tagid, unitid) values (@id,@tagid,14)";
+                nvc.Clear();
+                nvc.Add("id", Selected_id.Value);
+                nvc.Add("tagid", item.Value);
+                i = DbControl.Data_add(strsql, nvc);
+            }
+        }        
         selectSQL();
         MultiView1.ActiveViewIndex = 0;
         cleaninput();
@@ -121,7 +150,7 @@ public partial class spadmin_Edit_lesson : System.Web.UI.Page
     }
     public void selectSQL(string sorttype = "desc", string sortColumn = "lessonId")
     {
-        string strsql = "select * from tbl_Lesson where lessonId >1 ";
+        string strsql = "select * from tbl_Lesson where lessonId >0 ";
         strsql += " ORDER BY  " + sortColumn + " " + sorttype;
         NameValueCollection nvc = new NameValueCollection();
         DataTable dt = DbControl.Data_Get(strsql, nvc);
@@ -160,6 +189,11 @@ public partial class spadmin_Edit_lesson : System.Web.UI.Page
         address.Text = "";
         contents.Text = "";
         lessontime.Text = "";
+        foreach (ListItem item in tags.Items)
+        {
+            item.Selected = false;
+            
+        }
     }
     protected void btn_del_Click(object sender, System.EventArgs e)
     {

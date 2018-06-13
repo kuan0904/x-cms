@@ -163,6 +163,11 @@
                                    <td>課程費用(特價)</td>
                                    <td> <asp:TextBox ID="sellprice" runat="server"  size="10" required TextMode="Number"></asp:TextBox>   </td>
                                </tr>   
+                                <tr>
+                                    <td>講師管理</td>
+                                    <td>
+                                        <asp:CheckBoxList ID="tags" runat="server" DataTextField="tagname" DataValueField ="tagid" RepeatDirection="Horizontal" RepeatColumns="8"></asp:CheckBoxList></td>
+                                </tr>
                                
                                  <tr>
                                     <td>

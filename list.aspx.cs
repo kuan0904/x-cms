@@ -18,10 +18,7 @@ public partial class list : System.Web.UI.Page
     public string pagetitle = "";
       protected void Page_Init(object sender, EventArgs e)
     {
-        if (Session["category"] == null)
-        {
-            Response.Redirect("/");
-        }
+
 
     }
     protected void Page_Load(object sender, EventArgs e)

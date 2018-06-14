@@ -53,13 +53,6 @@ public partial class MasterPage : System.Web.UI.MasterPage
             active[6] = " active";
         }
 
-        if (Session["category"] == null)
-        {
-            DataTable dt;
-            string strsql = "SELECT * FROM  tbl_category where status='Y' ";
-            NameValueCollection nvc = new NameValueCollection();
-            dt = DbControl.Data_Get(strsql, nvc);
-            Session["category"] = dt;
-        }
+      
     }
 }

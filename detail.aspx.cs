@@ -23,10 +23,6 @@ public partial class detail : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
 
-        if (Session["category"] == null)
-        {
-            Response.Redirect("/");
-        }
 
         string Articlid = Request.QueryString["id"];
         Route myRoute = RouteData.Route as Route;     
@@ -75,7 +71,7 @@ public partial class detail : System.Web.UI.Page
             foreach (var a in cate)
             {
                 DataTable dt,dt1;
-                dt = (DataTable)Session["category"];
+                dt = (DataTable)Application["category"];
                 dt.DefaultView.RowFilter = "categoryid=" + a.CategoryId;
               
                 dt1 = dt.DefaultView.ToTable();

@@ -1,9 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="article.aspx.cs" Inherits="spadmin_article" %>
 
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
-
 <head>
     <title></title>
     <!-- basic styles -->
@@ -33,8 +31,7 @@
     <!--datepicker -->
     <script type="text/javascript" src="/js/jquery.ui.datepicker-zh-TW.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
-    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-    
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>    
     <script>
     function getParameterByName(name, url) {
         if (!url) url = window.location.href;
@@ -44,7 +41,16 @@
         if (!results) return null;
         if (!results[2]) return '';
         return decodeURIComponent(results[2].replace(/\+/g, " "));
-    }
+        }
+          $(function () {
+            $("#postday").datepicker();
+            $("#postday").datepicker("option", "dateFormat", "yy/mm/dd");
+            $("#startday").datepicker();
+            $("#startday").datepicker("option", "dateFormat", "yy/mm/dd");
+            $("#endday").datepicker();
+            $("#endday").datepicker("option", "dateFormat", "yy/mm/dd");
+
+        });
         jQuery.postJSON = function (url, para, contentType, callback) {
             if (contentType == null || contentType == '') contentType = "text/xml";
             $.ajax({
@@ -75,36 +81,36 @@
         if (articleId == null || articleId == '' || articleId == undefined) {
             articleId = 0;
         }
-      
-   
-        $(function () {
-            $("#postday").datepicker();
-            $("#postday").datepicker("option", "dateFormat", "yy/mm/dd");
 
-        });
         var maindata; 
         var flag;
-        $(document).ready(function () {            
-            if (articleId > 0) {
+        function get_data() {
+             if (articleId > 0) {
                 var dataValue = "{articleId:'"+  articleId +"'}";             
-                    $.postJSON('article.aspx/get_tbl_article', dataValue, 'application/json; charset=utf-8', function (result) {
-                        if (result != "") {                           
-                            var result = result.d;
-                            result = JSON.parse(result);
-                            maindata = result;                    
-                            $('#postday').datepicker("setDate", new Date(result.PostDay));
-                            $('#subject').val(result.Subject)
-                            $('#subtitle').val(result.SubTitle);                          
-                            $('#keywords').val(result.Keywords);
-                            $('#author').val(result.Author);
-                            $("#status").prop("checked", result.Status  == "Y" ? true : false);
-                            $('#postDay').val(result.PostDay);
-                            CKEDITOR.instances['contents'].setData(result.Contents);                           
-                            document.getElementById('console').innerHTML = ("<img src=\"/webimages/article/" + result.Pic + "\" width=300>");
-                            $('#logoPic').val(result.Pic);                           
-                        }
-                    });
-                    $.postJSON('article.aspx/get_tbl_article_item', dataValue, 'application/json; charset=utf-8', function (result) {
+                $.postJSON('article.aspx/get_tbl_article', dataValue, 'application/json; charset=utf-8', function (result) {
+                if (result != "") {                           
+                    var result = result.d;
+                    result = JSON.parse(result);
+                    maindata = result;                              
+                    $('#postday').datepicker("setDate", new Date(result.PostDay));
+                    $('#subject').val(result.Subject)
+                    $('#subtitle').val(result.SubTitle);                          
+                    $('#keywords').val(result.Keywords);
+                    $('#address').val(result.Address);                
+                    $('#lessontime').val(result.Lessontime);
+                    $('#price').val(result.Price);
+                    $('#sellprice').val(result.Sellprice);
+                    $('#author').val(result.Author);
+                    $("#status").prop("checked", result.Status  == "Y" ? true : false);
+                    $('#postDay').val(result.PostDay);                 
+                    $('#startday').datepicker("setDate", new Date(result.StartDay));
+                    $('#endday').datepicker("setDate", new Date(result.EndDay));
+                    CKEDITOR.instances['contents'].setData(result.Contents);                           
+                    document.getElementById('console').innerHTML = ("<img src=\"/webimages/article/" + result.Pic + "\" width=300>");
+                    $('#logoPic').val(result.Pic);                           
+                }
+            });
+                $.postJSON('article.aspx/get_tbl_article_item', dataValue, 'application/json; charset=utf-8', function (result) {
                         if (result != "") {
                             var result = result.d;
                             if (result != '') {
@@ -121,11 +127,12 @@
                             }
 
                         }
-                    });
-
+                    });          
             }
+        }
 
-     
+        $(document).ready(function () {            
+            get_data();          
             $("#preview").click(function () {
                 check_data('p');
             });
@@ -136,7 +143,7 @@
                 CKEDITOR.instances['content'].setData('');
                 $("#secno").val('');
                 $("#title").val('');
-                $('#recent-tab a[href="#item2"]').tab('show') //SHOW 明細tab
+                $('#recent-tab a[href="#item3"]').tab('show') //SHOW 明細tab
             })
             $("#btl_add").click(function () {
                // 新增明細資料
@@ -175,15 +182,52 @@
                 $("#secno").val(num);
                 $("#title").val($(this).find('.title').text());
                 CKEDITOR.instances['content'].setData($(this).find('.content').val());
-                $('#recent-tab a[href="#item2"]').tab('show')
+                $('#recent-tab a[href="#item3"]').tab('show')
             })
             $(document).on('click', '.delete', function (event) { //刪掉明細li
                 if (confirm('你確定嗎?')) { $(this).parent().remove(); }
 
             });
             get_tag();
-            get_lesson();
-          
+            get_category();
+            get_lecturer();
+        });
+         function get_lecturer() {
+            var dataValue = "{ kind: 'get' }";
+            $.postJSON('article.aspx/get_lecturer', dataValue, 'application/json; charset=utf-8', function (result) {
+                if (result != "") {
+                    var result = result.d;
+                    result = JSON.parse(result);
+                    result = result.main;
+                    var cb = "";
+                    var s = "";
+                    $.each(result, function (key, val) {       
+                       
+                        s = maindata ==  undefined ? "":check_cbx(maindata.Lecture, val.id);                      
+                        cb += "<input name='lecturerid' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl>" + val.name + "</span>";
+                    });                    
+                    $("#lecturer").html(cb);                    
+                }
+            });
+        }
+        function get_tag() {
+            var dataValue = "{ kind: 'get' }";
+            $.postJSON('article.aspx/get_tag', dataValue, 'application/json; charset=utf-8', function (result) {
+                if (result != "") {
+                    var result = result.d;
+                    result = JSON.parse(result);
+                    result = result.main;
+                    var cb = "";
+                    var s = "";
+                    $.each(result, function (key, val) {       
+                        s = maindata ==  undefined ? "":check_cbx(maindata.Tags, val.id);                      
+                        cb += "<input name='tags' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl>" + val.name + "</span>";
+                    });                    
+                    $("#tag").html(cb);                    
+                }
+            });
+        }
+        function get_category() {
             var dataValue = "{ kind: 'get' }";
             $.postJSON('article.aspx/get_category', dataValue, 'application/json; charset=utf-8', function (result) {
                 if (result != "") {
@@ -194,42 +238,25 @@
                     var s = "";
                     $.each(result, function (key, val) {                   
                         if (val.detail.length > 0) {
-                            cb += "<b>" + val.name + "</b>:";
+                            cb += "<span style='width:300px'>" + val.name + "</span>:";
                             for (i = 0; i < val.detail.length; i++) {                               
                                 s = maindata ==  undefined ? "": check_cbx(maindata.Category, val.detail[i].id);                                
                                 cb += "<input name='categoryid' class='ace ace-checkbox-2' type='checkbox' value='" + val.detail[i].id + "'" + s + "><span class=lbl>" + val.detail[i].name + "</span>";
                             }
+                          
                         }
                         else {
                             s = maindata ==  undefined ? "": check_cbx(maindata.Category, val.id);
-                            cb += "<input name='categoryid' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl>" + val.name + "</span>";
-
+                            cb += "<input name='categoryid' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl><b>" + val.name + "</b></span>";
+                             
                         }
                         cb += "<Br>";
                     });
                     $("#category").html(cb);
                 }
             });
-        });
-        function get_tag() {
-            var dataValue = "{ kind: 'get' }";
-            $.postJSON('article.aspx/get_tag', dataValue, 'application/json; charset=utf-8', function (result) {
-                if (result != "") {
-                    var result = result.d;
-                    result = JSON.parse(result);
-                    result = result.main;
-                    var cb = "";
-                    var s = "";
-                    $.each(result, function (key, val) {        
-                     
-                        s = maindata ==  undefined ? "":check_cbx(maindata.Tags, val.id);                      
-                        cb += "<input name='tags' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl>" + val.name + "</span>";
-                    });                    
-                    $("#tag").html(cb);                    
-                }
-            });
         }
-         function get_lesson() {
+        function get_lesson() {
             var dataValue = "{ kind: 'get' }";
             $.postJSON('article.aspx/get_lesson', dataValue, 'application/json; charset=utf-8', function (result) {
                 if (result != "") {
@@ -238,8 +265,7 @@
                     result = result.main;
                     var cb = "";
                     var s = "";
-                    $.each(result, function (key, val) {        
-                   
+                    $.each(result, function (key, val) {    
                         s = maindata ==  undefined ? "":check_cbx(maindata.Lession, val.id);                      
                         cb += "<input name='lessonid' class='ace ace-checkbox-2' type='radio' value='" + val.id + "'" + s + "><span class=lbl>" + val.name + "</span>";
                     });                    
@@ -271,11 +297,10 @@
             }
             if (content == '') {
                 errmsg += ('請輸入內容\r\n');
-
             }
             var Checked = $('input[name="tags"]:checked').length > 0;
             if (Checked == false) {
-                errmsg += ('請勾選標籤\r\n');
+              //  errmsg += ('請勾選標籤\r\n');
             }
             Checked = $('input[name="categoryid"]:checked').length > 0;
             if (Checked == false) {
@@ -288,16 +313,20 @@
             if ( $("#logoPic").val() == '') {
                 errmsg += ('文章主圖未上傳\r\n');
             }
+            var lesson = '<%=lesson%>';
 
             var categoryid = $('input:checkbox:checked[name="categoryid"]').map(function () { return $(this).val(); }).get();
-            var tags = $('input:checkbox:checked[name="tags"]').map(function () { return $(this).val(); }).get();           
+            var tags = $('input:checkbox:checked[name="tags"]').map(function () { return $(this).val(); }).get();   
+            var lecturer = $('input:checkbox:checked[name="lecturerid"]').map(function () { return $(this).val(); }).get();    
             var status = $("#status").prop("checked") == true ? "Y" : "N";
-            var lessonid = $('input:checkbox:checked[name="lessonid"]').map(function () { return $(this).val(); }).get();
+         
             var dataValue = {
                 kind: "set", id: articleId, subject: $("#subject").val(), subtitle: $("#subtitle").val()
                 , contents: content, pic: $("#logoPic").val(), keywords: $("#keywords").val()
-                , status: status, categoryid: categoryid,lessonid:lessonid
+                , status: status, categoryid: categoryid, startday: $("#startday").val(), endday: $("#endday").val()
                 , tags: tags, author: $("#author").val(), postday: $("#postday").val()
+                , lecturer: lecturer, price: $("#price").val(), sellprice: $("#sellprice").val()
+                , address: $("#address").val(), lessontime: $("#lessontime").val(),lesson:lesson
             };
 
             if (errmsg == '') {
@@ -312,13 +341,7 @@
             } else {
                 alert(errmsg);
             }
-        }
-        function JSONparse(str) {
-            str = str.replace("\r\n", "");
-            str = str.replace("\r", "").replace("\n", "");
-            str = str.replace("\"", "\\\""); 
-            return str 
-        }
+        }    
         function check_item(kind) {//將明細資料存到SESSION   
             
             var dataValue = "{\"kind\": \"set\", \"id\":\"" + articleId + "\",\"item\":[";
@@ -400,9 +423,11 @@
                         <li class="active">
                             <a data-toggle="tab" href="#item1">主 內 容</a>
                         </li>
-
+                           <li>
+                            <a data-toggle="tab" href="#item2">課程內容</a>
+                        </li>
                         <li>
-                            <a data-toggle="tab" href="#item2">明細內容</a>
+                            <a data-toggle="tab" href="#item3">段落內容</a>
                         </li>
                     </ul>
                 </div>
@@ -413,14 +438,15 @@
                         <div id="item1" class="tab-pane active">
                             <table style="background-color: #FFFFFF">
                                 <tr>
+                                    <td>文章所屬分類(*)</td>
+                                    <td>
+                                        <label id="category"></label>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td>主標題(*)</td>
                                     <td>
                                         <input id="subject" type="text" style="width: 500px" placeholder="必填"  /></td>
-                                </tr>
-                                <tr>
-                                    <td>次標題</td>
-                                    <td>
-                                        <input id="subtitle" type="text" style="width: 500px" /></td>
                                 </tr>
                                 <tr>
                                     <td>主圖示(750x500)(*)</td>
@@ -453,13 +479,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>文章所屬分類(*)</td>
-                                    <td>
-                                        <label id="category"></label>
-
-                                    </td>
-                                </tr>
+                                                                                                
                                 <tr>
                                     <td>內容(*)</td>
                                     <td>
@@ -470,8 +490,7 @@
                                         </script>
                                     </td>
 
-                                </tr>
-                   
+                                </tr>                   
                                 <tr>
                                     <td>作者</td>
                                     <td>
@@ -492,15 +511,7 @@
                                         <input id="postday" type="text" />
                                     </td>
 
-                                </tr>
-                                  <tr>
-                                    <td>課程選擇</td>
-                                    <td>
-                                   <label id="lesson"></label>
-                                
-                                    </td>
-
-                                </tr>
+                                </tr>                              
                                 <tr>
                                     <td>標籤</td>
                                     <td>
@@ -536,6 +547,53 @@
                             </table>
                         </div>
                         <div id="item2" class="tab-pane">
+
+                                <table>
+                                <tr>
+                                    <td>次標題</td>
+                                    <td>
+                                        <input id="subtitle" type="text" style="width: 500px;height:100px;" /></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        開始時間</td>
+                                    <td>
+                                        <input id="startday" type="text" size="10"  />
+                                       
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        結束時間</td>
+                                    <td>  <input id="endday" type="text" size="10"  />
+                                       
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>上課時間說明</td>
+                                    <td><input id="lessontime" type="text" size="60"  />
+                                         
+                                    </td>
+                                </tr>
+                                     <tr>
+                                   <td>地址</td>
+                                   <td><input id="address" type="text" size="100"  /> </td>
+                               </tr>   
+                               <tr>
+                                   <td>課程費用(原價)</td>
+                                   <td> <input id="price" type="number"    /> </td>
+                               </tr>
+                                <tr>
+                                   <td>課程費用(特價)</td>
+                                   <td>  <input id="sellprice" type="number"    /> </td>
+                               </tr>   
+                                <tr>
+                                    <td>講師管理</td>
+                                    <td>  <label id="lecturer"></label><br /></td>
+                                  </tr>
+                            </table>
+                        </div>
+                        <div id="item3" class="tab-pane">
                             <table>
                                 <tr>
                                     <td>標題</td>
@@ -656,14 +714,8 @@
 					onCleanup:function(){ alert('onCleanup: colorbox has begun the close process'); },
 					onClosed:function(){ alert('onClosed: colorbox has completely closed'); }
 				});
-
                 $('.non-retina').colorbox({ rel: 'group5', transition: 'none' })
                 $('.retina').colorbox({ rel: 'group5', transition: 'none', retinaImage: true, retinaUrl: true });
-
-
-          
-
-
             });
 
                 

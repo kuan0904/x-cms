@@ -77,7 +77,7 @@
                         <ItemTemplate>
                             <tr>
                                 <td>
-                                    <a href="article.aspx?articleId=<%# Eval("articleId")%>" class='iframe1' ><button class="btn btn-info"><i class="icon-edit icon-white"></i>編輯</button></a>
+                                    <a href="article.aspx?articleId=<%# Eval("articleId")%>&lesson=<%=lesson %>" class='iframe1' ><button class="btn btn-info"><i class="icon-edit icon-white"></i>編輯</button></a>
 
                                 </td>
                                 <td>

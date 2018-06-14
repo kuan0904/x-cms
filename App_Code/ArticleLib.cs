@@ -146,7 +146,9 @@ namespace article
         public static MainData Get_article(int id)
         {
             MainData MainData = new MainData();
-            string strsql = "select * from  tbl_article where articleid =@id";
+            string strsql = @"select * from    tbl_article   tbl_article LEFT OUTER JOIN
+                            tbl_article_lesson ON tbl_article.articleId = tbl_article_lesson.lessonId
+                            where articleid =@id";
             NameValueCollection nvc = new NameValueCollection
             {
                 { "id", id.ToString() }
@@ -154,9 +156,9 @@ namespace article
             DataTable dt = DbControl.Data_Get(strsql, nvc);
 
             string[] tags;
-
             string[] categoryid;
-            string  Lessonid;
+            string[] Lecture;
+         
             if (dt.Rows.Count > 0)
             {
                 MainData.Id = id;
@@ -169,10 +171,13 @@ namespace article
                 MainData.Keywords = dt.Rows[0]["Keywords"].ToString();
                 MainData.Author = dt.Rows[0]["Author"].ToString();
                 MainData.Viewcount = (int)dt.Rows[0]["Viewcount"];
-                MainData.FBcount = (int)dt.Rows[0]["FBCount"];
-                MainData.Googlecount = (int)dt.Rows[0]["GoogleCount"];
-                MainData.Pinterestcount = (int)dt.Rows[0]["PinterestCount"];
-                MainData.Twittercount = (int)dt.Rows[0]["Twittercount"];
+                MainData.Price = dt.Rows[0]["price"].ToString () == "" ? 0:(int)dt.Rows[0]["price"];
+                MainData.Sellprice = dt.Rows[0]["Sellprice"].ToString() == ""  ? 0 : (int)dt.Rows[0]["Sellprice"];
+                MainData.Address  = dt.Rows[0]["address"].ToString();
+                MainData.Lessontime = dt.Rows[0]["Lessontime"].ToString();
+                MainData.StartDay = dt.Rows[0]["StartDay"].ToString() =="" ? DateTime.Today  : DateTime.Parse(dt.Rows[0]["StartDay"].ToString());
+                MainData.EndDay = dt.Rows[0]["EndDay"].ToString() == "" ? DateTime.Today : DateTime.Parse(dt.Rows[0]["EndDay"].ToString());
+                MainData.Lesson = dt.Rows[0]["lesson"].ToString();
             }
             dt.Dispose();
             nvc.Clear();
@@ -185,7 +190,6 @@ namespace article
             for (i = 0; i < dt.Rows.Count; i++)
             {
                 termsList.Add(dt.Rows[i]["tagid"].ToString());
-
             }
             tags = termsList.ToArray();
             termsList.Clear();
@@ -200,25 +204,27 @@ namespace article
             for (i = 0; i < dt.Rows.Count; i++)
             {
                 termsList.Add(dt.Rows[i]["categoryid"].ToString());
-
             }
             categoryid = termsList.ToArray();
             termsList.Clear();
             MainData.Category = categoryid;
-
-            //取課程
+            dt.Dispose();
             nvc.Clear();
-            strsql = "select * from tbl_article_lesson where articleid =@id  ";
+
+            //取講師
+            termsList.Clear();
+            strsql = "select * from  tbl_article_tag  where articleid =@id and unitid=14";
             nvc.Add("id", id.ToString());
-            dt = DbControl.Data_Get(strsql, nvc);
+            dt = DbControl.Data_Get(strsql, nvc);           
             for (i = 0; i < dt.Rows.Count; i++)
             {
-                MainData.Lession  =dt.Rows[i]["lessonId"].ToString();
-
+                termsList.Add(dt.Rows[i]["tagid"].ToString());
             }
+            tags = termsList.ToArray();
+            termsList.Clear();
+            MainData.Lecturer = tags;
             nvc.Clear();
             dt.Dispose();
-
             return MainData;
 
         }
@@ -333,9 +339,6 @@ namespace article
                 }
                 tags = termsList.ToArray();
                 dt1.Dispose();
-
-
-
                 strsql = "select * from Tbl_article_category  where articleid =@id  ";
                 dt1 = DbControl.Data_Get(strsql, nvc);
                 for (i = 0; i < dt1.Rows.Count; i++)
@@ -388,8 +391,8 @@ namespace article
         public static int Article_Add()
         {
             int id = 0;
-            string strsql = @"insert into tbl_article ( Viewcount, FBCount, GoogleCount,PinterestCount,Twittercount) 
-        values (0,0,0,0,0);";//SELECT SCOPE_IDENTITY();
+            string strsql = @"insert into tbl_article ( Viewcount) 
+        values (0);";//SELECT SCOPE_IDENTITY();
             NameValueCollection nvc = new NameValueCollection();
             id = DbControl.Data_add(strsql, nvc);
             nvc.Clear();
@@ -403,7 +406,8 @@ namespace article
         {
             string strsql = @"update  tbl_article set 
                     subject =@subject,pic=@pic,subtitle=@subtitle,postday=@postday,contents=@contents ,
-                    keywords=@keywords,status=@status,author=@author
+                    keywords=@keywords,status=@status,author=@author,startday=@startday,endday=@endday
+                    ,lesson=@lesson
                     where articleId =@id ";
             NameValueCollection nvc = new NameValueCollection
             {
@@ -414,11 +418,15 @@ namespace article
                 { "contents", ad.Contents },
                 { "keywords", ad.Keywords },
                 { "author", ad.Author },
-                { "status", ad.Status }
+                { "status", ad.Status },
+                { "lesson", ad.Lesson },
+                { "startday",ad.StartDay.ToString("yyyy/MM/dd")  },
+                { "endday",ad.EndDay.ToString("yyyy/MM/dd") },
+              
             };
             int i = DbControl.Data_Update(strsql, nvc, ad.Id.ToString());
             nvc.Clear();
-            strsql = "delete from tbl_article_tag where articleId =@id";
+            strsql = "delete from tbl_article_tag where articleId =@id and unitid =13 ";
             i = DbControl.Data_delete(strsql, ad.Id.ToString());
 
             string[] tags = ad.Tags;
@@ -447,18 +455,35 @@ namespace article
             }
             nvc.Clear();
 
-            strsql = "delete from  tbl_article_lesson where articleId =@id";
+            strsql = "delete from tbl_article_tag  where articleId =@id and unitid =14" ;
             i = DbControl.Data_delete(strsql, ad.Id.ToString());
 
-            string lessonId = ad.Lession;
-         
+            string[] lecturer = ad.Lecturer ;
+            foreach (string s in lecturer)
+            {
                 nvc.Clear();
-                strsql = @"insert into tbl_article_lesson (articleId,lessonId)
-                    values (@articleId,@lessonId)";
+                strsql = @"insert into tbl_article_tag (articleId,tagid,unitid)
+                    values (@articleId,@tagid,@unitid)";
                 nvc.Add("articleId", ad.Id.ToString());
-                nvc.Add("lessonId", ad.Lession);
+                nvc.Add("tagid", s);
+                nvc.Add("unitid", "14");
                 i = DbControl.Data_add(strsql, nvc);
-          
+            }
+            nvc.Clear();
+
+            strsql = "delete from  tbl_article_lesson where  lessonId =@id";
+            i = DbControl.Data_delete(strsql, ad.Id.ToString());
+            if (ad.Lesson  == "Y") {          
+               
+                strsql = @"insert into tbl_article_lesson ( lessonId, lessontime, address, price, sellprice)
+                    values (@lessonId, @lessontime, @address, @price, @sellprice)";
+                nvc.Add("lessonId", ad.Id.ToString());
+                nvc.Add("lessontime", ad.Lessontime );
+                nvc.Add("address", ad.Address );
+                nvc.Add("price", ad.Price.ToString());
+                nvc.Add("sellprice", ad.Sellprice .ToString());
+                i = DbControl.Data_add(strsql, nvc);
+          }
             nvc.Clear();
 
             return i;
@@ -503,19 +528,22 @@ namespace article
         public string Pic { get; set; }
         public string SubTitle { get; set; }
         public DateTime PostDay { get; set; }
+        public DateTime StartDay { get; set; }
+        public DateTime EndDay { get; set; }
         public string Contents { get; set; }
-        public int Viewcount { get; set; }
-        public int FBcount { get; set; }
-        public int Googlecount { get; set; }
-        public int Twittercount { get; set; }
-        public int Pinterestcount { get; set; }
+        public int Viewcount { get; set; }     
         public string Status { get; set; }
         public string Author { get; set; }
         public string[] Category { get; set; }
         public string[] Tags { get; set; }
-        public string Lession { get; set; }
+        public string[] Lecturer { get; set; }
+        public string Lessontime { get; set; }
         public string Keywords { get; set; }
+        public string Address { get; set; }
+        public int Price { get; set; }
+        public int Sellprice { get; set; }
         public int TotalRows { get; set; }
+        public string Lesson { get; set; }
     }
     public class ItemData
     {
@@ -546,6 +574,14 @@ namespace article
         public int Id { get; set; }      
         public string World { get; set; }
     }
-
+    public class Lecture
+    {
+        public int Id { get; set; }
+        public int Tagid { get; set; }
+        public string Subject { get; set; }
+        public string Title { get; set; }
+        public string Pic { get; set; }
+        public string Contents { get; set; }
+    }
 
 }

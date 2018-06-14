@@ -56,7 +56,7 @@ public class DbControl
     public static int Article_Add()
     {
         int id = 0;
-        string strsql = "insert into tbl_article ( Viewcount, FBCount, GoogleCount,PinterestCount) values (0,0,0,0);SELECT SCOPE_IDENTITY();";
+        string strsql = "insert into tbl_article ( Viewcount) values (0);SELECT SCOPE_IDENTITY();";
         NameValueCollection nvc = new NameValueCollection();
         id = DbControl.Data_add (strsql, nvc);
         nvc.Clear();

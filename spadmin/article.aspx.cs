@@ -19,6 +19,7 @@ public partial class spadmin_article : System.Web.UI.Page
 {
     public string articleId = "";
     public article.MainData mainData;
+    public string lesson = "";
     protected void Page_Init(object sender, EventArgs e)
     {
         if (Request.QueryString["articleId"] != null)
@@ -26,7 +27,7 @@ public partial class spadmin_article : System.Web.UI.Page
             articleId = Request.QueryString["articleId"];
           
         }
-      
+        lesson = Request.QueryString["lesson"];
 
     }
     protected void Page_Load(object sender, EventArgs e)
@@ -39,12 +40,31 @@ public partial class spadmin_article : System.Web.UI.Page
     
     }
     [WebMethod]    
-    public static string get_tag(string kind)
+    public static string get_tag()
     {
-        string result = "{ \"main\":[";
+        string result = "{ \"main\":[";     
+        string strsql = "SELECT *  FROM tbl_tag where status='Y' and unitid=13 ";
+        NameValueCollection nvc = new NameValueCollection();
+        DataTable dt = DbControl.Data_Get(strsql, nvc);
+        //result = JsonConvert.SerializeObject(dt);
+        int i = 0;
+        for (i = 0; i < dt.Rows.Count; i++)
+        {
+            if (i != 0) result += ",";
+            result += "{\"name\":\"" + dt.Rows[i]["tagname"].ToString() + "\",\"id\":\"" + dt.Rows[i]["tagid"].ToString() + "\"}";
 
-        if (kind == "get") { 
-            string strsql = "SELECT *  FROM tbl_tag where status='Y' and unitid=13 ";
+        }
+        //result = result.Replace("[", "").Replace("]", "").Replace("\r\n", "");
+        // result = JsonConvert.SerializeObject(result);
+        dt.Dispose();      
+        result += "]}";
+       return (result);
+
+    }
+    [WebMethod]
+    public static string get_lecturer()    {
+        string result = "{ \"main\":[";    
+            string strsql = "SELECT *  FROM tbl_tag where status='Y' and unitid=14 ";
             NameValueCollection nvc = new NameValueCollection();
             DataTable dt = DbControl.Data_Get(strsql, nvc);
             //result = JsonConvert.SerializeObject(dt);
@@ -52,18 +72,15 @@ public partial class spadmin_article : System.Web.UI.Page
             for (i = 0; i < dt.Rows.Count; i++)
             {
                 if (i != 0) result += ",";
-                result += "{\"name\":\"" + dt.Rows[i]["tagname"].ToString() + "\",\"id\":\"" + dt.Rows[i]["tagid"].ToString() + "\"}";
+                result += "{\"name\":\"" + dt.Rows[i]["tagname"].ToString() + "\",\"id\":\"" + dt.Rows[i]["tagid"].ToString() + "\",\"pic\":\"" + dt.Rows[i]["pic"].ToString() + "\"}";
 
-            }
-            //result = result.Replace("[", "").Replace("]", "").Replace("\r\n", "");
-           // result = JsonConvert.SerializeObject(result);
-            dt.Dispose();
-        }
+            }  
+            dt.Dispose();       
         result += "]}";
-       return (result);
+        return (result);
 
     }
- 
+
     [WebMethod]
     public static string get_category(string kind)    {
         string result = "{ \"main\":[";
@@ -125,8 +142,6 @@ public partial class spadmin_article : System.Web.UI.Page
         return (result);
 
     }
-
-
     [WebMethod]
     public static string get_tbl_article(string articleId)
     {
@@ -169,8 +184,10 @@ public partial class spadmin_article : System.Web.UI.Page
   
     [WebMethod(EnableSession = true)]
     public static string Set_data(string kind, string id,string[] categoryid
-        , string subject, string subtitle,string contents, string pic,string postday 
-        , string[] tags, string  lessonid, string author, string keywords, string status)
+        , string subject, string subtitle,string contents, string pic,string postday
+        , string startday, string endday,string address,string lessontime,string price
+        , string sellprice
+        , string[] tags, string  lesson, string[] lecturer, string author, string keywords, string status)
     {
 
         MainData MainData = new MainData
@@ -179,19 +196,24 @@ public partial class spadmin_article : System.Web.UI.Page
             Subject = subject,
             SubTitle = subtitle,
             Contents = contents,
-            Pic  = pic,
-            PostDay = DateTime.Parse ( postday) ,
+            Pic = pic,
+            PostDay = DateTime.Parse(postday),
+            StartDay = DateTime.Parse(startday),
+            EndDay = DateTime.Parse(endday),
             Status = status,
-            FBcount = 0,
-            Googlecount = 0,
-            Twittercount = 0,
-            Pinterestcount = 0,
             Viewcount = 0,
             Keywords = keywords,
             Tags = tags,
             Category = categoryid,
-            Lession =lessonid ,
-            Author= author
+            Author = author,
+            Address = address,
+            Lessontime = lessontime,
+            Lecturer = lecturer,
+            Price =int.Parse (price),
+            Sellprice =int.Parse (sellprice), 
+            Lesson =lesson 
+           
+
 
         };
    

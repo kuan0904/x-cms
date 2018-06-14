@@ -31,11 +31,7 @@ public partial class detail_course_ : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
 
-        if (Session["category"] == null)
-        {
-            Response.Redirect("/");
-        }
-
+      
         string Articlid = Request.QueryString["id"];
         Route myRoute = RouteData.Route as Route;
         if (myRoute != null)
@@ -69,7 +65,7 @@ public partial class detail_course_ : System.Web.UI.Page
             viewcount = MainData.Viewcount.ToString();
             tags = article.Web.Get_category_link(MainData.Id);
             author = article.Web.Get_author_link(MainData.Author);
-            lessonid =MainData.Lession;
+         
             ItemData = article.DbHandle.Get_article_item(MainData.Id);
             foreach (var s in ItemData)
             {
@@ -84,7 +80,7 @@ public partial class detail_course_ : System.Web.UI.Page
             foreach (var a in cate)
             {
                 DataTable dt, dt1;
-                dt = (DataTable)Session["category"];
+                dt = (DataTable)Application["category"];
                 dt.DefaultView.RowFilter = "categoryid=" + a.CategoryId;
 
                 dt1 = dt.DefaultView.ToTable();
@@ -100,16 +96,7 @@ public partial class detail_course_ : System.Web.UI.Page
                 }
                 break;
             }
-            if (lessonid != null && lessonid !=  "") {
-                LessonLib.MainData lessondata = (LessonLib.MainData)LessonLib.DbHandle.Get_Lesson(lessonid, "list");
-                subject = lessondata.Subject;
-                startday = lessondata.Startday;
-                endday = lessondata.Endday;
-                lessontime = lessondata.Lessontime;
-                price = lessondata.Price.ToString();
-                sellprice = lessondata.Sellprice.ToString();
-                address = lessondata.Address ;
-            }
+          
         }
     }
 }

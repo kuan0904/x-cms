@@ -10,6 +10,7 @@ using unity;
 using System.Collections.Specialized;
 public partial class spadmin_Edit_article : System.Web.UI.Page
 {
+    public string lesson = "N";
     protected void Page_Init(object sender, EventArgs e)
     {
        
@@ -28,9 +29,18 @@ public partial class spadmin_Edit_article : System.Web.UI.Page
     }
     public void selectSQL()
     {
+      
 
-
-        string strsql = "SELECT *  FROM tbl_article order by  articleid desc ";
+        string strsql = @"SELECT *  FROM tbl_article  LEFT OUTER JOIN
+         tbl_article_lesson ON tbl_article.articleId = tbl_article_lesson.lessonId ";
+        if (Request["unitid"] == "24")
+        {
+            lesson = "Y";
+            strsql += " where lesson = 'Y'";
+        }
+        else
+            strsql += " where lesson is null or lesson <>  'Y'";
+        strsql += " order by  articleid desc";
         NameValueCollection nvc = new NameValueCollection();      
         DataTable dt = DbControl.Data_Get(strsql, nvc);
         ListView1.DataSource = dt;

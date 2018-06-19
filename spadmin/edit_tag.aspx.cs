@@ -79,6 +79,7 @@ public partial class spadmin_edit_tag : System.Web.UI.Page
             tagname.Text = rs["tagname"].ToString();
             status.SelectedValue = rs["status"].ToString();
             contents.Text = rs["contents"].ToString();
+            title .Text = rs["title"].ToString();
             HiddenField1.Value = rs["pic"].ToString();
             if (rs["pic"].ToString () != "")
             {
@@ -121,12 +122,12 @@ public partial class spadmin_edit_tag : System.Web.UI.Page
 
         if (Btn_save.CommandArgument == "add")
         {
-            strsql = " insert into  tbl_tag( tagname, status, unitid,pic,contents) values ";
-            strsql += "(@tagname, @status, @unitid,@pic,@contents ) ";
+            strsql = " insert into  tbl_tag( tagname, status, unitid,pic,contents,title) values ";
+            strsql += "(@tagname, @status, @unitid,@pic,@contents ,@title) ";
         }
         else
         {
-            strsql = @"update  tbl_tag set tagname=@tagname,status=@status,pic=@pic,contents=@contents
+            strsql = @"update  tbl_tag set tagname=@tagname,status=@status,pic=@pic,contents=@contents,title=@title
             where tagid =@tagid";
         }
 
@@ -139,6 +140,7 @@ public partial class spadmin_edit_tag : System.Web.UI.Page
         cmd.Parameters.Add("tagname", SqlDbType.NVarChar).Value = tagname.Text;
         cmd.Parameters.Add("pic", SqlDbType.NVarChar).Value = HiddenField1.Value;
         cmd.Parameters.Add("contents", SqlDbType.NVarChar).Value = contents.Text;
+        cmd.Parameters.Add("title", SqlDbType.NVarChar).Value = title.Text;
         if (Btn_save.CommandArgument == "add")
         {
             cmd.Parameters.Add("unitid", SqlDbType.VarChar).Value =unitid;

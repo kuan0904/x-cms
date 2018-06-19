@@ -183,47 +183,51 @@ public partial class spadmin_article : System.Web.UI.Page
     }
   
     [WebMethod(EnableSession = true)]
-    public static string Set_data(string kind, string id,string[] categoryid
+    public static string Set_data( string kind,string id,string[] categoryid
         , string subject, string subtitle,string contents, string pic,string postday
-        , string startday, string endday,string address,string lessontime,string price
-        , string sellprice
-        , string[] tags, string  lesson, string[] lecturer, string author, string keywords, string status)
+        , string[] tags,  string author, string keywords, string status, List<article.Lesson> Lesson  )
     {
-
+        string result = ""; 
+    
         MainData MainData = new MainData
         {
+            
             Id = int.Parse(id),
             Subject = subject,
             SubTitle = subtitle,
             Contents = contents,
             Pic = pic,
-            PostDay = DateTime.Parse(postday),
-            StartDay = DateTime.Parse(startday),
-            EndDay = DateTime.Parse(endday),
+            PostDay = DateTime.Parse(postday),          
             Status = status,
             Viewcount = 0,
             Keywords = keywords,
             Tags = tags,
             Category = categoryid,
             Author = author,
-            Address = address,
-            Lessontime = lessontime,
-            Lecturer = lecturer,
-            Price =int.Parse (price),
-            Sellprice =int.Parse (sellprice), 
-            Lesson =lesson 
-           
-
-
+            Lesson =Lesson ,
+            kind=kind        
         };
    
-        HttpContext.Current.Session["MainData"] = MainData;
-      //  var json = new JavaScriptSerializer().Serialize(MainData);
-        string result = "";
+        HttpContext.Current.Session["MainData"] = MainData;     
+      
         return (result);
 
     }
-  
+    [WebMethod(EnableSession = true)]
+    public static string Set_LessonData( string id, List<article.Lesson> item)
+    {
+        List<Lesson> ItemData = new List<Lesson>();
+        ItemData = item;
+        //ItemData.Add(new ItemData
+        //{
+
+        //});
+        HttpContext.Current.Session["LessonData"] = ItemData;
+        //  var json = new JavaScriptSerializer().Serialize(ItemData);
+        string result = "";
+        return (result); ;
+
+    }
     [WebMethod(EnableSession = true)]
     public static string Set_ItemData(string kind, string id , List<article.ItemData> item)
     {

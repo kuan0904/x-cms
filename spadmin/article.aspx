@@ -50,7 +50,8 @@
             $("#endday").datepicker();
             $("#endday").datepicker("option", "dateFormat", "yy/mm/dd");
 
-        });
+        });
+
         jQuery.postJSON = function (url, para, contentType, callback) {
             if (contentType == null || contentType == '') contentType = "text/xml";
             $.ajax({
@@ -105,9 +106,12 @@
                     $('#postDay').val(result.PostDay);                 
                     $('#startday').datepicker("setDate", new Date(result.StartDay));
                     $('#endday').datepicker("setDate", new Date(result.EndDay));
+                    $('#limitnum').val(result.Limitnum);
+               
                     CKEDITOR.instances['contents'].setData(result.Contents);                           
                     document.getElementById('console').innerHTML = ("<img src=\"/webimages/article/" + result.Pic + "\" width=300>");
-                    $('#logoPic').val(result.Pic);                           
+                    $('#logoPic').val(result.Pic);     
+                     
                 }
             });
                 $.postJSON('article.aspx/get_tbl_article_item', dataValue, 'application/json; charset=utf-8', function (result) {
@@ -188,11 +192,11 @@
                 if (confirm('你確定嗎?')) { $(this).parent().remove(); }
 
             });
-            get_tag();
+          //  get_tag();
             get_category();
             get_lecturer();
         });
-         function get_lecturer() {
+        function get_lecturer() {
             var dataValue = "{ kind: 'get' }";
             $.postJSON('article.aspx/get_lecturer', dataValue, 'application/json; charset=utf-8', function (result) {
                 if (result != "") {
@@ -202,8 +206,8 @@
                     var cb = "";
                     var s = "";
                     $.each(result, function (key, val) {       
-                       
-                        s = maindata ==  undefined ? "":check_cbx(maindata.Lecture, val.id);                      
+                  
+                        s = maindata ==  undefined ? "":check_cbx(maindata.Lecturer, val.id);                      
                         cb += "<input name='lecturerid' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl>" + val.name + "</span>";
                     });                    
                     $("#lecturer").html(cb);                    
@@ -241,7 +245,7 @@
                             cb += "<span style='width:300px'>" + val.name + "</span>:";
                             for (i = 0; i < val.detail.length; i++) {                               
                                 s = maindata ==  undefined ? "": check_cbx(maindata.Category, val.detail[i].id);                                
-                                cb += "<input name='categoryid' class='ace ace-checkbox-2' type='checkbox' value='" + val.detail[i].id + "'" + s + "><span class=lbl>" + val.detail[i].name + "</span>";
+                                cb += "<input name='categoryid' class='ace ace-checkbox-2' type='checkbox' value='" + val.detail[i].id + "'" + s + "><span class=lbl><b>" + val.detail[i].name + "</b></span>";
                             }
                           
                         }
@@ -313,20 +317,56 @@
             if ( $("#logoPic").val() == '') {
                 errmsg += ('文章主圖未上傳\r\n');
             }
-            var lesson = '<%=lesson%>';
-
+   
             var categoryid = $('input:checkbox:checked[name="categoryid"]').map(function () { return $(this).val(); }).get();
             var tags = $('input:checkbox:checked[name="tags"]').map(function () { return $(this).val(); }).get();   
             var lecturer = $('input:checkbox:checked[name="lecturerid"]').map(function () { return $(this).val(); }).get();    
             var status = $("#status").prop("checked") == true ? "Y" : "N";
-         
+            var lesson = '<%=lesson%>';
+          
+            if (lesson == 'Y') {
+                if ($("#startday").val() == '') {
+                    errmsg += ('請輸入活動開始日期\r\n');
+                }
+                if ($("#endday").val() == '') {
+                    errmsg += ('請輸入活動開始日期\r\n');
+                }
+                if ($("#lessontime").val() == '') {
+                    errmsg += ('請輸入上課時間說明\r\n');
+                }
+                if ($("#address").val() == '') {
+                    errmsg += ('請輸入上課地點\r\n');
+                }
+
+                if ($("#pirce").val() == '') {
+                    errmsg += ('請輸入費用\r\n');
+                }
+                if ($("#limitnum").val() == '') {
+                    errmsg += ('請輸入人數\r\n');
+                }
+                if ($("#sellprice").val() == '') {
+                    errmsg += ('請輸入費用\r\n');
+                }
+
+            } else {
+                $("#startday").val('1911/01/01');
+                $("#endday").val('1911/01/01');
+                $("#address").val('');
+                $("#lessontime").val('');
+                $("#address").val('');
+                $("#price").val('0');
+                $("#limitnum").val('0');
+                $("#sellprice").val('0');
+            }
+            
             var dataValue = {
                 kind: "set", id: articleId, subject: $("#subject").val(), subtitle: $("#subtitle").val()
                 , contents: content, pic: $("#logoPic").val(), keywords: $("#keywords").val()
                 , status: status, categoryid: categoryid, startday: $("#startday").val(), endday: $("#endday").val()
                 , tags: tags, author: $("#author").val(), postday: $("#postday").val()
                 , lecturer: lecturer, price: $("#price").val(), sellprice: $("#sellprice").val()
-                , address: $("#address").val(), lessontime: $("#lessontime").val(),lesson:lesson
+                , address: $("#address").val(), lessontime: $("#lessontime").val(), lesson: lesson
+                ,limitnum:$("#limitnum").val()
             };
 
             if (errmsg == '') {
@@ -427,7 +467,7 @@
                             <a data-toggle="tab" href="#item2">課程內容</a>
                         </li>
                         <li>
-                            <a data-toggle="tab" href="#item3">段落內容</a>
+                      <!--      <a data-toggle="tab" href="#item3">段落內容</a>-->
                         </li>
                     </ul>
                 </div>
@@ -511,7 +551,8 @@
                                         <input id="postday" type="text" />
                                     </td>
 
-                                </tr>                              
+                                </tr> 
+                                <!--
                                 <tr>
                                     <td>標籤</td>
                                     <td>
@@ -521,6 +562,7 @@
                                     </td>
 
                                 </tr>
+                                -->
                                 <tr>
                                     <td>狀態</td>
                                     <td>
@@ -536,13 +578,12 @@
 
                                 </tr>
                                 <tr>
-                                    <td colspan="2">
-                                        <button type="button" class="btn btn-primary" onclick="ret()">返 回</button>
+                                   <td colspan="2">
+                                           <button type="button" class="btn btn-primary" onclick="ret()">返 回</button>
                                         <button type="button" class="btn btn-primary" id="btn_save">存 檔</button>
                                         <button type="button" class="btn btn-primary" id="preview">預 覽</button>
                                         <button type="button" class="btn btn-primary" id="btn-next">新增段落</button>
-
-                                    </td>
+                                   </td>
                                 </tr>
                             </table>
                         </div>
@@ -587,9 +628,17 @@
                                    <td>課程費用(特價)</td>
                                    <td>  <input id="sellprice" type="number"    /> </td>
                                </tr>   
+                                      <tr>
+                                    <td>可報名人數</td>
+                                    <td> <input id="limitnum" type="number"     /> </td>
+                                  </tr>
                                 <tr>
                                     <td>講師管理</td>
-                                    <td>  <label id="lecturer"></label><br /></td>
+                                    <td>  <label id="lecturer"></label><br />
+
+                                              <a href="Edit_tag.aspx?unitid=14" class="iframe cboxElement"><i class="icon-double-angle-right"></i>講師管理</a>
+                              
+                                    </td>
                                   </tr>
                             </table>
                         </div>
@@ -621,6 +670,10 @@
                             </table>
 
                         </div>
+                       
+                                    
+
+                                   
                     </div>
                 </div>
                 <!-- /widget-main -->

@@ -17,14 +17,14 @@ namespace MyPublic
             //routes.EnableFriendlyUrls(settings);
             routes.EnableFriendlyUrls(settings, new Microsoft.AspNet.FriendlyUrls.Resolvers.IFriendlyUrlResolver[] { new MyWebFormsFriendlyUrlResolver() });
 
-            routes.MapPageRoute("article", "Article/{id}", "~/detail.aspx",
-                false, null,
-                new RouteValueDictionary { { "id", "^[0-9]*$" } });
+            routes.MapPageRoute("article", "Article/{id}", "~/detail.aspx",false, null,new RouteValueDictionary { { "id", "^[0-9]*$" } });
+            routes.MapPageRoute("class", "Class/{id}", "~/detail-course.aspx",false, null,new RouteValueDictionary { { "id", "^[0-9]*$" } });
 
-                routes.MapPageRoute("catalog", "{id}/catalog/{*pageindex}", "~/list.aspx",
-                     false, null,
-                    new RouteValueDictionary { { "id", "^[0-9]*$" }, { "pageindex", "^[0-9]*$" } }
-                    );
+
+            routes.MapPageRoute("catalog", "{id}/catalog/{*pageindex}", "~/list.aspx",
+                    false, null,
+                new RouteValueDictionary { { "id", "^[0-9]*$" }, { "pageindex", "^[0-9]*$" } }
+                );
 
             routes.MapPageRoute("listpage", "{unitname}/{*pageindex}", "~/list.aspx",
                  false, null,                 

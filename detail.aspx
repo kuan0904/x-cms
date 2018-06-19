@@ -1,38 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="detail.aspx.cs" Inherits="detail" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
-        <script>
-           
-        $(document).ready(function () {     
-            var dataValue = {"kind":"list"};             
-            $.post('/hot_list', dataValue, function (result) { $("#hot_list").html(result); });
-            dataValue = {"classid":"2"};             
-            $.post('/AdBanner', dataValue, function (result) { $("#ad_banner1").html(result); });
-            $.post('/AdBanner', dataValue, function (result) { $("#ad_banner2").html(result); });
-              //分享至臉書
-	        $("a.btn-share.facebook").click(function () {
-	        window.open('https://www.facebook.com/share.php?u='.concat(encodeURIComponent(location.href)), "_blank", "toolbar=yes,location=yes, directories=no, status=no,menubar=yes,scrollbars=yes,esizable=no, copyhistory=yes, width=600,  height=400")
-            })
-            $("a.btn-share.twitter").click(function () {
-                text=   $(document).find("title").text();
-	            window.open('http://twitter.com/share?text='+ text +'&url='.concat(encodeURIComponent(location.href)), "_blank", "toolbar=yes,location=yes, directories=no, status=no,menubar=yes,scrollbars=yes,esizable=no, copyhistory=yes, width=600,  height=400")
-            })
-            $("a.btn-share.google").click(function () {
-	            window.open('https://plus.google.com/share?url='.concat(encodeURIComponent(location.href)), "_blank", "toolbar=yes,location=yes, directories=no, status=no,menubar=yes,scrollbars=yes,esizable=no, copyhistory=yes, width=600,  height=400")
-            })
-
-            $("a.btn-share.pinterest").click(function () {
-                text=   $(document).find("title").text();
-	            window.open('http://pinterest.com/pin/create/button/?description='+ text + '&url='.concat(encodeURIComponent(location.href)), "_blank", "toolbar=yes,location=yes, directories=no, status=no,menubar=yes,scrollbars=yes,esizable=no, copyhistory=yes, width=600,  height=400")
-            })
-
-          
-
-
-    });
-    
-
-    </script>
+ 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
        <div class="breadArea">
@@ -63,7 +32,7 @@
                                         <div class="post-featured-image"><%=pic %> </div>
                                         <div class="post-information">
                                             <ul class="category">
-                                                <li class="entry-category"><a href="#"><%=tags%></a></li>
+                                                <li class="entry-category"><%=tags%></li>
                                             </ul>
                                             <h1><%=subject %></h1>
                                             <div class="meta-info">

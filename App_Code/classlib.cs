@@ -38,8 +38,9 @@ namespace unity {
         
         public static string SubString (string str,int length,string kind)
         {
-            if (str  == "notag") str = noHTML(str);
-            if (str.Length > length)           
+          if (kind == "notag") str = noHTML(str);
+            str = str.Trim();
+            if (str.Length > length)
             {
                 str = str.Substring(0, length);
             }
@@ -729,13 +730,14 @@ namespace unity {
         }
         public static  string noHTML(string inputHTML)
         {
-            string noHTML = Regex.Replace(inputHTML, @"<[^>]+>|&nbsp;", "").Trim();
+            string noHTML = Regex.Replace(inputHTML, "<.*?>", String.Empty);
+           // string noHTML = Regex.Replace(inputHTML, @"<[^>]+>|&nbsp;", "").Trim();
             return noHTML;
         }
         public static string noHTMLNormalised(string noHTML)
         {
             string noHTMLNormalised = Regex.Replace(noHTML, @"\s{2,}", " ");
-            return noHTMLNormalised;
+            return noHTMLNormalised.Trim();
         }
       
     }

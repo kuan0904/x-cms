@@ -64,7 +64,7 @@
                                             <div class="caption col-xs-8">
                                                 <h3 class="title"><a href="/Article/<%#Eval("id") %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
                                                 <div class=meta-info>
-                                                    <a href="list.html" class="post-category"> <%# article.Web.Get_category_link  ((int) Eval("id"))%></a>
+                                                    <%# article.Web.Get_category_link  ((int) Eval("id"))%>
                                                     <div class=post-author>
                                                         <span>By</span>
                                                         <a href="#/author/admin/"> <%# article.Web.Get_author_link ((string) Eval("author"))%></a>
@@ -82,10 +82,10 @@
                                                        
                                                     </div>
                                                 </div><!-- meta-info END -->
-                                                <p class="description">
-                                                    <%# unity.classlib.SubString ( Eval("contents").ToString (),100,"notag") %>
-                                                </p>
-                                                <a class="btn-read-more" href="/Article/<%#Eval("id") %>">繼續閱讀</a>
+                                                 <a  href="/Article/<%#Eval("id") %>"> <p class="description">
+                                                   <%# unity.classlib.SubString ( Eval("contents").ToString (),100,"notag") %>
+                                                </p></a> 
+                                                <a  href="/Article/<%#Eval("id") %>" class="btn-read-more">繼續閱讀</a>
                                             </div>
                                         </div>
                                     </div><!-- col-md-12 END -->

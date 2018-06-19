@@ -1,14 +1,16 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/spadmin/admin.master" AutoEventWireup="true" CodeFile="Edit_article.aspx.cs" Inherits="spadmin_Edit_article" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/spadmin/admin.master" AutoEventWireup="true" CodeFile="Edit_Lesson.aspx.cs" Inherits="spadmin_Edit_Lesson" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-    
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">    
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder_title" runat="Server">
     <script>
      $(function () {
-          $("#postday").datepicker();
-          $("#postday").datepicker("option", "dateFormat", "yy/mm/dd");
-
+        $("#postday").datepicker();
+        $("#postday").datepicker("option", "dateFormat", "yy/mm/dd");
+        $("#startday").datepicker();
+        $("#startday").datepicker("option", "dateFormat", "yy/mm/dd");
+        $("#endday").datepicker();
+        $("#endday").datepicker("option", "dateFormat", "yy/mm/dd");
         });
 
     </script>
@@ -19,13 +21,11 @@
         <div class="box span12">
           <div class="box-content">
                 <asp:MultiView ID="MultiView1" runat="server">
-
                     <asp:View ID="View1" runat="server">    
-                        <div class="box-header well" data-original-title>
-                            <asp:TextBox ID="searchtxt" runat="server"></asp:TextBox><asp:Button ID="Btn_find"  class="btn btn-yellow" runat="server" Text="搜尋"  OnClick ="Btn_find_Click"/>
-                                         <asp:LinkButton ID="btn_add" runat="server" Text=""  OnClick ="btn_add_Click"  class="btn btn-app btn-primary btn-xs"><i class="icon-edit bigger-230"></i>新增資料</asp:LinkButton> 
-            
-                </div>
+                    <div class="box-header well" data-original-title>
+                        <asp:TextBox ID="searchtxt" runat="server"></asp:TextBox><asp:Button ID="Btn_find"  class="btn btn-yellow" runat="server" Text="搜尋"  OnClick ="Btn_find_Click"/>
+                        <asp:LinkButton ID="btn_add" runat="server" Text=""  OnClick ="btn_add_Click"  class="btn btn-app btn-primary btn-xs"><i class="icon-edit bigger-230"></i>新增資料</asp:LinkButton> 
+                    </div>
                     <asp:ListView ID="ListView1" runat="server" DataKeyNames="articleId" >
                         <EmptyDataTemplate>
                             <table runat="server" style="background-color: #FFFFFF; border-collapse: collapse; border-color: #999999; border-style: none; border-width: 1px;">
@@ -46,8 +46,7 @@
                                                     <th runat="server">標題</th>
                                                     <th runat="server">圖示</th>
                                                     <th runat="server">狀態</th>
-                                                    <th runat="server">上稿日</th>
-                                                       
+                                                    <th runat="server">上稿日</th>                                                       
                                                 </tr>
                                             </thead>
                                             <tr id="itemPlaceholder" runat="server">
@@ -72,8 +71,7 @@
                         </LayoutTemplate>
                         <ItemTemplate>
                             <tr>
-                                <td>
-                         
+                                <td>                         
                                        <asp:LinkButton ID="LinkButton1" runat="server" Text=""  OnClick="LinkButton1_Click"
                     CommandArgument='<%# Eval("articleId").ToString()%>' class="btn btn-info"><i class="icon-trash icon-white"></i>編輯</asp:LinkButton>                                                    
             
@@ -92,25 +90,17 @@
                                 </td>
                                 <td>
                                     <%# Eval("status").ToString () =="Y" ? "上架":"下架" %>
-                                </td>
-                            
+                                </td>                            
                                 <td>
                                     <%# DateTime .Parse(Eval("postday").ToString()).ToString("yyyy/MM/dd") %>
                                 </td>
-
-
-
-
                             </tr>
                         </ItemTemplate>
-                     
-
                     </asp:ListView>
                     <asp:HiddenField runat="server" ID="Selected_id"></asp:HiddenField>
                     </asp:View>
                 <asp:View ID="View2" runat="server">
-    <script>
-   
+        <script>
         var articleId = '<%=articleId%>';
         var maindata; 
         var flag;
@@ -120,17 +110,38 @@
                 $.postJSON('article.aspx/get_tbl_article', dataValue, 'application/json; charset=utf-8', function (result) {
                     var result = result.d;
                     result = JSON.parse(result);
-                    maindata = result;                              
+                    maindata = result;     
+                   
                     $('#postday').datepicker("setDate", new Date(result.PostDay));
                     $('#subject').val(result.Subject);                                           
                     $('#keywords').val(result.Keywords);                 
-                    $('#author').val(result.Author);
+                  
+                    $('#address').val(result.Lesson[0].Address);  
+                    $('#lessontime').val(result.Lesson[0].Lessontime);  
+                    $('#subtitle').val(result.SubTitle);  
+                    $('#startday').datepicker("setDate", new Date(result.Lesson[0].StartDay));
+                    $('#endday').datepicker("setDate", new Date(result.Lesson[0].EndDay));
                     $("#status").prop("checked", result.Status  == "Y" ? true : false);
-                    $('#postDay').val(result.PostDay);   
+                 
                     CKEDITOR.instances['contents'].setData(result.Contents);                           
                     document.getElementById('console').innerHTML = ("<img src=\"/webimages/article/" + result.Pic + "\" width=300>");
                     $('#logoPic').val(result.Pic); 
-                    
+                   
+                 
+                    var detail = result.Lesson[0].LessonDetail;
+                  
+                    $.each(detail, function (key, val) {
+                      
+                        var v = ' <div class="row-fluid"> <div class="box-content"><input type="button" class="mod" value="修改">';
+                        v += '<input type="button" class="delete" value="刪除"><br>';
+                        v += '序號:<span class = "lessonid">' + val.LessonId + '</span><br>';
+                        v += '說明:<span class="description">' + val.Description + '</span> <BR>';
+                        v += '課程費用(原價):<span class="sellprice">' + val.Sellprice + '</span><br>';
+                        v += '課程費用(特價):<span class="price">' + val.Price + '</span><br>';
+                        v += '可報名人數:<span class="limitnum">' + val.Limitnum + '</span><b ></div></div> ';
+                        $('#detailitem').append('<li style="background-color: #C0C0C0">' + v + '</li>');
+                     });   
+                  
                 });
             }
         }
@@ -143,7 +154,73 @@
             $("#btn_save").click(function () {
                 check_data('s');
             });         
-            get_category();           
+            get_category();  
+            get_lecturer();
+
+              $("#btl_add").click(function () {
+               // 新增明細資料
+                var errmsg = "";
+                var description = $("#description").val();
+                var price = $("#price").val();
+                var sellprice = $("#sellprice").val();
+                var limitnum = $("#limitnum").val();
+                var lessonid = $("#lessonid").val();
+                if (description == '') {
+                    errmsg += ('請輸入課程說明\r\n');
+                  }
+                if (sellprice == '') {
+                    errmsg += ('請輸原價\r\n');
+                }
+                if (price == '') {
+                    errmsg += ('請輸入特價\r\n');
+                  }
+                if (limitnum == '') {
+                    errmsg += ('請輸入可報名人數\r\n');
+                }
+                if (errmsg == '') {
+                   
+                    var v = ' <div class="row-fluid"> <div class="box-content"><input type="button" class="mod" value="修改">';
+                    v += '<input type="button" class="delete" value="刪除"><br>';
+                    v += '序號:<span class = "lessonid">' + lessonid + '</span><br>';
+                    v += '說明:<span class="description">' + description + '</span> <BR>';
+                    v += '課程費用(原價):<span class="sellprice">' + sellprice + '</span><br>';
+                    v += '課程費用(特價):<span class="price">' + price + '</span><br>';
+                    v += '可報名人數:<span class="limitnum">' + limitnum + '</span><b ></div></div> ';
+                 
+                    if ($("#lessonid").val() == "") {
+                        $('#detailitem').append('<li style="background-color: #C0C0C0">' + v + '</li>');//新增LI
+                    }
+                    else {
+                        $("ul#detailitem li").eq($("#lessonid").val()).html(v); //修改明細LI
+                    }
+                    $("#description").val('');
+                    $("#price").val('');
+                    $("#sellprice").val('');
+                    $("#limitnum").val('');
+                    $("#lessonid").val('');
+                   // $('#recent-tab a[href="#item1"]').tab('show')
+                    $("#btl_add").html("新增資料");
+                } else {
+                    alert(errmsg);
+                }
+            });
+            $("#btl_cel").click(function () {
+                $('#recent-tab a[href="#item1"]').tab('show') //返回主內容
+            });
+            $("ul#detailitem").on("click", "li", function () { //取得修改的明細
+                var num = $(this).index();             
+                $("#lessonid").val(num);
+                $("#price").val($(this).find('.price').text());
+                $("#description").val($(this).find('.description').text());
+                $("#limitnum").val($(this).find('.limitnum').text());
+                $("#sellprice").val($(this).find('.sellprice').text());
+                $("#btl_add").html("更新資料");
+                // $('#recent-tab a[href="#item3"]').tab('show')
+            })
+            $(document).on('click', '.delete', function (event) { //刪掉明細li
+                if (confirm('你確定嗎?')) { $(this).parent().remove(); }
+
+            });
         });
         function get_category() {
             var dataValue = "{ kind: 'get' }";
@@ -173,7 +250,42 @@
                     $("#category").html(cb);
                 }
             });
-        }  
+            }  
+        function get_tag() {
+            var dataValue = "{ kind: 'get' }";
+            $.postJSON('article.aspx/get_tag', dataValue, 'application/json; charset=utf-8', function (result) {
+                if (result != "") {
+                    var result = result.d;
+                    result = JSON.parse(result);
+                    result = result.main;
+                    var cb = "";
+                    var s = "";
+                    $.each(result, function (key, val) {       
+                        s = maindata ==  undefined ? "":check_cbx(maindata.Tags, val.id);                      
+                        cb += "<input name='tags' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl>" + val.name + "</span>";
+                    });                    
+                    $("#tag").html(cb);                    
+                }
+            });
+            }
+          function get_lecturer() {
+            var dataValue = "{ kind: 'get' }";
+            $.postJSON('article.aspx/get_lecturer', dataValue, 'application/json; charset=utf-8', function (result) {
+                if (result != "") {
+                    var result = result.d;
+                    result = JSON.parse(result);
+                    result = result.main;
+                    var cb = "";
+                    var s = "";
+                    $.each(result, function (key, val) {       
+                       
+                        s = maindata ==  undefined ? "":check_cbx(maindata.Lesson[0].Lecturer, val.id);                      
+                        cb += "<input name='lecturerid' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl>" + val.name + "</span>";
+                    });                    
+                    $("#lecturer").html(cb);                    
+                }
+            });
+        }
         function check_data(kind) {//將主資料存到SESSION       
             var errmsg = "";
             var content = CKEDITOR.instances['contents'].getData();
@@ -199,23 +311,57 @@
             if ( $("#logoPic").val() == '') {
                 errmsg += ('文章主圖未上傳\r\n');
             }
-    
+            if ($("#startday").val() == '') {
+                errmsg += ('請輸入活動開始日期\r\n');
+            }
+            if ($("#endday").val() == '') {
+                errmsg += ('請輸入活動開始日期\r\n');
+            }
+            if ($("#lessontime").val() == '') {
+                errmsg += ('請輸入上課時間說明\r\n');
+            }
+            if ($("#address").val() == '') {
+                errmsg += ('請輸入上課地點\r\n');
+            }
+
             var categoryid = $('input:checkbox:checked[name="categoryid"]').map(function () { return $(this).val(); }).get();
-            var tags = $('input:checkbox:checked[name="tags"]').map(function () { return $(this).val(); }).get();   
-            var status = $("#status").prop("checked") == true ? "Y" : "N";       
-          
+            var tags = $('input:checkbox:checked[name="tags"]').map(function () { return $(this).val(); }).get();  
+            var lecturerid = $('input:checkbox:checked[name="lecturerid"]').map(function () { return $(this).val(); }).get();
+            var status = $("#status").prop("checked") == true ? "Y" : "N";   
+
+        
+         var Detail = "[";
+            var i = 0;
+            $("ul#detailitem li").each(function () {
+                i++;              
+                if (i != 1) { Detail += ","; }
+                var lid = $(this).find('.lessonId').text();
+                if (lid == "") lid = 1;
+      
+
+                    Detail += "{\"Id\":\"" + articleId + "\"";
+                    Detail += ",\"LessonId\":\"" + lid + "\"";
+                    Detail += ",\"Description\":\"" +  $(this).find('.description').text()  + "\"";
+                    Detail += ",\"Price\":\"" + $(this).find('.price').text() + "\"";
+                    Detail += ",\"Sellprice\":\"" + $(this).find('.sellprice').text() + "\"";
+                    Detail += ",\"Limitnum\":\"" + $(this).find('.limitnum').text() + "\"}";
+            });    
+            Detail += "]";
+       
+           Detail = JSON.parse(Detail);      
             var dataValue = {
-                id: articleId, subject: $("#subject").val(), subtitle: $("#subtitle").val()
+                 id: articleId, subject: $("#subject").val(), subtitle: $("#subtitle").val()
                 , contents: content, pic: $("#logoPic").val(), keywords: $("#keywords").val()
                 , status: status, categoryid: categoryid
-                , tags: tags, author: $("#author").val(), postday: $("#postday").val(),
-                kind: "A",
+                , tags: tags, author: "", postday: $("#postday").val()
+                ,  kind: "L",
                 Lesson: [{
-                    Id: 0, StartDay:"", EndDay: "", Lecturer: [], Lessontime: "", Address:"" ,
-                    LessonDetail: { Id: 0, LessonId: 0, Price: 0, Sellprice:0, Limitnum:0, Description: "" }
+                    Id: articleId, StartDay: $("#startday").val(), EndDay: $("#endday").val(), Lecturer: lecturerid,
+                    Lessontime: $("#lessontime").val(), Address: $("#address").val(),
+                    LessonDetail: Detail
                 }]
-      
             };
+
             if (errmsg == '') {
                 $.postJSON('article.aspx/Set_data', JSON.stringify(dataValue), 'application/json; charset=utf-8', function (result) {
                     result = result.d;
@@ -243,7 +389,7 @@
                     if (result == '')
                     {
                         alert('已存檔');
-                       location.href = location.href;
+                         location.href = location.href;
                     }
                     else
                     { alert(result); }
@@ -254,22 +400,42 @@
    
     </script>
 
-    
+            <div class="widget-box transparent" id="recent-box">
+            <div class="widget-header">
+                <div>
+                    <ul class="nav nav-tabs" id="recent-tab">
+                        <li class="active">
+                            <a data-toggle="tab" href="#item1">課程內容</a>
+                        </li>
+                           <li>
+                            <a data-toggle="tab" href="#item2">開課設定</a>
+                        </li>
+                        <li>
+                      <!--      <a data-toggle="tab" href="#item3">段落內容</a>-->
+                        </li>
+                    </ul>
+                </div>
+            </div>
             <div class="widget-body">
                 <div class="widget-main padding-4">
                     <div class="tab-content padding-8 overflow-visible">
                         <div id="item1" class="tab-pane active">
                             <table style="background-color: #FFFFFF">
                                 <tr>
-                                    <td>文章所屬分類(*)</td>
+                                    <td>課程所屬分類(*)</td>
                                     <td>
                                         <label id="category"></label>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>主標題(*)</td>
+                                    <td>課程名稱(*)</td>
                                     <td>
                                         <input id="subject" type="text" style="width: 500px" placeholder="必填"  /></td>
+                                </tr>
+                                <tr>
+                                    <td>課程說明</td>
+                                    <td>
+                                        <input id="subtitle" type="text" style="width: 500px;height:100px;" /></td>
                                 </tr>
                                 <tr>
                                     <td>主圖示(750x500)(*)</td>
@@ -284,7 +450,6 @@
                                         </div>
                                         <input id="logoPic" type="hidden" />
                                         <pre id="console" class="col-sm-9"> </pre>
-
                                         <div style="display: none" class="col-sm-9">
                                             <div id="list_menu">
                                             </div>
@@ -309,77 +474,10 @@
                                         <input id="contents" type="text" style="height: 600px" />
                                         <script>
                                             CKEDITOR.replace('contents');
-
                                         </script>
                                     </td>
-
                                 </tr>                   
-                                <tr>
-                                    <td>作者</td>
-                                    <td>
-                                        <input type="text" name="author" id="author" value=""   placeholder="請輸入作者 ..." />
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>關鍵字</td>
-                                    <td>
-                                        <input type="text" name="keywords" id="keywords" value=""   placeholder="請輸入關鍵字 ..." />
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>發佈日(*)</td>
-                                    <td>
-                                        <input id="postday" type="text" />
-                                    </td>
-
-                                </tr> 
-                                <!--
-                                <tr>
-                                    <td>標籤</td>
-                                    <td>
-                                        <label id="tag"></label><br />
-                                   
-                                        <a href="Edit_tag.aspx?unitid=13" class="iframe cboxElement"><i class="icon-double-angle-right"></i>標簽管理</a>
-                                    </td>
-
-                                </tr>
-                                -->
-                                <tr>
-                                    <td>狀態</td>
-                                    <td>
-                                        <input id="status" name="status" type="checkbox" class="ace ace-switch ace-switch-6" />
-                                        <span class="lbl"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
-                                        <ul id="detailitem">
-                                        </ul>
-                                    </td>
-
-                                </tr>
-                                <tr>
-                                   <td colspan="2">
-                                        
-                                        <button type="button" class="btn btn-primary" id="btn_save">存 檔</button>
-                                        <button type="button" class="btn btn-primary" id="preview">預 覽</button>
-                                          <asp:Button ID="Btn_cancel" runat="server" class="btn" Text="取 消" OnClick ="Btn_cancel_Click" />
-                                      
-
-                                   </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div id="item2" class="tab-pane">
-
-                                <table>
-                                <tr>
-                                    <td>次標題</td>
-                                    <td>
-                                        <input id="subtitle" type="text" style="width: 500px;height:100px;" /></td>
-                                </tr>
+              
                                 <tr>
                                     <td>
                                         開始時間</td>
@@ -397,35 +495,83 @@
                                 </tr>
                                 <tr>
                                     <td>上課時間說明</td>
-                                    <td><input id="lessontime" type="text" size="60"  />
-                                         
-                                    </td>
+                                    <td><input id="lessontime" type="text" size="60"  /> </td>
                                 </tr>
-                                     <tr>
+                                <tr>
                                    <td>地址</td>
                                    <td><input id="address" type="text" size="100"  /> </td>
                                </tr>   
+                                <tr>
+                                    <td>講師管理</td>
+                                    <td>  <label id="lecturer"></label><br />  
+                                        <a href="Edit_tag.aspx?unitid=14" class="iframe cboxElement"><i class="icon-double-angle-right"></i>講師管理</a>
+                              
+                                    </td>
+                                  </tr>
+
+                                <tr>
+                                    <td>關鍵字</td>
+                                    <td>
+                                        <input type="text" name="keywords" id="keywords" value=""   placeholder="請輸入關鍵字 ..." />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>發佈日(*)</td>
+                                    <td>
+                                        <input id="postday" type="text" />
+                                    </td>
+                                </tr> 
+                                <tr>
+                                    <td>狀態</td>
+                                    <td>
+                                        <input id="status" name="status" type="checkbox" class="ace ace-switch ace-switch-6" />
+                                        <span class="lbl"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                   <td colspan="2">
+                                        
+                                        <button type="button" class="btn btn-primary" id="btn_save">存 檔</button>
+                                        <button type="button" class="btn btn-primary" id="preview">預 覽</button>
+                                          <asp:Button ID="Btn_cancel" runat="server" class="btn" Text="取 消" OnClick ="Btn_cancel_Click" />
+                                   </td>
+                                </tr>
+                            </table>
+                        </div>
+          
+                        <div id="item2" class="tab-pane">
+
+                   
+                            <table >
+                                <tr>
+                                    <td>說明</td>
+                                    <td><input id="description" type="text"    /></td>
+                                </tr>
                                <tr>
                                    <td>課程費用(原價)</td>
-                                   <td> <input id="price" type="number"    /> </td>
+                                   <td> <input id="sellprice" type="number"    /> </td>
                                </tr>
                                 <tr>
                                    <td>課程費用(特價)</td>
-                                   <td>  <input id="sellprice" type="number"    /> </td>
+                                   <td>  <input id="price" type="number"    /> </td>
                                </tr>   
                                       <tr>
                                     <td>可報名人數</td>
                                     <td> <input id="limitnum" type="number"     /> </td>
                                   </tr>
                                 <tr>
-                                    <td>講師管理</td>
-                                    <td>  <label id="lecturer"></label><br />
 
-                                              <a href="Edit_tag.aspx?unitid=14" class="iframe cboxElement"><i class="icon-double-angle-right"></i>講師管理</a>
-                              
+                                    <td colspan="2"> <input id="lessonid" type="hidden" value=""   /> <button type="button" class="btn btn-primary" id="btl_add">新增資料</button></td>
+                                </tr>
+              
+                                <tr>
+                                    <td colspan="2">
+                                        <ul id="detailitem" >
+                                        </ul>
                                     </td>
-                                  </tr>
-                            </table>
+
+                                </tr>
+                         </table>
                         </div>
                        
                                     
@@ -436,7 +582,7 @@
                 <!-- /widget-main -->
             </div>
             <!-- /widget-body -->
-   
+        </div>
         <script type="text/javascript">
         jQuery(function ($) {
             //we could just set the data-provide="tag" of the element inside HTML, but IE8 fails!
@@ -455,21 +601,7 @@
                 tag_input.after('<textarea id="' + tag_input.attr('id') + '" name="' + tag_input.attr('name') + '" rows="3">' + tag_input.val() + '</textarea>').remove();
                 //$('#form-field-tags').autosize({append: "\n"});
             }
-            var tag_input1 = $('#author');
-            if (!(/msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase()))) {
-                tag_input1.tag(
-                    {
-                        placeholder: tag_input.attr('placeholder'),
-                        //enable typeahead by specifying the source array
-                        source: ace.variable_US_STATES,//defined in ace.js >> ace.enable_search_ahead
-                    }
-                );
-            }
-            else {
-                //display a textarea for old IE, because it doesn't support this plugin or another one I tried!
-                tag_input1.after('<textarea id="' + tag_input.attr('id') + '" name="' + tag_input.attr('name') + '" rows="3">' + tag_input.val() + '</textarea>').remove();
-                //$('#form-field-tags').autosize({append: "\n"});
-            }
+      
 
 
         });

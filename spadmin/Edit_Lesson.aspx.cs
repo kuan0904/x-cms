@@ -8,19 +8,17 @@ using System.Data;
 using System.Data.SqlClient;
 using unity;
 using System.Collections.Specialized;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-public partial class spadmin_Edit_article : System.Web.UI.Page
+public partial class spadmin_Edit_Lesson : System.Web.UI.Page
 {
     public string articleId = "0";
     protected void Page_Init(object sender, EventArgs e)
     {
-       
-      
+
+
     }
     protected void Page_Load(object sender, EventArgs e)
     {
- 
+
         if (!IsPostBack)
         {
 
@@ -33,14 +31,14 @@ public partial class spadmin_Edit_article : System.Web.UI.Page
     {
 
 
-        string strsql = @"SELECT *  FROM tbl_article where status <> 'D' and articleid not in 
+        string strsql = @"SELECT *  FROM tbl_article where status <> 'D' and articleid  in 
             (select articleid from  tbl_lesson) ";
         if (searchtxt.Text != "")
         {
             strsql += " and ( subject like @s or keywords like @s or contents like @s or author like @s ) ";
         }
         strsql += " order by  articleid desc";
-       
+
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("s", "%" + searchtxt.Text + "%");
         DataTable dt = DbControl.Data_Get(strsql, nvc);
@@ -55,7 +53,7 @@ public partial class spadmin_Edit_article : System.Web.UI.Page
     {
         selectSQL();
     }
-  
+
     protected void Btn_cancel_Click(object sender, System.EventArgs e)
     {
         MultiView1.ActiveViewIndex = 0;
@@ -64,11 +62,11 @@ public partial class spadmin_Edit_article : System.Web.UI.Page
     public void cleaninput()
     {
         Selected_id.Value = "";
-        
+
     }
     protected void btn_del_Click(object sender, System.EventArgs e)
     {
-       Button  obj = sender as Button ;
+        Button obj = sender as Button;
         SqlConnection conn = new SqlConnection(classlib.dbConnectionString);
         SqlCommand cmd = new SqlCommand();
 
@@ -95,7 +93,7 @@ public partial class spadmin_Edit_article : System.Web.UI.Page
 
         conn.Open();
         cmd = new SqlCommand("update  tbl_article set status = 'D'  where  articleId = @id ", conn);
-        cmd.Parameters.Add("@id", SqlDbType.Int).Value =obj.CommandArgument ;
+        cmd.Parameters.Add("@id", SqlDbType.Int).Value = obj.CommandArgument;
         cmd.ExecuteNonQuery();
         cmd.Dispose();
         conn.Close();
@@ -112,14 +110,14 @@ public partial class spadmin_Edit_article : System.Web.UI.Page
     protected void LinkButton1_Click(object sender, EventArgs e)
     {
         MultiView1.ActiveViewIndex = 1;
-        LinkButton obj = (LinkButton ) sender;
+        LinkButton obj = (LinkButton)sender;
         articleId = obj.CommandArgument;
     }
 
     protected void Btn_save_Click(object sender, EventArgs e)
     {
-        MultiView1.ActiveViewIndex = 0;
-        selectSQL();
+        //MultiView1.ActiveViewIndex = 0;
+        //selectSQL();
     }
 
     protected void Btn_find_Click(object sender, EventArgs e)
@@ -127,5 +125,4 @@ public partial class spadmin_Edit_article : System.Web.UI.Page
         selectSQL();
     }
 
-  
 }

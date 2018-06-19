@@ -112,6 +112,7 @@ namespace article
             {
                 result += result == "" ? "" : "/";
                 result +=  s.Name ;
+
             }
             return result;
         }
@@ -122,8 +123,8 @@ namespace article
             string result = "";
             foreach (var s in ItemData)
             {
-                result += result == "" ? "" : "/";
-                result += s.Name;
+             //result += result == "" ? "" : "/";
+                result += " <a href = \"/"+ s.CategoryId.ToString () + "/catalog\" class=\"post-category\">" +  s.Name + "</a>";
            
             }
             return result ;
@@ -146,9 +147,7 @@ namespace article
         public static MainData Get_article(int id)
         {
             MainData MainData = new MainData();
-            string strsql = @"select * from    tbl_article   tbl_article LEFT OUTER JOIN
-                            tbl_article_lesson ON tbl_article.articleId = tbl_article_lesson.lessonId
-                            where articleid =@id";
+            string strsql = @"select * from    tbl_article  where articleid =@id";
             NameValueCollection nvc = new NameValueCollection
             {
                 { "id", id.ToString() }
@@ -157,7 +156,7 @@ namespace article
 
             string[] tags;
             string[] categoryid;
-            string[] Lecture;
+            string[] Lecturer;
          
             if (dt.Rows.Count > 0)
             {
@@ -171,14 +170,7 @@ namespace article
                 MainData.Keywords = dt.Rows[0]["Keywords"].ToString();
                 MainData.Author = dt.Rows[0]["Author"].ToString();
                 MainData.Viewcount = (int)dt.Rows[0]["Viewcount"];
-                MainData.Price = dt.Rows[0]["price"].ToString () == "" ? 0:(int)dt.Rows[0]["price"];
-                MainData.Sellprice = dt.Rows[0]["Sellprice"].ToString() == ""  ? 0 : (int)dt.Rows[0]["Sellprice"];
-                MainData.Address  = dt.Rows[0]["address"].ToString();
-                MainData.Lessontime = dt.Rows[0]["Lessontime"].ToString();
-                MainData.StartDay = dt.Rows[0]["StartDay"].ToString() =="" ? DateTime.Today  : DateTime.Parse(dt.Rows[0]["StartDay"].ToString());
-                MainData.EndDay = dt.Rows[0]["EndDay"].ToString() == "" ? DateTime.Today : DateTime.Parse(dt.Rows[0]["EndDay"].ToString());
-                MainData.Lesson = dt.Rows[0]["lesson"].ToString();
-            }
+               }
             dt.Dispose();
             nvc.Clear();
 
@@ -211,6 +203,42 @@ namespace article
             dt.Dispose();
             nvc.Clear();
 
+            //取課程
+            List<Lesson> lesson = new List<Lesson>();
+            List<LessonDetail> lessondetail = new List<LessonDetail>();
+            strsql = @"select * from    tbl_lesson where articleid =@id";
+            nvc.Add("id", id.ToString());
+            dt = DbControl.Data_Get(strsql, nvc);
+            if (dt.Rows.Count > 0)
+            {
+                lesson.Add(new Lesson
+                {
+
+                    Address = dt.Rows[0]["address"].ToString(),
+                    Lessontime = dt.Rows[0]["Lessontime"].ToString(),
+                    StartDay = dt.Rows[0]["StartDay"].ToString() == "" ? DateTime.Today : DateTime.Parse(dt.Rows[0]["StartDay"].ToString()),
+                    EndDay = dt.Rows[0]["EndDay"].ToString() == "" ? DateTime.Today : DateTime.Parse(dt.Rows[0]["EndDay"].ToString()),
+                    Id = id
+                });
+            }
+
+            strsql = @"select * from  tbl_lesson_class where articleid =@id";
+            dt = DbControl.Data_Get(strsql, nvc);
+            for (int idx = 0; idx < dt.Rows.Count; idx++)
+            {
+                lessondetail.Add(new LessonDetail
+                {
+                    LessonId = (int)dt.Rows[idx]["LessonId"],
+                    Sellprice = (int)dt.Rows[idx]["Sellprice"],
+                    Price = (int)dt.Rows[idx]["price"],
+                    Description = (string)dt.Rows[idx]["description"],
+                    Limitnum = (int)dt.Rows[idx]["Limitnum"],
+                    Sort  = (int)dt.Rows[idx]["sort"],
+                });
+            }       
+        
+            dt.Dispose();
+            nvc.Clear();
             //取講師
             termsList.Clear();
             strsql = "select * from  tbl_article_tag  where articleid =@id and unitid=14";
@@ -220,11 +248,20 @@ namespace article
             {
                 termsList.Add(dt.Rows[i]["tagid"].ToString());
             }
-            tags = termsList.ToArray();
+            Lecturer = termsList.ToArray();
             termsList.Clear();
-            MainData.Lecturer = tags;
+
+            bool exists = lesson.Exists(p => p.Id == id);
+            if (exists)
+            {
+                var L = lesson.Find(p => p.Id == id);
+                L.LessonDetail = lessondetail;
+                L.Lecturer = Lecturer;
+            }
+        
             nvc.Clear();
             dt.Dispose();
+            MainData.Lesson = lesson;
             return MainData;
 
         }
@@ -279,6 +316,27 @@ namespace article
             }
             return ItemData;
         }
+        public static List<Lecturer> Get_Lecturer_list(string[] id)
+        {
+            List<Lecturer> ItemData = new List<Lecturer>();
+            if (id != null)
+            {
+
+                foreach (string s in id)
+                {
+                    DataTable dt = Get_tbl_tag(int.Parse(s));
+                    ItemData.Add(new Lecturer
+                    {
+                         Id = (int)dt.Rows[0]["tagid"],
+                        Subject = dt.Rows[0]["tagName"].ToString(),
+                        Contents = dt.Rows[0]["Contents"].ToString(),
+                         Pic = dt.Rows[0]["Pic"].ToString(),
+                        Title =dt.Rows [0]["Title"].ToString ()
+                    });
+                }
+            }
+            return ItemData;
+        }
         public static List<article.MainData> Get_article_list(string cid, string KeyWords, int rows = 10, int page = 0)
         {
 
@@ -292,6 +350,7 @@ namespace article
                     or   categoryid = @cid ))";
 
             }
+            strsql += " order by articleId desc ";
             NameValueCollection nvc = new NameValueCollection
             {
                 { "cid", cid }
@@ -392,7 +451,7 @@ namespace article
         {
             int id = 0;
             string strsql = @"insert into tbl_article ( Viewcount) 
-        values (0);";//SELECT SCOPE_IDENTITY();
+            values (0);";//SELECT SCOPE_IDENTITY();
             NameValueCollection nvc = new NameValueCollection();
             id = DbControl.Data_add(strsql, nvc);
             nvc.Clear();
@@ -404,9 +463,11 @@ namespace article
         }
         public static int Article_Update(article.MainData ad)
         {
+            List<article.Lesson> Lesson = ad.Lesson;
+
             string strsql = @"update  tbl_article set 
                     subject =@subject,pic=@pic,subtitle=@subtitle,postday=@postday,contents=@contents ,
-                    keywords=@keywords,status=@status,author=@author,startday=@startday,endday=@endday
+                    keywords=@keywords,status=@status,author=@author
                     ,lesson=@lesson
                     where articleId =@id ";
             NameValueCollection nvc = new NameValueCollection
@@ -419,9 +480,9 @@ namespace article
                 { "keywords", ad.Keywords },
                 { "author", ad.Author },
                 { "status", ad.Status },
-                { "lesson", ad.Lesson },
-                { "startday",ad.StartDay.ToString("yyyy/MM/dd")  },
-                { "endday",ad.EndDay.ToString("yyyy/MM/dd") },
+                { "lesson", ad.kind =="L" ? "Y":"N" }
+                //{ "startday",ad.StartDay.ToString("yyyy/MM/dd")  },
+                //{ "endday",ad.EndDay.ToString("yyyy/MM/dd") },
               
             };
             int i = DbControl.Data_Update(strsql, nvc, ad.Id.ToString());
@@ -455,35 +516,55 @@ namespace article
             }
             nvc.Clear();
 
-            strsql = "delete from tbl_article_tag  where articleId =@id and unitid =14" ;
-            i = DbControl.Data_delete(strsql, ad.Id.ToString());
-
-            string[] lecturer = ad.Lecturer ;
-            foreach (string s in lecturer)
-            {
+            bool exists = Lesson.Exists(p => p.Id == ad.Id);
+            if (exists) {
+                var L = Lesson.Find(p => p.Id == ad.Id);
+                strsql = "delete from tbl_lesson  where articleId =@id ";
+                DbControl.Data_delete(strsql, ad.Id.ToString());
+                 nvc.Clear();
+                strsql = @"insert into tbl_lesson (articleId,address,startday,endday,lessontime) values 
+                     (@id,@address,@startday,@endday,@lessontime) ";
+                nvc.Add("id", ad.Id.ToString());
+                nvc.Add("address", L.Address );
+                nvc.Add("lessontime", L.Lessontime);
+                nvc.Add("startday", L.StartDay.ToShortDateString ());
+                nvc.Add("endday", L.EndDay.ToShortDateString ());
+                i = DbControl.Data_add(strsql, nvc);
                 nvc.Clear();
-                strsql = @"insert into tbl_article_tag (articleId,tagid,unitid)
-                    values (@articleId,@tagid,@unitid)";
-                nvc.Add("articleId", ad.Id.ToString());
-                nvc.Add("tagid", s);
-                nvc.Add("unitid", "14");
-                i = DbControl.Data_add(strsql, nvc);
-            }
-            nvc.Clear();
+                strsql = "delete from tbl_article_tag  where articleId =@id and unitid =14";
+                i = DbControl.Data_delete(strsql, ad.Id.ToString());
+              
+                string[] lecturer  =  L.Lecturer ;
+                foreach (string s in lecturer)
+                {
+                    nvc.Clear();
+                    strsql = @"insert into tbl_article_tag (articleId,tagid,unitid)
+                        values (@articleId,@tagid,@unitid)";
+                    nvc.Add("articleId", ad.Id.ToString());
+                    nvc.Add("tagid", s);
+                    nvc.Add("unitid", "14");
+                    i = DbControl.Data_add(strsql, nvc);
+                }
+                nvc.Clear();
 
-            strsql = "delete from  tbl_article_lesson where  lessonId =@id";
-            i = DbControl.Data_delete(strsql, ad.Id.ToString());
-            if (ad.Lesson  == "Y") {          
-               
-                strsql = @"insert into tbl_article_lesson ( lessonId, lessontime, address, price, sellprice)
-                    values (@lessonId, @lessontime, @address, @price, @sellprice)";
-                nvc.Add("lessonId", ad.Id.ToString());
-                nvc.Add("lessontime", ad.Lessontime );
-                nvc.Add("address", ad.Address );
-                nvc.Add("price", ad.Price.ToString());
-                nvc.Add("sellprice", ad.Sellprice .ToString());
-                i = DbControl.Data_add(strsql, nvc);
-          }
+                strsql = "delete from  tbl_lesson_class where   articleId =@id";
+                i = DbControl.Data_delete(strsql, ad.Id.ToString());
+                List<article.LessonDetail> detail = L.LessonDetail;
+                foreach (var v in detail)
+                {
+                    nvc.Clear();
+                    strsql = @"insert into tbl_lesson_class ( articleId, price, sellprice,limitNum,description,sort)
+                        values (@articleId,  @price, @sellprice,@limitNum,@description,@sort)";
+                    nvc.Add("articleId", ad.Id.ToString());
+                    nvc.Add("description", v.Description );
+                    nvc.Add("limitNum",v.Limitnum.ToString () );
+                    nvc.Add("price", v.Price.ToString());
+                    nvc.Add("sellprice", v.Sellprice.ToString  ());
+                    nvc.Add("sort", v.LessonId.ToString ());
+                    i = DbControl.Data_add(strsql, nvc);
+                }
+
+            }
             nvc.Clear();
 
             return i;
@@ -523,27 +604,23 @@ namespace article
     }
     public class MainData
     {
+        public string kind { get; set; }
         public int Id { get; set; }
         public string Subject { get; set; }
         public string Pic { get; set; }
         public string SubTitle { get; set; }
-        public DateTime PostDay { get; set; }
-        public DateTime StartDay { get; set; }
-        public DateTime EndDay { get; set; }
+        public DateTime PostDay { get; set; }      
         public string Contents { get; set; }
         public int Viewcount { get; set; }     
         public string Status { get; set; }
         public string Author { get; set; }
         public string[] Category { get; set; }
-        public string[] Tags { get; set; }
-        public string[] Lecturer { get; set; }
-        public string Lessontime { get; set; }
+        public string[] Tags { get; set; }  
         public string Keywords { get; set; }
-        public string Address { get; set; }
-        public int Price { get; set; }
-        public int Sellprice { get; set; }
         public int TotalRows { get; set; }
-        public string Lesson { get; set; }
+        public List<Lesson> Lesson { get; set; }
+
+     
     }
     public class ItemData
     {
@@ -555,7 +632,29 @@ namespace article
         public string Layout { get; set; }
 
     }
-  
+    public class Lesson
+    {
+        public int Id { get; set; }      
+        public DateTime StartDay { get; set; }
+        public DateTime EndDay { get; set; }
+        public string[] Lecturer { get; set; }
+        public string Lessontime { get; set; }
+        public string Address { get; set; }
+        public List<LessonDetail> LessonDetail { get; set; }
+    }
+    public class LessonDetail
+    {
+        public int Id { get; set; }
+        public int LessonId { get; set; }
+        public int Sort { get; set; }
+        public int Price { get; set; }
+        public int Sellprice { get; set; }
+        public int Limitnum { get; set; }
+        public string Description { get; set; }       
+    }
+
+
+
     public class Category
     {
         public int Id { get; set; }
@@ -574,7 +673,7 @@ namespace article
         public int Id { get; set; }      
         public string World { get; set; }
     }
-    public class Lecture
+    public class Lecturer
     {
         public int Id { get; set; }
         public int Tagid { get; set; }
@@ -582,6 +681,7 @@ namespace article
         public string Title { get; set; }
         public string Pic { get; set; }
         public string Contents { get; set; }
+     
     }
 
 }

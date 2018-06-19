@@ -7,7 +7,7 @@
                     <div class="container">
                         <ol class="breadcrumb">
                             <li><a href="/">HOME</a></li>
-                            <li class="active">  <%=pageunit %></li>
+                           <%=pageunit %>
                         </ol>
                     </div>
                 </div><!-- breadArea END -->
@@ -27,7 +27,7 @@
 
                                     <div class="post-information">
                                         <ul class="category">
-                                            <li class="entry-category"><a href="#"><%=tags%></a></li>
+                                            <li class="entry-category"><%=tags%></li>
                                         </ul>
                                         <h1><%=subject  %></h1>
                                         <div class="post-description">
@@ -37,18 +37,18 @@
 
                                     <div class="post-sharing">
                                         <div class="sharing-group">
-                                            <a class="btn-share facebook" href="#" onclick="window.open(this.href, 'mywin','left=50,top=50,width=600,height=350,toolbar=0'); return false;">
-                                                <div class="icon-elements facebook"></div>
-                                                <div class="social-text">Facebook</div>
-                                            </a>
+                                              <a class="btn-share facebook" href="#" >
+                                                    <div class="icon-elements facebook"></div>
+                                                    <div class="social-text">Facebook</div>
+                                                </a>
 
-                                            <a class="btn-share twitter" href="#"><div class="icon-elements twitter"></div><div class="social-text">Twitter</div></a>
+                                                 <a class="btn-share twitter" href="#"><div class="icon-elements twitter"></div><div class="social-text">Twitter</div></a>
 
-                                            <a class="btn-share google" href="#" onclick="window.open(this.href, 'mywin','left=50,top=50,width=600,height=350,toolbar=0'); return false;"><div class="icon-elements googleplus"></div></a>
+                                                <a class="btn-share google" href="#" ><div class="icon-elements googleplus"></div></a>
 
-                                            <a class="btn-share pinterest" href="#" onclick="window.open(this.href, 'mywin','left=50,top=50,width=600,height=350,toolbar=0'); return false;"><div class="icon-elements pinterest"></div></a>
+                                                <a class="btn-share pinterest" href="#" ><div class="icon-elements pinterest"></div></a>
 
-                                            <a class="btn-share whatsapp" href="#"><div class="icon-elements whatsapp"></div></a>
+                                                <a class="btn-share whatsapp" href="#"><div class="icon-elements whatsapp"></div></a>
 
                                             <div class="clearfix"></div>
                                         </div><!-- sharing-group END -->
@@ -66,77 +66,47 @@
                                 <div class="block-wrap border">
                                     <div class=block-title>上課地點</div>
                                     <div class="block-body">
-                                        <a href="#" class="link" target="_blank"><%=address %></a>
+                                        <a href="https://www.google.com.tw/maps?q=<%=address %>" class="link" target="_blank"><%=address %></a>
                                     </div>
                                 </div><!-- block-wrap END -->
 
-
+                            <asp:Repeater ID="Repeater1" runat="server" EnableViewState="False">
+                                <ItemTemplate>
                                 <div class="block-wrap border">
                                     <div class="block-header">
                                         <div class="media">
-                                            <img src="https://dummyimage.com/70x70/6b6b6b/fff.jpg" alt="" title="鍾佳伶">
+                                            <img src="/webimages/people/<%#Eval("pic") %>" alt="" title="<%#Eval("Subject") %>">
                                         </div>
                                         <div class="desc">
                                             <a data-toggle="collapse" href="#desc-01">
-                                                <span class="label">講師</span><span class="name">鍾佳伶 Charling</span>
-                                                <span class="note">筆尖溫度粉絲團版主</span>
+                                                <span class="label">講師</span><span class="name"><%#Eval("Subject") %></span>
+                                                <span class="note"><%#Eval("title") %></span>
                                             </a>
                                         </div>
                                     </div>
                                     <div class="block-body box collapse in" id="desc-01">
                                       <div class="well">
-                                        <p>講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹</p>
-                                      </div>
+                                       <%#Eval("contents") %>     </div>
                                     </div>
                                 </div><!-- block-wrap END -->
 
-                                <div class="block-wrap border">
-                                    <div class="block-header">
-                                        <div class="media">
-                                            <img src="https://dummyimage.com/70x70/6b6b6b/fff.jpg" alt="" title="鍾佳伶">
-                                        </div>
-                                        <div class="desc">
-                                            <a data-toggle="collapse" href="#desc-02">
-                                                <span class="label">講師</span><span class="name">鍾佳伶 Charling</span>
-                                                <span class="note">筆尖溫度粉絲團版主</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="block-body box collapse" id="desc-02">
-                                      <div class="well">
-                                        <p>講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹</p>
-                                      </div>
-                                    </div>
-                                </div><!-- block-wrap END -->
+                                </ItemTemplate>
+                            </asp:Repeater>
 
+                            <asp:Repeater ID="Repeater2" runat="server">
+                                <ItemTemplate>
                                 <div class="block-wrap border">
-                                    <div class="block-header">
-                                        <div class="media">
-                                            <img src="https://dummyimage.com/70x70/6b6b6b/fff.jpg" alt="" title="鍾佳伶">
-                                        </div>
-                                        <div class="desc">
-                                            <a data-toggle="collapse" href="#desc-03">
-                                                <span class="label">講師</span><span class="name">鍾佳伶 Charling</span>
-                                                <span class="note">筆尖溫度粉絲團版主</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="block-body box collapse" id="desc-03">
-                                      <div class="well">
-                                        <p>講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹講師介紹</p>
-                                      </div>
-                                    </div>
-                                </div><!-- block-wrap END -->
-
-
-                                <div class="block-wrap border">
-                                    <div class=block-title>課程費用</div>
+                                    <div class=block-title><%#Eval("description") %></div>
                                     <div class="block-body">
-                                        <span class="price">NT $<%=sellprice  %></span>
-                                        <span class="cost">NT $<%=price  %></span>
+                                        <span class="price">NT $<%#Eval("sellprice") %></span>
+                                        <span class="cost">NT $<%#Eval("price") %></span>
                                         <a href="#" class="btn btn-danger btn-block">立即報名</a>
                                     </div>
                                 </div><!-- block-wrap END -->
+
+                                </ItemTemplate>
+                            </asp:Repeater>
+
 
 
                             <!-- </div> --><!-- main-sidebar-inner END -->

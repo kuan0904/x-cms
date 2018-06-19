@@ -183,7 +183,14 @@
                                     <td>
                                         <asp:TextBox ID="tagname" runat="server"  required></asp:TextBox>
                                     </td>
-                                </tr>        
+                                </tr>  
+                                  <tr>
+                                    <td>
+                                        簡介</td>
+                                    <td>
+                                        <asp:TextBox ID="title" runat="server"   ></asp:TextBox>
+                                    </td>
+                                </tr>  
                                <tr>
                                    <td>圖片</td>
                                    <td>

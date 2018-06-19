@@ -42,15 +42,15 @@ public partial class detail_course_ : System.Web.UI.Page
         }
 
         article.MainData MainData = new article.MainData();
-        List<article.ItemData> ItemData = new List<article.ItemData>();
+        List<article.Lecturer> Lecturer = new List<article.Lecturer>();
 
-        if (Articlid != null)
+        if (Articlid != null && Articlid !="0")
         {
             MainData = article.DbHandle.Get_article(int.Parse(Articlid));
         }
         else if (Session["MainData"] != null)
         {
-
+          
             MainData = HttpContext.Current.Session["MainData"] as article.MainData;
         }
         if (MainData != null)
@@ -59,19 +59,25 @@ public partial class detail_course_ : System.Web.UI.Page
             subject = MainData.Subject;
             pic = "/webimages/article/" + MainData.Pic;
             pic = "<a href=\"" + pic + "\">" + "<img class=\"image-full modal-image size-full\" src=\"" + pic + "\" width=\"1350\" height=\"900\" /></a>";
-            postday = MainData.PostDay.ToString("yyyy/MM/dd");
+            List<article.Lesson> lesson = new List<article.Lesson>();
+            List<article.LessonDetail> lessondetail = new List<article.LessonDetail>();
+
+            startday = MainData.Lesson [0].StartDay  .ToString("yyyy/MM/dd");
+            endday = MainData.Lesson[0].EndDay. ToString("yyyy/MM/dd");
             contents = MainData.Contents;
             keywords = article.Web.Get_Keyword_link(MainData.Keywords);
             viewcount = MainData.Viewcount.ToString();
             tags = article.Web.Get_category_link(MainData.Id);
-            author = article.Web.Get_author_link(MainData.Author);
-         
-            ItemData = article.DbHandle.Get_article_item(MainData.Id);
-            foreach (var s in ItemData)
-            {
-                contents += "<h2>" + s.Title + "</h2>";
-                contents += s.Contents;
-            }
+            lessontime = article.Web.Get_author_link(MainData.Lesson[0].Lessontime);
+            address = MainData.Lesson[0].Address;
+            //sellprice = MainData.Sellprice.ToString ();
+            //price = MainData.Price.ToString ();
+            Lecturer = article.DbHandle.Get_Lecturer_list(MainData.Lesson[0].Lecturer);
+            lessondetail = MainData.Lesson[0].LessonDetail;
+            Repeater1.DataSource = Lecturer;
+            Repeater1.DataBind();
+            Repeater2.DataSource = lessondetail;
+            Repeater2.DataBind();
             article.DbHandle.Add_views(MainData.Id);
 
             List<article.Category> cate = new List<article.Category>();
@@ -96,7 +102,7 @@ public partial class detail_course_ : System.Web.UI.Page
                 }
                 break;
             }
-          
+
         }
     }
 }

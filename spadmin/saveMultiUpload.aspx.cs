@@ -15,7 +15,34 @@ public partial class spadmin_saveMultiUpload : System.Web.UI.Page
         }
         string img_path = "upload/";
         string kind = Request.QueryString["kind"];
-       
+        if (kind == "QuickUpload")
+        {
+            //img_path = "../webimages/product/";
+            //html上傳多個雜誌內頁圖檔
+            string fname = "";
+            img_path = "/upload/";
+            //用逗號相隔
+
+            for (int i = 0; i <= Request.Files.Count - 1; i++)
+            {
+                HttpPostedFile filex = Request.Files[i];
+
+                if (filex.ContentLength > 0)
+                {
+                    fname = DateTime.Now.ToString("yyyyMMddHHmmssff") + unity.classlib.GetFileExt(filex.FileName);
+                    //新檔案(重新命名)
+                    //filex.SaveAs(Server.MapPath(img_path + filex.FileName));
+                    filex.SaveAs(Server.MapPath(img_path + fname));
+                    //  Response.Write (@"<script>window.parent.CKEDITOR.tools.callFunction('cke_dialog_title_134','" + img_path + fname + "');</script>");
+                    Response.Write("{ \"fileName\":\""+ img_path + fname  + "\",\"uploaded\":1,\"url\":\""+ img_path + fname + "\"}");
+                    //自動縮圖
+                    //  ResizeImg(186, 0, Server.MapPath(setImgPath(fname)), Server.MapPath(setImgPath(fname, "thumbnail")));
+                    //Response.Write("{\"result\":\"" + fname + "\"}");
+                    //Response.Flush();
+                }
+            }
+
+        }
         if (kind == "companylogo")
         {
             //img_path = "../webimages/product/";

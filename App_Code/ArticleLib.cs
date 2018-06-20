@@ -468,7 +468,7 @@ namespace article
             string strsql = @"update  tbl_article set 
                     subject =@subject,pic=@pic,subtitle=@subtitle,postday=@postday,contents=@contents ,
                     keywords=@keywords,status=@status,author=@author
-                    ,lesson=@lesson
+                    ,kind=@kind
                     where articleId =@id ";
             NameValueCollection nvc = new NameValueCollection
             {
@@ -480,7 +480,7 @@ namespace article
                 { "keywords", ad.Keywords },
                 { "author", ad.Author },
                 { "status", ad.Status },
-                { "lesson", ad.kind =="L" ? "Y":"N" }
+                { "kind", ad.kind =="L" ? "Y":"N" }
                 //{ "startday",ad.StartDay.ToString("yyyy/MM/dd")  },
                 //{ "endday",ad.EndDay.ToString("yyyy/MM/dd") },
               
@@ -553,11 +553,11 @@ namespace article
                 foreach (var v in detail)
                 {
                     nvc.Clear();
-                    strsql = @"insert into tbl_lesson_class ( articleId, price, sellprice,limitNum,description,sort)
-                        values (@articleId,  @price, @sellprice,@limitNum,@description,@sort)";
+                    strsql = @"insert into tbl_lesson_class ( articleId, price, sellprice,limitnum,description,sort)
+                        values (@articleId,  @price, @sellprice,@limitnum,@description,@sort)";
                     nvc.Add("articleId", ad.Id.ToString());
                     nvc.Add("description", v.Description );
-                    nvc.Add("limitNum",v.Limitnum.ToString () );
+                    nvc.Add("limitnum",v.Limitnum.ToString () );
                     nvc.Add("price", v.Price.ToString());
                     nvc.Add("sellprice", v.Sellprice.ToString  ());
                     nvc.Add("sort", v.LessonId.ToString ());

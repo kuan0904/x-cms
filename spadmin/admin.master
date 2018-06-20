@@ -273,7 +273,7 @@
 						<div class="page-header">
                             <h1>  
                                
-                                <script src="ckeditor/ckeditor.js?v=2"></script>
+                                <script src="ckeditor/ckeditor.js?v=n"></script>
                             </h1> 
                             <asp:ContentPlaceHolder ID="ContentPlaceHolder_title" runat="server">
                                 </asp:ContentPlaceHolder>

@@ -19,6 +19,33 @@ public class DbControl
         // TODO: 在這裡新增建構函式邏輯
         //
     }
+    public static string EmailRegist(string email)
+    {
+        using (SqlConnection conn = new SqlConnection(dbConnectionString))
+        {
+            string strsql = "select * from tbl_EmailRegist where email=@email ";
+            SqlCommand cmd = new SqlCommand();
+            SqlDataReader rs;
+            conn.Open();
+            cmd = new SqlCommand(strsql, conn);
+            cmd.Parameters.Add("@email", SqlDbType.NVarChar).Value = email;
+            rs = cmd.ExecuteReader();
+            if (rs.Read())
+            {
+                email = "";
+            }
+            cmd.Dispose();
+            rs.Close();
+            strsql = "insert into tbl_EmailRegist( email,status) values (@email,'Y')";
+            cmd = new SqlCommand(strsql, conn);
+            cmd.Parameters.Add("@email", SqlDbType.NVarChar).Value = email;
+            cmd.ExecuteNonQuery();
+            conn.Close();
+
+        }
+        return "Y";
+
+    }
     public static DataTable GetPagedTable(DataTable dt, int PageIndex, int PageSize)
     {
         if (PageIndex == 0)

@@ -1,39 +1,37 @@
-Ôªø/**
- * @license Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.html or http://ckeditor.com/license
+/**
+ * @license Copyright (c) 2003-2018, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
 
-CKEDITOR.editorConfig = function( config ) {
-	// Define changes to default configuration here. For example:
-	// config.language = 'fr';
-    //config.uiColor = '#AADC6E';
-    //config.skin = 'kama';
-    config.toolbar = 'Full';    
-    config.toolbar_Full = [
-       ['Source','-','Save','NewPage','Preview','-','Templates'],
-       ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
-       ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
-       ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'],
-       '/',
-       ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
-        ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
-        ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-        ['Link','Unlink','Anchor'],
-       ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak'],
-       '/',
-        ['Styles','Format','Font','FontSize'],
-        ['TextColor','BGColor']
+CKEDITOR.editorConfig = function (config) {
+    config.toolbarGroups = [
+        { name: 'document', groups: ['mode', 'document', 'doctools'] },
+        { name: 'clipboard', groups: ['clipboard', 'undo'] },
+        { name: 'editing', groups: ['find', 'selection', 'spellchecker', 'editing'] },
+        { name: 'forms', groups: ['forms'] },
+        '/',
+        { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+        { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph'] },
+        { name: 'links', groups: ['links'] },
+        { name: 'insert', groups: ['insert'] },
+        { name: 'styles', groups: ['styles'] },
+        { name: 'colors', groups: ['colors'] },
+        { name: 'tools', groups: ['tools'] },
+        { name: 'others', groups: ['others'] },
+        { name: 'about', groups: ['about'] }
     ];
-
-    config.removeButtons = 'Subscript,Superscript,Form,Checkbox,Radio,Save,NewPage,Templates';
-    config.allowedContent = true;
-    config.extraAllowedContent = 'style script';
-    //‰∏ãÈù¢ÊòØÂ¢ûÂä†ÁöÑÈÖçÁΩÆ‰ª£Á†Å  
     config.filebrowserBrowseUrl = '../../spadmin/ckfinder/ckfinder.html';
     config.filebrowserImageBrowseUrl = '../../spadmin/ckfinder/ckfinder.html?type=Images';
     config.filebrowserUploadUrl = '../../spadmin/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Files';
     config.filebrowserImageUploadUrl = '../../spadmin/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Images';
-  
-    config.height = '700px'; //ÂèØ‰ª•ÈÄôÊ®£ÂØ´
-    config.width = 1000; //‰πüÂèØ‰ª•ÈÄôÊ®£ÂØ´
+    config.filebrowserWindowWidth = '800';  //°ß¬sƒ˝™A∞»æπ°®ºu•XÆÿ™∫size≥]∏m
+    config.filebrowserWindowHeight = '500';
+
+    config.htmlEncodeOutput = true; 
+    config.allowedContent = true;
+    config.extraAllowedContent = 'style script';
+    config.height = '700px'; //•i•H≥oºÀºg
+    config.width = 1000; //§]•i•H≥oºÀºg
+
+
 };

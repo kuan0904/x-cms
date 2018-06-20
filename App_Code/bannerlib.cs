@@ -7,6 +7,21 @@ using System.Data.SqlClient;
 using System.Collections.Specialized;
 
 namespace Banner {
+    public  class Web
+    {
+       public static  string Get_url(string url,string cate, string id)
+        {
+            if (id != "" && id != "0")
+                return "/Article/" + id;
+            else if (cate != "" && cate != "0")
+                return "/" + id + "/catalog";
+            else
+                return url;
+
+
+        }
+
+    }
     public class DbHandle
     {
 

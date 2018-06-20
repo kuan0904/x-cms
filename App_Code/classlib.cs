@@ -32,10 +32,10 @@ namespace unity {
         private static string ZipRegex = "<(.|\\n)+?>";
     
         private static string delivername = "cairnskitchen";
-        private static string servicemail = "cairnskitchen.tw@gmail.com";
-        private static string smtpuid = "cairnskitchen.tw@gmail.com";
+        private static string servicemail = "leokuan@xnet.world";
+        private static string smtpuid = "leokuan@xnet.world";
         private static string smtppwd = "ck43285929tw";
-        
+        private static string FBid = "164103481107660";
         public static string SubString (string str,int length,string kind)
         {
           if (kind == "notag") str = noHTML(str);

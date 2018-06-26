@@ -9,7 +9,7 @@
             $.post('/AdBanner', dataValue, function (result) { $("#ad_banner").html(result); });
               dataValue = {"classid":"1"};             
             $.post('/topBanner', dataValue, function (result) { $("#top_banner").html(result); });
-            
+              document.body.classList.add("hp");
         });
     
     </script>

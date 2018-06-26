@@ -47,8 +47,10 @@ public partial class detail : System.Web.UI.Page
         }
         if (MainData != null)
         {
+           
             if (MainData.kind =="Y" || MainData.kind == "L") Response.Redirect("/Class/" + MainData.Id );
             subject = MainData.Subject;
+            Session["title"] = subject + "│" + Application["site_name"];
             pic = "/webimages/article/" + MainData.Pic;
             pic = "<a href=\"" + pic + "\">" + "<img class=\"image-full modal-image size-full\" src=\"" + pic + "\" width=\"1350\" height=\"900\" /></a>";
             postday = MainData.PostDay.ToString("yyyy/MM/dd");

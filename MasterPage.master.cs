@@ -12,14 +12,20 @@ public partial class MasterPage : System.Web.UI.MasterPage
 {
     public string logo = "";
     public string[] active = { "", "", "", "", "", "","" };
+    public string FacebookAppId = "164103481107660";
     protected void Page_Load(object sender, EventArgs e)
     {
+
+        string returnurl = (Request.QueryString["page"] != null) ? Request.QueryString["page"] : "";
+        btnFbLogin.NavigateUrl = "https://www.facebook.com/v2.10/dialog/oauth/?client_id=164103481107660&redirect_uri=https://www.culturelaunch.net/fb_login.ashx&response_type=code" ;
+
+       
         string cid = "";
         Route myRoute = Page.RouteData.Route as Route;
         if (myRoute != null)
         {
-           
-            cid = Page.RouteData.Values["id"].ToString();
+          
+            cid =Page.RouteData.Values["id"] == null  ? "" :Page.RouteData.Values["id"].ToString();
 
         }
         else

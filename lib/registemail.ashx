@@ -7,7 +7,7 @@ public class registemail : IHttpHandler {
 
     public void ProcessRequest (HttpContext context) {
         string msg = DbControl.EmailRegist(context.Request["email"]);
-        context.Response.Write(msg);
+        context.Response.Write("Y");
     }
 
     public bool IsReusable {

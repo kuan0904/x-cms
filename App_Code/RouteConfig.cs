@@ -21,16 +21,17 @@ namespace MyPublic
             routes.MapPageRoute("class", "Class/{id}", "~/detail-course.aspx",false, null,new RouteValueDictionary { { "id", "^[0-9]*$" } });
 
 
-            routes.MapPageRoute("catalog", "{id}/catalog/{*pageindex}", "~/list.aspx",
-                    false, null,
-                new RouteValueDictionary { { "id", "^[0-9]*$" }, { "pageindex", "^[0-9]*$" } }
-                );
+            routes.MapPageRoute("catalog", "{id}/catalog/{*pageindex}", "~/list.aspx", false, null,
+                new RouteValueDictionary { { "id", "^[0-9]*$" }, { "pageindex", "^[0-9]*$" } }  );
+            routes.MapPageRoute("lesson", "{id}/lesson/{*pageindex}", "~/list-grid.aspx",
+                false, null,new RouteValueDictionary { { "id", "^[0-9]*$" }, { "pageindex", "^[0-9]*$" } }   );
+            routes.MapPageRoute("listpage", "{unitname}/{*pageindex}", "~/list.aspx", false, null,                 
+                    new RouteValueDictionary {
+            { "unitname", "catalog|industry|culture|folkart|exhibtion|perform|practice|operate|design|crossborder|localization|classess|News|Events|ArtMBA" }
+            , { "pageindex", "^[0-9]*$" } });
 
-            routes.MapPageRoute("listpage", "{unitname}/{*pageindex}", "~/list.aspx",
-                 false, null,                 
-                    new RouteValueDictionary { { "unitname", "catalog|industry|culture|folkart|exhibtion|perform|practice|operate|design|crossborder|localization|classess|News|Events|ArtMBA" }, { "pageindex", "^[0-9]*$" } }
-                );
-
+            routes.MapPageRoute("search", "search/{keyword}/{*pageindex}", "~/list-search.aspx",  false, null,
+                new RouteValueDictionary { { "pageindex", "^[0-9]*$" } });
 
             routes.MapPageRoute("Copyright", "CopyRight/{id}", "~/unitdata.aspx", true, new RouteValueDictionary { { "id", "22" } });
             routes.MapPageRoute("aboutus", "AboutUs/{id}", "~/unitdata.aspx", true,new RouteValueDictionary { { "id", "20" } });

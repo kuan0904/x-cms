@@ -12,10 +12,10 @@
 <meta name="author" content="Xnet 智媒科技"/>
 <meta name="keywords" content="" />
 <meta name="description" content="" />
-<meta property="fb:app_id" content="164103481107660" />
+<meta property="fb:app_id" content="<%=FacebookAppId %>" />
 <meta property="og:title" content="" />
 <meta property="og:description" content="" />
-<meta property="og:site_name" content="藝時代 Cultural Launch" />
+<meta property="og:site_name" content="<%=Application["site_name"]%>" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="" />
 <meta property="og:image" content="" />
@@ -24,7 +24,8 @@
 <meta name="robots" content="noindex,follow" />
 <meta name="robots" content="index,nofollow" />
 <meta name="robots" content="noindex,nofollow" />
-<title>首頁│藝時代 Cultural Launch</title>
+<meta name="google-signin-client_id" content="754193213942-a9fobo4p4djkdrgal6naqt0rue48qdvo.apps.googleusercontent.com">
+<title><%=Session["title"] %></title>
 
 <link rel="stylesheet" href='/assets/font-awesome/css/font-awesome.min.css' />
 <link rel="stylesheet" href='/assets/bootstrap/css/bootstrap.min.css' />
@@ -38,9 +39,91 @@
  <script src="/js/jquery-1.9.1.min.js"></script>
      <asp:ContentPlaceHolder id="head" runat="server">
     </asp:ContentPlaceHolder>
-    
+    <style>
+        .btn-facebook {
+	color: #fff;
+	background-color: #3a5795;
+	border-color: #3a5795;
+}
+    </style>
+
+     <script>
+        var fb_login_url = 'fb_login.ashx?login_type=cookie';
+        function createCookie(name, value) {
+            var date = new Date();
+            date.setTime(date.getTime() + (60 * 1000));
+            var expires = "; expires=" + date.toGMTString();
+            document.cookie = name + "=" + value + expires + "; path=/";
+        }   
+
+              window.fbAsyncInit = function() {
+              FB.init({
+                  appId: '164103481107660',
+                cookie     : true,  // enable cookies to allow the server to access
+                                    // the session
+                xfbml      : true,  // parse social plugins on this page
+                version    : 'v2.10' // use version 2.2
+              });
+  };
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
+  function personalAPI() {
+      FB.api(
+        '/me',
+        'GET',
+        { "fields": "name,birthday,email,education" },
+        function (response) {
+            console.log(response);
+            access_token = FB.getAuthResponse()['accessToken'];          
+            createCookie('u_fb_id', response.id);
+            createCookie('u_fb_name', response.name);
+            createCookie('u_fb_email', response.email);
+            location.href = fb_login_url;
+            //document.getElementById('resultdata').innerHTML = "<pre> <b>Access Token<b/> : " + access_token + "</pre>";
+            //document.getElementById('resultdata1').innerHTML = "<pre> <b>User Name<b/> : " + response.name + "</pre>";
+            //document.getElementById('resultdata2').innerHTML = "<pre> <b>User Email<b/> : " + response.email + "</pre>";
+            //document.getElementById('resultdata3').innerHTML = "<pre> <b>User birthday<b/> : " + response.birthday + "</pre>";
+            //document.getElementById('resultdata4').innerHTML = "<pre> <b>User education<b/> : " + response.education + "</pre>";
+        }
+      );
+  }
+  function fbloginAPI() {   
+      FB.api('/me', function(response) {     
+        createCookie('u_fb_id', response.id);
+        createCookie('u_fb_name', response.name);
+        createCookie('u_fb_email', response.email);      
+        location.href = fb_login_url;
+    });
+  }
+  function checkfblogin(){
+      FB.login(function (response) {
+          if (response.status === 'connected') {
+              // fbloginAPI();
+              personalAPI();
+          } else if (response.status === 'not_authorized') {
+       
+              // The person is logged into Facebook, but not your app.
+          } else {
+           
+              // The person is not logged into Facebook, so we're not sure if
+              // they are logged into this app or not.
+          }
+      }, {scope: 'public_profile,email'});
+  }
+
+  
+  </script>
+
+        
+   
 </head>
-<body class="list">
+<body >
     <form id="form1" runat="server">
     <div class="scroll-up"><i class="fa fa-chevron-up"></i></div>
 
@@ -116,13 +199,14 @@
                     </li>
                      <li class="menu-item sf-dropdown"><a href="/5/catalog">人物<i class="fa fa-chevron-down"></i></a>
                         
-                    </li>
+                    </li><!--
                     <li class="menu-item sf-dropdown"><a href="/6catalog">跨界媒合<i class="fa fa-chevron-down"></i></a>
                         <ul class=sub-menu>
                             <li><a href="/17/catalog">文創人才</a></li>
                             <li><a href="/18/catalog">群眾募資</a></li>
                         </ul>
                     </li>
+                    -->
                 </ul>
             </div><!-- mobile-content END -->
         </div><!-- container END -->
@@ -140,9 +224,9 @@
                 <div class=login-form-wrap>
                     <div class=login-panel-title><span>歡迎</span>請登入您的帳戶</div>
                     <div class=alert-err></div>
-                    <div class=login-inputs><input class=login-input type=text name=login_email id=login_email-mob value="" required><label>your username</label></div>
-                    <div class=login-inputs><input class=login-input type=password name=login_pass id=login_pass-mob value="" required><label>your password</label></div>
-                    <input type=button name=login_button id=login_button-mob class=login-button value="登  入">
+                    <div class=login-inputs><input class=login-input type=text name=login_email id="login_email-mob" value=""  ><label>your username</label></div>
+                    <div class=login-inputs><input class=login-input type=password name=login_pass id=login_pass-mob value=""  ><label>your password</label></div>
+                    <input type=button name=login_button id="btnLogin-mob" class=login-button value="登  入">
                     <div class=login-info-text><a href="#" id=forgot-pass-link-mob>忘記密碼</a></div>
                 </div><!-- login-form-wrap END -->
             </div><!-- btn-login-mob END -->
@@ -150,14 +234,27 @@
             <div id="forgot-pass-mob" class="login-animation">
                 <div class="forgot-pass-close">
                     <a href="#" class="btn-back"><i class="fa fa-chevron-down"></i></a>
-                    <div class="login-title">密碼重置</div>
+                    <div class="login-title">加入會員</div>
                 </div><!-- forgot-pass-close END -->
-
+        
                 <div class="login-form-wrap">
-                    <div class="login-panel-title">重置您的密碼</div>
-                    <div class="alert-err"></div>
-                    <div class="login-inputs"><input class="login-input" type="text" name="forgot_email" id="forgot_email-mob" value="" required><label>your email</label></div>
-                    <input type="button" name="forgot_button" id="forgot_button-mob" class="login-button" value="寄送密碼">
+                             <div class=login-panel-title>加入會員</div>
+                            <div class=login-panel-descr>歡迎加入</div>
+                            <div class=alert-err></div>
+                            <div class=login-inputs>
+                                <input class=login-input type=text name=regist_email id="regist_email-mob" value=""  ><label>your email</label>
+                            </div>
+                               <div class=login-inputs>
+                                <input class=login-input type=password name=regist_pass id="regist_pass-mob" value=""  ><label>你的密碼</label>
+                            </div>
+                                 <div class=login-inputs>
+                                <input class=login-input type=password name=regist_pass id="regist_pass1-mob" value=""  ><label>確認密碼</label>
+                            </div>
+                            <input type=button name="forgot_button" id="btnRegister-mob" class="wpb_button btn login-button" value="加入會員">
+                            <div class=login-info-text>會員使用條款......XXXX</div>
+
+
+                
                 </div><!-- login-form-wrap END -->
             </div><!-- forgot-pass-mob END -->
         </div><!-- register-section END -->
@@ -167,7 +264,7 @@
     <div class=search-wrap-mob>
         <div class=dropDown-search>
 
-            <div class=search-form action="#">
+            <div class="search-form" action="#">
                 <div class="search-close">
                     <a href="#"><i class="icon-close-mob"></i></a>
                 </div>
@@ -207,8 +304,8 @@
 
                 <!-- logo center -->
                 <div class="logo <%=logo %>">
-                    <a href="/index" title="藝時代 Cultural Launch">
-                        <span class="visual-hidden">藝時代 Cultural Launch</span>
+                    <a href="/index" title="<%=Application["site_name"] %>">
+                        <span class="visual-hidden"><%=Application["site_name"] %></span>
                     </a>
                 </div>
 
@@ -227,7 +324,7 @@
 
                                 <div class="navbar-brand">
                                     <a href="/index">
-                                        <span class="visual-hidden">藝時代 Cultural Launch</span>
+                                        <span class="visual-hidden"><%=Application["site_name"] %></span>
                                     </a>
                                 </div>
                             </div><!-- navbar-header END -->
@@ -258,12 +355,13 @@
                                     </li>
                                     <li class="menu-itemn<%=active[4] %>"><a href="/4/catalog">專題報導</a></li>
                                     <li class="menu-itemn<%=active[5] %>"><a href="/5/catalog">人物</a></li>
+                                    <!--
                                     <li class="menu-item sf-dropdown<%=active[6] %>"><a href="/6/catalog">跨界媒合</a>
                                         <ul class="sub-menu">
                                             <li class="menu-item"><a href="/17/catalog">文創人才</a></li>
                                             <li class="menu-item"><a href="/18/catalog">群眾募資</a></li>
                                         </ul>
-                                    </li>
+                                    </li>-->
                                 </ul><!-- menu-main-1 END -->
                             </div><!-- main-menu END -->
 
@@ -283,8 +381,8 @@
                                     <div class="dropDown-search" aria-labelledby="header-btn-search">
                                         <div class="search-form">
                                             <div role="search">
-                                            <input class="needsclick" id=search-input type=text value="" name=s autocomplete=off />
-                                            <input class="wpb_button wpb_btn-inverse btn" type=submit id=header-search-top value=Search />
+                                            <input class="needsclick" id="search-input" type=text value="" name="s" autocomplete=off />
+                                            <input class="wpb_button wpb_btn-inverse btn" type=submit name ="header-search" id="header-search-top" value="Search" />
                                             </div>
                                         </div><!-- search-form END -->
                                     </div><!-- dropDown-search END -->
@@ -305,25 +403,47 @@
                             <div class=login-panel-descr>歡迎！請登入您的帳號</div>
                             <div class=alert-err></div>
                             <div class=login-inputs>
-                                <input class=login-input type=text name=login_email id=login_email value="" required><label>your username</label>
+                                <input class=login-input type=text name=login_email id="login_email" value=""  ><label>your email</label>
                             </div>
                             <div class=login-inputs>
-                                <input class=login-input type=password name=login_pass id=login_pass value="" required><label>your password</label>
+                                <input class=login-input type=password name=login_pass id="login_pass" value=""  ><label>your password</label>
                             </div>
-                            <input type=button name=login_button id=login_button class="wpb_button btn login-button" value="登 入">
-                            <div class=login-info-text><a href="#" id=forgot-pass-link>忘記密碼?</a></div>
-                        </div><!-- login-pop END -->
-
-                        <div id=forgot-pass-pop class="login-form-div display-none">
-                            <div class=login-panel-title>密碼重置</div>
+                            <input type=button name=login_button id="btnLogin" class="wpb_button btn login-button" value="登 入">
+                            <asp:HyperLink ID="btnFbLogin" runat="server"   cssclass="btn btn-lg btn-facebook col-xs-12 m-top-1 m-bottom-1">Facebook 登入</asp:HyperLink>
+                           
+                                <div class=login-info-text><a href="#" id=forgot-pass-link>加入會員</a>     
+                                       <a href="#" id="forgotpass">忘記密碼?</a></div>
+                             <button id="login-button" disabled class="wpb_button btn login-button" >Login with Google</button>
+                            <div id="forgot-pass" style ="display:none">
+                                 <div class=login-panel-title>密碼重置</div>
                             <div class=login-panel-descr>重置您的密碼</div>
                             <div class=alert-err></div>
                             <div class=login-inputs>
-                                <input class=login-input type=text name=forgot_email id=forgot_email value="" required><label>your email</label>
+                                <input class=login-input type=text name=forgot_email id=forgot_email value=""  ><label>your email</label>
                             </div>
                             <input type=button name=forgot_button id=forgot_button class="wpb_button btn login-button" value="寄送密碼">
                             <div class=login-info-text>我們將會寄送密碼至您的信箱</div>
+                            </div>
+                        </div><!-- login-pop END -->
+                        
+                        <div id=forgot-pass-pop class="login-form-div display-none">
+                            <div class=login-panel-title>加入會員</div>
+                            <div class=login-panel-descr>歡迎加入</div>
+                            <div class=alert-err></div>
+                            <div class=login-inputs>
+                                <input class=login-input type=text name=regist_email id="regist_email" value=""  ><label>your email</label>
+                            </div>
+                               <div class=login-inputs>
+                                <input class=login-input type=password name=regist_pass id="regist_pass" value=""  ><label>你的密碼</label>
+                            </div>
+                                 <div class=login-inputs>
+                                <input class=login-input type=password name=regist_pass id="regist_pass1" value=""  ><label>確認密碼</label>
+                            </div>
+                            <input type=button name="forgot_button" id="btnRegister" class="wpb_button btn login-button" value="加入會員">
+                            <div class=login-info-text>會員使用條款......XXXX</div>
                         </div><!-- forgot-pass-pop END -->
+
+                        
                     </div><!-- login-wrap END -->
                 </div><!-- login-form END -->
 
@@ -341,7 +461,7 @@
                             <div class="col-md-12 sub-footer-menu">
                                 <ul class="nav nav-pills">
                                     <li><a href="/AboutUs">關於我們</a></li>
-                                    <li><a href="/Advertisement ">廣告刊登</a></li>
+                                    <li><a href="/Advertisement">廣告刊登</a></li>
                                     <li><a href="/Copyright">版權聲明</a></li>
                                     <li><a href="/SiteMap">網站導覽</a></li>
                                     <li><a href="/ContactUs">聯絡我們</a></li>
@@ -362,8 +482,8 @@
 
     </div><!-- wrapper END -->
 
-
-<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+       
+<script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
 <script src='/js/device.js'></script>
 <script src='/js/theme.js'></script>
@@ -407,7 +527,8 @@
             });
         };
 
-          
+   
+           
         $(document).ready(function () {     
             var dataValue = {"kind":"list"};             
             $.post('/hot_list', dataValue, function (result) { $("#hot_list").html(result); });
@@ -420,7 +541,7 @@
             })
             $("a.btn-share.twitter").click(function () {
                 text=   $(document).find("title").text();
-	            window.open('http://twitter.com/share?text='+ text +'&url='.concat(encodeURIComponent(location.href)), "_blank", "toolbar=yes,location=yes, directories=no, status=no,menubar=yes,scrollbars=yes,esizable=no, copyhistory=yes, width=600,  height=400")
+	            window.open('https://twitter.com/share?text='+ text +'&url='.concat(encodeURIComponent(location.href)), "_blank", "toolbar=yes,location=yes, directories=no, status=no,menubar=yes,scrollbars=yes,esizable=no, copyhistory=yes, width=600,  height=400")
             })
             $("a.btn-share.google").click(function () {
 	            window.open('https://plus.google.com/share?url='.concat(encodeURIComponent(location.href)), "_blank", "toolbar=yes,location=yes, directories=no, status=no,menubar=yes,scrollbars=yes,esizable=no, copyhistory=yes, width=600,  height=400")
@@ -428,35 +549,259 @@
 
             $("a.btn-share.pinterest").click(function () {
                 text=   $(document).find("title").text();
-	            window.open('http://pinterest.com/pin/create/button/?description='+ text + '&url='.concat(encodeURIComponent(location.href)), "_blank", "toolbar=yes,location=yes, directories=no, status=no,menubar=yes,scrollbars=yes,esizable=no, copyhistory=yes, width=600,  height=400")
+	            window.open('https://pinterest.com/pin/create/button/?description='+ text + '&url='.concat(encodeURIComponent(location.href)), "_blank", "toolbar=yes,location=yes, directories=no, status=no,menubar=yes,scrollbars=yes,esizable=no, copyhistory=yes, width=600,  height=400")
             })
-
-           $("#Emailregist").click(function () {
-               if (isEmail($("#InputEmail").val())) {
-                     var dataValue = {"email":$("#InputEmail").val()};        
-                   $.post('/lib/registemail.ashx', dataValue, function (result) {
-                       if (result == 'Y') {
-                           alert('訂閱成功!');
-                       }
-                   });
-
-               }
-               else {
-                   alert('請輸入正確EMAIL');
-               }
-	       })
-
-
+            $('input[name="s1"]').keypress(function (e) {
+              if (e.which == 13) {
+                $('input[name="header-search"]').trigger( "click" );
+                return false;    //<---- Add this line
+              }
+            });
+            $('input[name="s"]').keypress(function (e) {
+              if (e.which == 13) {
+                $('input[name="header-search"]').trigger( "click" );
+                return false;    //<---- Add this line
+              }
+            });
+            $('input[name="header-search"]').click(function () {
+                var text = "";
+                if ($('input[name="s1"]') != undefined) {
+                    text = $('input[name="s1"]').val();
+                }
+                if ($('input[name="s"]').val() !=""){
+                    text = $('input[name="s"]').val();
+                }
+                location.href = '/search/' + text;
+            })
+              $('#Emailregist').click(function () {
+                var text = $('#InputEmail').val();                     
+                        $.post('/lib/registemail.ashx',  {"email":text} , function (result) {
+                            if (result != "") {
+                               
+                                alert(result);
+                   
+                            }
+                        });
+               
+            })
+           
+            $("#btnLogin").click(function () {
+                   var objAccount = $("#login_email");
+                   var objPasswd = $("#login_pass");
+                   var objVerifyCode = $("#p_VERIFYCODE");
+                   var p_ACCOUNT = objAccount.val();
+                   var p_PASSWD = objPasswd.val();
+                   //var p_VERIFYCODE = objVerifyCode.val();
+                   if (p_ACCOUNT == "") {
+                       alert("請輪入Email");
+                       objAccount.focus();
+                   } else if (p_PASSWD == "") {
+                       alert("請輸入密碼");
+                       objPasswd.focus();
+                   }
+                    else if (!validEmail(p_ACCOUNT)) {
+                        alert("帳號非EMail格式");
+                        objAccount.focus()
+                  
+                       //} else if (p_VERIFYCODE == "") {
+                       //	setInputStyle("warning", objVerifyCode, "請輸入驗證碼");
+                   } else {
+                      
+                       var data = {"p_ACCOUNT": p_ACCOUNT, "p_PASSWD": p_PASSWD, "p_ACTION": "Login", "_": new Date().getTime() };
+                       $.post('/lib/member_handle.ashx', data, function (data) {                           
+                       
+                               if (data == "Y") {
+                                     alert('登入成功');
+                                    $.magnificPopup.close();
+                               } else if (data == "-1") {
+                                   alert("登入失敗");
+                                   //setInputStyle("error", objAccount, "帳號錯誤請重新輸入");
+                                   //setInputStyle("error", objPasswd, "密碼錯誤請重新輸入");
+                               } 
+                       });
+                   }
+               });
+            $("#btnLogin-mob").click(function () {
+                   var objAccount = $("#login_email-mob");
+                   var objPasswd = $("#login_pass-mob");
+                   var objVerifyCode = $("#p_VERIFYCODE");
+                   var p_ACCOUNT = objAccount.val();
+                    var p_PASSWD = objPasswd.val();
+                    $('.alert-err').show();
+                   //var p_VERIFYCODE = objVerifyCode.val();
+                   if (p_ACCOUNT == "") {
+                       $('.alert-err').html("請輪入Email");                     
+                       objAccount.focus();
+                   } else if (p_PASSWD == "") {                     
+                       $('.alert-err').html("請輸入密碼");                    
+                       objPasswd.focus();
+                   }
+                    else if (!validEmail(p_ACCOUNT)) {                      
+                        $('.alert-err').html("帳號非EMail格式");                   
+                       objAccount.focus();
+                       //} else if (p_VERIFYCODE == "") {
+                       //	setInputStyle("warning", objVerifyCode, "請輸入驗證碼");
+                   } else {
+                        $('.alert-err').html("");
+                        $('.alert-err').hide();
+                       var data = {"p_ACCOUNT": p_ACCOUNT, "p_PASSWD": p_PASSWD, "p_ACTION": "Login", "_": new Date().getTime() };
+                       $.post('/lib/member_handle.ashx', data, function (data) {  
+                            if (data == "Y") {
+                                alert('登入成功');
+                                $.magnificPopup.close();
+                                $( ".icon-close-mob" ).trigger( "click" );                                
+                            } else if (data == "-1") {
+                                alert("登入失敗");
+                                //setInputStyle("error", objAccount, "帳號錯誤請重新輸入");
+                                //setInputStyle("error", objPasswd, "密碼錯誤請重新輸入");
+                            } 
+                       });
+                   }
+               });
+              $("#btnRegister-mob").click(function () {
+                //if ($("#rad2").prop("checked")) {
+                    var objNewAccount = $("#regist_email-mob");
+                    var objNewPasswd = $("#regist_pass-mob");
+                    var objChkPasswd = $("#regist_pass1-mob");                    
+                    //var objMobile = $("#p_MOBILE");
+                    var p_NEW_ACCOUNT = objNewAccount.val();
+                    var p_NEW_PASSWD = objNewPasswd.val();
+                    var p_CHK_PASSWD = objChkPasswd.val();
+                    
+                  if (p_NEW_ACCOUNT == "") {                      
+                        setInputStyle("warning", objNewAccount, "請輪入Email");
+                    } else if (!validEmail(p_NEW_ACCOUNT)) {
+                        alert("帳號非EMail格式");
+                        setInputStyle("error", objNewAccount, "Email錯誤請重新輸入");
+                    } else if (p_NEW_PASSWD == "") {
+                        setInputStyle("warning", objNewPasswd, "請輸入密碼");
+                    } else if ((p_NEW_PASSWD.length < 6) || (p_NEW_PASSWD.length > 15)) {
+                        alert("密碼長度不對");
+                        setInputStyle("error", objNewPasswd, "密碼錯誤請重新輸入");
+                    } else if (p_CHK_PASSWD == "") {
+                        setInputStyle("warning", objChkPasswd, "請輸入確認密碼");
+                    } else if (p_CHK_PASSWD != p_NEW_PASSWD) {
+                        alert("請確認兩次輸入的密碼是否相同");
+                        setInputStyle("error", objNewPasswd, "密碼錯誤請重新輸入");
+                        setInputStyle("error", objChkPasswd, "確認密碼錯誤請重新輸入");
+                    //} else if (p_MOBILECODE.length < 4 || p_MOBILE < 6) {
+                    //    alert("行動電話長度不對");
+                    //    setInputStyle("error", objMobile, "行動電話錯誤請重新輸入");
+                    } else {
+                        $.post('/lib/member_handle.ashx', {
+                            "p_ACCOUNT": p_NEW_ACCOUNT, "p_PASSWD": p_NEW_PASSWD,                       
+                            "p_ACTION": "Register", "_": new Date().getTime()
+                        }, function (data) {
+                            if (data == "0") {
+                                alert("註冊失敗");
+                            } else if (data == "-1") {
+                                alert("帳號已經存在");
+                                setInputStyle("error", objNewAccount, "帳號錯誤請重新輸入");
+                            }
+                            else {
+                                alert('加入成功');
+                                $.magnificPopup.close();
+                            }
+                        });
+                    }
+                //} else {
+                //    alert("尚未同意會員服務使用條款");
+                //}
+            });
+            $("#btnRegister").click(function () {
+                //if ($("#rad2").prop("checked")) {
+                    var objNewAccount = $("#regist_email");
+                    var objNewPasswd = $("#regist_pass");
+                    var objChkPasswd = $("#regist_pass1");                    
+                    //var objMobile = $("#p_MOBILE");
+                    var p_NEW_ACCOUNT = objNewAccount.val();
+                    var p_NEW_PASSWD = objNewPasswd.val();
+                    var p_CHK_PASSWD = objChkPasswd.val();
+                    
+                    if (p_NEW_ACCOUNT == "") {
+                        setInputStyle("warning", objNewAccount, "請輪入Email");
+                    } else if (!validEmail(p_NEW_ACCOUNT)) {
+                        alert("帳號非EMail格式");
+                        setInputStyle("error", objNewAccount, "Email錯誤請重新輸入");
+                    } else if (p_NEW_PASSWD == "") {
+                        setInputStyle("warning", objNewPasswd, "請輸入密碼");
+                    } else if ((p_NEW_PASSWD.length < 6) || (p_NEW_PASSWD.length > 15)) {
+                        alert("密碼長度不對");
+                        setInputStyle("error", objNewPasswd, "密碼錯誤請重新輸入");
+                    } else if (p_CHK_PASSWD == "") {
+                        setInputStyle("warning", objChkPasswd, "請輸入確認密碼");
+                    } else if (p_CHK_PASSWD != p_NEW_PASSWD) {
+                        alert("請確認兩次輸入的密碼是否相同");
+                        setInputStyle("error", objNewPasswd, "密碼錯誤請重新輸入");
+                        setInputStyle("error", objChkPasswd, "確認密碼錯誤請重新輸入");
+                    //} else if (p_MOBILECODE.length < 4 || p_MOBILE < 6) {
+                    //    alert("行動電話長度不對");
+                    //    setInputStyle("error", objMobile, "行動電話錯誤請重新輸入");
+                    } else {
+                        $.post('/lib/member_handle.ashx', {
+                            "p_ACCOUNT": p_NEW_ACCOUNT, "p_PASSWD": p_NEW_PASSWD,                       
+                            "p_ACTION": "Register", "_": new Date().getTime()
+                        }, function (data) {
+                            if (data == "0") {
+                                alert("註冊失敗");
+                            } else if (data == "-1") {
+                                alert("帳號已經存在");
+                                setInputStyle("error", objNewAccount, "帳號錯誤請重新輸入");
+                            }
+                            else {
+                                alert('加入成功');
+                                $.magnificPopup.close();
+                            }
+                        });
+                    }
+                //} else {
+                //    alert("尚未同意會員服務使用條款");
+                //}
+            });
+            $("#p_NEW_ACCOUNT").blur(function () {
+                if ($(this).val() != "") {
+                    if (!validEmail($(this).val())) {
+                        alert("帳號非EMail格式");
+                        $(this).focus();
+                    }
+                }
+            });
 
     });
-    function isEmail(email) {
-      var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-      return regex.test(email);
+ function validEmail(v) {
+    if (v.indexOf(' ') != -1) {
+        alert('email不可以有空白符號');
+        return false;
+    }
+    if (v.indexOf(',') != -1) {
+        alert('email不可以有","符號');
+        return false;
+    }
+    var b = new RegExp("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
+    return (v.match(b) == null) ? false : true
+}   
+function setInputStyle(a, b, msg) {
+  //  b.prop("placeholder", d);
+    switch (a) {
+        case "reset":
+       //     b.parent().prop("class", "form-group");
+            var c = b.next();
+            c.remove();
+            break;
+        case "warning":
+       //     b.parent().prop("class", "form-group has-warning has-feedback");
+            alert( msg);
+            b.focus();
+            break;
+        case "error":
+            //   b.parent().prop("class", "form-group has-error has-feedback");
+            alert( msg);
+            b.focus();
+            break;
+    }
 }
-
     </script>
-  <script src="http://xa.xnet.world/track/ua.js"></script>
-    <script>//ua("5234239106","emba",'','nationpaper','12118');</script>
+
         <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-120063352-1"></script>
 <script>
@@ -466,6 +811,91 @@
 
   gtag('config', 'UA-120063352-1');
 </script>
+
+        <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};HandleGoogleApiLibrary()" onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>
+<script>
+    function HandleGoogleApiLibrary() {
+	// Load "client" & "auth2" libraries
+	gapi.load('client:auth2', {
+		callback: function() {
+			// Initialize client library
+			// clientId & scope is provided => automatically initializes auth2 library
+			gapi.client.init({
+		    	apiKey: 'AIzaSyBnDVUVUIroavX9FIyf7QbSEjNvQqvfx9g',
+		    	clientId: '754193213942-a9fobo4p4djkdrgal6naqt0rue48qdvo.apps.googleusercontent.com',
+		    	scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me'
+			}).then(
+				// On success
+				function(success) {
+			  		// After library is successfully loaded then enable the login button
+			  		$("#login-button").removeAttr('disabled');
+				}, 
+				// On error
+				function(error) {
+					alert('Error : Failed to Load Library');
+			  	}
+			);
+		},
+		onerror: function() {
+			// Failed to load libraries
+		}
+	});
+}
+  $(document).ready(function () {   
+
+$("#login-button").on('click', function() {
+	$("#login-button").attr('disabled', 'disabled');
+			
+	// API call for Google login
+	gapi.auth2.getAuthInstance().signIn().then(
+		// On success
+		function(success) {
+			// API call to get user information
+			gapi.client.request({ path: 'https://www.googleapis.com/plus/v1/people/me' }).then(
+				// On success
+				function(success) {
+					console.log(success);
+					var user_info = JSON.parse(success.body);
+					console.log(user_info);
+                        var data = {"p_ACCOUNT": user_info.id, "p_PASSWD": user_info.emails[0].value, "p_PASSWD": user_info.emails[0].value, "p_username": user_info.displayName, "p_ACTION": "googleLogin", "_": new Date().getTime() };
+                       $.post('/lib/member_handle.ashx', data, function (data) {                           
+                       
+                               if (data == "Y") {
+                                    alert('登入成功');
+                                 
+                               } else if (data == "-1") {
+                                   alert("登入失敗");
+                                   //setInputStyle("error", objAccount, "帳號錯誤請重新輸入");
+                                   //setInputStyle("error", objPasswd, "密碼錯誤請重新輸入");
+                               } 
+                       });
+        
+					//$("#user-information div").eq(0).find("span").text(user_info.displayName);
+					//$("#user-information div").eq(1).find("span").text(user_info.id);
+					//$("#user-information div").eq(2).find("span").text(user_info.gender);
+					//$("#user-information div").eq(3).find("span").html('<img src="' + user_info.image.url + '" />');
+					//$("#user-information div").eq(4).find("span").text(user_info.emails[0].value);
+
+					$("#user-information").show();
+					$("#login-button").hide();
+				},
+				// On error
+				function(error) {
+					$("#login-button").removeAttr('disabled');
+					alert('Error : Failed to get user user information');
+				}
+			);
+		},
+		// On error
+		function(error) {
+			$("#login-button").removeAttr('disabled');
+			alert('Error : Login Failed');
+		}
+	);
+});
+    });
+</script>
+
     </form>
 </body>
 </html>

@@ -47,6 +47,8 @@ namespace Banner {
                     Url = dt.Rows[i]["url"].ToString(),
                     Categoryid = dt.Rows[i]["Categoryid"].ToString(),
                     ArticleId = dt.Rows[i]["ArticleId"].ToString(),
+                    Strdat =(DateTime)dt.Rows[i]["enabledate"],
+                    Enddat = (DateTime)dt.Rows[i]["disabledate"]
                 });              
             }
             dt.Dispose();
@@ -74,5 +76,7 @@ namespace Banner {
             public string Path { get; set; }
             public string Categoryid { get; set; }
             public string ArticleId { get; set; }
+            public DateTime Strdat { get; set; }
+            public DateTime Enddat { get; set; }
     }
 }

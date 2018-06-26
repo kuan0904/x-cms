@@ -27,6 +27,6 @@ public partial class unitdata : System.Web.UI.Page
         MainData = unitlib.Get_UnitData(unitid);
         contents = MainData.Contents;
         unitname = MainData.Subject;
-
+        Session["title"] = unitname + "│" + Application["site_name"];
     }
 }

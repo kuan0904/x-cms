@@ -27,7 +27,8 @@ CKEDITOR.editorConfig = function (config) {
     config.filebrowserImageUploadUrl = '../../spadmin/saveMultiUpload.aspx?kind=QuickUpload&type=Images&responseType=json';
     config.filebrowserWindowWidth = '800';  //“瀏覽服務器”彈出框的size設置
     config.filebrowserWindowHeight = '500';
-
+    config.contentsCss = ['/css/theme.css'];
+    config.extraPlugins = 'templates';
     config.htmlEncodeOutput = true; 
     config.allowedContent = true;
     config.extraAllowedContent = 'style script';

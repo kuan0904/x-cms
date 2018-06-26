@@ -8,8 +8,10 @@
             $.post('/hot_list', dataValue, function (result) { $("#hot_list").html(result); });
             dataValue = {"classid":"2"};             
             $.post('/AdBanner', dataValue, function (result) { $("#ad_banner").html(result); });
+         
+            document.body.classList.add("list");
         });
-    
+
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
@@ -29,7 +31,7 @@
         <div class="titlePic">
             <div class="jumbotron">
                 <div class="container">
-                    <h2>最新消息</h2>
+                    <h2><%=pagetitle  %></h2>
                 </div>
             </div>
         </div>
@@ -81,7 +83,7 @@
                                          <%# article.Web.Get_category_link ((int) Eval("id"))%>
                                         <div class="post-author">
                                             <span>By</span>
-                                            <a href="#/author/admin/"> <%# article.Web.Get_Keyword_link ((string) Eval("author"))%></a>
+                                           <%# article.Web.Get_Keyword_link ((string) Eval("author"))%>
                                             <span>- </span>
                                         </div>
                                         <span class="post-date"><time datetime="<%#Eval("PostDay") %>"><%# DateTime.Parse ( Eval("PostDay").ToString()).ToString ("yyyy/MM/dd")  %></time></span>
@@ -107,10 +109,6 @@
                         <!-- col-md-12 END -->
                         </ItemTemplate>
                         </asp:Repeater>
-            
-
-      
-
                     </div>
                     <!-- news-list END -->
               

@@ -9,15 +9,29 @@
     {
         RouteConfig.RegisterRoutes(RouteTable.Routes);
         BundleConfig.RegisterBundles(BundleTable.Bundles);
+        string strsql = "";
+        DataTable dt;
+        NameValueCollection nvc = new NameValueCollection();
         if (Application["category"] == null)
         {
-            DataTable dt;
-            string strsql = "SELECT * FROM  tbl_category where status='Y' ";
-            NameValueCollection nvc = new NameValueCollection();
+            strsql = "SELECT * FROM  tbl_category where status='Y' ";
+
             dt = DbControl.Data_Get(strsql, nvc);
             Application["category"] = dt;
             dt.Dispose();
         }
+        if (Application["site_name"] == null)
+        {
+
+            strsql = "SELECT * FROM   WebSiteInfo where webid= 'site_name' ";
+
+            dt = DbControl.Data_Get(strsql, nvc);
+            if (dt.Rows.Count !=0)
+                Application["site_name"] = dt.Rows[0]["value"].ToString ();
+            dt.Dispose();
+        }
+     
+       
     }
     protected void Application_BeginRequest()
     {

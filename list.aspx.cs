@@ -36,7 +36,7 @@ public partial class list : System.Web.UI.Page
             PageIdx = Request.QueryString["pageindex"] == null ? 1 : int.Parse (Request.QueryString["pageindex"]);
         }
         if (cid == null) Response.Redirect("/index");
-       
+        if (cid =="3" || cid == "13"  || cid == "14" || cid == "15" || cid == "16" ) Response.Redirect("/" + cid  + "/lesson" );
         unitname =  cid + "/catalog";      
         List<Banner.MainData> banner1 = new List<Banner.MainData>();
         banner1 = Banner.DbHandle.Banner_Get_list(1);
@@ -65,7 +65,7 @@ public partial class list : System.Web.UI.Page
         dt.DefaultView.RowFilter = "categoryid=" + cid;
         dt = dt.DefaultView.ToTable();
         pagetitle = dt.Rows[0]["title"].ToString();
-
+        Session["title"] = pagetitle + "│" + Application["site_name"];
         dt.Dispose();
     }
 

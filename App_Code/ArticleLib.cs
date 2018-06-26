@@ -87,7 +87,7 @@ namespace article
             string[] k = id.Split(',');
             foreach (string s in k)
             {
-                result += "<a href = \"#\">" + s + "</a>";
+                result += "<a href = \"/search/"+ s +"\">" + s + "</a>";
             }
             return result;
         }
@@ -99,7 +99,7 @@ namespace article
             string[] k = id.Split(',');
             foreach (string s in k)
             {
-                result += "<a href = \"#\">" + s + "</a>";
+                result += "<a href = \"/search/"+ s +"\">" + s + "</a>";
             }
             return result;
         }
@@ -143,7 +143,30 @@ namespace article
             id = DbControl.Data_add(strsql, nvc);
             nvc.Clear();
             return id;
+
         }
+        public static  LessonDetail   Get_Lesson(int id)
+        {
+            NameValueCollection nvc = new NameValueCollection();
+            string strsql = @"SELECT    *   
+            FROM      tbl_lesson_class INNER JOIN tbl_lesson ON tbl_lesson_class.articleId = tbl_lesson.articleId
+            where lessonId  =LessonId ";
+            nvc.Add("id", id.ToString());
+            DataTable dt = DbControl.Data_Get(strsql, nvc);
+            LessonDetail detail = new LessonDetail();
+            if (dt.Rows.Count >0)
+            {
+                detail.Id = (int)dt.Rows[0]["articleId"];
+                detail.Description = dt.Rows[0]["Description"].ToString();
+                detail.Limitnum = (int)dt.Rows[0]["Limitnum"];
+                detail.Sort = (int)dt.Rows[0]["sort"];
+
+
+            }
+            dt.Dispose();
+            return detail;
+        }
+
         public static MainData Get_article(int id)
         {
             MainData MainData = new MainData();
@@ -170,7 +193,8 @@ namespace article
                 MainData.Keywords = dt.Rows[0]["Keywords"].ToString();
                 MainData.Author = dt.Rows[0]["Author"].ToString();
                 MainData.Viewcount = (int)dt.Rows[0]["Viewcount"];
-               }
+                MainData.kind = dt.Rows[0]["kind"].ToString();
+            }
             dt.Dispose();
             nvc.Clear();
 
@@ -337,7 +361,7 @@ namespace article
             }
             return ItemData;
         }
-        public static List<article.MainData> Get_article_list(string cid, string KeyWords, int rows = 10, int page = 0)
+        public static List<article.MainData> Get_article_list(string cid, string KeyWords="", int rows = 10, int page = 0)
         {
 
             List<article.MainData> MainData = new List<article.MainData>();
@@ -350,10 +374,24 @@ namespace article
                     or   categoryid = @cid ))";
 
             }
+            if (KeyWords != "")
+            {
+                strsql += @" and ( subject like @s or subtitle like @s or author like @s
+                    or keywords like @s 
+                        or  articleId in (
+                        SELECT    tbl_article_tag.articleId
+                        FROM              tbl_tag INNER JOIN
+                            tbl_article_tag ON tbl_tag.tagid = tbl_article_tag.tagid
+                            where tagname like @s  )  ) ";
+
+
+            }
             strsql += " order by articleId desc ";
             NameValueCollection nvc = new NameValueCollection
             {
-                { "cid", cid }
+                { "cid", cid },
+                { "s", "%" + KeyWords  + "%" }
+
             };
             dt = DbControl.Data_Get(strsql, nvc);
 

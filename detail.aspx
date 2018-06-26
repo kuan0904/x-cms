@@ -121,7 +121,7 @@
                                             <label class="sr-only" for="exampleInputEmail2">Email</label>
                                             <input type="email" class="form-control" id="InputEmail" placeholder="yourmail@example.com">
                                           </div>
-                                          <button type="submit" id="Emailregist" class="btn btn-default">訂閱</button>
+                                          <button type="button" id="Emailregist" class="btn btn-default">訂閱</button>
                                         </div>
                                     </div>
                                 </div>

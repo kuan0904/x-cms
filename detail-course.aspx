@@ -1,6 +1,29 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="detail-course.aspx.cs" Inherits="detail_course_" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+        <script>
+           
+        $(document).ready(function () {     
+         
+            
+              
+
+        });
+            function checkjoin(id) {
+                   var islogin = "";
+                  $.post('/lib/member_handle.ashx', {                                       
+                            "p_ACTION": "CheckLogin", "_": new Date().getTime()
+                        }, function (data) {
+                            if (data == "-1") {
+                                alert('請先登入');
+                                $( ".login-modal-js" ).trigger( "click" );
+                            }
+                            else {
+                                location.href = '/join.aspx?lessonid=' + id;
+                            }
+                        });
+            }
+    </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
       <div class="breadArea">
@@ -100,7 +123,7 @@
                                     <div class="block-body">
                                         <span class="price">NT $<%#Eval("sellprice") %></span>
                                         <span class="cost">NT $<%#Eval("price") %></span>
-                                        <a href="#" class="btn btn-danger btn-block">立即報名</a>
+                                        <a href="#" class="btn btn-danger btn-block" id="join<%#Eval("lessonId") %>" onclick="checkjoin('<%#Eval("lessonId")%>')";>立即報名</a>
                                     </div>
                                 </div><!-- block-wrap END -->
 

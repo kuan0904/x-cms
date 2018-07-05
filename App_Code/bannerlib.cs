@@ -14,7 +14,7 @@ namespace Banner {
             if (id != "" && id != "0")
                 return "/Article/" + id;
             else if (cate != "" && cate != "0")
-                return "/" + id + "/catalog";
+                return "/" + cate + "/catalog";
             else
                 return url;
 
@@ -25,10 +25,14 @@ namespace Banner {
     public class DbHandle
     {
 
-        public static List<Banner.MainData> Banner_Get_list(int ClassId)
+        public static List<Banner.MainData> Banner_Get_list(int ClassId,string flag ="")
         {
-            List< Banner.MainData > MainData = new List<Banner.MainData>();       
-            string strsql = "select * from  tbl_banner where ClassId =@ClassId and status='Y'";
+            List< Banner.MainData > MainData = new List<Banner.MainData>();
+            string strsql = "select * from  tbl_banner where bannerid in (select bannerid from tbl_featured where  ClassId =@ClassId ) ";
+            if (flag == "")
+                strsql += " and status='Y'";
+            else
+                strsql += " and status <> 'D' ";
             NameValueCollection nvc = new NameValueCollection
             {
                 { "ClassId", ClassId.ToString() }
@@ -48,7 +52,7 @@ namespace Banner {
                     Categoryid = dt.Rows[i]["Categoryid"].ToString(),
                     ArticleId = dt.Rows[i]["ArticleId"].ToString(),
                     Strdat =(DateTime)dt.Rows[i]["enabledate"],
-                    Enddat = (DateTime)dt.Rows[i]["disabledate"]
+                    Enddat = dt.Rows[i]["disabledate"].ToString () =="" ?  DateTime.Parse ("1911/1/1"):  (DateTime)dt.Rows[i]["disabledate"]
                 });              
             }
             dt.Dispose();

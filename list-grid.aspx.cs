@@ -36,7 +36,10 @@ public partial class list_grid : System.Web.UI.Page
         if (cid == null) Response.Redirect("/index");
         unitname = cid + "/catalog";
         List<Banner.MainData> banner1 = new List<Banner.MainData>();
-        banner1 = Banner.DbHandle.Banner_Get_list(1);
+        if (Request.QueryString["kind"] == "preview")
+            banner1 = Banner.DbHandle.Banner_Get_list(5, "preview");
+        else
+            banner1 = Banner.DbHandle.Banner_Get_list(5);
         Repeater1.DataSource = banner1;
         Repeater1.DataBind();
         banner1.Clear();

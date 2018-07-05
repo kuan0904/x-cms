@@ -17,15 +17,14 @@
      <asp:SqlDataSource ID="viewDataSource" runat="server" ConnectionString="<%$ ConnectionStrings:dbconnConnection %>" SelectCommand=""></asp:SqlDataSource>
     <asp:MultiView ID="MultiView1" runat="server">
 
-        <asp:View ID="View1" runat="server">	        
+    <asp:View ID="View1" runat="server">	        
       
                     <div class="box-header well" data-original-title>   <%=unitname %>
                           <asp:DropDownList ID="DropDownList1" runat="server"  DataTextField="title" DataValueField="classId" AutoPostBack="True" OnSelectedIndexChanged ="id_change">
                           </asp:DropDownList>     
                             <asp:LinkButton ID="Btn_add" runat="server" Text="" class="btn btn-large" OnClick ="Btn_add_Click" ><i class="icon-plus"></i>新增資料</asp:LinkButton>                                                                                                 
-                       
-                    </div>
-                    <div class="box-content">                          
+                        </div>
+                    <div class="box-content">                            
                   
 
                           <asp:ListView ID="ListView1" runat="server" DataKeyNames="bannerid"   OnPagePropertiesChanging="ContactsListView_PagePropertiesChanging">
@@ -49,14 +48,12 @@
             </td>
             <td> <%#Eval("bannerid")%></td>                                            
             <td><a href='../webimages/banner/<%#Eval("filename")%>' target="_blank" ><img src='../webimages/banner/<%#Eval("filename")%>' height ="100" /></a> </td>
-                <td><%#Eval("url")%></td>
-                <td><%#Eval("targetblank")%></td>
+             <td><%#Eval("title")%></td>    <td><%#Eval("url")%></td>
+               
                 <td><%#Eval("sort")%></td>
                 <td><%# Eval("enabledate").ToString ()%></td>
                 <td><%#  Eval("disabledate") %></td>
-                <td><%#( Eval("status").ToString() == "Y") ? "啟用": "停用"%></td>                                        
-                <td><%#Eval("title")%></td>
-                                          
+                <td><%#( Eval("status").ToString() == "Y") ? "啟用": "停用"%></td>    
         </tr>
         </ItemTemplate>
         <LayoutTemplate>
@@ -70,19 +67,15 @@
                                     </th>
                                       <th runat="server" ><asp:LinkButton ID="sort1" runat="server" CommandArgument="desc" CommandName="bannerid" onclick ="sortdata">ID</asp:LinkButton></th>
                                     
-                                    <th runat="server">圖檔
-                                    </th>
+                                    <th runat="server">圖檔</th>  <th runat="server">標題</th>
                                     <th runat="server">連結網址
-                                    </th>
-                                    <th runat="server">開新<br />視窗
-                                    </th>
+                                    </th>                                   
                                        <th runat="server">優先<br/>順序
                                     </th>
                                         <th runat="server"><asp:LinkButton ID="LinkButton3" runat="server" CommandArgument="desc" CommandName="enabledate" onclick ="sortdata">啟用時間</asp:LinkButton></th>
                                     <th runat="server"><asp:LinkButton ID="LinkButton4" runat="server" CommandArgument="desc" CommandName="disabledate" onclick ="sortdata">停用時間</asp:LinkButton></th>
                                  <th runat="server"><asp:LinkButton ID="LinkButton5" runat="server" CommandArgument="desc" CommandName="status" onclick ="sortdata">狀態</asp:LinkButton></th>
-                                 <th runat="server">標題
-                                    </th>
+                               
                                                                           
                             </tr>
                                   </thead> 
@@ -125,8 +118,7 @@
                   
                             <table class="table table-striped table-bordered bootstrap-datatable datatable">
                                     <tr>
-                                    <td>
-                                        圖檔</td>
+                                    <td> 圖檔</td>
                                     <td>
                                         <asp:FileUpload ID="FileUpload1" runat="server" />
                                         <br />

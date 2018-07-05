@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="join.aspx.cs" Inherits="join" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+
         <script>
          $(document).ready(function () {     
          
@@ -46,7 +47,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
      <div class="container">
-   <label for="fname">  課程名稱: <%=subject %></label>
+   <label for="fname">  課程名稱: <%=subject %></label><br />
       
     <label for="fname">姓名</label>
     <input type="text" id="username" name="username" placeholder="請輸入你的姓名">
@@ -55,12 +56,22 @@
     <input type="text" id="email" name="Email" placeholder="請輸入你的Email">
 
     <label for="country">聯絡電話</label>
-    <input type="text" id="phone" name="phone" placeholder="請輸入你的phone">
-    
-    
+    <input type="text" id="phone" name="phone" placeholder="請輸入你的phone">   
+            
+            <div class=block-title>課程費用</div>
+            <div class="block-body">
+                <span class="price">NT $<%=sellprice  %></span>
+                <span class="cost">NT $<%=price  %></span>
+                                      
+            </div><br />
+            可報名數:<%=limitnum %><br />
+            參加人數:<select><option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                 </select>   <br>             
 
-
-    <input type="button" id="send" value="報名">
+    <input type="button" id="send" value="我要報名">
 
 </div>
 </asp:Content>

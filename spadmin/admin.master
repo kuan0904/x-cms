@@ -19,7 +19,7 @@
 		<link rel="stylesheet" href="assets/css/daterangepicker.css" />
 		<link rel="stylesheet" href="assets/css/colorpicker.css" />
 		<!-- fonts -->
-		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300" />
 		<!-- ace styles -->
 		<link rel="stylesheet" href="assets/css/ace.min.css" />
 		<link rel="stylesheet" href="assets/css/ace-rtl.min.css" />
@@ -273,7 +273,7 @@
 						<div class="page-header">
                             <h1>  
                                
-                                <script src="ckeditor/ckeditor.js?v=v"></script>
+                                <script src="ckeditora/ckeditor.js?a=5"></script>
                             </h1> 
                             <asp:ContentPlaceHolder ID="ContentPlaceHolder_title" runat="server">
                                 </asp:ContentPlaceHolder>

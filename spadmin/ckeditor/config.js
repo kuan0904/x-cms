@@ -1,39 +1,32 @@
-/**
+ï»¿/**
  * @license Copyright (c) 2003-2018, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
 
 CKEDITOR.editorConfig = function (config) {
-    config.toolbarGroups = [
-        { name: 'document', groups: ['mode', 'document', 'doctools'] },
-        { name: 'clipboard', groups: ['clipboard', 'undo'] },
-        { name: 'editing', groups: ['find', 'selection', 'spellchecker', 'editing'] },
-        { name: 'forms', groups: ['forms'] },
-        '/',
-        { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
-        { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph'] },
-        { name: 'links', groups: ['links'] },
-        { name: 'insert', groups: ['insert'] },
-        { name: 'styles', groups: ['styles'] },
-        { name: 'colors', groups: ['colors'] },
-        { name: 'tools', groups: ['tools'] },
-        { name: 'others', groups: ['others'] },
-        { name: 'about', groups: ['about'] }
-    ];
+
+    config.fontSize_sizes = 'x0.8/0.8em;x0.9/0.9em;x1/1em;x1.2/1.2em;x1.4/1.4em;x1.6/1.6em;x1.8/1.8em;x2/2em;x2.58/2.5em;x3/3em;x4/4em;';
+    config.font_names = 'æ–°ç´°æ˜é«”;ç´°æ˜é«”;æ¨™æ¥·é«”;å¾®è»Ÿæ­£é»‘é«”;Arial;Arial Black;Comic Sans MS;Courier New;Tahoma;Times New Roman;Verdana';
+    config.colorButton_colors =
+        '000,800000,8B4513,2F4F4F,008080,000080,4B0082,696969,' +
+        'B22222,A52A2A,DAA520,006400,40E0D0,0000CD,800080,808080,' +
+        'F00,FF8C00,FFD700,008000,0FF,00F,EE82EE,A9A9A9,' +
+        'FFA07A,FFA500,FFFF00,00FF00,AFEEEE,ADD8E6,DDA0DD,D3D3D3,' +
+        'FFF0F5,FAEBD7,FFFFE0,F0FFF0,F0FFFF,F0F8FF,E6E6FA,FFF';
     config.filebrowserBrowseUrl = '../../spadmin/ckfinder/ckfinder.html';
     config.filebrowserImageBrowseUrl = '../../spadmin/ckfinder/ckfinder.html?type=Images';
     config.filebrowserUploadUrl = '../../spadmin/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Files';
     /*  config.filebrowserImageUploadUrl = '../../spadmin/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Images';*/
     config.filebrowserImageUploadUrl = '../../spadmin/saveMultiUpload.aspx?kind=QuickUpload&type=Images&responseType=json';
-    config.filebrowserWindowWidth = '800';  //¡§ÂsÄıªA°È¾¹¡¨¼u¥X®Øªºsize³]¸m
+    config.filebrowserWindowWidth = '800';  //â€œç€è¦½æœå‹™å™¨â€å½ˆå‡ºæ¡†çš„sizeè¨­ç½®
     config.filebrowserWindowHeight = '500';
     config.contentsCss = ['/css/theme.css'];
     config.extraPlugins = 'templates';
     config.htmlEncodeOutput = true; 
     config.allowedContent = true;
     config.extraAllowedContent = 'style script';
-    config.height = '700px'; //¥i¥H³o¼Ë¼g
-    config.width = 1000; //¤]¥i¥H³o¼Ë¼g
+    config.height = '700px'; //å¯ä»¥é€™æ¨£å¯«
+    config.width = 1000; //ä¹Ÿå¯ä»¥é€™æ¨£å¯«
 
 
 };

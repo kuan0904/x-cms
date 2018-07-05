@@ -12,7 +12,10 @@ public partial class index : System.Web.UI.Page
 
         Session["title"] = "首頁│" + Application["site_name"];
         List<Banner.MainData> banner1 = new List<Banner.MainData>();
-        banner1 = Banner.DbHandle.Banner_Get_list(1);
+        if (Request.QueryString["kind"] == "preview")
+            banner1 = Banner.DbHandle.Banner_Get_list(1,"preview");
+        else
+            banner1 = Banner.DbHandle.Banner_Get_list(1);
         Repeater1.DataSource  = banner1;
         Repeater1.DataBind();
         banner1.Clear();

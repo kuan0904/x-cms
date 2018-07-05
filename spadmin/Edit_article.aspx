@@ -10,7 +10,9 @@
           $("#postday").datepicker("option", "dateFormat", "yy/mm/dd");
 
         });
-
+        function p(id) {
+            window.open("/Article/" + id);
+        }
     </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
@@ -26,7 +28,7 @@
                                          <asp:LinkButton ID="btn_add" runat="server" Text=""  OnClick ="btn_add_Click"  class="btn btn-app btn-primary btn-xs"><i class="icon-edit bigger-230"></i>新增資料</asp:LinkButton> 
             
                 </div>
-                    <asp:ListView ID="ListView1" runat="server" DataKeyNames="articleId" >
+                    <asp:ListView ID="ListView1" runat="server" DataKeyNames="articleId" OnPagePropertiesChanging="ContactsListView_PagePropertiesChanging">
                         <EmptyDataTemplate>
                             <table runat="server" style="background-color: #FFFFFF; border-collapse: collapse; border-color: #999999; border-style: none; border-width: 1px;">
                                 <tr>
@@ -34,52 +36,52 @@
                                 </tr>
                             </table>
                         </EmptyDataTemplate>
-                                <LayoutTemplate>
-                            <table runat="server">
-                                <tr runat="server">
-                                    <td runat="server">
-                                        <table id="itemPlaceholderContainer" runat="server" class="table table-striped table-bordered bootstrap-datatable datatable">
-                                            <thead>
-                                                <tr runat="server">
-                                                    <th runat="server"></th>
-                                                    <th runat="server">id</th>
-                                                    <th runat="server">標題</th>
-                                                    <th runat="server">圖示</th>
-                                                    <th runat="server">狀態</th>
-                                                    <th runat="server">上稿日</th>
+                            <LayoutTemplate>
+                        <table runat="server">
+                            <tr runat="server">
+                                <td runat="server">
+                                    <table id="itemPlaceholderContainer" runat="server" class="table table-striped table-bordered bootstrap-datatable datatable">
+                                        <thead>
+                                            <tr runat="server">
+                                                <th runat="server"></th>
+                                                <th runat="server">id</th>
+                                                <th runat="server">標題</th>
+                                                <th runat="server">圖示</th>
+                                                <th runat="server">狀態</th>
+                                                <th runat="server">上稿日</th>
                                                        
-                                                </tr>
-                                            </thead>
-                                            <tr id="itemPlaceholder" runat="server">
                                             </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr runat="server">
-                                    <td runat="server">
-                                        <div class="pagenavi">
-                                            <asp:DataPager ID="DataPager1" runat="server">
-                                                <Fields>
-                                                    <asp:NextPreviousPagerField ButtonType="Button" ShowFirstPageButton="True" ShowNextPageButton="False" ShowPreviousPageButton="False" />
-                                                    <asp:NumericPagerField ButtonCount="10" NextPageText="下十頁" PreviousPageText="上十頁" />
-                                                    <asp:NextPreviousPagerField ButtonType="Button" ShowLastPageButton="True" ShowNextPageButton="False" ShowPreviousPageButton="False" />
-                                                </Fields>
-                                            </asp:DataPager>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </LayoutTemplate>
+                                        </thead>
+                                        <tr id="itemPlaceholder" runat="server">
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr runat="server">
+                                <td runat="server">
+                                    <div class="pagenavi">
+                                        <asp:DataPager ID="DataPager1" runat="server">
+                                            <Fields>
+                                                <asp:NextPreviousPagerField ButtonType="Button" ShowFirstPageButton="True" ShowNextPageButton="False" ShowPreviousPageButton="False" />
+                                                <asp:NumericPagerField ButtonCount="10" NextPageText="下十頁" PreviousPageText="上十頁" />
+                                                <asp:NextPreviousPagerField ButtonType="Button" ShowLastPageButton="True" ShowNextPageButton="False" ShowPreviousPageButton="False" />
+                                            </Fields>
+                                        </asp:DataPager>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </LayoutTemplate>
                         <ItemTemplate>
                             <tr>
                                 <td>
                          
                                        <asp:LinkButton ID="LinkButton1" runat="server" Text=""  OnClick="LinkButton1_Click"
-                    CommandArgument='<%# Eval("articleId").ToString()%>' class="btn btn-info"><i class="icon-trash icon-white"></i>編輯</asp:LinkButton>                                                    
+                    CommandArgument='<%# Eval("articleId").ToString()%>' class="btn btn-info"><i class="icon-edit icon-white"></i>編輯</asp:LinkButton>                                                    
             
                                     <asp:LinkButton ID="LinkButton2" runat="server" Text="" OnClick="link_delete" OnClientClick="return confirm('你確定要刪除嗎?')"
                     CommandArgument='<%# Eval("articleId").ToString()%>' class="btn btn-danger"><i class="icon-trash icon-white"></i>刪除</asp:LinkButton>                                                    
-            
+                <button type="button" class="btn btn-primary" name="preview" onclick ="p('<%# Eval("articleid") %>');"><i class="icon-external-link icon-white"></i>預 覽</button>
                                 </td>
                                 <td>
                                     <%# Eval("articleid") %>
@@ -97,7 +99,6 @@
                                 <td>
                                     <%# DateTime .Parse(Eval("postday").ToString()).ToString("yyyy/MM/dd") %>
                                 </td>
-
 
 
 

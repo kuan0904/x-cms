@@ -136,8 +136,31 @@
 
 
                     </div><!-- row END -->
+                    <!-- Line 分享按鈕 -->
+<script>
+//<![CDATA[
+(function() {
+var img = "http://2.bp.blogspot.com/-tsIDMPhBx18/VPGxHZtjsnI/AAAAAAAALIU/1b_VO721HDw/s1600/line-share-button.png", // line 按鈕圖示
+title = document.title,
+url = "http://" + location.hostname + location.pathname,
+href, html;
 
-                </div><!-- container END -->
+// 行動裝置語法
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+href = "http://line.naver.jp/R/msg/text/?" + title + "%0D%0A" + url;
+} else {
+// 網頁版語法
+href = "https://lineit.line.me/share/ui?url=" + encodeURIComponent(url);
+}
+html = "<a href='" + href + "' target='_blank'><img src='" + img + "'/></a>";
+document.write(html);
+})();
+//]]>
+</script>
+<!-- Designed by WFU BLOG -->
+                             <a href="https://social-plugins.line.me/lineit/share?url=<%= Request.Url.AbsoluteUri %>&text=<%=subject  %>%0D%0A<%= Request.Url.AbsoluteUri %>&from=line_scheme"  target="_blank"><i class="ico-line-img">line</i></a>
+
+                    </div><!-- container END -->
 
 </asp:Content>
 

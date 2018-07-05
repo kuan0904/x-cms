@@ -44,6 +44,7 @@ public partial class spadmin_Edit_article : System.Web.UI.Page
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("s", "%" + searchtxt.Text + "%");
         DataTable dt = DbControl.Data_Get(strsql, nvc);
+     
         ListView1.DataSource = dt;
         ListView1.DataBind();
         dt.Dispose();
@@ -53,6 +54,9 @@ public partial class spadmin_Edit_article : System.Web.UI.Page
 
     protected void ContactsListView_PagePropertiesChanging(object sender, PagePropertiesChangingEventArgs e)
     {
+       
+        var pager = (DataPager)ListView1.FindControl("DataPager1");
+        pager.SetPageProperties(e.StartRowIndex, e.MaximumRows, false);
         selectSQL();
     }
   

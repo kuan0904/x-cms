@@ -11,17 +11,14 @@
     </asp:LinqDataSource>
       <div class="box-header well" data-original-title>
                         <h2>產品管理    <asp:LinkButton ID="Btn_add" runat="server" Text="" class="btn btn-large" OnClick ="Btn_add_Click" ><i class="icon-plus"></i>新增資料</asp:LinkButton>
-                        類別:<asp:DropDownList ID="DropDownList1" runat="server" DataSourceID="SqlDataSource4" DataTextField="c_name" DataValueField="c_id">
+                        類別:<asp:DropDownList ID="DropDownList1" runat="server"  DataTextField="title" DataValueField="categoryid">
                         </asp:DropDownList>
                         <asp:TextBox ID="search_txt" runat="server"></asp:TextBox>
                         <asp:Button ID="btn_search" runat="server" Text=" 查 詢 " OnClick="btn_search_click" class="btn btn-success" /></h2>
           </div>
             <div class="box-content">
 
-                 <asp:SqlDataSource ID="viewDataSource" runat="server" ConnectionString="<%$ ConnectionStrings:dbconnConnection %>" SelectCommand=""></asp:SqlDataSource>
-
-                <asp:SqlDataSource ID="SqlDataSource4" runat="server" ConnectionString="<%$ ConnectionStrings:dbconnConnection %>" SelectCommand="SELECT * FROM category"></asp:SqlDataSource>
-
+        
                 <asp:MultiView ID="MultiView1" runat="server">
                     <asp:View ID="View1" runat="server">
                      
@@ -47,7 +44,7 @@
                                     </td>
                                     <td><%# Eval("p_id") %></td>
                                     <td><img src='../upload/<%#  Eval("pic1")  %>?<%=DateTime.Now.ToString ("yyyyMMddhhmmss") %>' width ="100" /></td>
-                                      <td><%# Eval("c_name") %></td>
+                                      <td><%# Eval("title") %></td>
                                     <td><%# Eval("productname")  %></td>                                
                                     <td><%# Eval("price") %></td>                             
                                     <td>
@@ -118,7 +115,7 @@
                                 <td><asp:TextBox ID="productname" runat="server" Width="350px"></asp:TextBox></td>                                                                          
                                 <td>商品分類</td>
                                 <td >
-                                    <asp:DropDownList ID="c_id" runat="server">
+                                    <asp:DropDownList ID="categoryid" runat="server">
                                     </asp:DropDownList>                             
                                 </td>                              
                             </tr>
@@ -230,7 +227,7 @@
     
             function checkinput() {
                 var obj = "ContentPlaceHolder1_";
-                var kindid = $("#<% =c_id.ClientID %>").val();                                   
+                var kindid = $("#<% =categoryid.ClientID %>").val();                                   
                                     
                 if ($("#<% =price1.ClientID %>").val() == '' ) {
                     alert('售價未輸入');

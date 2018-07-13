@@ -18,6 +18,12 @@ public partial class list_grid : System.Web.UI.Page
     public static int PageIdx = 1;
     public static string unitname = "";
     public string pagetitle = "";
+    protected void Page_Init(object sender, EventArgs e)
+    {
+        Session["description"] = Application["description"];
+        Session["keywords"] = Application["keywords"];
+        Session["image"] = Session["websiteurl"] + "/images/fbShare.jpg";
+    }
     protected void Page_Load(object sender, EventArgs e)
     {
 

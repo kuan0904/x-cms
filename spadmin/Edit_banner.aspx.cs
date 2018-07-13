@@ -186,7 +186,7 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
     }
     public void selectSQL(string sorttype = "desc", string sortColumn = "bannerid")
     {
-        string strsql = "select * from  tbl_banner  where classid=@classid ";
+        string strsql = "select * from  tbl_banner  where status <>'D' and classid=@classid ";
         strsql += " ORDER BY  " + sortColumn + " " + sorttype;
         viewDataSource.SelectParameters.Clear();
         viewDataSource.SelectCommand = strsql;
@@ -256,9 +256,9 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
     {
         LinkButton obj = sender as LinkButton;
         Selected_id.Value = obj.CommandArgument;
-        string strsql = "update from tbl_banner set status='D'  where bannerid = @id";
+        string strsql = "update tbl_banner set status='D'  where bannerid = @id";
         int i = DbControl.Data_delete(strsql, Selected_id.Value);
-        ListView1.DataBind();
+        selectSQL();
     }
     protected void id_change(object sender, EventArgs e)
     {

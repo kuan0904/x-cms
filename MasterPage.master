@@ -10,30 +10,31 @@
 <meta name="msapplication-navbutton-color" content="#b483a6">
 <meta name="apple-mobile-web-app-status-bar-style" content="#b483a6">
 <meta name="author" content="Xnet 智媒科技"/>
-<meta name="keywords" content="" />
-<meta name="description" content="" />
+<meta name="keywords" content="<%=Session ["keywords"] %>" />
+<meta name="description" content="<%=Session ["description"] %>" />
 <meta property="fb:app_id" content="<%=FacebookAppId %>" />
-<meta property="og:title" content="" />
-<meta property="og:description" content="" />
+<meta property="og:title" content="<%=Session["title"] %>" />
+<meta property="og:description" content="<%=Session ["description"] %>" />
 <meta property="og:site_name" content="<%=Application["site_name"]%>" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="" />
-<meta property="og:image" content="" />
+<meta property="og:url" content="<%=Request.Url.AbsoluteUri %>" />
+<meta property="og:image" content="<%=Session ["image"] %>" />
 <meta property="fb:admins" content="" />
 <meta name="robots" content="index,follow" />
 <meta name="robots" content="noindex,follow" />
 <meta name="robots" content="index,nofollow" />
 <meta name="robots" content="noindex,nofollow" />
 <meta name="google-signin-client_id" content="754193213942-a9fobo4p4djkdrgal6naqt0rue48qdvo.apps.googleusercontent.com">
+    <meta name="google-site-verification" content="BWMSZ4A4swQs9AA0eM_Q-ydqIIEzvtZJ1OYh02bRa-w" />
 <title><%=Session["title"] %></title>
 
-<link rel="stylesheet" href='/assets/font-awesome/css/font-awesome.min.css' />
-<link rel="stylesheet" href='/assets/bootstrap/css/bootstrap.min.css' />
-<link rel="stylesheet" href='/css/reset.css' />
+<link rel="stylesheet" href='/assets/font-awesome/css/font-awesome.min.css?v=2' />
+<link rel="stylesheet" href='/assets/bootstrap/css/bootstrap.min.css?v=2' />
+<link rel="stylesheet" href='/css/reset.css?v=2' />
 <link rel="stylesheet" href='/assets/swipe/swiper.min.css'/>
-<link rel="stylesheet" href='/css/theme.css' />
+<link rel="stylesheet" href='/css/theme.css?v=2' />
 <link rel="stylesheet" href='/css/post-layout.css' />
-<link rel="stylesheet" href='/css/style.css' />
+<link rel="stylesheet" href='/css/style.css?v=2' />
 <link rel="shortcut icon" href="/CLlogo16x16.ico" />
 <!--[if lt IE 9]><script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
  <script src="/js/jquery-1.9.1.min.js"></script>
@@ -895,7 +896,8 @@ $("#login-button").on('click', function() {
 });
     });
 </script>
-
+        <script src="http://xa.xnet.world/track/xa.js?v=1"></script>
+<script>ua("culturelaunch","prj0002",  '', '', '');</script>
     </form>
 </body>
 </html>

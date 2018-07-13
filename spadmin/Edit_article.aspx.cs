@@ -131,5 +131,10 @@ public partial class spadmin_Edit_article : System.Web.UI.Page
         selectSQL();
     }
 
-  
+
+
+    protected void LinkButton3_Click(object sender, EventArgs e)
+    {
+        MultiView1.ActiveViewIndex = 2;
+    }
 }

@@ -18,8 +18,9 @@ public partial class list : System.Web.UI.Page
     public string pagetitle = "";
       protected void Page_Init(object sender, EventArgs e)
     {
-
-
+        Session["description"] = Application["description"];
+        Session["keywords"] = Application["keywords"];
+        Session["image"] = Session["websiteurl"] + "/images/fbShare.jpg";
     }
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -37,12 +38,10 @@ public partial class list : System.Web.UI.Page
         }
         if (cid == null) Response.Redirect("/index");
         if (cid =="3" || cid == "13"  || cid == "14" || cid == "15" || cid == "16" ) Response.Redirect("/" + cid  + "/lesson" );
-        unitname =  cid + "/catalog";      
-        List<Banner.MainData> banner1 = new List<Banner.MainData>();
-        if (Request.QueryString["kind"] == "preview")
-            banner1 = Banner.DbHandle.Banner_Get_list(4,"preview");
-        else
-            banner1 = Banner.DbHandle.Banner_Get_list(4);
+        unitname =  cid + "/catalog";    
+        
+        List<article .MainData> banner1 = new List<article.MainData>();
+        banner1 =  article.Web.Recommend_list (int.Parse (cid) );
         Repeater1.DataSource = banner1;
         Repeater1.DataBind();
         banner1.Clear();

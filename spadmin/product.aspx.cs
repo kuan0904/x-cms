@@ -18,25 +18,29 @@ public partial class spadmin_product : System.Web.UI.Page
     
     protected void Page_Init(object sender, EventArgs e)
     {
-        DropDownList1.DataBound  += new EventHandler(DropDownList1_DataBound);
-        string strsql = "select * from category where status <> 'D' and c_id>@id " ;
+       // DropDownList1.DataBound  += new EventHandler(DropDownList1_DataBound);
+        string strsql = "select * from tbl_category where status <> 'D' and categoryid>@id ";
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("id", "0");
-        DataTable dt = admin_contrl.Data_Get(strsql, nvc);                 
+        DataTable dt = DbControl.Data_Get(strsql, nvc);                 
         for (int i = 0; i < dt.Rows.Count; i++)
         {
-            string name = dt.Rows[i]["c_name"].ToString();
-            string id = dt.Rows[i]["c_id"].ToString();
-            c_id.Items.Add(new ListItem(name, id));
-                
+            string name = dt.Rows[i]["title"].ToString();
+            string id = dt.Rows[i]["categoryid"].ToString();
+            categoryid.Items.Add(new ListItem(name, id));
+            DropDownList1.Items.Add(new ListItem(name, id));
+
+
         }
+       
         dt.Dispose();
-   
-         
+
+       
 
      }
     protected void Page_Load(object sender, EventArgs e)
     {
+     
 
         if (!IsPostBack)
         {
@@ -55,14 +59,14 @@ public partial class spadmin_product : System.Web.UI.Page
         string strsql = "select * from productdata where p_id  = @p_id";
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("p_id", Selected_id.Value  );
-        DataTable dt = admin_contrl.Data_Get(strsql, nvc);
+        DataTable dt = DbControl.Data_Get(strsql, nvc);
         price1.Text = dt.Rows[0]["price"].ToString();
         p_id.Text = dt.Rows[0]["p_id"].ToString();
         productname.Text = dt.Rows[0]["productname"].ToString();
         storage.Text = dt.Rows[0]["storage"].ToString();
         description.Text = dt.Rows[0]["description"].ToString();
         status.SelectedValue = dt.Rows[0]["status"].ToString();
-        c_id.SelectedValue = dt.Rows[0]["c_id"].ToString();
+        categoryid.SelectedValue = dt.Rows[0]["categoryid"].ToString();
         stringArray[1] = dt.Rows[0]["pic1"].ToString();
         stringArray[2] = dt.Rows[0]["pic2"].ToString();
         stringArray[3] = dt.Rows[0]["pic3"].ToString();
@@ -89,7 +93,7 @@ public partial class spadmin_product : System.Web.UI.Page
         strsql = "select * from productprice where p_id  = @p_id order by secno";
         nvc = new NameValueCollection();
         nvc.Add("p_id", Selected_id.Value);
-        dt = admin_contrl.Data_Get(strsql, nvc);
+        dt = DbControl.Data_Get(strsql, nvc);
         for (int i = 0; i < dt.Rows.Count;i++ ) 
         {
             if (dt.Rows [i]["secno"].ToString () == "1")
@@ -172,11 +176,11 @@ public partial class spadmin_product : System.Web.UI.Page
         {
             strsql = "insert into productdata (viewcount) values (@viewcount ) ";           
             nvc.Add("viewcount", "0");
-            i = admin_contrl.Data_add (strsql, nvc);           
+            i = DbControl.Data_add (strsql, nvc);           
             strsql = "select max(p_id ) from productdata  where p_id >@p_id ";
             nvc.Clear();
             nvc.Add("p_id", "0");
-            DataTable dt = admin_contrl.Data_Get(strsql, nvc);
+            DataTable dt = DbControl.Data_Get(strsql, nvc);
             p_id.Text = dt.Rows[0][0].ToString();           
         }
 
@@ -214,7 +218,7 @@ public partial class spadmin_product : System.Web.UI.Page
         if (sort.Text == "") sort.Text = "0";
         strsql = @"UPDATE  productdata  SET productname=@productname,price=@price, banner=@banner,logo=@logo
                 ,description = @description, storage = @storage, pic1 = @pic1, pic2 = @pic2,pic3 = @pic3,memo=@memo,
-                c_Id = @c_Id,  status = @status,sort=@sort,Pricing=@Pricing,Savetxt=@Savetxt,selltxt=@selltxt where p_id=@id ";      
+                categoryid = @categoryid,  status = @status,sort=@sort,Pricing=@Pricing,Savetxt=@Savetxt,selltxt=@selltxt where p_id=@id ";      
              nvc.Clear();
             nvc.Add("price", price1.Text);         
             nvc.Add("productname", productname.Text ) ;      
@@ -222,7 +226,7 @@ public partial class spadmin_product : System.Web.UI.Page
             nvc.Add("description", description.Text);        
             nvc.Add("status",  status.SelectedValue ) ;
        
-            nvc.Add("c_Id", c_id.SelectedValue) ;     
+            nvc.Add("categoryid", categoryid.SelectedValue) ;     
             nvc.Add("pic1", stringArray[1] == null ? "" : stringArray[1]);
             nvc.Add("pic2", stringArray[2] == null ? "" : stringArray[2]);
             nvc.Add("pic3", stringArray[3] == null ? "" : stringArray[3]);
@@ -233,12 +237,12 @@ public partial class spadmin_product : System.Web.UI.Page
         nvc.Add("Pricing", Pricing.Text);
         nvc.Add("Savetxt", Savetxt.Text);
         nvc.Add("selltxt", selltxt.Text);
-        i = admin_contrl.Data_update(strsql, nvc, p_id.Text);
+        i = DbControl.Data_Update (strsql, nvc, p_id.Text);
         
         strsql = @"delete   productprice   where p_id=@id ";
         nvc.Clear();
         nvc.Add("p_id", p_id.Text);
-        i = admin_contrl.Data_update(strsql, nvc, p_id.Text);
+        i = DbControl.Data_Update(strsql, nvc, p_id.Text);
         for (i = 1; i <= 10; i++)     {      
             strsql = @"insert into   productprice  (secno,p_id,num,price) values (@i,@p_id,@num,@price)  ";
             nvc.Clear();
@@ -254,7 +258,7 @@ public partial class spadmin_product : System.Web.UI.Page
             TextBox temp = (TextBox)vi2.FindControl("price" + i.ToString());
             nvc.Add("num", num.Text );
             nvc.Add("price", temp.Text);
-            admin_contrl.Data_add (strsql, nvc);
+            DbControl.Data_add (strsql, nvc);
 
         }
         selectSQL();
@@ -280,27 +284,28 @@ public partial class spadmin_product : System.Web.UI.Page
     }
     public void selectSQL(string sorttype = "desc", string sortColumn = "p_id")
     {
-        viewDataSource.SelectParameters.Clear();
-        string strsql = " SELECT  * ,(select c_name from  category  where category.c_id =  productdata.c_id) as c_name   from  productdata    where status <> 'D' ";
+     
+        string strsql = " SELECT  * ,(select title from  tbl_category  where tbl_category.categoryid =  productdata.categoryid) as title   from  productdata    where status <> 'D' ";
     
         if (search_txt.Text != "")
         {
             int n;
-            bool isNumeric = int.TryParse(search_txt.Text, out n);     
-      
+            bool isNumeric = int.TryParse(search_txt.Text, out n);           
                 strsql += @" and (memo like '%'+@S+'%'    or productname like '%'+@S+'%'   or description like '%'+@S+'%')  ";
-            viewDataSource.SelectParameters.Add("S", search_txt.Text);
+      
         }
         if (DropDownList1.SelectedIndex >0)
         {
-            strsql += " and  c_id = @c_id";
-            viewDataSource.SelectParameters.Add("c_id",  DropDownList1.SelectedValue );
-
-        }
+            strsql += " and  categoryid = @categoryid";
+            }
     
         strsql += " ORDER BY  sort," + sortColumn + " " + sorttype;
-        viewDataSource.SelectCommand = strsql;
-        ListView1.DataSourceID  = viewDataSource.ID;
+        NameValueCollection nvc = new NameValueCollection();
+        nvc.Add("s", search_txt.Text);
+        nvc.Add("categoryid", DropDownList1.SelectedValue);
+ 
+        DataTable dt = DbControl.Data_Get(strsql, nvc);
+        ListView1.DataSource = dt;
         ListView1.DataBind();
 
         MultiView1.ActiveViewIndex = 0;

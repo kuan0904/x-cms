@@ -184,7 +184,7 @@ public partial class spadmin_article : System.Web.UI.Page
   
     [WebMethod(EnableSession = true)]
     public static string Set_data( string kind,string id,string[] categoryid
-        , string subject, string subtitle,string contents, string pic,string postday
+        , string subject, string subtitle,string contents, string pic,string postday,string recommend
         , string[] tags,  string author, string keywords, string status, List<article.Lesson> Lesson  )
     {
         string result = ""; 
@@ -205,7 +205,8 @@ public partial class spadmin_article : System.Web.UI.Page
             Category = categoryid,
             Author = author,
             Lesson =Lesson ,
-            kind=kind        
+            Recommend = recommend,
+            kind =kind        
         };
    
         HttpContext.Current.Session["MainData"] = MainData;     

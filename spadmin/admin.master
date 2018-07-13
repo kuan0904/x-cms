@@ -146,8 +146,13 @@
   width:100%;
 }
  
-
+  
+input.Big{
+    width:20px;
+    height:20px;
+}
     </style>
+
 
 </head>
 
@@ -165,7 +170,7 @@
 				<div class="navbar-header pull-left">
 					<a href="#" class="navbar-brand">
 						<small>
-							<i class="icon-leaf"></i>
+							<i class="icon-desktop"></i>
 							<%=Session["companyName"].ToString () %>-<%=Session["systemName"].ToString () %>
 						</small>
 					</a><!-- /.brand -->
@@ -405,10 +410,17 @@
 					onCleanup:function(){ alert('onCleanup: colorbox has begun the close process'); },
 					onClosed:function(){ alert('onClosed: colorbox has completely closed'); }
 				});
-
-		
+                console.log($('#slider').data('type')); //  "slideShow"
+            console.log($('#slider span:eq(1)').data('size'));   
+          
+              console.log($('.photo').data('size'));   
+       //  console.log(photo[0].dataset.size);   //  "xs"
 			});
 		</script>
     </form>
+    <div id="slider" data-type="slideShow">
+  <span class='photo' data-item="1" data-size="xs" ></span>
+  <span class='photo' data-item="2" data-size="lg"  /></span>
+</div>
 </body>
 </html>

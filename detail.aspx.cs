@@ -52,10 +52,14 @@ public partial class detail : System.Web.UI.Page
             subject = MainData.Subject;
             Session["title"] = subject + "│" + Application["site_name"];
             pic = "/webimages/article/" + MainData.Pic;
+            Session["image"] = Session["websiteurl"] + pic;
             pic = "<a href=\"" + pic + "\">" + "<img class=\"image-full modal-image size-full\" src=\"" + pic + "\" width=\"1350\" height=\"900\" /></a>";
             postday = MainData.PostDay.ToString("yyyy/MM/dd");
             contents = MainData.Contents;
-            keywords = article.Web.Get_Keyword_link(  MainData.Keywords );
+            keywords = article.Web.Get_Keyword_link (  MainData.Keywords );
+            Session["description"] = unity.classlib .noHTML (contents);
+            Session["keywords"] = MainData.Keywords;
+          
             viewcount = MainData.Viewcount.ToString();
             tags = article.Web.Get_category_link(MainData.Id);
             author = article.Web.Get_author_link(MainData.Author );

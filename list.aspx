@@ -47,14 +47,14 @@
                                 <asp:Repeater ID="Repeater1" runat="server" EnableViewState ="false">
                                     <ItemTemplate>
                                     <div class="swiper-slide item">
-                                    <div class="image" style="background-image: url('/webimages/banner/<%#Eval("pic") %>');">
+                                    <div class="image" style="background-image: url('/webimages/article/<%#Eval("pic") %>');">
                                         <div class="carousel-caption">
                                             <div class="container">
-                                                <h3><a href="<%#Eval("url") %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
+                                                <h3><a href="/Article/<%# Eval("Id")  %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
                                                 <p><%#Eval("contents") %></p>
                                             </div>
                                         </div>
-                                        <a href="<%#Eval("url") %>" class="view-more" title="了解更多">我想了解</a>
+                                        <a href="/Article/<%# Eval("Id")  %>" class="view-more" title="了解更多">我想了解</a>
                                     </div>
                                 </div>
                                     </ItemTemplate>
@@ -132,8 +132,8 @@
 
 
                 <div class="block-wrap">
-                    <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2F%E6%99%BA%E5%AA%92%E6%99%82%E4%BB%A3-1880890488818139%2F&tabs=timeline&width=300&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=1355515061131043" width="300" height="500" scrolling="no" frameborder="0" allowtransparency="true" style="display: block; width: 300px; margin: auto;"></iframe>
-                </div>
+                <iframe src="https://www.facebook.com/plugins/page.php?href=https://www.facebook.com/%E8%97%9D%E6%99%82%E4%BB%A3-2162933603987210/%2F&tabs=timeline&width=300&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=1355515061131043" width="300" height="500" scrolling="no" frameborder="0" allowTransparency="true" style="display: block; width: 300px; margin: auto;">
+                                    </iframe>      </div>
 
                 <!-- </div> -->
                 <!-- main-sidebar-inner END -->

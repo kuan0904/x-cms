@@ -28,11 +28,13 @@ namespace Banner {
         public static List<Banner.MainData> Banner_Get_list(int ClassId,string flag ="")
         {
             List< Banner.MainData > MainData = new List<Banner.MainData>();
-            string strsql = "select * from  tbl_banner where bannerid in (select bannerid from tbl_featured where  ClassId =@ClassId ) ";
+            string strsql = "select * from  tbl_banner where bannerid in (select bannerid from tbl_recommend where  ClassId =@ClassId ) ";
             if (flag == "")
                 strsql += " and status='Y'";
             else
                 strsql += " and status <> 'D' ";
+
+            strsql += "order by sort desc ";
             NameValueCollection nvc = new NameValueCollection
             {
                 { "ClassId", ClassId.ToString() }

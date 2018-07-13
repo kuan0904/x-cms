@@ -79,7 +79,50 @@ namespace article
     }
     public class Web
     {
-        public static string Get_Keyword_link(string id)
+
+
+        public static List<MainData> Recommend_list(int ClassId)
+        {
+            List<MainData> MainData = new List<MainData>();
+            string strsql = @"SELECT  * FROM      tbl_article
+                    WHERE  recommend ='Y' and status='Y' and 
+                    (articleId IN  (SELECT          articleId
+                    FROM               tbl_article_category
+                    WHERE           (categoryid = @classid) OR
+                                                (categoryid IN
+                                                    (SELECT          categoryid
+                                                    FROM               tbl_category
+                                                    WHERE           (parentid = @classid)))))";
+           
+            strsql += "order by articleId desc ";
+            NameValueCollection nvc = new NameValueCollection
+            {
+                { "ClassId", ClassId.ToString() }
+            };
+            DataTable dt = DbControl.Data_Get(strsql, nvc);
+            int i = 0;
+            for (i = 0; i < dt.Rows.Count; i++)
+            {
+                MainData.Add(new MainData
+                {
+                    Id = (int)dt.Rows[i]["articleId"],
+                    Subject = dt.Rows[i]["Subject"].ToString(),
+
+                    Contents = unity.classlib.noHTML ( dt.Rows[i]["Contents"].ToString().Replace("\r", "").Replace("\n", "")),
+                    Pic = dt.Rows[i]["pic"].ToString(),
+                    PostDay = DateTime.Parse(dt.Rows[i]["PostDay"].ToString())
+                });
+            }
+            dt.Dispose();
+            nvc.Clear();
+            return MainData;
+
+        }
+
+
+
+
+        public static string Get_Keyword_link(string id  )
         {
             if (id == null) id = "";
             string result = "";
@@ -87,7 +130,8 @@ namespace article
             string[] k = id.Split(',');
             foreach (string s in k)
             {
-                result += "<a href = \"/search/"+ s +"\">" + s + "</a>";
+            
+                     result += "<a href = \"/search/"+ s +"\">" + s + "</a>";
             }
             return result;
         }
@@ -194,6 +238,7 @@ namespace article
                 MainData.Author = dt.Rows[0]["Author"].ToString();
                 MainData.Viewcount = (int)dt.Rows[0]["Viewcount"];
                 MainData.kind = dt.Rows[0]["kind"].ToString();
+                MainData.Recommend = dt.Rows[0]["Recommend"].ToString();
             }
             dt.Dispose();
             nvc.Clear();
@@ -505,7 +550,7 @@ namespace article
 
             string strsql = @"update  tbl_article set 
                     subject =@subject,pic=@pic,subtitle=@subtitle,postday=@postday,contents=@contents ,
-                    keywords=@keywords,status=@status,author=@author
+                    keywords=@keywords,status=@status,author=@author,recommend=@recommend
                     ,kind=@kind
                     where articleId =@id ";
             NameValueCollection nvc = new NameValueCollection
@@ -518,6 +563,7 @@ namespace article
                 { "keywords", ad.Keywords },
                 { "author", ad.Author },
                 { "status", ad.Status },
+                {"recommend",ad.Recommend  },
                 { "kind", ad.kind =="L" ? "Y":"N" }
                 //{ "startday",ad.StartDay.ToString("yyyy/MM/dd")  },
                 //{ "endday",ad.EndDay.ToString("yyyy/MM/dd") },
@@ -656,6 +702,7 @@ namespace article
         public string[] Tags { get; set; }  
         public string Keywords { get; set; }
         public int TotalRows { get; set; }
+        public string Recommend { get; set; }
         public List<Lesson> Lesson { get; set; }
 
      

@@ -9,6 +9,12 @@ public partial class unitdata : System.Web.UI.Page
 {
     public string contents = "";
     public string unitname = "";
+    protected void Page_Init(object sender, EventArgs e)
+    {
+        Session["description"] = Application["description"];
+        Session["keywords"] = Application["keywords"];
+        Session["image"] = Session["websiteurl"] + "/images/fbShare.jpg";
+    }
     protected void Page_Load(object sender, EventArgs e)
     {
         int  unitid = 0;

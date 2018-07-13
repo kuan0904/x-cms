@@ -4,7 +4,30 @@
 <%@ Import Namespace="System.Web.Routing" %>
 <%@ Import Namespace ="System.Data" %>
 <script runat="server">
+    void Session_Start(object sender,EventArgs e)
+    {  DataTable dt;
+        NameValueCollection nvc = new NameValueCollection();
+        string strsql  = "SELECT * FROM   WebSiteInfo where webid= 'keywords' ";
+        dt = DbControl.Data_Get(strsql, nvc);
+        if (dt.Rows.Count !=0)
+            Session ["keywords"] = dt.Rows[0]["value"].ToString ();
+        dt.Dispose();
+        strsql  = "SELECT * FROM   WebSiteInfo where webid= 'description' ";
+        dt = DbControl.Data_Get(strsql, nvc);
+        if (dt.Rows.Count !=0)
+            Session ["description"] = dt.Rows[0]["value"].ToString ();
+        dt.Dispose();
 
+        strsql  = "SELECT * FROM   WebSiteInfo where webid= 'websiteurl' ";
+        dt = DbControl.Data_Get(strsql, nvc);
+        if (dt.Rows.Count !=0)
+            Session ["websiteurl"] = dt.Rows[0]["value"].ToString ();
+        dt.Dispose();
+       
+        Application["description"] = Session["description"];
+        Application["keywords"] = Session["keywords"];
+
+    }
     void Application_Start(object sender, EventArgs e)
     {
         RouteConfig.RegisterRoutes(RouteTable.Routes);
@@ -30,11 +53,24 @@
                 Application["site_name"] = dt.Rows[0]["value"].ToString ();
             dt.Dispose();
         }
-     
-       
+
+
+
+
     }
     protected void Application_BeginRequest()
     {
+        SqlKey myCheck = new SqlKey(this.Request); 
+        bool a = myCheck.CheckRequestForm(); 
+        bool b = myCheck.CheckRequestQuery(); 
+        if (myCheck.CheckRequestForm() || myCheck.CheckRequestQuery()) 
+        { 
+         Response.Write("有"); 
+        } 
+        else 
+        { 
+      //   Response.Write("無"); 
+        } 
         if (!Context.Request.IsSecureConnection)
         {
             // 轉到SSL 看要REWRITE還是GLOBAL設定   
@@ -42,7 +78,8 @@
 
             //  RegisterRoutes(RouteTable.Routes);
             //      Response.Redirect(url);
-            //   Response.Redirect(Context.Request.Url.ToString().Replace("http://", "https://"));
+            if (Request.Url.Host !="localhost") 
+             Response.Redirect(Context.Request.Url.ToString().Replace("http://", "https://"));
 
         }
     }

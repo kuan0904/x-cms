@@ -122,7 +122,7 @@
                     $('#startday').datepicker("setDate", new Date(result.Lesson[0].StartDay));
                     $('#endday').datepicker("setDate", new Date(result.Lesson[0].EndDay));
                     $("#status").prop("checked", result.Status  == "Y" ? true : false);
-                 
+                    $("#recommend").prop("checked", result.Recommend  == "Y" ? true : false);
                     CKEDITOR.instances['contents'].setData(result.Contents);                           
                     document.getElementById('console').innerHTML = ("<img src=\"/webimages/article/" + result.Pic + "\" width=300>");
                     $('#logoPic').val(result.Pic); 
@@ -328,7 +328,7 @@
             var tags = $('input:checkbox:checked[name="tags"]').map(function () { return $(this).val(); }).get();  
             var lecturerid = $('input:checkbox:checked[name="lecturerid"]').map(function () { return $(this).val(); }).get();
             var status = $("#status").prop("checked") == true ? "Y" : "N";   
-
+            var recommend = $("#recommend").prop("checked") == true ? "Y" : "N";     
         
          var Detail = "[";
             var i = 0;
@@ -353,7 +353,7 @@
                  id: articleId, subject: $("#subject").val(), subtitle: $("#subtitle").val()
                 , contents: content, pic: $("#logoPic").val(), keywords: $("#keywords").val()
                 , status: status, categoryid: categoryid
-                , tags: tags, author: "", postday: $("#postday").val()
+                , tags: tags, author: "", postday: $("#postday").val(),recommend:recommend
                 ,  kind: "L",
                 Lesson: [{
                     Id: articleId, StartDay: $("#startday").val(), EndDay: $("#endday").val(), Lecturer: lecturerid,
@@ -521,6 +521,13 @@
                                         <input id="postday" type="text" />
                                     </td>
                                 </tr> 
+                                   <tr>
+                                    <td>推薦</td>
+                                    <td>
+                                        <input id="recommend" name="recommend" type="checkbox" class="ace ace-switch ace-switch-6" />
+                                        <span class="lbl"></span>
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td>狀態</td>
                                     <td>

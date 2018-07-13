@@ -40,24 +40,24 @@ public partial class spadmin_orderdata : System.Web.UI.Page
         string strsql = "select * from Receivetime where status=@status";
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("status", "Y");
-        dt = admin_contrl.Data_Get(strsql, nvc);
+        dt = DbControl.Data_Get(strsql, nvc);
         receivetime.DataSource = dt;
         receivetime.DataBind();
         dt.Dispose();
 
         strsql = "select * from invoice where status=@status";
-        dt = admin_contrl.Data_Get(strsql, nvc);
+        dt = DbControl.Data_Get(strsql, nvc);
         invoice.DataSource = dt;
         invoice.DataBind();
         dt.Dispose();
 
         strsql = "select * from paymode where status=@status";
-        dt = admin_contrl.Data_Get(strsql, nvc);
+        dt = DbControl.Data_Get(strsql, nvc);
         paymode.DataSource = dt;
         paymode.DataBind();
 
         strsql = "select * from payStatus where status=@status";
-        dt = admin_contrl.Data_Get(strsql, nvc);
+        dt = DbControl.Data_Get(strsql, nvc);
         payStatus.DataSource = dt;
         payStatus.DataBind();
         qstatus.DataSource = dt;
@@ -84,7 +84,7 @@ public partial class spadmin_orderdata : System.Web.UI.Page
         string strsql = "select * from OrderData where ord_id=@ord_id";
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("ord_id", Selected_id.Value  );
-        dt= admin_contrl.Data_Get(strsql, nvc);
+        dt= DbControl .Data_Get(strsql, nvc);
         totalprice = dt.Rows[0]["totalprice"].ToString();
         ord_code = dt.Rows[0]["ord_code"].ToString();
         ord_date = DateTime.Parse(dt.Rows[0]["crtdat"].ToString()).ToString("yyyy/MM/dd hh:mm tt");
@@ -117,14 +117,14 @@ public partial class spadmin_orderdata : System.Web.UI.Page
         dt.Dispose();        
         strsql = @"select *  FROM         OrderDetail INNER JOIN
                       productData ON OrderDetail.p_id = productData.p_id where ord_id=@ord_id";
-        dt = admin_contrl.Data_Get(strsql, nvc);
+        dt = DbControl.Data_Get(strsql, nvc);
         Repeater1.DataSource = dt;
         Repeater1.DataBind();
 
         strsql = "select * from CardAUTHINFO where ord_code=@ord_code";
         nvc.Clear();
         nvc.Add("ord_code", ord_code);
-        dt = admin_contrl.Data_Get(strsql, nvc);
+        dt = DbControl.Data_Get(strsql, nvc);
         if (dt.Rows.Count > 0)
         {
             CardAUTHINFO = "授權碼:" + dt.Rows[0]["AUTHCODE"].ToString() + "授權結果:" + dt.Rows[0]["AUTHMSG"].ToString();
@@ -165,7 +165,7 @@ public partial class spadmin_orderdata : System.Web.UI.Page
         nvc.Add("coupon_no", coupon_no.Text);
         nvc.Add("title", title.Text);
         nvc.Add("paid", paid.SelectedValue );
-        int i = admin_contrl.Data_add(strsql, nvc);
+        int i = DbControl.Data_add(strsql, nvc);
         nvc.Clear();
     
         LinkButton obj = sender as LinkButton;
@@ -223,11 +223,11 @@ public partial class spadmin_orderdata : System.Web.UI.Page
         }
               
         string sql_select = strsql + " ORDER BY  " + sortColumn + " " + sorttype;
-        DataTable dt = admin_contrl.Data_Get(sql_select, nvc);
+        DataTable dt = DbControl.Data_Get(sql_select, nvc);
         ListView1.DataSource = dt;
         ListView1.DataBind();
      
-        dt = admin_contrl.Data_Get(strsql.Replace ("*", "COUNT(*), SUM(totalprice)"), nvc);
+        dt = DbControl.Data_Get(strsql.Replace ("*", "COUNT(*), SUM(totalprice)"), nvc);
         Literal1.Text = "<b> 訂單筆數:" + dt.Rows[0][0].ToString() + "   訂單金額合計:" + dt.Rows[0][1].ToString() + "</b>" ;
     
 
@@ -257,7 +257,7 @@ public partial class spadmin_orderdata : System.Web.UI.Page
         FOR XML PATH('') ";
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("ord_code", ord_code);
-        DataTable dt = admin_contrl.Data_Get(strsql, nvc);
+        DataTable dt = DbControl.Data_Get(strsql, nvc);
    
         if (dt.Rows.Count >0 )   msg = dt.Rows[0][0].ToString ();
         return msg;
@@ -285,7 +285,7 @@ public partial class spadmin_orderdata : System.Web.UI.Page
         string strsql = "select * from orderdata where status ='3'";
         NameValueCollection nvc = new NameValueCollection();
 
-        DataTable dt = admin_contrl.Data_Get(strsql, nvc);
+        DataTable dt = DbControl.Data_Get(strsql, nvc);
         int i = 0;
         string out_csv = "訂單編號 , 訂單日期, 訂購人,訂購人電話,收件人,收件人電話,收件人地址,付款方式, 收件時間,訂單金額,發票資訊,統一編號,發票抬頭,備註說明 " + "\r\n";
 
@@ -298,10 +298,10 @@ public partial class spadmin_orderdata : System.Web.UI.Page
                 "," + dt.Rows[i]["shipname"].ToString() +
                 "," + dt.Rows[i]["shipphone"].ToString() +
                 "," + dt.Rows[i]["shipaddress"].ToString() +
-                  "," +  classlib.getPaymode ( dt.Rows[i]["paymode"].ToString() ) +
-                "," + classlib.getReceivetime ( dt.Rows[i]["receivetime"].ToString()) +
+                  "," + OrderLib.getPaymode ( dt.Rows[i]["paymode"].ToString() ) +
+                "," + OrderLib.getReceivetime ( dt.Rows[i]["receivetime"].ToString()) +
                 "," + dt.Rows[i]["TotalPrice"].ToString() +
-                 "," + classlib.getInvoice ( dt.Rows[i]["Invoice"].ToString()) +
+                 "," + OrderLib.getInvoice ( dt.Rows[i]["Invoice"].ToString()) +
                 "," + dt.Rows[i]["companyno"].ToString() +
                 "," + dt.Rows[i]["title"].ToString() +
                 "," + dt.Rows[i]["contents"].ToString() + "\r\n";
@@ -310,7 +310,7 @@ public partial class spadmin_orderdata : System.Web.UI.Page
                where ord_code=@ord_code";
             nvc.Clear();
             nvc.Add("ord_code", dt.Rows[i]["ord_code"].ToString());
-            DataTable detail = admin_contrl.Data_Get(strsql, nvc);
+            DataTable detail =DbControl .Data_Get(strsql, nvc);
             for (int j=0;j<detail.Rows.Count; j++)
             {
                 out_csv += detail.Rows[j]["productname"].ToString() +

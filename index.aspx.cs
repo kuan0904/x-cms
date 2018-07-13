@@ -7,6 +7,12 @@ using System.Web.UI.WebControls;
 
 public partial class index : System.Web.UI.Page
 {
+    protected void Page_Init(object sender, EventArgs e)
+    {
+        Session["description"] = Application["description"];
+        Session["keywords"] = Application["keywords"];
+        Session["image"] = Session["websiteurl"] + "/images/fbShare.jpg";
+    }
     protected void Page_Load(object sender, EventArgs e)
     {
 
@@ -24,7 +30,7 @@ public partial class index : System.Web.UI.Page
         hot_list_detail.DataSource = hotlist;
         hot_list_detail.DataBind();
         hotlist.Clear();
-
+      
     }
 
 }

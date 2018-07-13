@@ -39,7 +39,7 @@
 
                 <div class="infobox-data">
                     <span class="infobox-data-number">32</span>
-                    <div class="infobox-content">2个评论</div>
+                    <div class="infobox-content">2個評論</div>
                 </div>
                 <div class="stat stat-success">8%</div>
             </div>
@@ -51,7 +51,7 @@
 
                 <div class="infobox-data">
                     <span class="infobox-data-number">11</span>
-                    <div class="infobox-content">新粉丝</div>
+                    <div class="infobox-content">新粉絲</div>
                 </div>
 
                 <div class="badge badge-success">
@@ -67,7 +67,7 @@
 
                 <div class="infobox-data">
                     <span class="infobox-data-number">8</span>
-                    <div class="infobox-content">新订单</div>
+                    <div class="infobox-content">新訂單</div>
                 </div>
                 <div class="stat stat-important">4%</div>
             </div>
@@ -79,7 +79,7 @@
 
                 <div class="infobox-data">
                     <span class="infobox-data-number">7</span>
-                    <div class="infobox-content">调查</div>
+                    <div class="infobox-content">調查</div>
                 </div>
             </div>
 
@@ -90,7 +90,7 @@
 
                 <div class="infobox-data">
                     <span class="infobox-data-number">6,251</span>
-                    <div class="infobox-content">页面查看次数</div>
+                    <div class="infobox-content">頁面查看次數</div>
                 </div>
 
                 <div class="badge badge-success">
@@ -111,7 +111,7 @@
 
                     <div class="infobox-content">
                         <span class="bigger-110">~</span>
-                        剩余58GB
+                        剩餘58GB
                     </div>
                 </div>
             </div>
@@ -126,7 +126,7 @@
                 </div>
 
                 <div class="infobox-data">
-                    <div class="infobox-content">任务</div>
+                    <div class="infobox-content">任務</div>
                     <div class="infobox-content">完成</div>
                 </div>
             </div>
@@ -137,7 +137,7 @@
                 </div>
 
                 <div class="infobox-data">
-                    <div class="infobox-content">获得</div>
+                    <div class="infobox-content">獲得</div>
                     <div class="infobox-content">$32,000</div>
                 </div>
             </div>
@@ -148,7 +148,7 @@
                 </div>
 
                 <div class="infobox-data">
-                    <div class="infobox-content">下载次数</div>
+                    <div class="infobox-content">下載次數</div>
                     <div class="infobox-content">1,205</div>
                 </div>
             </div>
@@ -161,7 +161,7 @@
                 <div class="widget-header widget-header-flat widget-header-small">
                     <h5>
                         <i class="icon-signal"></i>
-                        访问来源
+                        訪問來源
                     </h5>
 
                     <div class="widget-toolbar no-border">
@@ -252,7 +252,7 @@
                 <div class="widget-header widget-header-flat">
                     <h4 class="lighter">
                         <i class="icon-star orange"></i>
-                        热门域名
+                        熱門功能變數名稱
                     </h4>
 
                     <div class="widget-toolbar">
@@ -269,17 +269,17 @@
                                 <tr>
                                     <th>
                                         <i class="icon-caret-right blue"></i>
-                                        名称
+                                        名稱
                                     </th>
 
                                     <th>
                                         <i class="icon-caret-right blue"></i>
-                                        价格
+                                        價格
                                     </th>
 
                                     <th class="hidden-480">
                                         <i class="icon-caret-right blue"></i>
-                                        状态
+                                        狀態
                                     </th>
                                 </tr>
                             </thead>
@@ -296,7 +296,7 @@
                                     </td>
 
                                     <td class="hidden-480">
-                                        <span class="label label-info arrowed-right arrowed-in">销售中</span>
+                                        <span class="label label-info arrowed-right arrowed-in">銷售中</span>
                                     </td>
                                 </tr>
 
@@ -342,7 +342,7 @@
 
                                     <td class="hidden-480">
                                         <span class="label arrowed">
-                                            <s>无货</s>
+                                            <s>無貨</s>
                                         </span>
                                     </td>
                                 </tr>
@@ -376,7 +376,7 @@
                 <div class="widget-header widget-header-flat">
                     <h4 class="lighter">
                         <i class="icon-signal"></i>
-                        销售统计
+                        銷售統計
                     </h4>
 
                     <div class="widget-toolbar">

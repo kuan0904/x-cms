@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/spadmin/admin.master" AutoEventWireup="true" CodeFile="Edit_article.aspx.cs" Inherits="spadmin_Edit_article" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-    
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder_title" runat="Server">
     <script>
@@ -26,7 +26,7 @@
                         <div class="box-header well" data-original-title>
                             <asp:TextBox ID="searchtxt" runat="server"></asp:TextBox><asp:Button ID="Btn_find"  class="btn btn-yellow" runat="server" Text="搜尋"  OnClick ="Btn_find_Click"/>
                                          <asp:LinkButton ID="btn_add" runat="server" Text=""  OnClick ="btn_add_Click"  class="btn btn-app btn-primary btn-xs"><i class="icon-edit bigger-230"></i>新增資料</asp:LinkButton> 
-            
+                            <asp:LinkButton ID="LinkButton3" runat="server" OnClick ="LinkButton3_Click">LinkButton</asp:LinkButton>
                 </div>
                     <asp:ListView ID="ListView1" runat="server" DataKeyNames="articleId" OnPagePropertiesChanging="ContactsListView_PagePropertiesChanging">
                         <EmptyDataTemplate>
@@ -80,9 +80,11 @@
                     CommandArgument='<%# Eval("articleId").ToString()%>' class="btn btn-info"><i class="icon-edit icon-white"></i>編輯</asp:LinkButton>                                                    
             
                                     <asp:LinkButton ID="LinkButton2" runat="server" Text="" OnClick="link_delete" OnClientClick="return confirm('你確定要刪除嗎?')"
-                    CommandArgument='<%# Eval("articleId").ToString()%>' class="btn btn-danger"><i class="icon-trash icon-white"></i>刪除</asp:LinkButton>                                                    
-                <button type="button" class="btn btn-primary" name="preview" onclick ="p('<%# Eval("articleid") %>');"><i class="icon-external-link icon-white"></i>預 覽</button>
-                                </td>
+                    CommandArgument='<%# Eval("articleId").ToString()%>' class="btn btn-danger"><i class="icon-trash icon-white"></i>刪除</asp:LinkButton> 
+                      <br />
+                <button type="button" class="btn btn-primary" name="preview" onclick ="p('<%# Eval("articleid") %>');"><i class="icon-external-link icon-white"></i>預覽</button>
+                             <button type="button" class="btn btn-primary"   onclick ="location.href='editImages.aspx?articleid=<%# Eval("articleid") %>';"><i class="icon-camera"></i>相簿</button>   
+                                    </td>
                                 <td>
                                     <%# Eval("articleid") %>
                                 </td>
@@ -126,7 +128,8 @@
                     $('#subject').val(result.Subject);                                           
                     $('#keywords').val(result.Keywords);                 
                     $('#author').val(result.Author);
-                    $("#status").prop("checked", result.Status  == "Y" ? true : false);
+                    $("#status").prop("checked", result.Status == "Y" ? true : false);
+                    $("#recommend").prop("checked", result.Recommend  == "Y" ? true : false);
                     $('#postDay').val(result.PostDay);   
                     CKEDITOR.instances['contents'].setData(result.Contents);                           
                     document.getElementById('console').innerHTML = ("<img src=\"/webimages/article/" + result.Pic + "\" width=300>");
@@ -160,13 +163,13 @@
                             cb += "<span style='width:300px'>" + val.name + "</span>:";
                             for (i = 0; i < val.detail.length; i++) {                               
                                 s = maindata ==  undefined ? "": check_cbx(maindata.Category, val.detail[i].id);                                
-                                cb += "<input name='categoryid' class='ace ace-checkbox-2' type='checkbox' value='" + val.detail[i].id + "'" + s + "><span class=lbl><b>" + val.detail[i].name + "</b></span>";
+                                cb += "<input name='categoryid' class='Big' type='checkbox' value='" + val.detail[i].id + "'" + s + "><span class=lbl><b>" + val.detail[i].name + "</b></span>";
                             }
                           
                         }
                         else {
                             s = maindata ==  undefined ? "": check_cbx(maindata.Category, val.id);
-                            cb += "<input name='categoryid' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl><b>" + val.name + "</b></span>";
+                            cb += "<input name='categoryid' class='Big' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl><b>" + val.name + "</b></span>";
                              
                         }
                         cb += "<Br>";
@@ -204,14 +207,14 @@
             var categoryid = $('input:checkbox:checked[name="categoryid"]').map(function () { return $(this).val(); }).get();
             var tags = $('input:checkbox:checked[name="tags"]').map(function () { return $(this).val(); }).get();   
             var status = $("#status").prop("checked") == true ? "Y" : "N";       
-          
+            var recommend = $("#recommend").prop("checked") == true ? "Y" : "N";     
             var dataValue = {
                 id: articleId, subject: $("#subject").val(), subtitle: $("#subtitle").val()
                 , contents: content, pic: $("#logoPic").val(), keywords: $("#keywords").val()
-                , status: status, categoryid: categoryid
+                , status: status, categoryid: categoryid,recommend :recommend
                 , tags: tags, author: $("#author").val(), postday: $("#postday").val(),
-                kind: "A",
-                Lesson: [{
+                kind: "A"
+                ,Lesson: [{
                     Id: 0, StartDay:"", EndDay: "", Lecturer: [], Lessontime: "", Address:"" ,
                     LessonDetail: { Id: 0, LessonId: 0, Price: 0, Sellprice:0, Limitnum:0, Description: "" }
                 }]
@@ -347,6 +350,13 @@
 
                                 </tr>
                                 -->
+                                  <tr>
+                                    <td>推薦</td>
+                                    <td>
+                                        <input id="recommend" name="recommend" type="checkbox" class="ace ace-switch ace-switch-6" />
+                                        <span class="lbl"></span>
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td>狀態</td>
                                     <td>
@@ -532,7 +542,6 @@
 
         </script>
                 </asp:View>
-                 
                 </asp:MultiView>
 
             </div>

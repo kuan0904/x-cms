@@ -730,6 +730,7 @@ namespace unity {
         }
         public static  string noHTML(string inputHTML)
         {
+            if (inputHTML == null) inputHTML = "";
             string noHTML = Regex.Replace(inputHTML, "<.*?>", String.Empty);
            // string noHTML = Regex.Replace(inputHTML, @"<[^>]+>|&nbsp;", "").Trim();
             return noHTML;

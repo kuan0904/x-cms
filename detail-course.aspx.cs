@@ -59,6 +59,7 @@ public partial class detail_course_ : System.Web.UI.Page
             subject = MainData.Subject;
             Session["title"] = subject + "│" + Application["site_name"];
             pic = "/webimages/article/" + MainData.Pic;
+            Session["image"] = Session["websiteurl"] + pic;
             pic = "<a href=\"" + pic + "\">" + "<img class=\"image-full modal-image size-full\" src=\"" + pic + "\" width=\"1350\" height=\"900\" /></a>";
             List<article.Lesson> lesson = new List<article.Lesson>();
             List<article.LessonDetail> lessondetail = new List<article.LessonDetail>();
@@ -80,8 +81,9 @@ public partial class detail_course_ : System.Web.UI.Page
             keywords = article.Web.Get_Keyword_link(MainData.Keywords);
             viewcount = MainData.Viewcount.ToString();
             tags = article.Web.Get_category_link(MainData.Id);
-           
-         
+
+            Session["description"] = unity.classlib.noHTML(contents);
+            Session["keywords"] = MainData.Keywords;
             article.DbHandle.Add_views(MainData.Id);
 
             List<article.Category> cate = new List<article.Category>();

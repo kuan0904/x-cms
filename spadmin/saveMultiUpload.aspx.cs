@@ -16,6 +16,25 @@ public partial class spadmin_saveMultiUpload : System.Web.UI.Page
         }
         string img_path = "upload/";
         string kind = Request.QueryString["kind"];
+        if (kind == "QuickUpload")
+        {
+            img_path = "../webimages/gallery/";
+            //html上傳多個雜誌內頁圖檔
+            string fname = "";
+            for (int i = 0; i <= Request.Files.Count - 1; i++)
+            {
+                HttpPostedFile filex = Request.Files[i];
+
+                if (filex.ContentLength > 0)
+                {
+                    fname = DateTime.Now.ToString("yyyyMMddHHmmssff") + unity.classlib.GetFileExt(filex.FileName);
+                    filex.SaveAs(Server.MapPath(img_path + fname));
+                    Response.Write("{ \"fileName\":\"" + img_path + fname + "\",\"uploaded\":1,\"url\":\"" + img_path + fname + "\"}");
+                 
+                }
+            }
+
+        }
         if (kind == "photoQuickUpload")
         {
             img_path = "../webimages/gallery/";
@@ -52,7 +71,7 @@ public partial class spadmin_saveMultiUpload : System.Web.UI.Page
                     DbControl.Data_add  (strsql, nvc);
 
                     //自動縮圖
-                    //  ResizeImg(186, 0, Server.MapPath(setImgPath(fname)), Server.MapPath(setImgPath(fname, "thumbnail")));
+                    //unity.classlib. ResizeImg(186, 0, Server.MapPath(unity.classlib.setImgPath(fname)), Server.MapPath(unity.classlib.setImgPath(fname, "thumbnail")));
                     //Response.Write("{\"result\":\"" + fname + "\"}");
                     //Response.Flush();
                 }

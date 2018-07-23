@@ -278,7 +278,7 @@ input.Big{
 						<div class="page-header">
                             <h1>  
                                
-                                <script src="ckeditora/ckeditor.js?a=5"></script>
+                                <script src="ckeditor/ckeditor.js?a=1"></script>
                             </h1> 
                             <asp:ContentPlaceHolder ID="ContentPlaceHolder_title" runat="server">
                                 </asp:ContentPlaceHolder>

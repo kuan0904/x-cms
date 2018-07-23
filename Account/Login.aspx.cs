@@ -24,7 +24,7 @@ public partial class Account_Login : Page
     public string systemName = "";
     protected void Page_Init(object sender, EventArgs e)
     {
-       
+        Session["userid"] = "";
         // 下面的程式碼有助於防禦 XSRF 攻擊
         var requestCookie = Request.Cookies[AntiXsrfTokenKey];
         Guid requestCookieGuidValue;

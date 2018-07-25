@@ -18,29 +18,35 @@ public partial class spadmin_product : System.Web.UI.Page
     
     protected void Page_Init(object sender, EventArgs e)
     {
-       // DropDownList1.DataBound  += new EventHandler(DropDownList1_DataBound);
+        DropDownList1.DataBound  += new EventHandler(DropDownList1_DataBound);
         string strsql = "select * from tbl_category where status <> 'D' and categoryid>@id ";
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("id", "0");
-        DataTable dt = DbControl.Data_Get(strsql, nvc);                 
+        DataTable dt =DbControl .Data_Get(strsql, nvc);                 
         for (int i = 0; i < dt.Rows.Count; i++)
         {
             string name = dt.Rows[i]["title"].ToString();
             string id = dt.Rows[i]["categoryid"].ToString();
             categoryid.Items.Add(new ListItem(name, id));
-            DropDownList1.Items.Add(new ListItem(name, id));
-
-
+                
         }
-       
         dt.Dispose();
 
-       
+        strsql = "select * from productData where status <> 'D'  ";  
+        dt = DbControl.Data_Get(strsql, nvc);
+        for (int i = 0; i < dt.Rows.Count; i++)
+        {
+            string name = dt.Rows[i]["productname"].ToString();
+            string id = dt.Rows[i]["p_id"].ToString();
+            CheckBoxList1.Items.Add (new ListItem(name, id));
 
-     }
+        }
+        dt.Dispose();
+
+
+    }
     protected void Page_Load(object sender, EventArgs e)
     {
-     
 
         if (!IsPostBack)
         {
@@ -60,7 +66,7 @@ public partial class spadmin_product : System.Web.UI.Page
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("p_id", Selected_id.Value  );
         DataTable dt = DbControl.Data_Get(strsql, nvc);
-        price1.Text = dt.Rows[0]["price"].ToString();
+        price .Text = dt.Rows[0]["price"].ToString();
         p_id.Text = dt.Rows[0]["p_id"].ToString();
         productname.Text = dt.Rows[0]["productname"].ToString();
         storage.Text = dt.Rows[0]["storage"].ToString();
@@ -74,9 +80,11 @@ public partial class spadmin_product : System.Web.UI.Page
         stringArray[4] = dt.Rows[0]["banner"].ToString();
         sort.Text = dt.Rows[0]["sort"].ToString();
         memo.Text = dt.Rows[0]["memo"].ToString();
-        Savetxt.Text = dt.Rows[0]["Savetxt"].ToString();
-        Pricing.Text = dt.Rows[0]["Pricing"].ToString();
-        selltxt.Text = dt.Rows[0]["selltxt"].ToString();
+        videourl.Text   = dt.Rows[0]["videourl"].ToString();
+        productcode.Text  = dt.Rows[0]["productcode"].ToString();
+        shippingfee.Text = dt.Rows[0]["shippingfee"].ToString();
+        freeship.Text = dt.Rows[0]["freeship"].ToString();
+        shippingKind.Text = dt.Rows[0]["shippingKind"].ToString();
         Image1.ImageUrl = "../upload/" + stringArray[1] + "?" + DateTime.Now.ToString("yyyyMMddhhmmss");
         if (stringArray[2] != "") 
             Image2.ImageUrl = "../upload/" + stringArray[2] + "?" + DateTime.Now.ToString("yyyyMMddhhmmss"); 
@@ -86,69 +94,23 @@ public partial class spadmin_product : System.Web.UI.Page
             Image3.ImageUrl = "../upload/" + stringArray[3] + "?" + DateTime.Now.ToString("yyyyMMddhhmmss"); 
         else
             Image3.Visible = false;
-        Imagelogo.ImageUrl = "../upload/" + stringArray[0] + "?" + DateTime.Now.ToString("yyyyMMddhhmmss"); ;
-        Imagebanner.ImageUrl = "../upload/" + stringArray[4] + "?" + DateTime.Now.ToString("yyyyMMddhhmmss"); ;
+     
         viewcount.Text = dt.Rows[0]["viewcount"].ToString();
+        if (dt.Rows[0]["kindid"].ToString() == "2") { kindid.SelectedValue = "2"; }
+        else { kindid.SelectedValue = "1"; }
+        string[] strary = dt.Rows[0]["id_list"].ToString().Split(';');
+            int i = 0;    
+            int j = 0;
+            for (j = 0;j < CheckBoxList1.Items.Count; j++)
+            {
+            CheckBoxList1.Items[j].Selected = false;
+                for (i=0;i<strary.Length - 1; i++)
+                  {
+                        if (CheckBoxList1.Items[j].Value == strary[i]) CheckBoxList1.Items[j].Selected = true;
 
-        strsql = "select * from productprice where p_id  = @p_id order by secno";
-        nvc = new NameValueCollection();
-        nvc.Add("p_id", Selected_id.Value);
-        dt = DbControl.Data_Get(strsql, nvc);
-        for (int i = 0; i < dt.Rows.Count;i++ ) 
-        {
-            if (dt.Rows [i]["secno"].ToString () == "1")
-            {
-                TextBox1.Text = dt.Rows[i]["num"].ToString();
-               price1.Text = dt.Rows[i]["price"].ToString();
-            }
-            if (dt.Rows[i]["secno"].ToString() == "2")
-            {
-                TextBox2.Text = dt.Rows[i]["num"].ToString();
-                price2.Text = dt.Rows[i]["price"].ToString();          
-            }
-            if (dt.Rows[i]["secno"].ToString() == "3")
-            {
-                TextBox3.Text = dt.Rows[i]["num"].ToString();
-                price3.Text = dt.Rows[i]["price"].ToString();
-            }
-            if (dt.Rows[i]["secno"].ToString() == "4")
-            {
-                TextBox4.Text = dt.Rows[i]["num"].ToString();
-                price4.Text = dt.Rows[i]["price"].ToString();
-            }
-            if (dt.Rows[i]["secno"].ToString() == "5")
-            {
-                TextBox5.Text = dt.Rows[i]["num"].ToString();
-                price5.Text = dt.Rows[i]["price"].ToString();
-            }
-            if (dt.Rows[i]["secno"].ToString() == "6")
-            {
-                TextBox6.Text = dt.Rows[i]["num"].ToString();
-                price6.Text = dt.Rows[i]["price"].ToString();
-            }
-            if (dt.Rows[i]["secno"].ToString() == "7")
-            {
-                TextBox7.Text = dt.Rows[i]["num"].ToString();
-                price7.Text = dt.Rows[i]["price"].ToString();
-            }
-            if (dt.Rows[i]["secno"].ToString() == "8")
-            {
-                TextBox8.Text = dt.Rows[i]["num"].ToString();
-                price8.Text = dt.Rows[i]["price"].ToString();
-            }
-            if (dt.Rows[i]["secno"].ToString() == "9")
-            {
-                TextBox9.Text = dt.Rows[i]["num"].ToString();
-                price9.Text = dt.Rows[i]["price"].ToString();
-            }
-            if (dt.Rows[i]["secno"].ToString() == "10")
-            {
-                TextBox10.Text = dt.Rows[i]["num"].ToString();
-                price10.Text = dt.Rows[i]["price"].ToString();
-            }
+                }
 
-        }
-
+            }
 
         MultiView1.ActiveViewIndex = 1;
         Btn_save.CommandArgument = "edit";
@@ -168,101 +130,78 @@ public partial class spadmin_product : System.Web.UI.Page
     }
     protected void Btn_save_Click(object sender, System.EventArgs e)
     {
-        int i = 0;     
-        LinkButton obj = sender as LinkButton;
-        NameValueCollection nvc = new NameValueCollection();
-        string strsql = "";
-        if (Btn_save.CommandArgument == "copy" || Btn_save.CommandArgument == "add")
-        {
-            strsql = "insert into productdata (viewcount) values (@viewcount ) ";           
-            nvc.Add("viewcount", "0");
-            i = DbControl.Data_add (strsql, nvc);           
-            strsql = "select max(p_id ) from productdata  where p_id >@p_id ";
-            nvc.Clear();
-            nvc.Add("p_id", "0");
-            DataTable dt = DbControl.Data_Get(strsql, nvc);
-            p_id.Text = dt.Rows[0][0].ToString();           
-        }
+   
+            int i = 0;
+            LinkButton obj = sender as LinkButton;
+            NameValueCollection nvc = new NameValueCollection();
+            string strsql = "";
+            if (Btn_save.CommandArgument == "copy" || Btn_save.CommandArgument == "add")
+            {
+                strsql = "insert into productdata (viewcount) values (@viewcount ) ";
+                nvc.Add("viewcount", "0");
+                i = DbControl.Data_add(strsql, nvc);
+                strsql = "select max(p_id ) from productdata  where p_id >@p_id ";
+                nvc.Clear();
+                nvc.Add("p_id", "0");
+                DataTable dt = DbControl.Data_Get(strsql, nvc);
+                p_id.Text = dt.Rows[0][0].ToString();
+            }
 
-        string img_path = "../upload/";
-        if (Image1.ImageUrl != "") stringArray[1] = p_id.Text + "-1.jpg";
-        if (Image2.ImageUrl != "") stringArray[2] = p_id.Text + "-2.jpg";
-        if (Image3.ImageUrl != "") stringArray[3] = p_id.Text + "-3.jpg";
-        if (Imagelogo.ImageUrl != "") stringArray[0] = p_id.Text + "-logo.jpg";
-        if (Imagebanner.ImageUrl != "") stringArray[4] = p_id.Text + "-banner.jpg";
+            string img_path = "../upload/";
+            if (Image1.ImageUrl != "") stringArray[1] = p_id.Text + "-1.jpg";
+            if (Image2.ImageUrl != "" &&  Image2.Visible == true ) stringArray[2] = p_id.Text + "-2.jpg";
+            if (Image3.ImageUrl != "" && Image3.Visible == true) stringArray[3] = p_id.Text + "-3.jpg";
 
+            if (FileUpload1.FileName != "")
+            {
+                FileUpload1.SaveAs(Server.MapPath(img_path + p_id.Text + "-1.jpg"));
+                stringArray[1] = p_id.Text + "-1.jpg";
+            }
+            if (FileUpload2.FileName != "" )
+            {
+                FileUpload2.SaveAs(Server.MapPath(img_path + p_id.Text + "-2.jpg"));
+                stringArray[2] = p_id.Text + "-2.jpg";
+            }
+            if (FileUpload3.FileName != "")
+            {
+                FileUpload3.SaveAs(Server.MapPath(img_path + p_id.Text + "-3.jpg"));
+                stringArray[3] = p_id.Text + "-3.jpg";
+            }
+            if (sort.Text == "") sort.Text = "0";
 
-        if (FileUpload1.FileName != "")
-        {
-            FileUpload1.SaveAs(Server.MapPath(img_path + p_id.Text  + "-1.jpg" ));
-            stringArray[1] = p_id.Text + "-1.jpg";
-        }
-        if (FileUpload2.FileName != "") { 
-            FileUpload2.SaveAs(Server.MapPath(img_path + p_id.Text + "-2.jpg" ));
-            stringArray[2] = p_id.Text + "-2.jpg";
-        }
-        if (FileUpload3.FileName != ""){
-            FileUpload3.SaveAs(Server.MapPath(img_path + p_id.Text + "-3.jpg"));
-            stringArray[3] = p_id.Text  + "-3.jpg";
-        }
-        if (FileUploadlogo.FileName != "")
-        {
-            FileUploadlogo.SaveAs(Server.MapPath(img_path + p_id.Text + "-logo.jpg"));
-            stringArray[0] = p_id.Text + "-logo.jpg";
-        }
-        if (FileUploadbanner.FileName != "")
-        {
-            FileUploadbanner.SaveAs(Server.MapPath(img_path + p_id.Text + "-banner.jpg"));
-            stringArray[4] = p_id.Text + "-banner.jpg";
-        }
-        if (sort.Text == "") sort.Text = "0";
-        strsql = @"UPDATE  productdata  SET productname=@productname,price=@price, banner=@banner,logo=@logo
+            strsql = @"UPDATE  productdata  SET productname=@productname,price=@price,productcode=@productcode,videourl=@videourl
                 ,description = @description, storage = @storage, pic1 = @pic1, pic2 = @pic2,pic3 = @pic3,memo=@memo,
-                categoryid = @categoryid,  status = @status,sort=@sort,Pricing=@Pricing,Savetxt=@Savetxt,selltxt=@selltxt where p_id=@id ";      
-             nvc.Clear();
-            nvc.Add("price", price1.Text);         
-            nvc.Add("productname", productname.Text ) ;      
-            nvc.Add("storage",  storage.Text);
-            nvc.Add("description", description.Text);        
-            nvc.Add("status",  status.SelectedValue ) ;
-       
-            nvc.Add("categoryid", categoryid.SelectedValue) ;     
+                categoryid = @categoryid,  status = @status,sort=@sort,shippingfee=@shippingfee,shippingKind=@shippingKind,freeship=@freeship
+               ,kindid=@kindid, id_list=@id_list where p_id=@id ";
+            nvc.Clear();
+            nvc.Add("productname", productname.Text);
+            nvc.Add("price", price.Text);
+            nvc.Add("productcode", productcode.Text);
+            nvc.Add("videourl", videourl.Text);
+            nvc.Add("storage", storage.Text);
+            nvc.Add("description", description.Text);
+            nvc.Add("status", status.SelectedValue);
+            nvc.Add("categoryid", categoryid.SelectedValue);
             nvc.Add("pic1", stringArray[1] == null ? "" : stringArray[1]);
             nvc.Add("pic2", stringArray[2] == null ? "" : stringArray[2]);
             nvc.Add("pic3", stringArray[3] == null ? "" : stringArray[3]);
-            nvc.Add("logo", stringArray[0] == null ? "" : stringArray[0]);
-            nvc.Add("banner", stringArray[4] == null ? "" : stringArray[4]);
             nvc.Add("memo", memo.Text);
-        nvc.Add("sort", sort.Text);
-        nvc.Add("Pricing", Pricing.Text);
-        nvc.Add("Savetxt", Savetxt.Text);
-        nvc.Add("selltxt", selltxt.Text);
-        i = DbControl.Data_Update (strsql, nvc, p_id.Text);
-        
-        strsql = @"delete   productprice   where p_id=@id ";
-        nvc.Clear();
-        nvc.Add("p_id", p_id.Text);
-        i = DbControl.Data_Update(strsql, nvc, p_id.Text);
-        for (i = 1; i <= 10; i++)     {      
-            strsql = @"insert into   productprice  (secno,p_id,num,price) values (@i,@p_id,@num,@price)  ";
-            nvc.Clear();
-            nvc.Add("@i", i.ToString ());
-            nvc.Add("p_id", p_id.Text);
-            ContentPlaceHolder mp;
-            mp = (ContentPlaceHolder)Master.FindControl("ContentPlaceHolder1");
-            MultiView mu1;
-            mu1 = (MultiView)mp.FindControl("MultiView1");
-            View vi2 = (View)mu1.FindControl("view2");
-            nvc.Add("i", i.ToString ());
-            TextBox num = (TextBox)vi2.FindControl("TextBox" + i.ToString());
-            TextBox temp = (TextBox)vi2.FindControl("price" + i.ToString());
-            nvc.Add("num", num.Text );
-            nvc.Add("price", temp.Text);
-            DbControl.Data_add (strsql, nvc);
-
-        }
-        selectSQL();
+            nvc.Add("sort", sort.Text);
+            nvc.Add("shippingfee", shippingfee.Text);
+            nvc.Add("freeship", freeship.Text);
+            nvc.Add("shippingKind", shippingKind.Text);
+            nvc.Add("kindid", kindid.SelectedValue);
+            string id_list = "";
+            for (i = 0; i < CheckBoxList1.Items.Count; i++)
+            {
+                if (CheckBoxList1.Items[i].Selected == true)
+                    id_list += CheckBoxList1.Items[i].Value + ";";
+            }
+            nvc.Add("id_list", id_list);
+            i = DbControl.Data_Update (strsql, nvc, p_id.Text);    
+            selectSQL();
             MultiView1.ActiveViewIndex = 0;
+      
     }
     protected void Btn_cancel_Click(object sender, System.EventArgs e)
     {
@@ -284,28 +223,27 @@ public partial class spadmin_product : System.Web.UI.Page
     }
     public void selectSQL(string sorttype = "desc", string sortColumn = "p_id")
     {
-     
+        viewDataSource.SelectParameters.Clear();
         string strsql = " SELECT  * ,(select title from  tbl_category  where tbl_category.categoryid =  productdata.categoryid) as title   from  productdata    where status <> 'D' ";
     
         if (search_txt.Text != "")
         {
             int n;
-            bool isNumeric = int.TryParse(search_txt.Text, out n);           
-                strsql += @" and (memo like '%'+@S+'%'    or productname like '%'+@S+'%'   or description like '%'+@S+'%')  ";
+            bool isNumeric = int.TryParse(search_txt.Text, out n);     
       
+                strsql += @" and (memo like '%'+@S+'%'    or productname like '%'+@S+'%'   or description like '%'+@S+'%')  ";
+            viewDataSource.SelectParameters.Add("S", search_txt.Text);
         }
         if (DropDownList1.SelectedIndex >0)
         {
             strsql += " and  categoryid = @categoryid";
-            }
+            viewDataSource.SelectParameters.Add("categoryid",  DropDownList1.SelectedValue );
+
+        }
     
         strsql += " ORDER BY  sort," + sortColumn + " " + sorttype;
-        NameValueCollection nvc = new NameValueCollection();
-        nvc.Add("s", search_txt.Text);
-        nvc.Add("categoryid", DropDownList1.SelectedValue);
- 
-        DataTable dt = DbControl.Data_Get(strsql, nvc);
-        ListView1.DataSource = dt;
+        viewDataSource.SelectCommand = strsql;
+        ListView1.DataSourceID  = viewDataSource.ID;
         ListView1.DataBind();
 
         MultiView1.ActiveViewIndex = 0;

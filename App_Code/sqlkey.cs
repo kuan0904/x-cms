@@ -8,7 +8,7 @@ public class SqlKey
 {
     private HttpRequest request;
     private const string StrKeyWord = @"select|insert|delete|from|count(|drop table|update|truncate|asc(|mid(|char(|xp_cmdshell|exec master|netlocalgroup administrators|:|net user|""|or|and";
-    private const string StrRegex = @"-|;|,|/|(|)|[|]|}|{|%|@|*|!|'";
+    private const string StrRegex = @"-|;|,|/|(|)|[|]|}|{|%|@@|*|!|'";
     public SqlKey(System.Web.HttpRequest _request)
     {
         // 

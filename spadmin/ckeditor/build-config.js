@@ -13,10 +13,10 @@
  * (1) http://ckeditor.com/builder
  *     Visit online builder to build CKEditor from scratch.
  *
- * (2) http://ckeditor.com/builder/45a2f59aac7f6c1478468b9a455aef41
+ * (2) http://ckeditor.com/builder/e6e32491758168276eb55647eee58e1d
  *     Visit online builder to build CKEditor, starting with the same setup as before.
  *
- * (3) http://ckeditor.com/builder/download/45a2f59aac7f6c1478468b9a455aef41
+ * (3) http://ckeditor.com/builder/download/e6e32491758168276eb55647eee58e1d
  *     Straight download link to the latest version of CKEditor (Optimized) with the same setup as before.
  *
  * NOTE:
@@ -25,7 +25,7 @@
  */
 
 var CKBUILDER_CONFIG = {
-	skin: 'moonocolor',
+	skin: 'moono',
 	preset: 'full',
 	ignore: [
 		'.DS_Store',
@@ -55,7 +55,10 @@ var CKBUILDER_CONFIG = {
 		'bidi' : 1,
 		'blockquote' : 1,
 		'ckeditor-gwf-plugin' : 1,
+		'clipboard' : 1,
+		'colorbutton' : 1,
 		'colordialog' : 1,
+		'contextmenu' : 1,
 		'copyformatting' : 1,
 		'custimage' : 1,
 		'dialogadvtab' : 1,
@@ -72,24 +75,29 @@ var CKBUILDER_CONFIG = {
 		'gg' : 1,
 		'googledocs' : 1,
 		'horizontalrule' : 1,
+		'htmlwriter' : 1,
 		'iframe' : 1,
+		'iframedialog' : 1,
 		'image' : 1,
 		'imagebrowser' : 1,
-		'imgbrowse' : 1,
 		'indentblock' : 1,
 		'indentlist' : 1,
 		'justify' : 1,
 		'language' : 1,
+		'link' : 1,
 		'list' : 1,
 		'liststyle' : 1,
 		'magicline' : 1,
 		'maximize' : 1,
 		'newpage' : 1,
 		'pagebreak' : 1,
+		'pastecode' : 1,
+		'pastefromexcel' : 1,
 		'pastefromword' : 1,
 		'pastetext' : 1,
 		'preview' : 1,
 		'print' : 1,
+		'qrc' : 1,
 		'removeformat' : 1,
 		'resize' : 1,
 		'save' : 1,
@@ -107,10 +115,14 @@ var CKBUILDER_CONFIG = {
 		'tabletools' : 1,
 		'templates' : 1,
 		'toolbar' : 1,
+		'uicolor' : 1,
+		'undo' : 1,
+		'uploadfile' : 1,
 		'uploadimage' : 1,
-		'videodetector' : 1,
+		'video' : 1,
 		'wsc' : 1,
 		'wysiwygarea' : 1,
+		'yaqr' : 1,
 		'youtube' : 1
 	},
 	languages : {

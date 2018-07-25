@@ -9,16 +9,19 @@
 
     <asp:LinqDataSource ID="LinqDataSource1" runat="server" ContextTypeName="DataOrderDataDataContext" EnableInsert="True" EnableUpdate="True" EntityTypeName="" TableName="OrderData">
     </asp:LinqDataSource>
-      <div class="box-header well" data-original-title>
+    <div class="box-header well" data-original-title>
                         <h2>產品管理    <asp:LinkButton ID="Btn_add" runat="server" Text="" class="btn btn-large" OnClick ="Btn_add_Click" ><i class="icon-plus"></i>新增資料</asp:LinkButton>
-                        類別:<asp:DropDownList ID="DropDownList1" runat="server"  DataTextField="title" DataValueField="categoryid">
+                        類別:<asp:DropDownList ID="DropDownList1" runat="server" DataSourceID="SqlDataSource4" DataTextField="title" DataValueField="categoryid">
                         </asp:DropDownList>
                         <asp:TextBox ID="search_txt" runat="server"></asp:TextBox>
                         <asp:Button ID="btn_search" runat="server" Text=" 查 詢 " OnClick="btn_search_click" class="btn btn-success" /></h2>
           </div>
             <div class="box-content">
 
-        
+                 <asp:SqlDataSource ID="viewDataSource" runat="server" ConnectionString="<%$ ConnectionStrings:dbconnConnection %>" SelectCommand=""></asp:SqlDataSource>
+
+                <asp:SqlDataSource ID="SqlDataSource4" runat="server" ConnectionString="<%$ ConnectionStrings:dbconnConnection %>" SelectCommand="SELECT * FROM tbl_category where classid=2"></asp:SqlDataSource>
+
                 <asp:MultiView ID="MultiView1" runat="server">
                     <asp:View ID="View1" runat="server">
                      
@@ -53,7 +56,7 @@
                                     <td><%#Eval("viewcount") %></td>
                                     <td><%#Eval("sort") %></td>
                                     <td>
-                                        <a href="../pro-info?p_ID=<%#Eval("p_id") %>" target="_blank">預覽</a>
+                                        <a href="../shoppingcart?p_ID=<%#Eval("p_id") %>" target="_blank">預覽</a>
                                     </td>
 
 
@@ -108,7 +111,9 @@
                             <tr>
                                 <td>商品序號</td>
                                 <td><asp:Label ID="p_id" runat="server"></asp:Label></td>        
-                                <td></td>                                                   <td></td>
+                                <td>商品代碼</td>                                                   
+                                <td >
+                                    <asp:TextBox ID="productcode" runat="server"></asp:TextBox></td>
                             </tr>
                             <tr>
                                 <td>商品名稱</td>
@@ -119,24 +124,13 @@
                                     </asp:DropDownList>                             
                                 </td>                              
                             </tr>
-                            <tr>
-                                <td>商品輪撥圖片:</td>
-                                <td colspan="3"><asp:FileUpload ID="FileUploadbanner" runat="server" />
-                                    <asp:Image ID="Imagebanner" runat="server" />W250*H250
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>商品輪撥文字簡述</td>
-                                <td colspan="3">
-                                    <asp:TextBox ID="memo" runat="server"  Width ="500"   ></asp:TextBox></td>
-                            </tr>
-                            <tr>
-                                <td>橫圖圖片</td>
-                                <td colspan="3"> 
-                                    <asp:FileUpload ID="FileUploadlogo" runat="server" />                                    
-                                    <asp:Image ID="Imagelogo" runat="server" Width ="600" />W1400*H400
-                                </td>
-                            </tr>
+                       
+                     <tr>
+                         <td>影片url</td>
+                         <td colspan="3">
+                             <asp:TextBox ID="videourl" runat="server" Width ="500"></asp:TextBox></td>
+                         </tr>
+                           
                         <tr>
                                 <td>圖片1</td>
                                     <td colspan="3"> 
@@ -144,7 +138,7 @@
                                     <asp:Image ID="Image1" runat="server" />W360*H360
                                     </td> 
                             </tr>
-                                     <tr>
+                                 <tr>
                                 <td>圖片2</td>
                                    <td colspan="3"> 
                                     <asp:FileUpload ID="FileUpload2" runat="server" />
@@ -161,52 +155,69 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>商品類別</td>
+                                <td>
+                                    <asp:RadioButtonList ID="kindid" runat="server">
+                                        <asp:ListItem Value ="1" >單一商品</asp:ListItem>
+                                        <asp:ListItem  Value ="2">組合商品</asp:ListItem>
+                                    </asp:RadioButtonList>                                  
+                                </td>
+                                 <td>排序</td>
+                                <td>
+                                    <asp:TextBox ID="sort" runat="server"></asp:TextBox></td>
+                            </tr>
+                            <tr>
                                 <td >價格</td>
                             <td>
-                                 <asp:TextBox ID="TextBox1" runat="server" Width="50"  TextMode="Number"></asp:TextBox>件<asp:TextBox ID="price1" runat="server"  TextMode="Number" Width="60"></asp:TextBox>元<br />
-                                 <asp:TextBox ID="TextBox2" runat="server" Width="50"  TextMode="Number"></asp:TextBox>件<asp:TextBox ID="price2" runat="server"  TextMode="Number" Width="60"></asp:TextBox>元<br />
-                               <asp:TextBox ID="TextBox3" runat="server" Width="50"  TextMode="Number"></asp:TextBox>件<asp:TextBox ID="price3" runat="server"  TextMode="Number" Width="60"></asp:TextBox>元<br />
-                                <asp:TextBox ID="TextBox4" runat="server" Width="50"  TextMode="Number"></asp:TextBox>件<asp:TextBox ID="price4" runat="server"  TextMode="Number" Width="60"></asp:TextBox>元<br />
-                                <asp:TextBox ID="TextBox5" runat="server" Width="50"  TextMode="Number"></asp:TextBox>件<asp:TextBox ID="price5" runat="server"  TextMode="Number" Width="60"></asp:TextBox>元<br />
-                                <asp:TextBox ID="TextBox6" runat="server" Width="50"  TextMode="Number"></asp:TextBox>件<asp:TextBox ID="price6" runat="server"  TextMode="Number" Width="60"></asp:TextBox>元<br />
-                                <asp:TextBox ID="TextBox7" runat="server" Width="50"  TextMode="Number"></asp:TextBox>件<asp:TextBox ID="price7" runat="server"  TextMode="Number" Width="60"></asp:TextBox>元<br />
-                                <asp:TextBox ID="TextBox8" runat="server" Width="50"  TextMode="Number"></asp:TextBox>件<asp:TextBox ID="price8" runat="server"  TextMode="Number" Width="60"></asp:TextBox>元<br />
-                                <asp:TextBox ID="TextBox9" runat="server" Width="50"  TextMode="Number"></asp:TextBox>件<asp:TextBox ID="price9" runat="server"  TextMode="Number" Width="60"></asp:TextBox>元<br />
-                                <asp:TextBox ID="TextBox10" runat="server" Width="50"  TextMode="Number"></asp:TextBox>件<asp:TextBox ID="price10" runat="server"  TextMode="Number" Width="60"></asp:TextBox>元<br />
-                                文字說明<asp:TextBox ID="selltxt" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="price" runat="server"></asp:TextBox>
+                            
                                </td> 
-                                <td >商品組數</td>
+                                <td >可售數量</td>
                             <td>
                                     <asp:TextBox ID="storage" runat="server"  TextMode="Number"></asp:TextBox>                               
                                </td> 
                             </tr>   
                             <tr>
-                                <td>定價</td>
-                                <td>
-                                    <asp:TextBox ID="Pricing" runat="server"></asp:TextBox>
+                                <td>成員</td>
+                                <td colspan ="3">
+                                    <asp:CheckBoxList ID="CheckBoxList1" runat="server" RepeatDirection="Horizontal" RepeatColumns="5"></asp:CheckBoxList>
 
+
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>運費</td>
+                                <td>    
+                                    <asp:TextBox ID="shippingfee" runat="server" TextMode="Number"></asp:TextBox>
+                                    
                                     </td> 
-                                <td>省下文字</td>
+                                <td>運送方式</td>
                                 <td>
-                                    <asp:TextBox ID="Savetxt" runat="server"></asp:TextBox></td> 
-                            </tr>                         
+                                    <asp:TextBox ID="shippingKind" runat="server"></asp:TextBox></td> 
+                            </tr>      
+                            <tr>
+                                <td>免運費金額</td>
+                                <td> <asp:TextBox ID="freeship" runat="server" TextMode="Number"></asp:TextBox></td>
+                                <td></td>
+                                <td></td>
+                            </tr>                   
                             <tr>
                                 <td>商品介紹</td>
                                 <td  colspan="3">                                   
-                                     <asp:TextBox ID="description" runat="server" TextMode="MultiLine" Height="600px" Width="750px"></asp:TextBox>
+                                     <asp:TextBox ID="description" runat="server" TextMode="MultiLine" Height="800px" Width="750px"></asp:TextBox>
                                         <script>
                                             CKEDITOR.replace('<%=description.ClientID  %>');
                                         </script>   
 
                                 </td>
                             </tr>
-                            <tr>
-                                <td>排序</td>
-                                <td>
-                                    <asp:TextBox ID="sort" runat="server"></asp:TextBox></td>
-                                <td></td>
-                                <td></td>
+                                   <tr>
+                                <td>商品文字簡述</td>
+                                <td colspan="3">
+                                    <asp:TextBox ID="memo" runat="server"  Width ="500"   ></asp:TextBox></td>
                             </tr>
+                  
                             <tr>
                                   <td>狀態</td>
                                 <td>
@@ -229,7 +240,7 @@
                 var obj = "ContentPlaceHolder1_";
                 var kindid = $("#<% =categoryid.ClientID %>").val();                                   
                                     
-                if ($("#<% =price1.ClientID %>").val() == '' ) {
+                if ($("#<% =price.ClientID %>").val() == '' ) {
                     alert('售價未輸入');
                     return false;
                 }           

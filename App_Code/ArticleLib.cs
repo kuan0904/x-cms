@@ -650,6 +650,10 @@ namespace article
 
             }
             nvc.Clear();
+            strsql = "update  tbl_article_file set articleid =@articleid  where (articleId =@tempid or tempid=@tempid)";
+            nvc.Add("articleId", ad.Id.ToString());
+            nvc.Add("tempid", ad.Tempid);
+            i = DbControl.Data_add(strsql, nvc);
 
             return i;
 
@@ -704,7 +708,7 @@ namespace article
         public int TotalRows { get; set; }
         public string Recommend { get; set; }
         public List<Lesson> Lesson { get; set; }
-
+        public string Tempid { get; set; }
      
     }
     public class ItemData

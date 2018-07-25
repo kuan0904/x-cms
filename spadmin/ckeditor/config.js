@@ -15,9 +15,8 @@ CKEDITOR.editorConfig = function (config) {
         'FFF0F5,FAEBD7,FFFFE0,F0FFF0,F0FFFF,F0F8FF,E6E6FA,FFF';
     config.filebrowserBrowseUrl = '../../spadmin/ckfinder/ckfinder.html';
     config.filebrowserImageBrowseUrl = '../../spadmin/ckfinder/ckfinder.html?type=Images';
-    config.filebrowserUploadUrl = '../../spadmin/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Files';
-    /*  config.filebrowserImageUploadUrl = '../../spadmin/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Images';*/
-    config.filebrowserImageUploadUrl = '../../spadmin/saveMultiUpload.aspx?kind=QuickUpload&type=Images&responseType=json';
+    config.filebrowserUploadUrl = '../../spadmin/saveMultiUpload.aspx?kind=fileUpload&type=files&responseType=json';
+    config.filebrowserImageUploadUrl = '../../spadmin/saveMultiUpload.aspx?kind=imageUpload&type=Images&responseType=json';
     config.filebrowserWindowWidth = '800';  //“瀏覽服務器”彈出框的size設置
     config.filebrowserWindowHeight = '500';
     config.contentsCss = ['/css/theme.css'];

@@ -12,7 +12,9 @@
         $("#endday").datepicker();
         $("#endday").datepicker("option", "dateFormat", "yy/mm/dd");
         });
-
+           function p(id) {
+            window.open("/Article/" + id);
+        }
     </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
@@ -77,7 +79,8 @@
             
                                     <asp:LinkButton ID="LinkButton2" runat="server" Text="" OnClick="link_delete" OnClientClick="return confirm('你確定要刪除嗎?')"
                     CommandArgument='<%# Eval("articleId").ToString()%>' class="btn btn-danger"><i class="icon-trash icon-white"></i>刪除</asp:LinkButton>                                                    
-            
+              <button type="button" class="btn btn-primary" name="preview" onclick ="p('<%# Eval("articleid") %>');"><i class="icon-external-link icon-white"></i>預覽</button>  <br />
+                       
                                 </td>
                                 <td>
                                     <%# Eval("articleid") %>
@@ -114,33 +117,32 @@
                    
                     $('#postday').datepicker("setDate", new Date(result.PostDay));
                     $('#subject').val(result.Subject);                                           
-                    $('#keywords').val(result.Keywords);                 
-                  
-                    $('#address').val(result.Lesson[0].Address);  
-                    $('#lessontime').val(result.Lesson[0].Lessontime);  
-                    $('#subtitle').val(result.SubTitle);  
-                    $('#startday').datepicker("setDate", new Date(result.Lesson[0].StartDay));
-                    $('#endday').datepicker("setDate", new Date(result.Lesson[0].EndDay));
+                    $('#keywords').val(result.Keywords);    
+                    $('#subtitle').val(result.SubTitle);          
                     $("#status").prop("checked", result.Status  == "Y" ? true : false);
                     $("#recommend").prop("checked", result.Recommend  == "Y" ? true : false);
                     CKEDITOR.instances['contents'].setData(result.Contents);                           
                     document.getElementById('console').innerHTML = ("<img src=\"/webimages/article/" + result.Pic + "\" width=300>");
                     $('#logoPic').val(result.Pic); 
                    
-                 
-                    var detail = result.Lesson[0].LessonDetail;
-                  
-                    $.each(detail, function (key, val) {
-                      
-                        var v = ' <div class="row-fluid"> <div class="box-content"><input type="button" class="mod" value="修改">';
-                        v += '<input type="button" class="delete" value="刪除"><br>';
-                        v += '序號:<span class = "lessonid">' + val.LessonId + '</span><br>';
-                        v += '說明:<span class="description">' + val.Description + '</span> <BR>';
-                        v += '課程費用(原價):<span class="sellprice">' + val.Sellprice + '</span><br>';
-                        v += '課程費用(特價):<span class="price">' + val.Price + '</span><br>';
-                        v += '可報名人數:<span class="limitnum">' + val.Limitnum + '</span><b ></div></div> ';
-                        $('#detailitem').append('<li style="background-color: #C0C0C0">' + v + '</li>');
-                     });   
+                    if (result.Lesson[0] != undefined) {
+                        $('#address').val(result.Lesson[0].Address);  
+                        $('#lessontime').val(result.Lesson[0].Lessontime);
+                        $('#startday').datepicker("setDate", new Date(result.Lesson[0].StartDay));
+                        $('#endday').datepicker("setDate", new Date(result.Lesson[0].EndDay));
+                        var detail = result.Lesson[0].LessonDetail;                  
+                        $.each(detail, function (key, val) {                      
+                            var v = ' <div class="row-fluid"> <div class="box-content"><input type="button" class="mod" value="修改">';
+                            v += '<input type="button" class="delete" value="刪除"><br>';
+                            v += '序號:<span class = "lessonid">' + val.LessonId + '</span><br>';
+                            v += '說明:<span class="description">' + val.Description + '</span> <BR>';
+                            v += '課程費用(原價):<span class="sellprice">' + val.Sellprice + '</span><br>';
+                            v += '課程費用(特價):<span class="price">' + val.Price + '</span><br>';
+                            v += '可報名人數:<span class="limitnum">' + val.Limitnum + '</span><b ></div></div> ';
+                            $('#detailitem').append('<li style="background-color: #C0C0C0">' + v + '</li>');
+                         });   
+                    }
+                
                   
                 });
             }
@@ -270,19 +272,22 @@
             }
           function get_lecturer() {
             var dataValue = "{ kind: 'get' }";
-            $.postJSON('article.aspx/get_lecturer', dataValue, 'application/json; charset=utf-8', function (result) {
+              $.postJSON('article.aspx/get_lecturer', dataValue, 'application/json; charset=utf-8', function (result) {
+                 
                 if (result != "") {
                     var result = result.d;
                     result = JSON.parse(result);
                     result = result.main;
                     var cb = "";
                     var s = "";
-                    $.each(result, function (key, val) {       
-                       
-                        s = maindata ==  undefined ? "":check_cbx(maindata.Lesson[0].Lecturer, val.id);                      
+  
+                    $.each(result, function (key, val) {     
+                      
+                        s = maindata.Lesson[0].Lecturer == undefined ? "" : check_cbx(maindata.Lesson[0].Lecturer, val.id);
                         cb += "<input name='lecturerid' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl>" + val.name + "</span>";
-                    });                    
-                    $("#lecturer").html(cb);                    
+                });       
+                 
+                   $("#lecturer").html(cb);                    
                 }
             });
         }
@@ -535,13 +540,20 @@
                                         <span class="lbl"></span>
                                     </td>
                                 </tr>
+                                      <tr><td></td>
+                                    <td>
+                                    <a  class="iframe cboxElement"   href='editImages.aspx?type=image&kind=photoQuickUpload"';"><i  class="btn btn-greyicon icon-camera" >相簿管理</i></a>   
+                                   <a class="iframe cboxElement"  href='editImages.aspx?type=file&kind=photoQuickUpload';"><i class="btn btn-grey icon-book">檔案管理</i></a>   
+                      
+                                    </td>
+                                </tr>
                                 <tr>
-                                   <td colspan="2">
+                                   <td colspan="2"  align ="center">
                                         
-                                        <button type="button" class="btn btn-primary" id="btn_save">存 檔</button>
-                                        <button type="button" class="btn btn-primary" id="preview">預 覽</button>
-                                          <asp:Button ID="Btn_cancel" runat="server" class="btn" Text="取 消" OnClick ="Btn_cancel_Click" />
-                                   </td>
+                                       <button type="button" class="btn btn-danger icon-save" id="btn_save">存 檔</button>
+                                        <button type="button" class="btn btn-success icon-eye-open" id="preview">預 覽</button>
+                                          <asp:Button ID="Btn_cancel" runat="server" class="btn icon-undo" Text="取 消" OnClick ="Btn_cancel_Click" />
+                                         </td>
                                 </tr>
                             </table>
                         </div>

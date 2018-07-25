@@ -81,9 +81,9 @@
             
                                     <asp:LinkButton ID="LinkButton2" runat="server" Text="" OnClick="link_delete" OnClientClick="return confirm('你確定要刪除嗎?')"
                     CommandArgument='<%# Eval("articleId").ToString()%>' class="btn btn-danger"><i class="icon-trash icon-white"></i>刪除</asp:LinkButton> 
-                      <br />
-                <button type="button" class="btn btn-primary" name="preview" onclick ="p('<%# Eval("articleid") %>');"><i class="icon-external-link icon-white"></i>預覽</button>
-                             <button type="button" class="btn btn-primary"   onclick ="location.href='editImages.aspx?articleid=<%# Eval("articleid") %>';"><i class="icon-camera"></i>相簿</button>   
+                    
+                <button type="button" class="btn btn-primary" name="preview" onclick ="p('<%# Eval("articleid") %>');"><i class="icon-external-link icon-white"></i>預覽</button>  <br />
+                       
                                     </td>
                                 <td>
                                     <%# Eval("articleid") %>
@@ -129,6 +129,7 @@
                     $('#keywords').val(result.Keywords);                 
                     $('#author').val(result.Author);
                     $("#status").prop("checked", result.Status == "Y" ? true : false);
+                  
                     $("#recommend").prop("checked", result.Recommend  == "Y" ? true : false);
                     $('#postDay').val(result.PostDay);   
                     CKEDITOR.instances['contents'].setData(result.Contents);                           
@@ -188,31 +189,36 @@
             if (content == '') {
                 errmsg += ('請輸入內容\r\n');
             }
-            var Checked = $('input[name="tags"]:checked').length > 0;
-            if (Checked == false) {
-              //  errmsg += ('請勾選標籤\r\n');
+            var status = $("#status").prop("checked") == true ? "Y" : "N";   
+            var postday = $("#postday").val();
+
+            if (status == "Y") {
+                var Checked = $('input[name="tags"]:checked').length > 0;
+                if (Checked == false) {
+                    //  errmsg += ('請勾選標籤\r\n');
+                }
+                Checked = $('input[name="categoryid"]:checked').length > 0;
+                if (Checked == false) {
+                    errmsg += ('請勾選分類\r\n');
+                }
+
+                if ($("#postday").val() == '') {
+                    errmsg += ('請輸入發佈日期\r\n');
+                }
+                if ($("#logoPic").val() == '') {
+                    errmsg += ('文章主圖未上傳\r\n');
+                }
+            } else {
+                postday = "2018/1/1";
             }
-            Checked = $('input[name="categoryid"]:checked').length > 0;
-            if (Checked == false) {
-                errmsg += ('請勾選分類\r\n');
-            }       
-        
-           if ( $("#postday").val() == '') {
-                errmsg += ('請輸入發佈日期\r\n');
-            }
-            if ( $("#logoPic").val() == '') {
-                errmsg += ('文章主圖未上傳\r\n');
-            }
-    
             var categoryid = $('input:checkbox:checked[name="categoryid"]').map(function () { return $(this).val(); }).get();
-            var tags = $('input:checkbox:checked[name="tags"]').map(function () { return $(this).val(); }).get();   
-            var status = $("#status").prop("checked") == true ? "Y" : "N";       
+            var tags = $('input:checkbox:checked[name="tags"]').map(function () { return $(this).val(); }).get();              
             var recommend = $("#recommend").prop("checked") == true ? "Y" : "N";     
             var dataValue = {
-                id: articleId, subject: $("#subject").val(), subtitle: $("#subtitle").val()
+                id: articleId, subject: $("#subject").val(), subtitle: ''
                 , contents: content, pic: $("#logoPic").val(), keywords: $("#keywords").val()
                 , status: status, categoryid: categoryid,recommend :recommend
-                , tags: tags, author: $("#author").val(), postday: $("#postday").val(),
+                , tags: tags, author: $("#author").val(), postday: postday,
                 kind: "A"
                 ,Lesson: [{
                     Id: 0, StartDay:"", EndDay: "", Lecturer: [], Lessontime: "", Address:"" ,
@@ -371,71 +377,23 @@
                                     </td>
 
                                 </tr>
+                                <tr><td></td>
+                                    <td>
+                                    <a  class="iframe cboxElement"   href='editImages.aspx?type=image&kind=photoQuickUpload"';"><i  class="btn btn-greyicon icon-camera" >相簿管理</i></a>   
+                                   <a class="iframe cboxElement"  href='editImages.aspx?type=file&kind=photoQuickUpload';"><i class="btn btn-grey icon-book">檔案管理</i></a>   
+                      
+                                    </td>
+                                </tr>
                                 <tr>
-                                   <td colspan="2">
+                                   <td colspan="2" align="center">
                                         
-                                        <button type="button" class="btn btn-primary" id="btn_save">存 檔</button>
-                                        <button type="button" class="btn btn-primary" id="preview">預 覽</button>
-                                          <asp:Button ID="Btn_cancel" runat="server" class="btn" Text="取 消" OnClick ="Btn_cancel_Click" />
+                                        <button type="button" class="btn btn-danger icon-save" id="btn_save">存 檔</button>
+                                        <button type="button" class="btn btn-success icon-eye-open" id="preview">預 覽</button>
+                                          <asp:Button ID="Btn_cancel" runat="server" class="btn icon-undo" Text="取 消" OnClick ="Btn_cancel_Click" />
                                       
 
                                    </td>
                                 </tr>
-                            </table>
-                        </div>
-                        <div id="item2" class="tab-pane">
-
-                                <table>
-                                <tr>
-                                    <td>次標題</td>
-                                    <td>
-                                        <input id="subtitle" type="text" style="width: 500px;height:100px;" /></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        開始時間</td>
-                                    <td>
-                                        <input id="startday" type="text" size="10"  />
-                                       
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        結束時間</td>
-                                    <td>  <input id="endday" type="text" size="10"  />
-                                       
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>上課時間說明</td>
-                                    <td><input id="lessontime" type="text" size="60"  />
-                                         
-                                    </td>
-                                </tr>
-                                     <tr>
-                                   <td>地址</td>
-                                   <td><input id="address" type="text" size="100"  /> </td>
-                               </tr>   
-                               <tr>
-                                   <td>課程費用(原價)</td>
-                                   <td> <input id="price" type="number"    /> </td>
-                               </tr>
-                                <tr>
-                                   <td>課程費用(特價)</td>
-                                   <td>  <input id="sellprice" type="number"    /> </td>
-                               </tr>   
-                                      <tr>
-                                    <td>可報名人數</td>
-                                    <td> <input id="limitnum" type="number"     /> </td>
-                                  </tr>
-                                <tr>
-                                    <td>講師管理</td>
-                                    <td>  <label id="lecturer"></label><br />
-
-                                              <a href="Edit_tag.aspx?unitid=14" class="iframe cboxElement"><i class="icon-double-angle-right"></i>講師管理</a>
-                              
-                                    </td>
-                                  </tr>
                             </table>
                         </div>
                        

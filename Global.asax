@@ -23,7 +23,7 @@
         if (dt.Rows.Count !=0)
             Session ["websiteurl"] = dt.Rows[0]["value"].ToString ();
         dt.Dispose();
-       
+
         Application["description"] = Session["description"];
         Application["keywords"] = Session["keywords"];
 
@@ -60,28 +60,28 @@
     }
     protected void Application_BeginRequest()
     {
-        SqlKey myCheck = new SqlKey(this.Request); 
-        bool a = myCheck.CheckRequestForm(); 
-        bool b = myCheck.CheckRequestQuery(); 
-        if (myCheck.CheckRequestForm() || myCheck.CheckRequestQuery()) 
-        { 
-         Response.Write("有"); 
-        } 
-        else 
-        { 
-      //   Response.Write("無"); 
-        } 
-        if (!Context.Request.IsSecureConnection)
-        {
-            // 轉到SSL 看要REWRITE還是GLOBAL設定   
-            string url = Request.Url.ToString().Replace("http://", "https://");
+        //  SqlKey myCheck = new SqlKey(this.Request); 
+        //  bool a = myCheck.CheckRequestForm(); 
+        //  bool b = myCheck.CheckRequestQuery(); 
+        //  if (myCheck.CheckRequestForm() || myCheck.CheckRequestQuery()) 
+        //  { 
+        //   Response.Write("有"); 
+        //  } 
+        //  else 
+        //  { 
+        ////   Response.Write("無"); 
+        //  } 
+        //  if (!Context.Request.IsSecureConnection)
+        //  {
+        //      // 轉到SSL 看要REWRITE還是GLOBAL設定   
+        //      string url = Request.Url.ToString().Replace("http://", "https://");
 
-            //  RegisterRoutes(RouteTable.Routes);
-            //      Response.Redirect(url);
-            if (Request.Url.Host !="localhost") 
-             Response.Redirect(Context.Request.Url.ToString().Replace("http://", "https://"));
+        //      //  RegisterRoutes(RouteTable.Routes);
+        //      //      Response.Redirect(url);
+        //      if (Request.Url.Host !="localhost") 
+        //       Response.Redirect(Context.Request.Url.ToString().Replace("http://", "https://"));
 
-        }
+        //  }
     }
     void RegisterRoutes(RouteCollection routes)
     {

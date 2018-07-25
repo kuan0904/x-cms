@@ -206,7 +206,8 @@ public partial class spadmin_article : System.Web.UI.Page
             Author = author,
             Lesson =Lesson ,
             Recommend = recommend,
-            kind =kind        
+            kind =kind        ,
+            Tempid = HttpContext.Current.Session["uploadid"].ToString ()
         };
    
         HttpContext.Current.Session["MainData"] = MainData;     

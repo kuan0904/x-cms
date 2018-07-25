@@ -31,8 +31,7 @@ public partial class spadmin_Edit_Lesson : System.Web.UI.Page
     {
 
 
-        string strsql = @"SELECT *  FROM tbl_article where status <> 'D' and articleid  in 
-            (select articleid from  tbl_lesson) ";
+        string strsql = @"SELECT *  FROM tbl_article where status <> 'D' and  kind='Y' ";
         if (searchtxt.Text != "")
         {
             strsql += " and ( subject like @s or keywords like @s or contents like @s or author like @s ) ";
@@ -104,6 +103,9 @@ public partial class spadmin_Edit_Lesson : System.Web.UI.Page
 
     protected void btn_add_Click(object sender, EventArgs e)
     {
+        string id = DateTime.Now.ToString("MMddhhmmss");
+        //Guid.NewGuid().ToString("N");
+        Session["uploadid"] = id;
         MultiView1.ActiveViewIndex = 1;
     }
 
@@ -112,6 +114,7 @@ public partial class spadmin_Edit_Lesson : System.Web.UI.Page
         MultiView1.ActiveViewIndex = 1;
         LinkButton obj = (LinkButton)sender;
         articleId = obj.CommandArgument;
+        Session["uploadid"] = articleId;
     }
 
     protected void Btn_save_Click(object sender, EventArgs e)

@@ -16,7 +16,7 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server" EnableViewState ="false" > 
-          <h1 class="site-title">藝時代 Cultural Launch</h1>
+          <h1 class="site-title"><%=Application["site_name"]%></h1>
                 <div class="main-content">
                     <div class="main-content-inner">
 
@@ -67,10 +67,10 @@
                                                     <%# article.Web.Get_category_link  ((int) Eval("id"))%>
                                                     <div class=post-author>
                                                         <span>By</span>
-                                                        <a href="#/author/admin/"> <%# article.Web.Get_author_link ((string) Eval("author"))%></a>
+                                                      <%# article.Web.Get_author_link ((string) Eval("author"))%>
                                                         <span> - </span>
                                                     </div>
-                                                    <span class=post-date><time datetime="<%#Eval("PostDay") %>"><%# DateTime.Parse ( Eval("PostDay").ToString()).ToString ("yyyy/MM/dd")  %></time></span>
+                                                    <span class=post-date><time datetime="<%#Eval("PostDay") %>"><%# DateTime.Parse ( Eval("PostDay").ToString()).ToString ("MM/dd") %></time></span>
                                                     <div class=post-views>
                                                         <i class="fa fa-eye"></i><%#Eval("Viewcount") %></div>
                                                     <div class=post-comments>

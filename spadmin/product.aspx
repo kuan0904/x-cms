@@ -10,24 +10,21 @@
     <asp:LinqDataSource ID="LinqDataSource1" runat="server" ContextTypeName="DataOrderDataDataContext" EnableInsert="True" EnableUpdate="True" EntityTypeName="" TableName="OrderData">
     </asp:LinqDataSource>
     <div class="box-header well" data-original-title>
-                        <h2>產品管理    <asp:LinkButton ID="Btn_add" runat="server" Text="" class="btn btn-large" OnClick ="Btn_add_Click" ><i class="icon-plus"></i>新增資料</asp:LinkButton>
-                        類別:<asp:DropDownList ID="DropDownList1" runat="server" DataSourceID="SqlDataSource4" DataTextField="title" DataValueField="categoryid">
+                        <h2>產品管理  </h2>
+        <asp:LinkButton ID="Btn_add" runat="server" Text="" class="btn btn-large" OnClick ="Btn_add_Click" ><i class="icon-plus"></i>新增資料</asp:LinkButton>
+                        類別:<asp:DropDownList ID="DropDownList1" runat="server" DataTextField="title" DataValueField="categoryid">
                         </asp:DropDownList>
                         <asp:TextBox ID="search_txt" runat="server"></asp:TextBox>
                         <asp:Button ID="btn_search" runat="server" Text=" 查 詢 " OnClick="btn_search_click" class="btn btn-success" /></h2>
           </div>
             <div class="box-content">
 
-                 <asp:SqlDataSource ID="viewDataSource" runat="server" ConnectionString="<%$ ConnectionStrings:dbconnConnection %>" SelectCommand=""></asp:SqlDataSource>
-
-                <asp:SqlDataSource ID="SqlDataSource4" runat="server" ConnectionString="<%$ ConnectionStrings:dbconnConnection %>" SelectCommand="SELECT * FROM tbl_category where classid=2"></asp:SqlDataSource>
-
-                <asp:MultiView ID="MultiView1" runat="server">
+        
+             <asp:MultiView ID="MultiView1" runat="server">
                     <asp:View ID="View1" runat="server">
                      
                         <asp:ListView ID="ListView1" runat="server" DataKeyNames="p_id"    OnPagePropertiesChanging="ContactsListView_PagePropertiesChanging">
-
-
+                            
                             <EmptyDataTemplate>
                                 <table runat="server" style="background-color: #FFFFFF; border-collapse: collapse; border-color: #999999; border-style: none; border-width: 1px;">
                                     <tr>
@@ -35,11 +32,10 @@
                                     </tr>
                                 </table>
                             </EmptyDataTemplate>
-
                             <ItemTemplate>
                                 <tr>
                                     <td>
-                                        <asp:LinkButton ID="EditButton" runat="server" Text="" OnClick="link_edit" CommandName="Edit" CommandArgument='<%# Eval("p_id")%>'
+                                        <asp:LinkButton ID="EditButton" runat="server" Text="" OnClick="link_edit"  CommandArgument='<%# Eval("p_id")%>'
                                             class="btn btn-info"><i class="icon-edit icon-white"></i>編輯</asp:LinkButton>
                                           <asp:LinkButton ID="LinkButton1" runat="server" Text="" OnClick="link_edit" CommandName="copy" CommandArgument='<%# Eval("p_id")%>'
                                             class="btn btn-success">複製</asp:LinkButton>

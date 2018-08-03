@@ -18,8 +18,9 @@ public partial class spadmin_product : System.Web.UI.Page
     
     protected void Page_Init(object sender, EventArgs e)
     {
-        DropDownList1.DataBound  += new EventHandler(DropDownList1_DataBound);
-        string strsql = "select * from tbl_category where status <> 'D' and categoryid>@id ";
+        //DropDownList1.DataBound  += new EventHandler(DropDownList1_DataBound);
+        DropDownList1.Items.Add(new ListItem("不區分", ""));
+        string strsql = "select * from tbl_category where parentid =0 and classid=2  and status='Y' ";
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("id", "0");
         DataTable dt =DbControl .Data_Get(strsql, nvc);                 
@@ -28,7 +29,7 @@ public partial class spadmin_product : System.Web.UI.Page
             string name = dt.Rows[i]["title"].ToString();
             string id = dt.Rows[i]["categoryid"].ToString();
             categoryid.Items.Add(new ListItem(name, id));
-                
+            DropDownList1 .Items.Add(new ListItem(name, id));
         }
         dt.Dispose();
 
@@ -179,7 +180,7 @@ public partial class spadmin_product : System.Web.UI.Page
             nvc.Add("productcode", productcode.Text);
             nvc.Add("videourl", videourl.Text);
             nvc.Add("storage", storage.Text);
-            nvc.Add("description", description.Text);
+            nvc.Add("description", Server.HtmlDecode ( description.Text));
             nvc.Add("status", status.SelectedValue);
             nvc.Add("categoryid", categoryid.SelectedValue);
             nvc.Add("pic1", stringArray[1] == null ? "" : stringArray[1]);
@@ -223,29 +224,27 @@ public partial class spadmin_product : System.Web.UI.Page
     }
     public void selectSQL(string sorttype = "desc", string sortColumn = "p_id")
     {
-        viewDataSource.SelectParameters.Clear();
+      
         string strsql = " SELECT  * ,(select title from  tbl_category  where tbl_category.categoryid =  productdata.categoryid) as title   from  productdata    where status <> 'D' ";
     
         if (search_txt.Text != "")
         {
             int n;
-            bool isNumeric = int.TryParse(search_txt.Text, out n);     
-      
+            bool isNumeric = int.TryParse(search_txt.Text, out n);          
                 strsql += @" and (memo like '%'+@S+'%'    or productname like '%'+@S+'%'   or description like '%'+@S+'%')  ";
-            viewDataSource.SelectParameters.Add("S", search_txt.Text);
+            
         }
-        if (DropDownList1.SelectedIndex >0)
-        {
-            strsql += " and  categoryid = @categoryid";
-            viewDataSource.SelectParameters.Add("categoryid",  DropDownList1.SelectedValue );
-
-        }
-    
+        if (DropDownList1.SelectedIndex >0) strsql += " and  categoryid = @categoryid";
+               
         strsql += " ORDER BY  sort," + sortColumn + " " + sorttype;
-        viewDataSource.SelectCommand = strsql;
-        ListView1.DataSourceID  = viewDataSource.ID;
+      
+        NameValueCollection nvc = new NameValueCollection();
+        nvc.Add("S", search_txt.Text);
+        nvc.Add("categoryid", DropDownList1.SelectedValue);
+        DataTable dt = DbControl.Data_Get(strsql, nvc);
+        ListView1.DataSource   = dt;
         ListView1.DataBind();
-
+        dt.Dispose();
         MultiView1.ActiveViewIndex = 0;
     }
     protected void ContactsListView_PagePropertiesChanging(object sender,  PagePropertiesChangingEventArgs e)

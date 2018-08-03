@@ -36,6 +36,97 @@ namespace unity {
         private static string smtpuid = "leokuan@xnet.world";
         private static string smtppwd = "ck43285929tw";
         private static string FBid = "164103481107660";
+        public static string[] payStatus =
+   { "未支付" , "ATM已付款", "信用卡已付款"
+            ,  "已退款"
+            ,  "待發貨"
+            ,  "已發貨"
+            ,  "已退貨"
+            ,  "已完成"
+            ,  "進行中"
+            ,  "已消" };
+
+        public static string get_ord_status(string id)
+        {
+            string value = "";
+            using (SqlConnection conn = new SqlConnection(dbConnectionString))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand();
+                SqlDataReader rs;
+                string strsql;
+                strsql = @"SELECT * from payStatus where id=@id ";
+                cmd = new SqlCommand(strsql, conn);
+                cmd.Parameters.Add("@id", SqlDbType.VarChar).Value = id;
+                rs = cmd.ExecuteReader();
+                if (rs.Read()) value = rs["name"].ToString();
+                rs.Close();
+                cmd.Dispose();
+                conn.Close();
+            }
+            return value;
+        }
+        public static string getPaymode(string id)
+        {
+            string value = "";
+            using (SqlConnection conn = new SqlConnection(dbConnectionString))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand();
+                SqlDataReader rs;
+                string strsql;
+                strsql = @"SELECT * from paymode where id=@id ";
+                cmd = new SqlCommand(strsql, conn);
+                cmd.Parameters.Add("@id", SqlDbType.VarChar).Value = id;
+                rs = cmd.ExecuteReader();
+                if (rs.Read()) value = rs["name"].ToString();
+                rs.Close();
+                cmd.Dispose();
+                conn.Close();
+
+            }
+            return value;
+        }
+        public static string getReceivetime(string id)
+        {
+            string value = "";
+            using (SqlConnection conn = new SqlConnection(dbConnectionString))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand();
+                SqlDataReader rs;
+                string strsql;
+                strsql = @"SELECT * from Receivetime where id=@id ";
+                cmd = new SqlCommand(strsql, conn);
+                cmd.Parameters.Add("@id", SqlDbType.VarChar).Value = id;
+                rs = cmd.ExecuteReader();
+                if (rs.Read()) value = rs["name"].ToString();
+                rs.Close();
+                cmd.Dispose();
+                conn.Close();
+            }
+            return value;
+        }
+        public static string getInvoice(string id)
+        {
+            string value = "";
+            using (SqlConnection conn = new SqlConnection(dbConnectionString))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand();
+                SqlDataReader rs;
+                string strsql;
+                strsql = @"SELECT * from invoice where id=@id ";
+                cmd = new SqlCommand(strsql, conn);
+                cmd.Parameters.Add("@id", SqlDbType.VarChar).Value = id;
+                rs = cmd.ExecuteReader();
+                if (rs.Read()) value = rs["name"].ToString();
+                rs.Close();
+                cmd.Dispose();
+                conn.Close();
+            }
+            return value;
+        }
         public static string SubString (string str,int length,string kind)
         {
           if (kind == "notag") str = noHTML(str);

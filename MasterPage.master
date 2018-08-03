@@ -172,13 +172,15 @@
 
             <div class="mobile-content">
                 <ul class="mobile-main-menu">
-                    <li class="menu-item sf-dropdown"><a href="/1/catalog">最新消息<i class="fa fa-chevron-down"></i></a>
-                        <ul class=sub-menu>
-                            <li><a href="/7/catalog">產業動態</a></li>
-                            <li><a href="/8/catalog">文化政策</a></li>
-                            <li><a href="/9/catalog">民間文藝</a></li>
-                        </ul>
-                    </li>
+                    <li class="menu-item sf-dropdown">
+                                        <a href="news.html">最新消息</a>
+                                        <ul class="sub-menu">
+
+                                            <li class="menu-item"><a href="hp.html">賽事報導</a></li>
+                                            <li class="menu-item"><a href="hp.html">運動消息</a></li>
+                                          <li class="menu-item"><a href="hp.html">公告消息</a></li>
+                                        </ul>
+                                    </li>
                     <li class="menu-item sf-dropdown"><a href="/2/catalog">活動<i class="fa fa-chevron-down"></i></a>
                         <ul class=sub-menu>
                             <li><a href="/10/catalog">展覽</a></li>
@@ -896,8 +898,7 @@ $("#login-button").on('click', function() {
 });
     });
 </script>
-        <script src="http://xa.xnet.world/track/xa.js?v=1"></script>
-<script>ua("culturelaunch","prj0002",  '', '', '');</script>
+      
     </form>
 </body>
 </html>

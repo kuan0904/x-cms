@@ -31,7 +31,7 @@
     void Application_Start(object sender, EventArgs e)
     {
         RouteConfig.RegisterRoutes(RouteTable.Routes);
-        BundleConfig.RegisterBundles(BundleTable.Bundles);
+      //  BundleConfig.RegisterBundles(BundleTable.Bundles);
         string strsql = "";
         DataTable dt;
         NameValueCollection nvc = new NameValueCollection();
@@ -83,12 +83,5 @@
 
         //  }
     }
-    void RegisterRoutes(RouteCollection routes)
-    {
-        /*  Create a routing which maps SayHello to ShowGreeting.aspx
-            and defines 2 parameters, greeting and name. */
-        routes.MapPageRoute("ShowGreetingRoute",
-            "SayHello/{greeting}/{name}",
-            "~/ShowGreeting.aspx");
-    }
+   
  </script>

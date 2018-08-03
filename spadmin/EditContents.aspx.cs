@@ -49,10 +49,10 @@ public partial class spadmin_EditContents : System.Web.UI.Page
         string strsql = "update unitdata set contents =@contents where unitid = @unitid";
         conn.Open();
         SqlCommand cmd = new SqlCommand();
-        SqlDataReader rs = default(SqlDataReader);
+        contents.Text = Server.HtmlDecode(contents.Text);
         cmd = new SqlCommand(strsql, conn);
         cmd.Parameters.Add("unitid", SqlDbType.Int ).Value = Request.QueryString ["unitid"] ;
-        cmd.Parameters.Add("contents", SqlDbType.NVarChar).Value = contents.Text ;
+        cmd.Parameters.Add("contents", SqlDbType.NVarChar).Value =  contents.Text ;
        cmd.ExecuteNonQuery ();
        
         cmd.Dispose();

@@ -169,16 +169,17 @@
                         </a>
                         <ul class=sub-menu>
                             <li>
-                                <a href="member-edit.html">修改個人資料</a>
-                            </li>
-                            <li>
-                                <a href="member-password.html">變更密碼</a>
+                                <a href="member-order.html">查詢訂單</a>
                             </li>
                             <li>
                                 <a href="member-collection.html">我的收藏</a>
                             </li>
+
                             <li>
-                                <a href="member-order.html">查詢訂單</a>
+                                <a href="member-edit.html">修改個人資料</a>
+                            </li>
+                            <li>
+                                <a href="member-password.html">變更密碼</a>
                             </li>
                         </ul>
                     </li>
@@ -516,57 +517,45 @@
             <div class="container">
 
                 <div class="row">
-                    <div class="col-md-2">
-                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="headingOne">
-                                    <h4 class="panel-title">
-                                        <a href="#">
-                                            訂單管理
-                                        </a>
-                                    </h4>
+                    <div class="col-md-2 col-sm-3 col-xs-12 hidden-sm hidden-xs">
+                        <div class="member-subnav">
+                            <div class="subnav-title">我的藝時代</div>
+                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="headingOne">
+                                        <h4 class="panel-title">
+                                            <a href="member-order.html">查詢訂單</a>
+                                        </h4>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="headingTwo">
-                                    <h4 class="panel-title">
-                                        <a class="collapsed" href="#">
-                                            退款申請
-                                        </a>
-                                    </h4>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="headingTwo">
+                                        <h4 class="panel-title">
+                                            <a href="member-collection.html">我的收藏</a>
+                                        </h4>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="headingTwo">
-                                    <h4 class="panel-title">
-                                        <a class="collapsed" href="#">
-                                            我的收藏
-                                        </a>
-                                    </h4>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="headingThree">
+                                        <h4 class="panel-title">
+                                            <a class=" active" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true"
+                                                aria-controls="collapseThree">
+                                                會員設定
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+                                        <ul class="list-group">
+                                            <a href="member-edit.html" class="list-group-item active">修改個人資料</a>
+                                            <a href="member-password.html" class="list-group-item">變更密碼</a>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="headingThree">
-                                    <h4 class="panel-title">
-                                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false"
-                                            aria-controls="collapseThree">
-                                            會員設定
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                                    <ul class="list-group">
-                                        <li class="list-group-item">修改個人資料</li>
-                                        <li class="list-group-item">變更密碼</li>
-                                        <li class="list-group-item">Morbi leo risus</li>
-                                        <li class="list-group-item">Porta ac consectetur ac</li>
-                                        <li class="list-group-item">Vestibulum at eros</li>
-                                    </ul>
-                                </div>
+                                <!--關閉狀態-aria-expanded="false"-class="panel-collapse collapse"-->
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-10">
+                    <div class="col-md-10 col-sm-9 col-xs-12">
                         <article class="post-layout post">
                             <div class="post-header">
                                 <div class="post-information">
@@ -576,20 +565,6 @@
                             </div>
                             <!-- post-header END -->
                         </article>
-                        <ul class="nav nav-tabs nav-justified hidden-xs hidden-sm">
-                            <li role="presentation" class="active">
-                                <a href="member-edit.html">修改個人資料</a>
-                            </li>
-                            <li role="presentation">
-                                <a href="member-password.html">變更密碼</a>
-                            </li>
-                            <li role="presentation">
-                                <a href="member-collection.html">我的收藏</a>
-                            </li>
-                            <li role="presentation">
-                                <a href="member-order.html">查詢訂單</a>
-                            </li>
-                        </ul>
                         <form class="form-member">
                             <!--Default-->
                             <div class="form-group">

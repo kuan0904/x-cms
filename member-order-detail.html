@@ -37,6 +37,7 @@
 
 <body>
 
+
     <div class="scroll-up">
         <i class="fa fa-chevron-up"></i>
     </div>
@@ -168,17 +169,19 @@
                             <i class="fa fa-chevron-down"></i>
                         </a>
                         <ul class=sub-menu>
+
+
                             <li>
-                                <a href="member-edit.html">修改個人資料</a>
-                            </li>
-                            <li>
-                                <a href="member-password.html">變更密碼</a>
+                                <a href="member-order.html">查詢訂單</a>
                             </li>
                             <li>
                                 <a href="member-collection.html">我的收藏</a>
                             </li>
                             <li>
-                                <a href="member-order.html">查詢訂單</a>
+                                <a href="member-edit.html">修改個人資料</a>
+                            </li>
+                            <li>
+                                <a href="member-password.html">變更密碼</a>
                             </li>
                         </ul>
                     </li>
@@ -271,7 +274,40 @@
     </div>
     <!-- search-wrap-mob END -->
 
-
+    <!-- 取消或退款 -->
+    <div class="modal fade" id="cancel-order" tabindex="-1" role="dialog" aria-labelledby="cancel-orderLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body ticket-info">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                    <h3>我要取消 / 退款</h3>
+                    <hr>
+                    <form class="form-member">
+                        <!--下拉清單-->
+                        <div class="form-group">
+                            <select class="form-control">
+                                <option>取消訂單</option>
+                                <option>退款問題</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" rows="3"></textarea>
+                            <span id="helpBlock" class="help-block">收到您的申請後，將有專人與您連絡。</span>
+                        </div>
+                        <button type="submit" class="btn btn-pink btn-lg btn-block">送出申請</button>
+                    </form>
+                    <div class="divide20"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="outer-wrap" class="wrapper">
 
         <div class="header">
@@ -513,49 +549,140 @@
             <!-- breadArea END -->
 
             <div class="container">
-
                 <div class="row">
-                    <div class="col-xs-12">
+                    <div class="col-md-2 col-sm-3 col-xs-12 hidden-sm hidden-xs">
+                        <div class="member-subnav">
+                            <div class="subnav-title">我的藝時代</div>
+                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="headingOne">
+                                        <h4 class="panel-title">
+                                            <a href="member-order.html" class="active">查詢訂單</a>
+                                        </h4>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="headingThree">
+                                        <h4 class="panel-title">
+                                            <a href="member-collection.html">我的收藏</a>
+                                        </h4>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="headingFour">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false"
+                                                aria-controls="collapseFour">
+                                                會員設定
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                                        <ul class="list-group">
+                                            <a href="member-edit.html" class="list-group-item">修改個人資料</a>
+                                            <a href="member-password.html" class="list-group-item">變更密碼</a>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-10 col-sm-9 col-xs-12">
                         <article class="post-layout post">
                             <div class="post-header">
                                 <div class="post-information">
-                                    <h1>報名訂單</h1>
+                                    <h1>訂單編號：A123456</h1>
                                 </div>
                                 <!-- post-information END -->
                             </div>
                             <!-- post-header END -->
                         </article>
-                        <a class="btn btn-back"><span class="fa fa-angle-left"></span>BACK</a>
-                    </div>
-                    <div class="col-xs-12">
-                        <div class="member-order">
-                            <div class="row">
-                                <div class="col-md-10 col-sm-9 col-xs-12">
-                                    <div class="member-course-info">
-                                        <div class="member-order-title">
-                                            <a href="detail-course.html" title="松果手感 - 夢幻系手作乾燥花" target="_blank">松果手感 - 夢幻系手作乾燥花</a>
-                                        </div>
-                                        <div class="member-course-date">
-                                            2018/07/27（五）至2018/07/27（五）
-                                            <br/> 訂單編號：A123456
-                                        </div>
-                                        <div class="member-order-amount">
-                                            <span class="number">NT$999</span>
-                                            <span class="label label-no-payment">未繳費</span>
-                                            <span class="label label-payment">已付款</span>
-                                            <span class="label label-free">免繳費</span>
-                                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                <img src="https://d1f5je0f1yvok5.cloudfront.net/photo/q/n/z/qnzas7TMHrDU5_V15pKS_A_o.jpg" alt="" title="松果手感 - 夢幻系手作乾燥花">
+                            </div>
+                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                <div class="member-course-info">
+                                    <div class="member-order-detail-title">
+                                        松果手感 - 夢幻系手作乾燥花
                                     </div>
+                                    <div class="member-course-date">
+                                        <p>
+                                            <i class="fa fa-calendar margin-R-5 " aria-hidden="true"></i>2018/07/27（五）至2018/07/27（五）</p>
+                                        <p>
+                                            <i class="fa fa-map-marker margin-R-5 " aria-hidden="true"></i>110 台北市信義區菸廠路88號</p>
+                                    </div>
+                                    <div class="member-order-amount">
+                                        <span class="number">NT$999</span>
+                                        <span class="label label-no-payment">未繳費</span>
+                                    </div>
+                                    <div class="btn-margin-15">
+                                        <a class="btn btn-pink" role="button" data-toggle="modal" data-target="#cancel-order">
+                                            我要取消 / 退款
+                                        </a>
+                                    </div>
+                                    <!-- meta-info END -->
+
                                 </div>
-                                <div class="col-md-2 col-sm-3 col-xs-12">
-                                    <div class="member-course-info btn-margin-15">
-                                        <a class="btn btn-green btn-block " href="detail-course.html" role="button">快速取票</a>
-                                        <br/>
-                                        <a class="btn btn-gray btn-block " href="detail-course.html" role="button">報名資料</a>
-                                    </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <hr>
+                                <!--票券詳細資訊-->
+                                <table class="table process-tab">
+                                    <tbody>
+                                        <tr>
+                                            <td width="20%" rowspan="2">票券</td>
+                                            <td width="40%">早鳥票</td>
+                                            <td width="20%">NT$500 x 2</td>
+                                            <td width="20%" class="text-right">NT$1,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>VIP套票</td>
+                                            <td>NT$1,000 x 1</td>
+                                            <td class="text-right">NT$2,000</td>
+                                        </tr>
+                                        <tr class="underline">
+                                            <td>取票方式</td>
+                                            <td colspan="3">郵寄取票</td>
+                                        </tr>
+                                        <tr class="underline">
+                                            <td>付款方式</td>
+                                            <td colspan="3"> ATM
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        <p>銀行代碼：000（XX銀行）</p>
+                                                        <p>帳號：1234-XXXXX-XXXXX</p>
+                                                    </div>
+                                                </div>
+                                                銀行匯款
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        <p>ＸＸ銀行ＸＸ分行</p>
+                                                        <p>戶名：XX公司</p>
+                                                        <p>帳號：1234-XXXXX-XXXXX</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="underline">
+                                            <td colspan="3">取票手續費</td>
+                                            <td class="text-right">NT$60</td>
+                                        </tr>
+                                        <tr class="total underline">
+                                            <td colspan="3">總計</td>
+                                            <td class="text-right">NT$2,060</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="detail-notice">
+                                    <p>
+
+                                    </p>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- col-md-4 col-sm-6 col-xs-6 END -->
                     </div>
                     <!-- col-sm-12 -main-content END -->
 
@@ -564,6 +691,80 @@
                 <!-- row END -->
             </div>
             <!-- container END -->
+            <div class="tickrt-list">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-2 col-sm-9 col-xs-12">
+                            <div class="divide20"></div>
+                            <section class="form-white-style">
+                                <div class="page-header-blue">
+                                    <h3>聯絡人資訊</h3>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <form class="form-horizontal form-fill">
+                                            <div class="form-group">
+                                                <label class="col-xs-12 control-label title">姓名</label>
+                                                <label class="col-xs-12 control-label text">XXX</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-xs-12 control-label title">e-mail</label>
+                                                <label class="col-xs-12 control-label text">123@abc.com</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-xs-12 control-label title">聯絡電話</label>
+                                                <label class="col-xs-12 control-label text">0900000000</label>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </section>
+                            <section class="form-white-style">
+                                <div class="page-header-blue">
+                                    <h3>早鳥票</h3>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-10 col-sm-9 col-xs-8">
+                                        <form class="form-horizontal form-fill text-left">
+                                            <div class="form-group">
+                                                <label class="col-xs-12 control-label title">報名序號</label>
+                                                <label class="col-xs-12 control-label text">01</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-xs-12 control-label title">票號</label>
+                                                <label class="col-xs-12 control-label text">123456-01</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-xs-12 control-label title">姓名</label>
+                                                <label class="col-xs-12 control-label text">XXX</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-xs-12 control-label title">e-mail</label>
+                                                <label class="col-xs-12 control-label text">123@abc.com</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-xs-12 control-label title">聯絡電話</label>
+                                                <label class="col-xs-12 control-label text">0900000000</label>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-2 col-sm-3 col-xs-4">
+                                        <div>
+                                            <img src="images/qrcode.jpg" class="img-responsive">
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <div class="divide20"></div>
+                            <!-- col-md-4 col-sm-6 col-xs-6 END -->
+                        </div>
+                        <!-- col-sm-12 -main-content END -->
+
+                        <!-- col-md-8 td-main-content END -->
+                    </div>
+                    <!-- row END -->
+                </div>
+            </div>
         </div>
         <!-- main-content END -->
 
@@ -600,6 +801,7 @@
 
     </div>
     <!-- wrapper END -->
+    <!-- Modal -->
 
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>

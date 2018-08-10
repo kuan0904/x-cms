@@ -85,7 +85,7 @@
 
             <div class=login-section>
                 <div class=guest-wrap>
-                    <a href="login.html">登入/註冊</a>
+                    <a id=login-link-mob>登入</a>
                 </div>
                 <!-- guest-wrap END -->
             </div>
@@ -163,6 +163,66 @@
         </div>
         <!-- container END -->
 
+        <div class=register-section>
+            <div id=btn-login-mob class="login-animation">
+                <div class=login-close>
+                    <a href="#" class=btn-back>
+                        <i class="fa fa-chevron-down"></i>
+                    </a>
+                    <div class=login-title>登入</div>
+                    <div class=btn-close-mob>
+                        <a href="#">
+                            <i class=icon-close-mob></i>
+                        </a>
+                    </div>
+                    <!-- btn-close-mob END -->
+                </div>
+                <!-- login-close END -->
+
+                <div class=login-form-wrap>
+                    <div class=login-panel-title>
+                        <span>歡迎</span>請登入您的帳戶</div>
+                    <div class=alert-err></div>
+                    <div class=login-inputs>
+                        <input class=login-input type=text name=login_email id=login_email-mob value="" required>
+                        <label>your username</label>
+                    </div>
+                    <div class=login-inputs>
+                        <input class=login-input type=password name=login_pass id=login_pass-mob value="" required>
+                        <label>your password</label>
+                    </div>
+                    <input type=button name=login_button id=login_button-mob class=login-button value="登  入">
+                    <div class=login-info-text>
+                        <a href="#" id=forgot-pass-link-mob>忘記密碼</a>
+                    </div>
+                </div>
+                <!-- login-form-wrap END -->
+            </div>
+            <!-- btn-login-mob END -->
+
+            <div id="forgot-pass-mob" class="login-animation">
+                <div class="forgot-pass-close">
+                    <a href="#" class="btn-back">
+                        <i class="fa fa-chevron-down"></i>
+                    </a>
+                    <div class="login-title">密碼重置</div>
+                </div>
+                <!-- forgot-pass-close END -->
+
+                <div class="login-form-wrap">
+                    <div class="login-panel-title">重置您的密碼</div>
+                    <div class="alert-err"></div>
+                    <div class="login-inputs">
+                        <input class="login-input" type="text" name="forgot_email" id="forgot_email-mob" value="" required>
+                        <label>your email</label>
+                    </div>
+                    <input type="button" name="forgot_button" id="forgot_button-mob" class="login-button" value="寄送密碼">
+                </div>
+                <!-- login-form-wrap END -->
+            </div>
+            <!-- forgot-pass-mob END -->
+        </div>
+        <!-- register-section END -->
     </div>
     <!-- mobile-nav END -->
 
@@ -209,13 +269,8 @@
                                     <a target="_blank" href="#" title="Email"><i class="fa fa-envelope"></i></a>
                                 </li> -->
                             <li>
-                                <a class="menu-item" href="login.html">
-                                    <i class="fa fa-user"></i> 登入 / 註冊
-                                </a>
-                            </li>
-                            <li>
-                                <a class="menu-item" href="member-edit.html">
-                                    <i class="fa fa-user"></i>　Hi 會員名稱
+                                <a class="login-modal-js menu-item" href="#login-form" data-effect="mpf-login-effect">
+                                    <i class="fa fa-user"></i>
                                 </a>
                             </li>
                         </ul>
@@ -366,6 +421,48 @@
 
             </div>
             <!-- navbar END -->
+
+            <div id=login-form class="white-popup-block mfp-hide mfp-with-anim">
+                <div class=login-wrap>
+                    <a href="#" class="btn-back">
+                        <i class="fa fa-chevron-left"></i>
+                    </a>
+
+                    <div id=login-pop class="login-form-div display-block">
+                        <div class=login-panel-title>會員登入</div>
+                        <div class=login-panel-descr>歡迎！請登入您的帳號</div>
+                        <div class=alert-err></div>
+                        <div class=login-inputs>
+                            <input class=login-input type=text name=login_email id=login_email value="" required>
+                            <label>your username</label>
+                        </div>
+                        <div class=login-inputs>
+                            <input class=login-input type=password name=login_pass id=login_pass value="" required>
+                            <label>your password</label>
+                        </div>
+                        <input type=button name=login_button id=login_button class="wpb_button btn login-button" value="登 入">
+                        <div class=login-info-text>
+                            <a href="#" id=forgot-pass-link>忘記密碼?</a>
+                        </div>
+                    </div>
+                    <!-- login-pop END -->
+
+                    <div id=forgot-pass-pop class="login-form-div display-none">
+                        <div class=login-panel-title>密碼重置</div>
+                        <div class=login-panel-descr>重置您的密碼</div>
+                        <div class=alert-err></div>
+                        <div class=login-inputs>
+                            <input class=login-input type=text name=forgot_email id=forgot_email value="" required>
+                            <label>your email</label>
+                        </div>
+                        <input type=button name=forgot_button id=forgot_button class="wpb_button btn login-button" value="寄送密碼">
+                        <div class=login-info-text>我們將會寄送密碼至您的信箱</div>
+                    </div>
+                    <!-- forgot-pass-pop END -->
+                </div>
+                <!-- login-wrap END -->
+            </div>
+            <!-- login-form END -->
 
         </div>
         <!-- header END -->
@@ -616,43 +713,32 @@
                 <div class="container-fluid">
                     <div class=main-content-inner>
                         <div class="news-wrap">
-                            <div class="col-md-4 col-sm-4 col-xs-12 big-banner-box">
+                            <div class="divide20"></div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="thumbnail">
                                     <div class="pic effect">
-                                        <img src="images/c01.jpg"
-                                            alt="" title="一起來學手寫義大利體藝術字">
+                                        <img src="https://images.unsplash.com/photo-1510231583251-74be0f578e59?ixlib=rb-0.3.5&s=791d99d14f9d4e17ce14aa35d413d9bf&auto=format&fit=crop&w=1350&q=80"
+                                            alt="" title="如何選擇適合自己的內容管理系統（CMS）">
                                         <a class="view-more" href="detail.html" title="了解更多">
-                                            <span>一起來學手寫義大利體藝術字</span>
+                                            <span>more</span>
                                         </a>
                                     </div>
                                 </div>
                             </div>
                             <!-- col-md-12 END -->
 
-                            <div class="col-md-4 col-sm-4 col-xs-12  big-banner-box">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="thumbnail">
                                     <div class="pic effect">
-                                        <img src="images/c02.jpg"
-                                            alt="" title="精選廣告名稱">
+                                        <img src="https://images.unsplash.com/photo-1514513452089-17f8a9771ee8?ixlib=rb-0.3.5&s=753dd7225833c178a810db296dfc54db&auto=format&fit=crop&w=1951&q=80"
+                                            alt="" title="如何選擇適合自己的內容管理系統（CMS）">
                                         <a class="view-more" href="detail.html" title="了解更多">
-                                            <span>精選廣告名稱</span>
+                                            <span>more</span>
                                         </a>
                                     </div>
                                 </div>
                             </div>
                             <!-- col-md-12 END -->
-                            <div class="col-md-4 col-sm-4 col-xs-12  big-banner-box">
-                                    <div class="thumbnail">
-                                        <div class="pic effect">
-                                            <img src="images/c03.jpg"
-                                                alt="" title="台灣百年花磚">
-                                            <a class="view-more" href="detail.html" title="了解更多">
-                                                <span>台灣百年花磚</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- col-md-12 END -->
                         </div>
                         <!-- news-list END -->
 

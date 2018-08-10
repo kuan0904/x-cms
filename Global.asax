@@ -3,6 +3,8 @@
 <%@ Import Namespace="System.Web.Optimization" %>
 <%@ Import Namespace="System.Web.Routing" %>
 <%@ Import Namespace ="System.Data" %>
+<%@ Import Namespace="System.Web.Http" %>
+<%@ Import Namespace="System.Net.Http" %>
 <script runat="server">
     void Session_Start(object sender,EventArgs e)
     {  DataTable dt;
@@ -30,8 +32,11 @@
     }
     void Application_Start(object sender, EventArgs e)
     {
+
+        Application["FacebookAppId"]   = "1764690486918673";
+
         RouteConfig.RegisterRoutes(RouteTable.Routes);
-      //  BundleConfig.RegisterBundles(BundleTable.Bundles);
+        //  BundleConfig.RegisterBundles(BundleTable.Bundles);
         string strsql = "";
         DataTable dt;
         NameValueCollection nvc = new NameValueCollection();
@@ -54,9 +59,22 @@
             dt.Dispose();
         }
 
+        // 在應用程式啟動時執行的程式碼   
 
+  
+        RouteTable.Routes.MapHttpRoute(
+        name: "DefaultApi",
+              routeTemplate: "api/{controller}/ID/{id}",
+              defaults: new { id = System.Web.Http.RouteParameter.Optional }
+         );
+        RouteTable.Routes.MapHttpRoute(
+        name: "DefaultApi1",
+        routeTemplate: "api/{controller}/{action}/{id}",
+        defaults: new { action = "Default", id =System.Web.Http.RouteParameter.Optional });
 
-
+        GlobalConfiguration.Configuration.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
+        // var appXmlType = config.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml");
+        //config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(appXmlType);
     }
     protected void Application_BeginRequest()
     {
@@ -83,5 +101,5 @@
 
         //  }
     }
-   
+
  </script>

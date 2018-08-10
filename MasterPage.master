@@ -172,15 +172,13 @@
 
             <div class="mobile-content">
                 <ul class="mobile-main-menu">
-                    <li class="menu-item sf-dropdown">
-                                        <a href="news.html">最新消息</a>
-                                        <ul class="sub-menu">
-
-                                            <li class="menu-item"><a href="hp.html">賽事報導</a></li>
-                                            <li class="menu-item"><a href="hp.html">運動消息</a></li>
-                                          <li class="menu-item"><a href="hp.html">公告消息</a></li>
-                                        </ul>
-                                    </li>
+                    <li class="menu-item sf-dropdown"><a href="/1/catalog">最新消息<i class="fa fa-chevron-down"></i></a>
+                        <ul class=sub-menu>
+                            <li><a href="/7/catalog">產業動態</a></li>
+                            <li><a href="/8/catalog">文化政策</a></li>
+                            <li><a href="/9/catalog">民間文藝</a></li>
+                        </ul>
+                    </li>
                     <li class="menu-item sf-dropdown"><a href="/2/catalog">活動<i class="fa fa-chevron-down"></i></a>
                         <ul class=sub-menu>
                             <li><a href="/10/catalog">展覽</a></li>
@@ -273,7 +271,7 @@
                 </div>
                 <div role="search" class="search-input">
                     <span>搜尋</span>
-                    <input id="search-input-mob" type="text" autocomplete="off" />
+                    <input id="search-input-mob" name="s1"  type=text autocomplete="off" />
                 </div>
             </div><!-- search-form END -->
         </div>
@@ -384,8 +382,8 @@
                                     <div class="dropDown-search" aria-labelledby="header-btn-search">
                                         <div class="search-form">
                                             <div role="search">
-                                            <input class="needsclick" id="search-input" type=text value="" name="s" autocomplete=off />
-                                            <input class="wpb_button wpb_btn-inverse btn" type=submit name ="header-search" id="header-search-top" value="Search" />
+                                            <input class="needsclick" id="search-input" type=text value="" name="s2" autocomplete=off />
+                                            <input class="wpb_button wpb_btn-inverse btn" type=button name ="header-search" id="header-search-top" value="Search" />
                                             </div>
                                         </div><!-- search-form END -->
                                     </div><!-- dropDown-search END -->
@@ -560,19 +558,20 @@
                 return false;    //<---- Add this line
               }
             });
-            $('input[name="s"]').keypress(function (e) {
+            $('input[name="s2"]').keypress(function (e) {
               if (e.which == 13) {
                 $('input[name="header-search"]').trigger( "click" );
                 return false;    //<---- Add this line
               }
             });
             $('input[name="header-search"]').click(function () {
+               
                 var text = "";
                 if ($('input[name="s1"]') != undefined) {
                     text = $('input[name="s1"]').val();
                 }
-                if ($('input[name="s"]').val() !=""){
-                    text = $('input[name="s"]').val();
+                if ($('input[name="s2"]').val() !=""){
+                    text = $('input[name="s2"]').val();
                 }
                 location.href = '/search/' + text;
             })
@@ -898,7 +897,7 @@ $("#login-button").on('click', function() {
 });
     });
 </script>
-      
+
     </form>
 </body>
 </html>

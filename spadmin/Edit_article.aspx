@@ -92,7 +92,7 @@
                                     <%# Eval("subject") %>
                                 </td>
                                 <td>
-                                   <img src="/webimages/article/<%# Eval("pic") %>" width ="300" />
+                                   <img src="<%# Eval("pic") %>" width ="300" />
                                 </td>
                                 <td>
                                     <%# Eval("status").ToString () =="Y" ? "上架":"下架" %>
@@ -133,7 +133,7 @@
                     $("#recommend").prop("checked", result.Recommend  == "Y" ? true : false);
                     $('#postDay').val(result.PostDay);   
                     CKEDITOR.instances['contents'].setData(result.Contents);                           
-                    document.getElementById('console').innerHTML = ("<img src=\"/webimages/article/" + result.Pic + "\" width=300>");
+                    document.getElementById('console').innerHTML = ("<img src=\"" + result.Pic + "\" width=300>");
                     $('#logoPic').val(result.Pic); 
                     
                 });
@@ -158,18 +158,25 @@
                     result = JSON.parse(result);
                     result = result.main;
                     var cb = "";
-                    var s = "";
+                    var s = "";                  
+                    var Category = [];
+                    if (maindata != undefined) {
+                        var c = maindata.Category;
+                        $.each(c, function (key, val) {
+                            Category.push(val.CategoryId);
+                        });
+                    }
                     $.each(result, function (key, val) {                   
                         if (val.detail.length > 0) {
                             cb += "<span style='width:300px'>" + val.name + "</span>:";
                             for (i = 0; i < val.detail.length; i++) {                               
-                                s = maindata ==  undefined ? "": check_cbx(maindata.Category, val.detail[i].id);                                
+                                s = maindata ==  undefined ? "": check_cbx(Category, val.detail[i].id);                                
                                 cb += "<input name='categoryid' class='Big' type='checkbox' value='" + val.detail[i].id + "'" + s + "><span class=lbl><b>" + val.detail[i].name + "</b></span>";
                             }
                           
                         }
                         else {
-                            s = maindata ==  undefined ? "": check_cbx(maindata.Category, val.id);
+                            s = maindata ==  undefined ? "": check_cbx(Category, val.id);
                             cb += "<input name='categoryid' class='Big' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl><b>" + val.name + "</b></span>";
                              
                         }

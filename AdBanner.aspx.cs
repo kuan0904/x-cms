@@ -13,7 +13,7 @@ public partial class AdBanner : System.Web.UI.Page
         if (classid != null)
         {
             List<Banner.MainData> banner1 = new List<Banner.MainData>();
-            banner1 = Banner.DbHandle.Banner_Get_list(int.Parse (classid));
+            banner1 = Banner.DbHandle.AD_Get_list(int.Parse (classid));
             bannerlist.DataSource = banner1;
             bannerlist.DataBind();
             banner1.Clear();

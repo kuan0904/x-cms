@@ -19,7 +19,7 @@ public partial class spadmin_admin : System.Web.UI.MasterPage
                 Response.End();
             }
 
-        Repeater1.DataSource = (DataTable)Session["menu"];
+        Repeater1.DataSource = (DataTable)Session["Backmenu"];
         Repeater1.DataBind();
 
 

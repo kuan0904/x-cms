@@ -168,15 +168,17 @@ public class DbControl
       
         strsql = "delete from Tbl_article_category where articleId =@id";
         i = Data_delete(strsql, ad.Id.ToString());
-       
-        string[] categoryid = ad.Category ;
-        foreach (string s in categoryid)
+
+        //List<article.Category> ItemData = new List<article.Category>();
+        //ItemData = ad.Category;
+
+        foreach (var  s in ad.Category)
         {
             nvc.Clear();
             strsql = @"insert into Tbl_article_category (articleId,categoryid)
                 values (@articleId,@categoryid)";
             nvc.Add("articleId", ad.Id.ToString());
-            nvc.Add("categoryid", s);       
+            nvc.Add("categoryid", s.CategoryId.ToString ());       
             i = Data_add(strsql, nvc);
         }
         nvc.Clear();

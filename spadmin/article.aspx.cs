@@ -187,8 +187,34 @@ public partial class spadmin_article : System.Web.UI.Page
         , string subject, string subtitle,string contents, string pic,string postday,string recommend
         , string[] tags,  string author, string keywords, string status, List<article.Lesson> Lesson  )
     {
-        string result = ""; 
-    
+        string result = "";
+        List<Category> ItemData = new List<Category>();;
+        foreach (string s in categoryid)
+        {
+           
+            NameValueCollection nvc = new NameValueCollection();
+            string strsql = @"SELECT  categoryid, title as name,
+                            kind 
+                            FROM tbl_category
+                            where  categoryid=@id  ";
+            nvc.Add("id", s);
+            DataTable dt = DbControl.Data_Get(strsql, nvc);
+            int i = 0;
+            for (i = 0; i < dt.Rows.Count; i++)
+            {
+
+                ItemData.Add(new Category
+                {
+                    Id = 0,
+                    CategoryId = (int)dt.Rows[i]["categoryid"],
+                    Name = dt.Rows[i]["name"].ToString(),
+                    Kind = dt.Rows[i]["Kind"].ToString(),
+
+                });
+
+            }
+            dt.Dispose();
+        }
         MainData MainData = new MainData
         {
             
@@ -202,7 +228,7 @@ public partial class spadmin_article : System.Web.UI.Page
             Viewcount = 0,
             Keywords = keywords,
             Tags = tags,
-            Category = categoryid,
+            Category =ItemData ,
             Author = author,
             Lesson =Lesson ,
             Recommend = recommend,

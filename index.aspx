@@ -26,7 +26,7 @@
                              <asp:Repeater ID="Repeater1" runat="server" EnableViewState ="false">
                                     <ItemTemplate>
                                     <div class="swiper-slide item">
-                                    <div class="image" style="background-image: url('/webimages/banner/<%#Eval("pic") %>');">
+                                    <div class="image" style="background-image: url('<%#Eval("pic") %>');">
                                         <div class="carousel-caption">
                                             <div class="container">
                                                 <h3><a href="<%# Banner.Web.Get_url (Eval("url").ToString (),Eval("categoryid").ToString (),Eval("articleId").ToString ()) %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
@@ -57,7 +57,7 @@
                                         <div class="col-md-12">
                                         <div class="thumbnail">
                                             <div class="pic effect col-xs-4">
-                                                <img src="/webimages/article/<%#Eval("pic") %>" alt="" title="<%#Eval("subject") %>">
+                                                <img src="<%#Eval("pic") %>" alt="" title="<%#Eval("subject") %>">
                                                 <a class="view-more" href="/Article/<%#Eval("id") %>" title="了解更多"><span>more</span></a>
                                             </div>
 

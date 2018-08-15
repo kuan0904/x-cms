@@ -24,6 +24,45 @@ namespace Banner {
     }
     public class DbHandle
     {
+        public static List<Banner.MainData> AD_Get_list(int ClassId, string flag = "")
+        {
+            List<Banner.MainData> MainData = new List<Banner.MainData>();
+            string strsql = "select * from  tbl_banner  where  ClassId =@ClassId  ";
+            if (flag == "")
+                strsql += " and status='Y'";
+            else
+                strsql += " and status <> 'D' ";
+
+            strsql += "order by sort desc ";
+            NameValueCollection nvc = new NameValueCollection
+            {
+                { "ClassId", ClassId.ToString() }
+            };
+            DataTable dt = DbControl.Data_Get(strsql, nvc);
+            int i = 0;
+            for (i = 0; i < dt.Rows.Count; i++)
+            {
+                MainData.Add(new MainData
+                {
+                    Subject = dt.Rows[i]["title"].ToString(),
+                    Id = (int)dt.Rows[i]["bannerid"],
+                    Contents = dt.Rows[i]["contents"].ToString(),
+                    Pic = "/webimages/banner/" + dt.Rows[i]["filename"].ToString(),
+                    Path = dt.Rows[i]["path"].ToString(),
+                    Url = dt.Rows[i]["url"].ToString(),
+                    Categoryid = dt.Rows[i]["Categoryid"].ToString(),
+                    ArticleId = dt.Rows[i]["ArticleId"].ToString(),
+                    Strdat = (DateTime)dt.Rows[i]["enabledate"],
+                    Enddat = dt.Rows[i]["disabledate"].ToString() == "" ? DateTime.Parse("1911/1/1") : (DateTime)dt.Rows[i]["disabledate"]
+                });
+            }
+            dt.Dispose();
+            nvc.Clear();
+            return MainData;
+
+        }
+
+
 
         public static List<Banner.MainData> Banner_Get_list(int ClassId,string flag ="")
         {
@@ -48,7 +87,7 @@ namespace Banner {
                    Subject = dt.Rows[i]["title"].ToString(),
                     Id = (int)dt.Rows[i]["bannerid"],
                     Contents = dt.Rows[i]["contents"].ToString(),
-                    Pic = dt.Rows[i]["filename"].ToString(),
+                    Pic = "/webimages/banner/" +  dt.Rows[i]["filename"].ToString(),
                     Path = dt.Rows[i]["path"].ToString(),
                     Url = dt.Rows[i]["url"].ToString(),
                     Categoryid = dt.Rows[i]["Categoryid"].ToString(),

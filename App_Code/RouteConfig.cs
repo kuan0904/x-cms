@@ -4,8 +4,10 @@ using System.Web;
 using System.Web.Routing;
 using Microsoft.AspNet.FriendlyUrls;
 using Microsoft.AspNet.FriendlyUrls.Resolvers;
+
 namespace MyPublic
 {
+   
     public static class RouteConfig
     {
         public static void RegisterRoutes(RouteCollection routes)
@@ -20,15 +22,27 @@ namespace MyPublic
             routes.MapPageRoute("article", "Article/{id}", "~/detail.aspx",false, null,new RouteValueDictionary { { "id", "^[0-9]*$" } });
             routes.MapPageRoute("class", "Class/{id}", "~/detail-course.aspx",false, null,new RouteValueDictionary { { "id", "^[0-9]*$" } });
 
+            routes.MapPageRoute("list", "news/{id}", "~/list-text.aspx", false, null,
+            new RouteValueDictionary { { "id", "^[0-9]*$" }});
+            routes.MapPageRoute("listpage", "news/{id}/page/{*pageindex}", "~/list-text.aspx", false, null,
+             new RouteValueDictionary { { "id", "^[0-9]*$" }, { "pageindex", "^[0-9]*$" } });
 
-            routes.MapPageRoute("catalog", "{id}/catalog/{*pageindex}", "~/list.aspx", false, null,
-                new RouteValueDictionary { { "id", "^[0-9]*$" }, { "pageindex", "^[0-9]*$" } }  );
-            routes.MapPageRoute("lesson", "{id}/lesson/{*pageindex}", "~/list-grid.aspx",
+            routes.MapPageRoute("catalog", "catalog/{id}", "~/list.aspx", false, null,
+            new RouteValueDictionary { { "id", "^[0-9]*$" } });
+            routes.MapPageRoute("catalog_page", "catalog/{id}/page/{*pageindex}", "~/list.aspx", false, null,
+            new RouteValueDictionary { { "id", "^[0-9]*$" }, { "pageindex", "^[0-9]*$" } }  );
+
+            routes.MapPageRoute("grid", "emba/{id}", "~/list-grid.aspx", false, null,
+            new RouteValueDictionary { { "id", "^[0-9]*$" } });
+            routes.MapPageRoute("grid_page", "emba/{id}/page/{*pageindex}", "~/list-grid.aspx", false, null,
+                new RouteValueDictionary { { "id", "^[0-9]*$" }, { "pageindex", "^[0-9]*$" } });
+
+            routes.MapPageRoute("lesson", "lesson/{id}/page/{*pageindex}", "~/list-grid.aspx",
                 false, null,new RouteValueDictionary { { "id", "^[0-9]*$" }, { "pageindex", "^[0-9]*$" } }   );
-            routes.MapPageRoute("listpage", "{unitname}/{*pageindex}", "~/list.aspx", false, null,                 
-                    new RouteValueDictionary {
-            { "unitname", "catalog|industry|culture|folkart|exhibtion|perform|practice|operate|design|crossborder|localization|classess|News|Events|ArtMBA" }
-            , { "pageindex", "^[0-9]*$" } });
+            //routes.MapPageRoute("listpage", "{unitname}/{*pageindex}", "~/list.aspx", false, null,                 
+            //        new RouteValueDictionary {
+            //{ "unitname", "catalog|industry|culture|folkart|exhibtion|perform|practice|operate|design|crossborder|localization|classess|News|Events|ArtMBA" }
+            //, { "pageindex", "^[0-9]*$" } });
 
             routes.MapPageRoute("search", "search/{keyword}/{*pageindex}", "~/list-search.aspx",  false, null,
                 new RouteValueDictionary { { "pageindex", "^[0-9]*$" } });

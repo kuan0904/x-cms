@@ -43,7 +43,7 @@
                                     <asp:Repeater ID="Repeater1" runat="server" EnableViewState ="false">
                                     <ItemTemplate>
                                         <div class="swiper-slide item">
-                                            <div class="image" style="background-image: url('/webimages/banner/<%#Eval("pic") %>');">
+                                            <div class="image" style="background-image: url('<%#Eval("pic") %>');">
                                                 <div class="carousel-caption center">
                                                     <div class="meta-info">
                                                         <span class="post-date"><time datetime="<%#  Eval("Strdat").ToString()  %>"><%# DateTime.Parse ( Eval("Strdat").ToString()).ToString ("yyyy/MM/dd")  %></time></span>
@@ -70,7 +70,7 @@
                                     <div class="col-md-4 col-sm-6 col-xs-6">
                                         <div class="thumbnail">
                                             <div class="pic effect">
-                                                <img src="/webimages/article/<%#Eval("pic") %>" alt="" title="<%#Eval("subject") %>">
+                                                <img src="<%#Eval("pic") %>" alt="" title="<%#Eval("subject") %>">
                                                 <a class="view-more" href="/Article/<%#Eval("id") %>" title="了解更多"><span>more</span></a>
                                             </div>
 

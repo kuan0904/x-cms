@@ -7,6 +7,9 @@ using System.Data.SqlClient;
 using System.Collections.Specialized;
 using System.Reflection;
 using System.Text;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
 
 namespace article
 {
@@ -77,8 +80,12 @@ namespace article
             return item;
         }
     }
-    public class Web
+    public class Web : ApiController
     {
+        public IEnumerable<string> Get()
+        {
+            return new string[] { "value1", "value2" };
+        }
 
 
         public static List<MainData> Recommend_list(int ClassId)
@@ -131,7 +138,7 @@ namespace article
             foreach (string s in k)
             {
             
-                     result += "<a href = \"/search/"+ s +"\">" + s + "</a>";
+                     result += "<a href = \"/search/"+ s.Trim() + "\" class=\"label label-keyword\">" + s.Trim () + "</a>";
             }
             return result;
         }
@@ -163,18 +170,18 @@ namespace article
         public static string Get_category_link(int id)
         {
             List<Category > ItemData = new List<Category>();
-            ItemData = (List <Category>)  DbHandle.Get_article_category(id, "list");
+            ItemData = (List <Category>)  DbHandle.Get_article_category(id);
             string result = "";
             foreach (var s in ItemData)
             {
              //result += result == "" ? "" : "/";
-                result += " <a href = \"/"+ s.CategoryId.ToString () + "/catalog\" class=\"post-category\">" +  s.Name + "</a>";
+                result += " <a href = \"/catalog/" + s.CategoryId.ToString () + "\" class=\"post-category\">" +  s.Name + "</a>";
            
             }
             return result ;
         }
     }
-    public class DbHandle
+    public class DbHandle : ApiController
     {
         public static int Add_views(int id)
         {
@@ -222,7 +229,7 @@ namespace article
             DataTable dt = DbControl.Data_Get(strsql, nvc);
 
             string[] tags;
-            string[] categoryid;
+            List<Category> categoryid= new List<Category>();
             string[] Lecturer;
          
             if (dt.Rows.Count > 0)
@@ -231,7 +238,7 @@ namespace article
                 MainData.Subject = dt.Rows[0]["Subject"].ToString();
                 MainData.SubTitle = dt.Rows[0]["SubTitle"].ToString();
                 MainData.Contents = dt.Rows[0]["Contents"].ToString().Replace("\r", "").Replace("\n", "");
-                MainData.Pic = dt.Rows[0]["pic"].ToString();
+                MainData.Pic = "/webimages/article/" + dt.Rows[0]["pic"].ToString();
                 MainData.PostDay = DateTime.Parse(dt.Rows[0]["PostDay"].ToString());
                 MainData.Status = dt.Rows[0]["Status"].ToString();
                 MainData.Keywords = dt.Rows[0]["Keywords"].ToString();
@@ -259,16 +266,7 @@ namespace article
             dt.Dispose();
 
             //取目錄
-            strsql = "select * from Tbl_article_category  where articleid =@id  ";
-            nvc.Add("id", id.ToString());
-            dt = DbControl.Data_Get(strsql, nvc);
-            for (i = 0; i < dt.Rows.Count; i++)
-            {
-                termsList.Add(dt.Rows[i]["categoryid"].ToString());
-            }
-            categoryid = termsList.ToArray();
-            termsList.Clear();
-            MainData.Category = categoryid;
+            MainData.Category = Get_article_category(id);
             dt.Dispose();
             nvc.Clear();
 
@@ -342,23 +340,35 @@ namespace article
             DataTable dt = DbControl.Data_Get(strsql, nvc);
             return dt;
         }
-        public static object   Get_article_category(int id,string kind="dt")
+        public static List<Category> Get_article_category(int id )
         {
+           
             List<Category> ItemData = new List<Category>();
             NameValueCollection nvc = new NameValueCollection();
             string strsql = @"SELECT      Tbl_article_category.articleId as id
-                            , Tbl_article_category.categoryid, tbl_category.title as name
+                            , Tbl_article_category.categoryid, tbl_category.title as name,
+                            tbl_category.kind 
                             FROM Tbl_article_category INNER JOIN
                             tbl_category ON Tbl_article_category.categoryid = tbl_category.categoryid
                             where  Tbl_article_category.articleId=@id  ";
             nvc.Add("id", id.ToString());
             DataTable dt = DbControl.Data_Get(strsql, nvc);
-            if (kind == "dt")
-                return dt;
-            else { 
-                var obj = dt.ToList<Category>();
-                return obj;
+     
+            int i = 0;
+            for (i = 0; i < dt.Rows.Count; i++)
+            {
+
+                ItemData.Add(new Category
+                {
+                    CategoryId = (int)dt.Rows[i]["categoryid"],
+                    Name = dt.Rows[i]["name"].ToString(),
+                    Kind = dt.Rows[i]["Kind"].ToString(),
+
+                });
+
             }
+            return ItemData;
+
 
 
             //使用方式: datatable to list
@@ -406,6 +416,7 @@ namespace article
             }
             return ItemData;
         }
+   
         public static List<article.MainData> Get_article_list(string cid, string KeyWords="", int rows = 10, int page = 0)
         {
 
@@ -441,7 +452,7 @@ namespace article
             dt = DbControl.Data_Get(strsql, nvc);
 
             string[] tags;
-            string[] categoryid;
+           
             int idx = 0;
             int Id = 0;
 
@@ -457,7 +468,7 @@ namespace article
                     Subject = dt.Rows[idx]["Subject"].ToString(),
                     SubTitle = dt.Rows[idx]["SubTitle"].ToString(),
                     Contents = dt.Rows[idx]["Contents"].ToString().Replace("\r", "").Replace("\n", ""),
-                    Pic = dt.Rows[idx]["pic"].ToString(),
+                    Pic = "/webimages/article/" + dt.Rows[idx]["pic"].ToString(),
                     PostDay = DateTime.Parse(dt.Rows[idx]["PostDay"].ToString()),
                     Status = dt.Rows[idx]["Status"].ToString(),
                     Keywords = dt.Rows[idx]["Keywords"].ToString(),
@@ -481,22 +492,10 @@ namespace article
                 }
                 tags = termsList.ToArray();
                 dt1.Dispose();
-                strsql = "select * from Tbl_article_category  where articleid =@id  ";
-                dt1 = DbControl.Data_Get(strsql, nvc);
-                for (i = 0; i < dt1.Rows.Count; i++)
-                {
-                    termsList.Add(dt1.Rows[i]["categoryid"].ToString());
 
-                }
-                categoryid = termsList.ToArray();
-                dt1.Dispose();
-                nvc.Clear();
-
-                //if (MainData.Exists(x =>  x.Id  == (int)dt.Rows[idx]["articleid"]) == true)
-                // {
                 var s = MainData.Find(p => p.Id == Id);
                 s.Tags = tags;
-                s.Category = categoryid;
+                s.Category = Get_article_category(Id);
 
                 //}
 
@@ -587,15 +586,16 @@ namespace article
             }
             strsql = "delete from Tbl_article_category where articleId =@id";
             i = DbControl.Data_delete(strsql, ad.Id.ToString());
+          
 
-            string[] categoryid = ad.Category;
-            foreach (string s in categoryid)
+            List<Category> categoryid = ad.Category;
+            foreach (var s in categoryid)
             {
                 nvc.Clear();
                 strsql = @"insert into Tbl_article_category (articleId,categoryid)
                     values (@articleId,@categoryid)";
                 nvc.Add("articleId", ad.Id.ToString());
-                nvc.Add("categoryid", s);
+                nvc.Add("categoryid", s.CategoryId.ToString());
                 i = DbControl.Data_add(strsql, nvc);
             }
             nvc.Clear();
@@ -702,7 +702,7 @@ namespace article
         public int Viewcount { get; set; }     
         public string Status { get; set; }
         public string Author { get; set; }
-        public string[] Category { get; set; }
+        public List <Category > Category { get; set; }
         public string[] Tags { get; set; }  
         public string Keywords { get; set; }
         public int TotalRows { get; set; }
@@ -749,7 +749,7 @@ namespace article
         public int Id { get; set; }
         public int CategoryId { get; set; }
         public string Name { get; set; }
-
+        public string Kind { get; set; }
     }
     public class Tags
     {

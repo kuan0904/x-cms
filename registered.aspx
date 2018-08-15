@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="registered.aspx.cs" Inherits="registered" %>
+<!DOCTYPE html>
 <html lang="zh-Hant-TW">
 
 <head>
@@ -42,32 +43,51 @@
             <div class="col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2 col-xs-12">
                 <div class="login-box">
                     <div class="login-header text-center">
-                        <div class="login-logo ">
+                        <div class="login-logo">
                             <a href="hp.html" title="藝時代 Cultural Launch">藝時代</a>
                         </div>
-                        <div class="login-box-title">忘記密碼</div>
+                        <div class="login-box-title">註冊個人帳號</div>
                     </div>
                     <form class="form-member form-login">
                         <div class="form-group  text-center">
-                            <label>忘記密碼？</label>
+                            <label>註冊個人帳號</label>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-user fa-lg" aria-hidden="true"></i>
+                                </span>
+                                <input type="text" class="form-control" placeholder="帳號">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-key" aria-hidden="true"></i>
+                                </span>
+                                <input type="text" class="form-control" placeholder="密碼">
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="fa fa-envelope" aria-hidden="true"></i>
                                 </span>
-                                <input type="text" class="form-control" placeholder="請填入註冊時使用的Email信箱">
+                                <input type="text" class="form-control" placeholder="Email">
                             </div>
                         </div>
                         <div class="divide20"></div>
-                        <button type="submit" class="btn btn-green btn-lg btn-block">重設密碼
-                            <i class="fa fa-key margin-L-5 " aria-hidden="true"></i>
-                        </button>
+                        <button type="submit" class="btn btn-green btn-lg btn-block">登入</button>
                     </form>
                     <div class="divide20"></div>
                     <div class="text-center login-text">
-                        <p>
-                            <a href="login.html">回上一頁</a>
+                        <p>按下註冊鈕的同時，表示您已詳閱我們的
+                            <a href="#">資料使用政策與使用條款</a>，同意使用藝時代所提供的服務並訂閱電子報。
+                        </p>
+                        <p>已經有帳號了？
+                            <span class="lead">
+                                <a href="login.html">馬上登入</a>
+                            </span>
                         </p>
                     </div>
                 </div>

@@ -180,7 +180,7 @@ public partial class Account_Login : Page
                 };
 
                 DataTable menu = DbControl.Data_Get(strsql, nvc);
-                Session["menu"] = menu;
+                Session["Backmenu"] = menu;
                 menu.Dispose();
 
                 conn.Close();

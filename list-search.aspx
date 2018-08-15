@@ -16,6 +16,8 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+    <div class="main-content">
+
           <div class="breadArea">
                     <div class="container">
                         <ol class="breadcrumb">
@@ -63,7 +65,7 @@
                                     <div class="col-xs-6">
                                         <div class="thumbnail">
                                             <div class="pic effect">
-                                                <img src="/webimages/article/<%#Eval("pic") %>" alt="" title="<%#Eval("subject") %>">
+                                                <img src="<%#Eval("pic") %>" alt="" title="<%#Eval("subject") %>">
                                                 <a class="view-more" href="/Article/<%#Eval("id") %>" title="了解更多"><span>more</span></a>
                                             </div>
 
@@ -110,5 +112,6 @@
                     </div><!-- row END -->
 
                 </div><!-- container END -->
+        </div> 
 </asp:Content>
 

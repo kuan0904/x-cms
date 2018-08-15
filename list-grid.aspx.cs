@@ -40,7 +40,7 @@ public partial class list_grid : System.Web.UI.Page
             PageIdx = Request.QueryString["pageindex"] == null ? 1 : int.Parse(Request.QueryString["pageindex"]);
         }
         if (cid == null) Response.Redirect("/index");
-        unitname = cid + "/catalog";
+        unitname =  "/emba/"+cid ;
         List<Banner.MainData> banner1 = new List<Banner.MainData>();
         if (Request.QueryString["kind"] == "preview")
             banner1 = Banner.DbHandle.Banner_Get_list(5, "preview");
@@ -80,14 +80,14 @@ public partial class list_grid : System.Web.UI.Page
         Pagecount = Totalrow / PageSize + (Totalrow % PageSize > 0 ? 1 : 0);
         int i = 0;
 
-        retmsg += "<li class=\"page-item\"><a class=\"page-link\" href=\"/" + unitname + "/" + (PageIdx <= 1 ? Pagecount : PageIdx - 1) + "\" aria-label=\"Previous\"><span aria-hidden=\"true\">«</span><span class=\"sr-only\">Previous</span></a></li>";
+        retmsg += "<li class=\"page-item\"><a class=\"page-link\" href=\"" + unitname + "/page/"+ (PageIdx <= 1 ? Pagecount : PageIdx - 1) + "\" aria-label=\"Previous\"><span aria-hidden=\"true\">«</span><span class=\"sr-only\">Previous</span></a></li>";
         for (i = 1; i <= Pagecount; i++)
         {
 
-            retmsg += "<li class=\"page-item" + (i == PageIdx ? " active" : "") + "\"><a class=\"page-link\" href=\"/" + unitname + "/" + i + "\">" + i + "</a></li>";
+            retmsg += "<li class=\"page-item" + (i == PageIdx ? " active" : "") + "\"><a class=\"page-link\" href=\"" + unitname + "/page/" + i + "\">" + i + "</a></li>";
         }
 
-        retmsg += "<li class=\"page-item\"><a class=\"page-link\" href=\"/" + unitname + "/" + (PageIdx >= Pagecount ? PageIdx + 1 : 1) + "\" aria-label=\"Next\"><span aria-hidden=\"true\">»</span><span class=\"sr-only\">Next</span></a></li>";
+        retmsg += "<li class=\"page-item\"><a class=\"page-link\" href=\"" + unitname + "/page/" + (PageIdx >= Pagecount ? PageIdx + 1 : 1) + "\" aria-label=\"Next\"><span aria-hidden=\"true\">»</span><span class=\"sr-only\">Next</span></a></li>";
 
         return retmsg;
     }

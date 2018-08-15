@@ -18,8 +18,8 @@ public class unitlib
     public static string  GetLnk(string kind ,string id ,string page=""  )
     {
         string result = "";
-            if (kind == "1") result = "/news/" + id ;
-            if (kind == "2") result = "/catalog/" + id;
+            if (kind == "1") result = "/catalog/" + id ;
+            if (kind == "2") result = "/emba/" + id;
             if (kind == "3") result = "/catalog/" + id;
             if (kind == "4") result = "/Article/" + id;
             if (kind == "5") result = "/page/" + id;
@@ -63,53 +63,48 @@ public class unitlib
 
     public static object Get_menu()
     {
-       
+
         string strsql = @"SELECT * FROM tbl_category
-        WHERE classId = 1  AND status = 'Y' AND parentid = 0
-        ORDER BY   sort";
+        WHERE classId = 1  AND status = 'Y' 
+        ORDER BY  parentid, sort";
         NameValueCollection nvc = new NameValueCollection
         {
         };
         DataTable dt = DbControl.Data_Get(strsql, nvc);
-        int i = 0;
-        List<MenuModel> Menu  = new List<MenuModel>();
-        for (i = 0; i < dt.Rows.Count; i++)
-        {
-           Menu.Add(new MenuModel 
-            {
-              Id  = (int)dt.Rows[i]["categoryid"],
-              Title = dt.Rows[i]["title"].ToString (),
-              Kind = dt.Rows[i]["kind"].ToString (),
-            
-            });
-        }
-        dt.Dispose();
-        strsql = @"SELECT * FROM tbl_category
-        WHERE classId = 1  AND status = 'Y' AND parentid = @id
-        ORDER BY   sort";
-        foreach (MenuModel m in Menu)
-        {
-            nvc.Clear();
-            nvc.Add("id", m.Id.ToString());
-            dt = DbControl.Data_Get(strsql, nvc);
+        dt.DefaultView.RowFilter = "ParentId=0";
+        DataTable dt1 = dt.DefaultView.ToTable();
 
+        int i, j;
+        List<MenuModel> Menu = new List<MenuModel>();
+        for (i = 0; i < dt1.Rows.Count; i++)
+        {
+            dt.DefaultView.RowFilter = "ParentId=" + dt1.Rows[i]["categoryid"].ToString();
+            DataTable dt2 = dt.DefaultView.ToTable();
             List<MenuModel> subMenu = new List<MenuModel>();
-            for (i = 0; i < dt.Rows.Count; i++)
+            for (j = 0; j < dt2.Rows.Count; j++)
             {
                 subMenu.Add(new MenuModel
                 {
-                    Id = (int)dt.Rows[i]["categoryid"],
-                    Title = dt.Rows[i]["title"].ToString(),
-                    Kind = dt.Rows[i]["kind"].ToString(),
-
+                    Id = (int)dt2.Rows[j]["categoryid"],
+                    Title = dt2.Rows[j]["title"].ToString(),
+                    Kind = dt2.Rows[j]["kind"].ToString(),
+                    ParentId = (int)dt2.Rows[j]["parentid"]
                 });
             }
-            m.Detial = subMenu;
+            dt2.Dispose();
+            Menu.Add(new MenuModel
+            {
+                Id = (int)dt1.Rows[i]["categoryid"],
+                Title = dt1.Rows[i]["title"].ToString(),
+                Kind = dt1.Rows[i]["kind"].ToString(),
+                ParentId = (int)dt1.Rows[i]["parentid"],
+                Detial = subMenu
 
+            });
+            dt1.Dispose();
         }
-   
-   
-       
+        dt.Dispose();
+
         return Menu;
     }
     public class MainData
@@ -126,6 +121,7 @@ public class unitlib
         public int Id { get; set; }
         public string Title { get; set; }
         public string Kind { get; set; }
+        public int ParentId { get; set; }
         public List<MenuModel> Detial { get; set; }
     }
     

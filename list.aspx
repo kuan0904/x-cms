@@ -15,6 +15,8 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+<div class="main-content">
+
     <div class="breadArea">
         <div class="container">
             <ol class="breadcrumb">
@@ -26,7 +28,7 @@
     <!-- breadArea END -->
 
     <div class="container">
-        <h1 class="site-title">藝時代 Cultural Launch</h1>
+        <h1 class="site-title"><%=Application["site_name"]%></h1>
 
         <div class="titlePic">
             <div class="jumbotron">
@@ -43,24 +45,23 @@
                 <div class="main-content-inner">
 
                     <div id="Slider" class="swiper-container">
-                        <div class="swiper-wrapper">
-                                <asp:Repeater ID="Repeater1" runat="server" EnableViewState ="false">
+                                <div class="swiper-wrapper">
+                             <asp:Repeater ID="Repeaterbanner" runat="server" EnableViewState ="false">
                                     <ItemTemplate>
                                     <div class="swiper-slide item">
-                                    <div class="image" style="background-image: url('/webimages/article/<%#Eval("pic") %>');">
+                                    <div class="image" style="background-image: url('<%#Eval("pic") %>');">
                                         <div class="carousel-caption">
                                             <div class="container">
-                                                <h3><a href="/Article/<%# Eval("Id")  %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
+                                                <h3><a href="<%# Banner.Web.Get_url (Eval("url").ToString (),Eval("categoryid").ToString (),Eval("articleId").ToString ()) %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
                                                 <p><%#Eval("contents") %></p>
                                             </div>
                                         </div>
-                                        <a href="/Article/<%# Eval("Id")  %>" class="view-more" title="了解更多">我想了解</a>
+                                        <a href="<%# Banner.Web.Get_url (Eval("url").ToString (),Eval("categoryid").ToString (),Eval("articleId").ToString ()) %>" class="view-more" title="了解更多">我想了解</a>
                                     </div>
                                 </div>
                                     </ItemTemplate>
                                 </asp:Repeater>
-
-                        </div>
+                            </div> 
                         <div class="swiper-pagination"></div>
                         <div class="swiper-button-next"></div>
                         <div class="swiper-button-prev"></div>
@@ -70,42 +71,35 @@
                     <div class="news-wrap news-list">
                     <asp:Repeater ID="hot_list_detail" runat="server" EnableViewState ="false" >
                         <ItemTemplate>
-                        <div class="col-md-12">
-                            <div class="thumbnail">
-                                <div class="pic effect col-xs-4">
-                                    <img src="/webimages/article/<%#Eval("pic") %>" alt="" title="<%#Eval("subject") %>">
-                                    <a class="view-more" href="/Article/<%#Eval("id") %>" title="了解更多"><span>more</span></a>
-                                </div>
-
-                                <div class="caption col-md-8 col-sm-8 col-xs-12">
-                                    <h3 class="title"><a href="/Article/<%#Eval("id") %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
-                                    <div class="meta-info">
-                                         <%# article.Web.Get_category_link ((int) Eval("id"))%>
-                                        <div class="post-author">
-                                            <span>By</span>
-                                           <%# article.Web.Get_Keyword_link ((string) Eval("author"))%>
-                                            <span>- </span>
-                                        </div>
-                                        <span class="post-date"><time datetime="<%#Eval("PostDay") %>"><%# DateTime.Parse ( Eval("PostDay").ToString()).ToString ("yyyy/MM/dd")  %></time></span>
-                                        <div class="post-views">
-                                            <i class="fa fa-eye"></i><%#Eval("Viewcount") %>
-                                        </div>
-                                        <div class="post-comments">
-                                            <a href="#respond"><i class="fa fa-comments"></i>0</a>
-                                        </div>
-                                        <div class="post-keywords">
-                                            <i class="fa fa-tags"></i>
-                                             <%#article.Web.Get_Keyword_link ( Eval("keywords").ToString ())%>
-                                        </div>
+                            <div class="col-xs-12">
+                                <div class="thumbnail">
+                                    <div class="pic effect col-md-4 col-sm-4 col-xs-12">
+                                        <img src="<%#Eval("pic") %>" alt="" title="<%#Eval("subject") %>">
+                                        <a class="view-more" href="/Article/<%#Eval("id") %>" title="了解更多"><span>more</span></a>
                                     </div>
-                                    <!-- meta-info END -->
-                                    <p class="description">
-                                        <%# unity.classlib.SubString ( Eval("contents").ToString (),100,"notag") %>
-                                    </p>
-                                    <a class="btn-read-more" href="/Article/<%#Eval("id") %>">繼續閱讀</a>
-                                </div>
+                                    <div class="caption col-md-8 col-sm-8 col-xs-12">
+                                        <div class="category">
+                                            <%# article.Web.Get_category_link ((int) Eval("id"))%>
+                                        </div>
+                                        <h3 class="new-index-list-title">
+                                            <a href="/Article/<%#Eval("id") %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a>
+                                        </h3>
+                                        <p class="description">
+                                                <%# unity.classlib.SubString ( Eval("contents").ToString (),100,"notag") %>             </p>
+                                        <div class="meta-info">
+                                            <div class="new-list-date">
+                                                <time datetime="<%#Eval("PostDay") %>"><%# DateTime.Parse ( Eval("PostDay").ToString()).ToString ("yyyy/MM/dd")  %></time>
+                                            </div>
+                                            <div class="new-list-tags">
+                                                <%#article.Web.Get_Keyword_link ( Eval("keywords").ToString ())%>
+                                            </div>
+                                        </div>
+                                        <!-- meta-info END -->
+
+                                    </div>
+                                </div>                              
                             </div>
-                        </div>
+                           
                         <!-- col-md-12 END -->
                         </ItemTemplate>
                         </asp:Repeater>
@@ -126,10 +120,24 @@
             </div>
             <!-- col-md-8 td-main-content END -->
 
-            <div class="col-md-4 col-sm-4 main-sidebar">
-                <div class="block-wrap"  id="hot_list"></div>
+            <div class="col-md-4 col-sm-4 main-sidebar">    
                 <div class="block-wrap" id="ad_banner"></div>   
 
+                <div class="block-wrap">
+                            <h2 class="new-index-main-title text-center">Newsletter</h2>
+                            <div class="epaper-box">
+                                <p>精選國內外設計與藝文大事、設計大師最新訪談，每週最新資訊定期遞送給您。</p>
+                                <div class="form">
+                                    <div class="form-group">
+                                        <label class="sr-only" for="exampleInputEmail2">Email</label>
+                                        <input type="email" class="form-control" id="exampleInputEmail2" placeholder="yourmail@example.com">
+                                    </div>
+                                    <button type="submit" class="btn btn-green btn-block">訂閱 <i class="fa fa-angle-right" aria-hidden="true"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                <div class="block-wrap"  id="hot_list"></div>
+           
 
                 <div class="block-wrap">
                 <iframe src="https://www.facebook.com/plugins/page.php?href=https://www.facebook.com/%E8%97%9D%E6%99%82%E4%BB%A3-2162933603987210/%2F&tabs=timeline&width=300&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=1355515061131043" width="300" height="500" scrolling="no" frameborder="0" allowTransparency="true" style="display: block; width: 300px; margin: auto;">
@@ -145,5 +153,6 @@
 
     </div>
     <!-- container END -->
+</div> 
 </asp:Content>
 

@@ -6,9 +6,6 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Configuration;
-using System.Data;
-using System.Data.SqlClient;
-using unity;
 using System.Linq;
 using System.Web.SessionState;
 
@@ -89,12 +86,12 @@ public class fb_login : IHttpHandler ,IRequiresSessionState {
 
         if (p_ACCOUNT != "")
         {
-            string result = MemberLib.Member.Check_exist(p_ACCOUNT);
-            if (result != "Y")
+            MemberLib.Mmemberdata result = MemberLib.Member.Check_exist(p_ACCOUNT);
+            if (result.Memberid .ToString () != "0")
             {
-                MemberLib.Member.Add(email, p_PASSWD, p_ACCOUNT);
+                result =  MemberLib.Member.Add(email, p_PASSWD, p_ACCOUNT);
             }
-
+            context.Session["memberdata"] = result;
         }
 
         string msg = "<script>alert('登入成功');location.href='"+ server_name  + "/index.aspx';</script>";

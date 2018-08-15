@@ -5,7 +5,7 @@
                  <ItemTemplate>
                         <li class="col-md-12 col-sm-4 col-xs-4 thumbnail">
                             <a href="<%# Banner.Web.Get_url (Eval("url").ToString (),Eval("categoryid").ToString (),Eval("articleId").ToString ()) %>" title="img-banner-300x200" target="_blank">
-                                <img src="/webimages/banner/<%#Eval("pic") %>" alt="" title="">
+                                <img src="<%#Eval("pic") %>" alt="" title="">
                             </a>
                         </li>
                      </ItemTemplate> 

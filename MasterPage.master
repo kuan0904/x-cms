@@ -12,7 +12,7 @@
 <meta name="author" content="Xnet 智媒科技"/>
 <meta name="keywords" content="<%=Session ["keywords"] %>" />
 <meta name="description" content="<%=Session ["description"] %>" />
-<meta property="fb:app_id" content="<%=FacebookAppId %>" />
+<meta property="fb:app_id" content="<%=Application["FacebookAppId"]%>" />
 <meta property="og:title" content="<%=Session["title"] %>" />
 <meta property="og:description" content="<%=Session ["description"] %>" />
 <meta property="og:site_name" content="<%=Application["site_name"]%>" />
@@ -24,109 +24,34 @@
 <meta name="robots" content="noindex,follow" />
 <meta name="robots" content="index,nofollow" />
 <meta name="robots" content="noindex,nofollow" />
-<meta name="google-signin-client_id" content="754193213942-a9fobo4p4djkdrgal6naqt0rue48qdvo.apps.googleusercontent.com">
-    <meta name="google-site-verification" content="BWMSZ4A4swQs9AA0eM_Q-ydqIIEzvtZJ1OYh02bRa-w" />
-<title><%=Session["title"] %></title>
 
-<link rel="stylesheet" href='/assets/font-awesome/css/font-awesome.min.css?v=2' />
-<link rel="stylesheet" href='/assets/bootstrap/css/bootstrap.min.css?v=2' />
-<link rel="stylesheet" href='/css/reset.css?v=2' />
-<link rel="stylesheet" href='/assets/swipe/swiper.min.css'/>
-<link rel="stylesheet" href='/css/theme.css?v=2' />
-<link rel="stylesheet" href='/css/post-layout.css' />
-<link rel="stylesheet" href='/css/style.css?v=2' />
-<link rel="shortcut icon" href="/CLlogo16x16.ico" />
+<title><%=Session["title"] %></title>
+<link rel="stylesheet" href='/assets/font-awesome/css/font-awesome.min.css' />
+<link rel="stylesheet" href='/assets/bootstrap/css/bootstrap.min.css' />
+<link rel="stylesheet" href='/css/reset.css' type='text/css' />
+    <link rel="stylesheet" href='/assets/swipe/swiper.min.css'/>
+<link rel="stylesheet" href='/css/theme.css' type='text/css' />
+<link rel="stylesheet" href='/css/post-layout.css' type='text/css' />
+<link rel="stylesheet" href='/css/style.css?v=6' type='text/css' />
+<link rel="shortcut icon" href="/favicon.ico" />
 <!--[if lt IE 9]><script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
  <script src="/js/jquery-1.9.1.min.js"></script>
      <asp:ContentPlaceHolder id="head" runat="server">
     </asp:ContentPlaceHolder>
     <style>
         .btn-facebook {
-	color: #fff;
-	background-color: #3a5795;
-	border-color: #3a5795;
+	    color: #fff;
+	    background-color: #3a5795;
+	    border-color: #3a5795;
 }
     </style>
-
-     <script>
-        var fb_login_url = 'fb_login.ashx?login_type=cookie';
-        function createCookie(name, value) {
-            var date = new Date();
-            date.setTime(date.getTime() + (60 * 1000));
-            var expires = "; expires=" + date.toGMTString();
-            document.cookie = name + "=" + value + expires + "; path=/";
-        }   
-
-              window.fbAsyncInit = function() {
-              FB.init({
-                  appId: '164103481107660',
-                cookie     : true,  // enable cookies to allow the server to access
-                                    // the session
-                xfbml      : true,  // parse social plugins on this page
-                version    : 'v2.10' // use version 2.2
-              });
-  };
-  (function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
-
-  function personalAPI() {
-      FB.api(
-        '/me',
-        'GET',
-        { "fields": "name,birthday,email,education" },
-        function (response) {
-            console.log(response);
-            access_token = FB.getAuthResponse()['accessToken'];          
-            createCookie('u_fb_id', response.id);
-            createCookie('u_fb_name', response.name);
-            createCookie('u_fb_email', response.email);
-            location.href = fb_login_url;
-            //document.getElementById('resultdata').innerHTML = "<pre> <b>Access Token<b/> : " + access_token + "</pre>";
-            //document.getElementById('resultdata1').innerHTML = "<pre> <b>User Name<b/> : " + response.name + "</pre>";
-            //document.getElementById('resultdata2').innerHTML = "<pre> <b>User Email<b/> : " + response.email + "</pre>";
-            //document.getElementById('resultdata3').innerHTML = "<pre> <b>User birthday<b/> : " + response.birthday + "</pre>";
-            //document.getElementById('resultdata4').innerHTML = "<pre> <b>User education<b/> : " + response.education + "</pre>";
-        }
-      );
-  }
-  function fbloginAPI() {   
-      FB.api('/me', function(response) {     
-        createCookie('u_fb_id', response.id);
-        createCookie('u_fb_name', response.name);
-        createCookie('u_fb_email', response.email);      
-        location.href = fb_login_url;
-    });
-  }
-  function checkfblogin(){
-      FB.login(function (response) {
-          if (response.status === 'connected') {
-              // fbloginAPI();
-              personalAPI();
-          } else if (response.status === 'not_authorized') {
-       
-              // The person is logged into Facebook, but not your app.
-          } else {
-           
-              // The person is not logged into Facebook, so we're not sure if
-              // they are logged into this app or not.
-          }
-      }, {scope: 'public_profile,email'});
-  }
-
-  
-  </script>
-
-        
-   
+<script src='/lib/common.js?v=1'></script>
 </head>
 <body >
+  
     <form id="form1" runat="server">
-    <div class="scroll-up"><i class="fa fa-chevron-up"></i></div>
+       <div class="scroll-up"><i class="fa fa-chevron-up"></i></div>
 
     <div class="menu-background"></div>
     <div id="mobile-nav">
@@ -138,11 +63,7 @@
                         <i class="fa fa-facebook"></i>
                     </a>
                     </li>
-                    <li>
-                        <a target="_blank" href="#" title="Google+">
-                        <i class="fa fa-google-plus"></i>
-                        </a>
-                    </li>
+         
                     <li>
                         <a target="_blank" href="#" title=Instagram>
                         <i class="fa fa-instagram"></i>
@@ -166,48 +87,30 @@
 
             <div class=login-section>
                 <div class=guest-wrap>
-                    <a id=login-link-mob>登入</a>
+                    <a href="/login.html">登入</a>
                 </div><!-- guest-wrap END -->
             </div><!-- login-section END -->
-
-            <div class="mobile-content">
+        <div class="mobile-content">
                 <ul class="mobile-main-menu">
-                    <li class="menu-item sf-dropdown"><a href="/1/catalog">最新消息<i class="fa fa-chevron-down"></i></a>
-                        <ul class=sub-menu>
-                            <li><a href="/7/catalog">產業動態</a></li>
-                            <li><a href="/8/catalog">文化政策</a></li>
-                            <li><a href="/9/catalog">民間文藝</a></li>
-                        </ul>
+                <asp:Repeater ID="mrptmenu" runat="server" OnItemDataBound ="rptmenu_ItemDataBound">
+                    <ItemTemplate>
+                        <li class="menu-item sf-dropdown">
+                        <a href="<%# unitlib.GetLnk (Eval("kind").ToString (),Eval ("Id").ToString ()) %>"><%#Eval("title") %><i class="fa fa-chevron-down"></i></a>
+                        <asp:Repeater ID="Repeater1" runat="server">
+                            <HeaderTemplate>
+                                <ul class="sub-menu">
+                            </HeaderTemplate>
+                            <ItemTemplate>
+                                    <li class="menu-item"><a href="hp.html"><%#Eval("title") %></a></li>
+                                </ItemTemplate>
+                            <FooterTemplate></ul></FooterTemplate>
+                        </asp:Repeater>                                      
                     </li>
-                    <li class="menu-item sf-dropdown"><a href="/2/catalog">活動<i class="fa fa-chevron-down"></i></a>
-                        <ul class=sub-menu>
-                            <li><a href="/10/catalog">展覽</a></li>
-                            <li><a href="/11/catalog">表演</a></li>
-                            <li><a href="/12/catalog">體驗</a></li>
-                        </ul>
-                    </li>
-                     
-                    <li class="menu-item sf-dropdown"><a href="/3/catalog">藝MBA<i class="fa fa-chevron-down"></i></a>
-                        <ul class=sub-menu>
-                            <li><a href="/13/catalog">產業經營</a></li>
-                            <li><a href="/14/catalog">設計</a></li>
-                            <li><a href="/15/catalog">跨界創新</a></li>
-                            <li><a href="/16/catalog">在地創生</a></li>
-                        </ul>
-                    </li>
-                     <li class="menu-item sf-dropdown"><a href="/4/catalog">專題報導<i class="fa fa-chevron-down"></i></a>
-                        
-                    </li>
-                     <li class="menu-item sf-dropdown"><a href="/5/catalog">人物<i class="fa fa-chevron-down"></i></a>
-                        
-                    </li><!--
-                    <li class="menu-item sf-dropdown"><a href="/6catalog">跨界媒合<i class="fa fa-chevron-down"></i></a>
-                        <ul class=sub-menu>
-                            <li><a href="/17/catalog">文創人才</a></li>
-                            <li><a href="/18/catalog">群眾募資</a></li>
-                        </ul>
-                    </li>
-                    -->
+                    </ItemTemplate>
+                    </asp:Repeater>
+       
+     
+                    <li class="menu-item sf-dropdown"><a href="account.html">會員中心<i class="fa fa-chevron-down"></i></a></li>
                 </ul>
             </div><!-- mobile-content END -->
         </div><!-- container END -->
@@ -220,44 +123,12 @@
                     <div class=btn-close-mob>
                         <a href="#"><i class=icon-close-mob></i></a>
                     </div><!-- btn-close-mob END -->
-                </div><!-- login-close END -->
+                </div>
 
-                <div class=login-form-wrap>
-                    <div class=login-panel-title><span>歡迎</span>請登入您的帳戶</div>
-                    <div class=alert-err></div>
-                    <div class=login-inputs><input class=login-input type=text name=login_email id="login_email-mob" value=""  ><label>your username</label></div>
-                    <div class=login-inputs><input class=login-input type=password name=login_pass id=login_pass-mob value=""  ><label>your password</label></div>
-                    <input type=button name=login_button id="btnLogin-mob" class=login-button value="登  入">
-                    <div class=login-info-text><a href="#" id=forgot-pass-link-mob>忘記密碼</a></div>
-                </div><!-- login-form-wrap END -->
-            </div><!-- btn-login-mob END -->
+             
+            </div>
 
-            <div id="forgot-pass-mob" class="login-animation">
-                <div class="forgot-pass-close">
-                    <a href="#" class="btn-back"><i class="fa fa-chevron-down"></i></a>
-                    <div class="login-title">加入會員</div>
-                </div><!-- forgot-pass-close END -->
-        
-                <div class="login-form-wrap">
-                             <div class=login-panel-title>加入會員</div>
-                            <div class=login-panel-descr>歡迎加入</div>
-                            <div class=alert-err></div>
-                            <div class=login-inputs>
-                                <input class=login-input type=text name=regist_email id="regist_email-mob" value=""  ><label>your email</label>
-                            </div>
-                               <div class=login-inputs>
-                                <input class=login-input type=password name=regist_pass id="regist_pass-mob" value=""  ><label>你的密碼</label>
-                            </div>
-                                 <div class=login-inputs>
-                                <input class=login-input type=password name=regist_pass id="regist_pass1-mob" value=""  ><label>確認密碼</label>
-                            </div>
-                            <input type=button name="forgot_button" id="btnRegister-mob" class="wpb_button btn login-button" value="加入會員">
-                            <div class=login-info-text>會員使用條款......XXXX</div>
-
-
-                
-                </div><!-- login-form-wrap END -->
-            </div><!-- forgot-pass-mob END -->
+            <!-- forgot-pass-mob END -->
         </div><!-- register-section END -->
     </div><!-- mobile-nav END -->
 
@@ -265,13 +136,13 @@
     <div class=search-wrap-mob>
         <div class=dropDown-search>
 
-            <div class="search-form" action="#">
+            <div class="search-form" >
                 <div class="search-close">
                     <a href="#"><i class="icon-close-mob"></i></a>
                 </div>
                 <div role="search" class="search-input">
                     <span>搜尋</span>
-                    <input id="search-input-mob" name="s1"  type=text autocomplete="off" />
+                    <input id="search-input-mob" name="s" type="text" autocomplete="off" />
                 </div>
             </div><!-- search-form END -->
         </div>
@@ -279,9 +150,7 @@
 
 
     <div id="outer-wrap" class="wrapper">
-
             <div class="header">
-
                 <div class="top-bar">
                     <div class="container">
                         <div class="top-menu">
@@ -296,7 +165,8 @@
                                     <a target="_blank" href="#" title="Email"><i class="fa fa-envelope"></i></a>
                                 </li> -->
                                 <li>
-                                    <a class="login-modal-js menu-item" href="#login-form" data-effect="mpf-login-effect"><i class="fa fa-user"></i></a>
+                                    <a href="<%=_link %>"  ><i class="fa fa-user"></i><%=_status %></a> 
+                                
                                 </li>
                             </ul>
                         </div> <!-- top-menu END -->
@@ -304,7 +174,7 @@
                 </div><!-- top-bar END -->
 
                 <!-- logo center -->
-                <div class="logo <%=logo %>">
+                <div class="logo">
                     <a href="/index" title="<%=Application["site_name"] %>">
                         <span class="visual-hidden"><%=Application["site_name"] %></span>
                     </a>
@@ -315,7 +185,7 @@
                     <div id="header-navbar" class="header-main-menu">
                         <div class="container">
 
-                            <div class="navbar-header">
+                                <div class="navbar-header">
                                 <button type="button" id=navbar-sticky-menu class="navbar-toggle collapsed">
                                     <span class="sr-only">Toggle navigation</span>
                                     <span class="icon-bar"></span>
@@ -324,7 +194,7 @@
                                 </button>
 
                                 <div class="navbar-brand">
-                                    <a href="/index">
+                                    <a href="index.html">
                                         <span class="visual-hidden"><%=Application["site_name"] %></span>
                                     </a>
                                 </div>
@@ -332,37 +202,23 @@
 
                             <div class="main-menu">
                                 <ul class="sf-menu">
-                                    <li class="menu-item sf-dropdown<%=active[1] %>"><a href="/1/catalog">最新消息</a>
-                                        <ul class="sub-menu">
-                                            <li class="menu-item"><a href="/7/catalog">產業動態</a></li>
-                                            <li class="menu-item"><a href="/8/catalog">文化政策</a></li>
-                                            <li class="menu-item"><a href="/9/catalog">民間文藝</a></li>
-                                        </ul>
+                                <asp:Repeater ID="rptmenu" runat="server" OnItemDataBound ="rptmenu_ItemDataBound">
+                                    <ItemTemplate>
+                                    <li class="menu-item sf-dropdown  <%#Eval("Id").ToString() == active ? " active":"" %>">
+                                        <a href="<%# unitlib.GetLnk (Eval("kind").ToString (),Eval ("Id").ToString ()) %>"><%#Eval("title") %></a>
+                                        <asp:Repeater ID="Repeater1" runat="server">
+                                            <HeaderTemplate>
+                                                <ul class="sub-menu">
+                                            </HeaderTemplate>
+                                            <ItemTemplate>
+                                                    <li class="menu-item"><a href="<%# unitlib.GetLnk (Eval("kind").ToString (),Eval ("Id").ToString ()) %>"><%#Eval("title") %></a></li>
+                                               </ItemTemplate>
+                                            <FooterTemplate></ul></FooterTemplate>
+                                       </asp:Repeater>                                      
                                     </li>
-                                    <li class="menu-item sf-dropdown<%=active[2] %>"><a href="/2/catalog">活動</a>
-                                        <ul class="sub-menu">
-                                            <li class="menu-item"><a href="/10/catalog">展覽</a></li>
-                                            <li class="menu-item"><a href="/11/catalog">表演</a></li>
-                                            <li class="menu-item"><a href="/12/catalog">體驗</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="menu-item sf-dropdown<%=active[3] %>"><a href="/3/catalog">藝MBA</a>
-                                        <ul class="sub-menu">
-                                            <li class="menu-item"><a href="/13/catalog">產業經營</a></li>
-                                            <li class="menu-item"><a href="/14/catalog">設計</a></li>
-                                            <li class="menu-item"><a href="/15/catalog">跨界創新</a></li>
-                                            <li class="menu-item"><a href="/16/catalog">在地創生</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="menu-itemn<%=active[4] %>"><a href="/4/catalog">專題報導</a></li>
-                                    <li class="menu-itemn<%=active[5] %>"><a href="/5/catalog">人物</a></li>
-                                    <!--
-                                    <li class="menu-item sf-dropdown<%=active[6] %>"><a href="/6/catalog">跨界媒合</a>
-                                        <ul class="sub-menu">
-                                            <li class="menu-item"><a href="/17/catalog">文創人才</a></li>
-                                            <li class="menu-item"><a href="/18/catalog">群眾募資</a></li>
-                                        </ul>
-                                    </li>-->
+                                  </ItemTemplate>
+                                 </asp:Repeater>
+                        
                                 </ul><!-- menu-main-1 END -->
                             </div><!-- main-menu END -->
 
@@ -382,8 +238,8 @@
                                     <div class="dropDown-search" aria-labelledby="header-btn-search">
                                         <div class="search-form">
                                             <div role="search">
-                                            <input class="needsclick" id="search-input" type=text value="" name="s2" autocomplete=off />
-                                            <input class="wpb_button wpb_btn-inverse btn" type=button name ="header-search" id="header-search-top" value="Search" />
+                                            <input class="needsclick" id="search-input" type="text" value="" name="s1"  />
+                                            <input class="wpb_button wpb_btn-inverse btn" type=submit name ="header-search" id="header-search-top" value="Search"  />
                                             </div>
                                         </div><!-- search-form END -->
                                     </div><!-- dropDown-search END -->
@@ -395,89 +251,37 @@
 
                 </div><!-- navbar END -->
 
-                <div id=login-form class="white-popup-block mfp-hide mfp-with-anim">
-                    <div class=login-wrap>
-                        <a href="#" class="btn-back"><i class="fa fa-chevron-left"></i></a>
-
-                        <div id=login-pop class="login-form-div display-block">
-                            <div class=login-panel-title>會員登入</div>
-                            <div class=login-panel-descr>歡迎！請登入您的帳號</div>
-                            <div class=alert-err></div>
-                            <div class=login-inputs>
-                                <input class=login-input type=text name=login_email id="login_email" value=""  ><label>your email</label>
-                            </div>
-                            <div class=login-inputs>
-                                <input class=login-input type=password name=login_pass id="login_pass" value=""  ><label>your password</label>
-                            </div>
-                            <input type=button name=login_button id="btnLogin" class="wpb_button btn login-button" value="登 入">
-                            <asp:HyperLink ID="btnFbLogin" runat="server"   cssclass="btn btn-lg btn-facebook col-xs-12 m-top-1 m-bottom-1">Facebook 登入</asp:HyperLink>
-                           
-                                <div class=login-info-text><a href="#" id=forgot-pass-link>加入會員</a>     
-                                       <a href="#" id="forgotpass">忘記密碼?</a></div>
-                             <button id="login-button" disabled class="wpb_button btn login-button" >Login with Google</button>
-                            <div id="forgot-pass" style ="display:none">
-                                 <div class=login-panel-title>密碼重置</div>
-                            <div class=login-panel-descr>重置您的密碼</div>
-                            <div class=alert-err></div>
-                            <div class=login-inputs>
-                                <input class=login-input type=text name=forgot_email id=forgot_email value=""  ><label>your email</label>
-                            </div>
-                            <input type=button name=forgot_button id=forgot_button class="wpb_button btn login-button" value="寄送密碼">
-                            <div class=login-info-text>我們將會寄送密碼至您的信箱</div>
-                            </div>
-                        </div><!-- login-pop END -->
-                        
-                        <div id=forgot-pass-pop class="login-form-div display-none">
-                            <div class=login-panel-title>加入會員</div>
-                            <div class=login-panel-descr>歡迎加入</div>
-                            <div class=alert-err></div>
-                            <div class=login-inputs>
-                                <input class=login-input type=text name=regist_email id="regist_email" value=""  ><label>your email</label>
-                            </div>
-                               <div class=login-inputs>
-                                <input class=login-input type=password name=regist_pass id="regist_pass" value=""  ><label>你的密碼</label>
-                            </div>
-                                 <div class=login-inputs>
-                                <input class=login-input type=password name=regist_pass id="regist_pass1" value=""  ><label>確認密碼</label>
-                            </div>
-                            <input type=button name="forgot_button" id="btnRegister" class="wpb_button btn login-button" value="加入會員">
-                            <div class=login-info-text>會員使用條款......XXXX</div>
-                        </div><!-- forgot-pass-pop END -->
-
-                        
-                    </div><!-- login-wrap END -->
-                </div><!-- login-form END -->
+      
 
             </div><!-- header END -->
-            <div class="main-content">
-                 <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">        
+             <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">        
                 </asp:ContentPlaceHolder>  
-            </div><!-- main-content END -->
+
             <footer class="footer">
-
                 <div class="sub-footer">
-                    <div class="container">
-                        <div class=row>
+    <div class="container">
+        <div class=row>
 
-                            <div class="col-md-12 sub-footer-menu">
-                                <ul class="nav nav-pills">
-                                    <li><a href="/AboutUs">關於我們</a></li>
-                                    <li><a href="/Advertisement">廣告刊登</a></li>
-                                    <li><a href="/Copyright">版權聲明</a></li>
-                                    <li><a href="/SiteMap">網站導覽</a></li>
-                                    <li><a href="/ContactUs">聯絡我們</a></li>
-                                </ul>
-                            </div><!-- col-md-12 END -->
+            <div class="col-md-12 sub-footer-menu">
+                <ul class="nav nav-pills">
+                    <li><a href="/AboutUs">關於我們</a></li>
+                    <li><a href="/Advertisement">廣告刊登</a></li>
+                    <li><a href="/Copyright">版權聲明</a></li>
+                    <li><a href="/SiteMap">網站導覽</a></li>
+                    <li><a href="/ContactUs">聯絡我們</a></li>
+                </ul>
+            </div><!-- col-md-12 END -->
 
-                            <div class="col-md-12 sub-footer-copy">
-                                <p>&copy; 本網頁著作權為 藝時代 Cultural Launch 所有 / Copyright 2018 </p>
-                            </div><!-- col-md-4 END -->
+            <div class="col-md-12 sub-footer-copy">
+                <p>&copy; 本網頁著作權為 中華民國滑輪溜冰協會 所有 / Copyright 2018 </p>
+            </div><!-- col-md-4 END -->
 
 
-                        </div><!-- row END -->
-                    </div><!-- container END -->
+        </div><!-- row END -->
+    </div><!-- container END -->
 
-                </div><!-- sub-footer END -->
+</div><!-- sub-footer END -->
+        
             </footer><!-- footer END -->
 
 
@@ -490,47 +294,13 @@
 <script src='/js/theme.js'></script>
 <script src="/assets/swipe/swiper.min.js"></script>
 <script src="/assets/magnific/jquery.magnific-popup.min.js"></script>
-<script src='/js/script.js'></script>
-        <script>
-    function getParameterByName(name, url) {
-        if (!url) url = window.location.href;
-        name = name.replace(/[\[\]]/g, "\\$&");
-        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-            results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, " "));
-    }
-        jQuery.postJSON = function (url, para, contentType, callback) {
-            if (contentType == null || contentType == '') contentType = "text/xml";
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: para,
-                dataType: "json",
-                contentType: contentType,
-                async: false,
-                cache: false,
-                success: function (data) { callback(data); },
-                error: function (xhr, error) { callback(''); }
-            });
-        };
-        jQuery.post = function (url, para, callback) {
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: para,
-                dataType: "text",
-                async: false,
-                cache: false,
-                success: function (data) { callback(data); },
-                error: function (xhr, error) { callback(''); }
-            });
-        };
+<script src='/js/script.js?v=1'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/shave/2.1.3/shave.min.js"></script><!-- 隱藏文字 -->
 
-   
+        <script>  
            
-        $(document).ready(function () {     
+         $(document).ready(function () {  
+            
             var dataValue = {"kind":"list"};             
             $.post('/hot_list', dataValue, function (result) { $("#hot_list").html(result); });
             dataValue = {"classid":"2"};             
@@ -558,25 +328,27 @@
                 return false;    //<---- Add this line
               }
             });
-            $('input[name="s2"]').keypress(function (e) {
+            $('input[name="s"]').keypress(function (e) {
               if (e.which == 13) {
                 $('input[name="header-search"]').trigger( "click" );
                 return false;    //<---- Add this line
               }
             });
             $('input[name="header-search"]').click(function () {
-               
                 var text = "";
+             
                 if ($('input[name="s1"]') != undefined) {
                     text = $('input[name="s1"]').val();
                 }
-                if ($('input[name="s2"]').val() !=""){
-                    text = $('input[name="s2"]').val();
+                if ($('input[name="s"]').val() !=""){
+                    text = $('input[name="s"]').val();
                 }
+             
                 location.href = '/search/' + text;
+                return false;  
             })
-              $('#Emailregist').click(function () {
-                var text = $('#InputEmail').val();                     
+            $('#Emailregist').click(function () {
+                    var text = $('#InputEmail').val();                     
                         $.post('/lib/registemail.ashx',  {"email":text} , function (result) {
                             if (result != "") {
                                
@@ -585,203 +357,12 @@
                             }
                         });
                
-            })
+            })           
            
-            $("#btnLogin").click(function () {
-                   var objAccount = $("#login_email");
-                   var objPasswd = $("#login_pass");
-                   var objVerifyCode = $("#p_VERIFYCODE");
-                   var p_ACCOUNT = objAccount.val();
-                   var p_PASSWD = objPasswd.val();
-                   //var p_VERIFYCODE = objVerifyCode.val();
-                   if (p_ACCOUNT == "") {
-                       alert("請輪入Email");
-                       objAccount.focus();
-                   } else if (p_PASSWD == "") {
-                       alert("請輸入密碼");
-                       objPasswd.focus();
-                   }
-                    else if (!validEmail(p_ACCOUNT)) {
-                        alert("帳號非EMail格式");
-                        objAccount.focus()
-                  
-                       //} else if (p_VERIFYCODE == "") {
-                       //	setInputStyle("warning", objVerifyCode, "請輸入驗證碼");
-                   } else {
-                      
-                       var data = {"p_ACCOUNT": p_ACCOUNT, "p_PASSWD": p_PASSWD, "p_ACTION": "Login", "_": new Date().getTime() };
-                       $.post('/lib/member_handle.ashx', data, function (data) {                           
-                       
-                               if (data == "Y") {
-                                     alert('登入成功');
-                                    $.magnificPopup.close();
-                               } else if (data == "-1") {
-                                   alert("登入失敗");
-                                   //setInputStyle("error", objAccount, "帳號錯誤請重新輸入");
-                                   //setInputStyle("error", objPasswd, "密碼錯誤請重新輸入");
-                               } 
-                       });
-                   }
-               });
-            $("#btnLogin-mob").click(function () {
-                   var objAccount = $("#login_email-mob");
-                   var objPasswd = $("#login_pass-mob");
-                   var objVerifyCode = $("#p_VERIFYCODE");
-                   var p_ACCOUNT = objAccount.val();
-                    var p_PASSWD = objPasswd.val();
-                    $('.alert-err').show();
-                   //var p_VERIFYCODE = objVerifyCode.val();
-                   if (p_ACCOUNT == "") {
-                       $('.alert-err').html("請輪入Email");                     
-                       objAccount.focus();
-                   } else if (p_PASSWD == "") {                     
-                       $('.alert-err').html("請輸入密碼");                    
-                       objPasswd.focus();
-                   }
-                    else if (!validEmail(p_ACCOUNT)) {                      
-                        $('.alert-err').html("帳號非EMail格式");                   
-                       objAccount.focus();
-                       //} else if (p_VERIFYCODE == "") {
-                       //	setInputStyle("warning", objVerifyCode, "請輸入驗證碼");
-                   } else {
-                        $('.alert-err').html("");
-                        $('.alert-err').hide();
-                       var data = {"p_ACCOUNT": p_ACCOUNT, "p_PASSWD": p_PASSWD, "p_ACTION": "Login", "_": new Date().getTime() };
-                       $.post('/lib/member_handle.ashx', data, function (data) {  
-                            if (data == "Y") {
-                                alert('登入成功');
-                                $.magnificPopup.close();
-                                $( ".icon-close-mob" ).trigger( "click" );                                
-                            } else if (data == "-1") {
-                                alert("登入失敗");
-                                //setInputStyle("error", objAccount, "帳號錯誤請重新輸入");
-                                //setInputStyle("error", objPasswd, "密碼錯誤請重新輸入");
-                            } 
-                       });
-                   }
-               });
-              $("#btnRegister-mob").click(function () {
-                //if ($("#rad2").prop("checked")) {
-                    var objNewAccount = $("#regist_email-mob");
-                    var objNewPasswd = $("#regist_pass-mob");
-                    var objChkPasswd = $("#regist_pass1-mob");                    
-                    //var objMobile = $("#p_MOBILE");
-                    var p_NEW_ACCOUNT = objNewAccount.val();
-                    var p_NEW_PASSWD = objNewPasswd.val();
-                    var p_CHK_PASSWD = objChkPasswd.val();
-                    
-                  if (p_NEW_ACCOUNT == "") {                      
-                        setInputStyle("warning", objNewAccount, "請輪入Email");
-                    } else if (!validEmail(p_NEW_ACCOUNT)) {
-                        alert("帳號非EMail格式");
-                        setInputStyle("error", objNewAccount, "Email錯誤請重新輸入");
-                    } else if (p_NEW_PASSWD == "") {
-                        setInputStyle("warning", objNewPasswd, "請輸入密碼");
-                    } else if ((p_NEW_PASSWD.length < 6) || (p_NEW_PASSWD.length > 15)) {
-                        alert("密碼長度不對");
-                        setInputStyle("error", objNewPasswd, "密碼錯誤請重新輸入");
-                    } else if (p_CHK_PASSWD == "") {
-                        setInputStyle("warning", objChkPasswd, "請輸入確認密碼");
-                    } else if (p_CHK_PASSWD != p_NEW_PASSWD) {
-                        alert("請確認兩次輸入的密碼是否相同");
-                        setInputStyle("error", objNewPasswd, "密碼錯誤請重新輸入");
-                        setInputStyle("error", objChkPasswd, "確認密碼錯誤請重新輸入");
-                    //} else if (p_MOBILECODE.length < 4 || p_MOBILE < 6) {
-                    //    alert("行動電話長度不對");
-                    //    setInputStyle("error", objMobile, "行動電話錯誤請重新輸入");
-                    } else {
-                        $.post('/lib/member_handle.ashx', {
-                            "p_ACCOUNT": p_NEW_ACCOUNT, "p_PASSWD": p_NEW_PASSWD,                       
-                            "p_ACTION": "Register", "_": new Date().getTime()
-                        }, function (data) {
-                            if (data == "0") {
-                                alert("註冊失敗");
-                            } else if (data == "-1") {
-                                alert("帳號已經存在");
-                                setInputStyle("error", objNewAccount, "帳號錯誤請重新輸入");
-                            }
-                            else {
-                                alert('加入成功');
-                                $.magnificPopup.close();
-                            }
-                        });
-                    }
-                //} else {
-                //    alert("尚未同意會員服務使用條款");
-                //}
-            });
-            $("#btnRegister").click(function () {
-                //if ($("#rad2").prop("checked")) {
-                    var objNewAccount = $("#regist_email");
-                    var objNewPasswd = $("#regist_pass");
-                    var objChkPasswd = $("#regist_pass1");                    
-                    //var objMobile = $("#p_MOBILE");
-                    var p_NEW_ACCOUNT = objNewAccount.val();
-                    var p_NEW_PASSWD = objNewPasswd.val();
-                    var p_CHK_PASSWD = objChkPasswd.val();
-                    
-                    if (p_NEW_ACCOUNT == "") {
-                        setInputStyle("warning", objNewAccount, "請輪入Email");
-                    } else if (!validEmail(p_NEW_ACCOUNT)) {
-                        alert("帳號非EMail格式");
-                        setInputStyle("error", objNewAccount, "Email錯誤請重新輸入");
-                    } else if (p_NEW_PASSWD == "") {
-                        setInputStyle("warning", objNewPasswd, "請輸入密碼");
-                    } else if ((p_NEW_PASSWD.length < 6) || (p_NEW_PASSWD.length > 15)) {
-                        alert("密碼長度不對");
-                        setInputStyle("error", objNewPasswd, "密碼錯誤請重新輸入");
-                    } else if (p_CHK_PASSWD == "") {
-                        setInputStyle("warning", objChkPasswd, "請輸入確認密碼");
-                    } else if (p_CHK_PASSWD != p_NEW_PASSWD) {
-                        alert("請確認兩次輸入的密碼是否相同");
-                        setInputStyle("error", objNewPasswd, "密碼錯誤請重新輸入");
-                        setInputStyle("error", objChkPasswd, "確認密碼錯誤請重新輸入");
-                    //} else if (p_MOBILECODE.length < 4 || p_MOBILE < 6) {
-                    //    alert("行動電話長度不對");
-                    //    setInputStyle("error", objMobile, "行動電話錯誤請重新輸入");
-                    } else {
-                        $.post('/lib/member_handle.ashx', {
-                            "p_ACCOUNT": p_NEW_ACCOUNT, "p_PASSWD": p_NEW_PASSWD,                       
-                            "p_ACTION": "Register", "_": new Date().getTime()
-                        }, function (data) {
-                            if (data == "0") {
-                                alert("註冊失敗");
-                            } else if (data == "-1") {
-                                alert("帳號已經存在");
-                                setInputStyle("error", objNewAccount, "帳號錯誤請重新輸入");
-                            }
-                            else {
-                                alert('加入成功');
-                                $.magnificPopup.close();
-                            }
-                        });
-                    }
-                //} else {
-                //    alert("尚未同意會員服務使用條款");
-                //}
-            });
-            $("#p_NEW_ACCOUNT").blur(function () {
-                if ($(this).val() != "") {
-                    if (!validEmail($(this).val())) {
-                        alert("帳號非EMail格式");
-                        $(this).focus();
-                    }
-                }
-            });
-
+        
+          
     });
- function validEmail(v) {
-    if (v.indexOf(' ') != -1) {
-        alert('email不可以有空白符號');
-        return false;
-    }
-    if (v.indexOf(',') != -1) {
-        alert('email不可以有","符號');
-        return false;
-    }
-    var b = new RegExp("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
-    return (v.match(b) == null) ? false : true
-}   
+
 function setInputStyle(a, b, msg) {
   //  b.prop("placeholder", d);
     switch (a) {
@@ -801,103 +382,19 @@ function setInputStyle(a, b, msg) {
             b.focus();
             break;
     }
-}
-    </script>
+            }
 
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-120063352-1"></script>
+
+    </script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'UA-120063352-1');
+  gtag('config', 'UA-123155957-1');
 </script>
 
-        <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};HandleGoogleApiLibrary()" onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>
-<script>
-    function HandleGoogleApiLibrary() {
-	// Load "client" & "auth2" libraries
-	gapi.load('client:auth2', {
-		callback: function() {
-			// Initialize client library
-			// clientId & scope is provided => automatically initializes auth2 library
-			gapi.client.init({
-		    	apiKey: 'AIzaSyBnDVUVUIroavX9FIyf7QbSEjNvQqvfx9g',
-		    	clientId: '754193213942-a9fobo4p4djkdrgal6naqt0rue48qdvo.apps.googleusercontent.com',
-		    	scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me'
-			}).then(
-				// On success
-				function(success) {
-			  		// After library is successfully loaded then enable the login button
-			  		$("#login-button").removeAttr('disabled');
-				}, 
-				// On error
-				function(error) {
-					alert('Error : Failed to Load Library');
-			  	}
-			);
-		},
-		onerror: function() {
-			// Failed to load libraries
-		}
-	});
-}
-  $(document).ready(function () {   
-
-$("#login-button").on('click', function() {
-	$("#login-button").attr('disabled', 'disabled');
-			
-	// API call for Google login
-	gapi.auth2.getAuthInstance().signIn().then(
-		// On success
-		function(success) {
-			// API call to get user information
-			gapi.client.request({ path: 'https://www.googleapis.com/plus/v1/people/me' }).then(
-				// On success
-				function(success) {
-					console.log(success);
-					var user_info = JSON.parse(success.body);
-					console.log(user_info);
-                        var data = {"p_ACCOUNT": user_info.id, "p_PASSWD": user_info.emails[0].value, "p_PASSWD": user_info.emails[0].value, "p_username": user_info.displayName, "p_ACTION": "googleLogin", "_": new Date().getTime() };
-                       $.post('/lib/member_handle.ashx', data, function (data) {                           
-                       
-                               if (data == "Y") {
-                                    alert('登入成功');
-                                 
-                               } else if (data == "-1") {
-                                   alert("登入失敗");
-                                   //setInputStyle("error", objAccount, "帳號錯誤請重新輸入");
-                                   //setInputStyle("error", objPasswd, "密碼錯誤請重新輸入");
-                               } 
-                       });
-        
-					//$("#user-information div").eq(0).find("span").text(user_info.displayName);
-					//$("#user-information div").eq(1).find("span").text(user_info.id);
-					//$("#user-information div").eq(2).find("span").text(user_info.gender);
-					//$("#user-information div").eq(3).find("span").html('<img src="' + user_info.image.url + '" />');
-					//$("#user-information div").eq(4).find("span").text(user_info.emails[0].value);
-
-					$("#user-information").show();
-					$("#login-button").hide();
-				},
-				// On error
-				function(error) {
-					$("#login-button").removeAttr('disabled');
-					alert('Error : Failed to get user user information');
-				}
-			);
-		},
-		// On error
-		function(error) {
-			$("#login-button").removeAttr('disabled');
-			alert('Error : Login Failed');
-		}
-	);
-});
-    });
-</script>
-
+ 
     </form>
 </body>
 </html>

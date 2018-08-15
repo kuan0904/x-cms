@@ -89,7 +89,7 @@
                                     <%# Eval("subject") %>
                                 </td>
                                 <td>
-                                   <img src="/webimages/article/<%# Eval("pic") %>" width ="300" />
+                                   <img src="<%# Eval("pic") %>" width ="300" />
                                 </td>
                                 <td>
                                     <%# Eval("status").ToString () =="Y" ? "上架":"下架" %>

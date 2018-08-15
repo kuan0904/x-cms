@@ -1,12 +1,12 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Hot_list.aspx.cs" Inherits="Hot_list" %>
 
-                                    <div class=block-title>熱門排行榜</div>
+                                    <h2 class="new-index-main-title text-center">Popular</h2>
                                     <div class="news-wrap news-list">
                                         <asp:Repeater ID="news_hotlist" runat="server" EnableViewState ="false" >
                                             <ItemTemplate>
                                             <div class="thumbnail">
                                                 <div class="pic effect">
-                                                    <img src="/webimages/article/<%#Eval("pic") %>" alt="" title="<%#Eval("subject") %>">
+                                                    <img src="<%#Eval("pic") %>" alt="" title="<%#Eval("subject") %>">
                                                     <a class="view-more" href="/Article/<%#Eval("id") %>" title="了解更多"><span>more</span></a>
                                                 </div>
 

@@ -10,6 +10,7 @@ using System.Data;
 using System.Text.RegularExpressions;
 using System.Security.Cryptography;
 using System.Text;
+using System.Drawing.Imaging;
 /// <summary>
 /// classlib 的摘要描述
 /// C# 字串變數, 如何包含雙引號或反斜線
@@ -24,14 +25,133 @@ using System.Text;
 /// </summary>
 /// 
 namespace unity {
-  
+    public static class MyImage
+    {
+        public static Bitmap RotateImage(System.Drawing.Image img) //相片橫拍轉正
+        {
+
+            var exif = img.PropertyItems;
+            byte orien = 0;
+            var item = exif.Where(m => m.Id == 274).ToArray();
+            if (item.Length > 0)
+                orien = item[0].Value[0];
+            switch (orien)
+            {
+                case 2:
+                    img.RotateFlip(RotateFlipType.RotateNoneFlipX);//horizontal flip
+                    break;
+                case 3:
+                    img.RotateFlip(RotateFlipType.Rotate180FlipNone);//right-top
+                    break;
+                case 4:
+                    img.RotateFlip(RotateFlipType.RotateNoneFlipY);//vertical flip
+                    break;
+                case 5:
+                    img.RotateFlip(RotateFlipType.Rotate90FlipX);
+                    break;
+                case 6:
+                    img.RotateFlip(RotateFlipType.Rotate90FlipNone);//right-top
+                    break;
+                case 7:
+                    img.RotateFlip(RotateFlipType.Rotate270FlipX);
+                    break;
+                case 8:
+                    img.RotateFlip(RotateFlipType.Rotate270FlipNone);//left-bottom
+                    break;
+                default:
+                    break;
+            }
+            return (Bitmap)img;
+        }
+
+        //等比縮圖、(裁圖範圍置中)
+        public static Bitmap Image_ChangeOpacity(Image img, float opacityvalue)
+        {
+            Bitmap bmp = new Bitmap(img.Width, img.Height);
+            Graphics graphics = Graphics.FromImage(bmp);
+            ColorMatrix colormatrix = new ColorMatrix();
+            colormatrix.Matrix33 = opacityvalue;
+            ImageAttributes imgAttribute = new ImageAttributes();
+            imgAttribute.SetColorMatrix(colormatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+            graphics.DrawImage(img, new Rectangle(0, 0, bmp.Width, bmp.Height), 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, imgAttribute);
+            graphics.Dispose();
+            return bmp;
+        }
+        public static System.Drawing.Image ZoomImage(System.Drawing.Image bitmap, int destWidth, int destHeight)
+        { //等比縮放
+            try
+            {
+                System.Drawing.Image sourImage = bitmap;
+                bitmap = RotateImage(bitmap);
+                int width = 0, height = 0;
+                //按比例縮放         
+                int sourWidth = sourImage.Width;
+                int sourHeight = sourImage.Height;
+                if (sourHeight > destHeight || sourWidth > destWidth)
+                {
+                    if ((sourWidth * destHeight) > (sourHeight * destWidth))
+                    {
+                        width = destWidth;
+                        height = (destWidth * sourHeight) / sourWidth;
+                    }
+                    else
+                    {
+                        height = destHeight;
+                        width = (sourWidth * destHeight) / sourHeight;
+                    }
+                }
+                else
+                {
+                    width = sourWidth;
+                    height = sourHeight;
+                }
+                Bitmap destBitmap = new Bitmap(destWidth, destHeight);
+                Graphics g = Graphics.FromImage(destBitmap);
+                g.Clear(Color.Transparent);
+                //設置畫布的描繪品質   
+                // webpic = Image_ChangeOpacity(webpic, 0f);  
+                g.Clear(Color.Transparent);
+                // g.Clear(Color.Black);
+                g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                g.DrawImage(sourImage, new Rectangle((destWidth - width) / 2, (destHeight - height) / 2, width, height), 0, 0, sourImage.Width, sourImage.Height, GraphicsUnit.Pixel);
+                //高度置中
+                //g.DrawImage(sourImage, new Rectangle((destWidth - width) / 2, (destHeight - height), width, height), 0, 0, sourImage.Width, sourImage.Height, GraphicsUnit.Pixel);
+                //齊底
+                g.Dispose();
+                //設置壓縮品質     
+                System.Drawing.Imaging.EncoderParameters encoderParams = new System.Drawing.Imaging.EncoderParameters();
+                long[] quality = new long[1];
+                quality[0] = 100;
+                System.Drawing.Imaging.EncoderParameter encoderParam = new System.Drawing.Imaging.EncoderParameter(System.Drawing.Imaging.Encoder.Quality, quality);
+                encoderParams.Param[0] = encoderParam;
+                sourImage.Dispose();
+                return destBitmap;
+            }
+            catch
+            {
+                return bitmap;
+            }
+        }
+        public static void ResizeImg(int PicWidth, int PicHeight, string filePath, string saveFilePath)
+        { //重新設定大小
+
+            System.Drawing.Image originalImage;
+            WebClient webC = new WebClient();
+            originalImage = System.Drawing.Image.FromStream(webC.OpenRead(filePath));
+            originalImage = ZoomImage(originalImage, PicWidth, PicHeight);
+            originalImage.Save(saveFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+
+        }
+
+
+    }
     public static class classlib
     {
         public static string dbConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["dbconnConnection"].ConnectionString;
- 
-        private static string ZipRegex = "<(.|\\n)+?>";
-    
-        private static string delivername = "cairnskitchen";
+       private static string delivername = "cairnskitchen";
         private static string servicemail = "leokuan@xnet.world";
         private static string smtpuid = "leokuan@xnet.world";
         private static string smtppwd = "ck43285929tw";
@@ -45,7 +165,62 @@ namespace unity {
             ,  "已完成"
             ,  "進行中"
             ,  "已消" };
-
+        public static System.Drawing.Image ZoomImage(System.Drawing.Image bitmap, int destWidth, int destHeight)
+        {
+            try
+            {
+                System.Drawing.Image sourImage = bitmap;
+                int width = 0, height = 0;
+                //按比例縮放         
+                int sourWidth = sourImage.Width;
+                int sourHeight = sourImage.Height;
+                if (sourHeight > destHeight || sourWidth > destWidth)
+                {
+                    if ((sourWidth * destHeight) > (sourHeight * destWidth))
+                    {
+                        width = destWidth;
+                        height = (destWidth * sourHeight) / sourWidth;
+                    }
+                    else
+                    {
+                        height = destHeight;
+                        width = (sourWidth * destHeight) / sourHeight;
+                    }
+                }
+                else
+                {
+                    width = sourWidth;
+                    height = sourHeight;
+                }
+                Bitmap destBitmap = new Bitmap(destWidth, destHeight);
+                Graphics g = Graphics.FromImage(destBitmap);
+                g.Clear(Color.Transparent);
+                //設置畫布的描繪品質   
+                // webpic = Image_ChangeOpacity(webpic, 0f);  
+                // g.Clear(Color.Transparent);
+                // g.Clear(Color.Black);
+                g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                // g.DrawImage(sourImage, new Rectangle((destWidth - width) / 2, (destHeight - height) / 2, width, height), 0, 0, sourImage.Width, sourImage.Height, GraphicsUnit.Pixel);
+                //高度置中
+                g.DrawImage(sourImage, new Rectangle((destWidth - width) / 2, (destHeight - height), width, height), 0, 0, sourImage.Width, sourImage.Height, GraphicsUnit.Pixel);
+                //齊底
+                g.Dispose();
+                //設置壓縮品質     
+                System.Drawing.Imaging.EncoderParameters encoderParams = new System.Drawing.Imaging.EncoderParameters();
+                long[] quality = new long[1];
+                quality[0] = 100;
+                System.Drawing.Imaging.EncoderParameter encoderParam = new System.Drawing.Imaging.EncoderParameter(System.Drawing.Imaging.Encoder.Quality, quality);
+                encoderParams.Param[0] = encoderParam;
+                sourImage.Dispose();
+                return destBitmap;
+            }
+            catch
+            {
+                return bitmap;
+            }
+        }
         public static string get_ord_status(string id)
         {
             string value = "";
@@ -563,84 +738,7 @@ namespace unity {
         }
 
 
-        //等比縮圖、(裁圖範圍置中)
-
-        public static void ResizeImg(int picwidth, int picheight, string filePath, string saveFilePath)
-        {
-            float rat1 = 1;
-            float rat2 = 1;
-            int CutWidth = 0;
-            int CutHeight = 0;
-            int PointX = 0;
-            int PointY = 0;
-
-            System.Drawing.Image imgPhoto = null;
-            WebClient webC = new WebClient();
-            imgPhoto = System.Drawing.Image.FromStream(webC.OpenRead(filePath));
-
-            //---------------------------------------------------------------
-
-            if (picwidth < imgPhoto.Width | imgPhoto.Height > picheight)
-            {
-                rat1 = imgPhoto.Width / picwidth;
-                rat2 = imgPhoto.Height / picheight;
-                if (rat1 < rat2)
-                {
-                    rat2 = rat1;
-                }
-                if (rat2 < rat1)
-                {
-                    rat1 = rat2;
-                }
-                CutWidth = Convert.ToInt32(imgPhoto.Width / rat1);
-                CutHeight = Convert.ToInt32(imgPhoto.Height / rat2);
-            }
-            else {
-                CutWidth = imgPhoto.Width;
-                CutHeight = imgPhoto.Height;
-            }
-
-            ///////////////長寬等比縮放////////////////
-            if (picheight == 0)
-            {
-                rat1 = imgPhoto.Width / picwidth;
-                CutWidth = Convert.ToInt32(imgPhoto.Width / rat1);
-                CutHeight = Convert.ToInt32(imgPhoto.Height / rat1);
-                picheight = CutHeight;
-
-            }
-            else if (picwidth == 0)
-            {
-                rat2 = imgPhoto.Height / picheight;
-                CutWidth = Convert.ToInt32(imgPhoto.Width / rat2);
-                CutHeight = Convert.ToInt32(imgPhoto.Height / rat2);
-                picwidth = CutWidth;
-            }
-            //---------------------------------------------------------------
-
-
-            System.Drawing.Image bmPhoto = new System.Drawing.Bitmap(picwidth, picheight);
-            Graphics gbmPhoto = System.Drawing.Graphics.FromImage(bmPhoto);
-
-            gbmPhoto.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-            gbmPhoto.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            gbmPhoto.Clear(Color.Transparent);
-
-            if (CutWidth > picwidth)
-            {
-                PointX = CutWidth / 2 - picwidth / 2;
-            }
-            if (imgPhoto.Height > picheight)
-            {
-                PointY = CutHeight / 2 - picheight / 2;
-            }
-
-            gbmPhoto.DrawImage(imgPhoto, new Rectangle(0, 0, picwidth, picheight), new Rectangle(PointX * imgPhoto.Width / CutWidth, PointY * imgPhoto.Height / CutHeight, picwidth * imgPhoto.Width / CutWidth, picheight * imgPhoto.Height / CutHeight), GraphicsUnit.Pixel);
-            bmPhoto.Save(saveFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
-            gbmPhoto.Dispose();
-            bmPhoto.Dispose();
-        }
-
+     
 
         #endregion
         public static string RemoveHTMLTag(string htmlSource)

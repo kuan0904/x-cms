@@ -11,54 +11,84 @@ using System.Collections.Specialized;
 public partial class MasterPage : System.Web.UI.MasterPage
 {
     public string logo = "";
-    public string[] active = { "", "", "", "", "", "","" };
+    public string active = "";
     public string FacebookAppId = "164103481107660";
-    protected void Page_Load(object sender, EventArgs e)
+    public string cid = "";
+    public string _status = "";
+    public string _link = "";
+    protected void Page_Init(object sender, EventArgs e)
     {
-
-        string returnurl = (Request.QueryString["page"] != null) ? Request.QueryString["page"] : "";
-        btnFbLogin.NavigateUrl = "https://www.facebook.com/v2.10/dialog/oauth/?client_id=164103481107660&redirect_uri=https://www.culturelaunch.net/fb_login.ashx&response_type=code" ;
-
-       
-        string cid = "";
-        Route myRoute = Page.RouteData.Route as Route;
-        if (myRoute != null)
+        if (Session["webmenu"] == null)
         {
-          
-            cid =Page.RouteData.Values["id"] == null  ? "" :Page.RouteData.Values["id"].ToString();
+            object menu = unitlib.Get_menu();
+            Session["webmenu"] = menu;
+        }
 
+        if (Session["memberdata"] == null)
+        {
+            _status = "登入 / 註冊";
+            _link = "/ligin.html";
+        }
+        else
+        {
+            _status = "Hi 會員名稱";
+            _link = "/member-edit.html";
+        }
+
+    }
+    protected void Page_Load(object sender, EventArgs e) {
+
+      
+        Route myRoute = Page.RouteData.Route as Route;
+        if (myRoute != null)       {
+           cid =Page.RouteData.Values["id"] == null  ? "" :Page.RouteData.Values["id"].ToString();
         }
         else
         {
             cid = Request.QueryString["cid"];
         }
-    
-        string[] array = { "3", "13","14","15","16" };
-        if (array.Contains(cid))
-        {
-            logo = " emba";
-            active[3] = " active";
-        }
-        array = new string [4]  { "1", "7","8","9" };
-        if (array.Contains(cid))
-        {    
-            active[1] = " active";
-        }
-        array = new string[4] { "2", "10", "11", "12" };
-        if (array.Contains(cid))
-        {
-         
-            active[2] = " active";
-        }
-        if (cid =="5") active[5] = " active";
-        if (cid == "4")active[4] = " active";
-        array = new string[3] { "6", "17", "18" };
-        if (array.Contains(cid))
-        {
-
-            active[6] = " active";
-        }
-
       
+   
+        active = cid;
+
+        List<unitlib.MenuModel> subMenu = (List<unitlib.MenuModel>) Session["webmenu"];
+        var parent = subMenu.FirstOrDefault(x => x.Detial.Any(y => y.Id.ToString () == cid));
+        if (parent != null) active = parent.Id.ToString();
+
+
+        //foreach (unitlib.MenuModel m1 in subMenu)
+        //{
+        //    List<unitlib.MenuModel> m2 = m1.Detial;
+        //    foreach (unitlib.MenuModel m in m2)
+        //    {
+        //        if (m.Id.ToString() == cid) active = m1.Id.ToString();
+        //        if (m1.Id.ToString()  == "3") logo = "emba";
+        //    }
+        //}
+        rptmenu.DataSource = Session["webmenu"];//  JsonConvert.SerializeObject(aa);
+        rptmenu.DataBind();
+        mrptmenu.DataSource = Session["webmenu"];//  JsonConvert.SerializeObject(aa);
+        mrptmenu.DataBind();
+      
+    }
+
+    protected void rptmenu_ItemDataBound(object sender, RepeaterItemEventArgs e)
+    {
+
+        List<unitlib.MenuModel> menus = new List<unitlib.MenuModel>();
+        menus = (List<unitlib.MenuModel>)Session["webmenu"];
+        foreach (unitlib.MenuModel m1 in menus)
+        {
+            if (m1.Id == ((unitlib.MenuModel)e.Item.DataItem).Id)
+            {
+                Repeater rpt = (Repeater)e.Item.FindControl("Repeater1");
+                List<unitlib.MenuModel> submenu = new List<unitlib.MenuModel>();
+                submenu = ((unitlib.MenuModel)e.Item.DataItem).Detial;
+                rpt.DataSource = submenu;
+                rpt.DataBind();
+            }
+
+
+        }
     }
 }

@@ -51,7 +51,7 @@ public partial class detail : System.Web.UI.Page
             if (MainData.kind =="Y" || MainData.kind == "L") Response.Redirect("/Class/" + MainData.Id );
             subject = MainData.Subject;
             Session["title"] = subject + "│" + Application["site_name"];
-            pic = "/webimages/article/" + MainData.Pic;
+            pic = MainData.Pic;
             Session["image"] = Session["websiteurl"] + pic;
             pic = "<a href=\"" + pic + "\">" + "<img class=\"image-full modal-image size-full\" src=\"" + pic + "\" width=\"1350\" height=\"900\" /></a>";
             postday = MainData.PostDay.ToString("yyyy/MM/dd");
@@ -72,7 +72,7 @@ public partial class detail : System.Web.UI.Page
             article.DbHandle.Add_views(MainData.Id);
    
             List<article.Category>  cate = new List<article.Category >();
-            cate = (List<article.Category>) article.DbHandle.Get_article_category(MainData.Id,"list");         
+            cate = (List<article.Category>) article.DbHandle.Get_article_category(MainData.Id );         
 
             foreach (var a in cate)
             {
@@ -81,12 +81,12 @@ public partial class detail : System.Web.UI.Page
                 dt.DefaultView.RowFilter = "categoryid=" + a.CategoryId;
               
                 dt1 = dt.DefaultView.ToTable();
-                pageunit = "<li class=\"active\"><a href=\"/" + dt1.Rows[0]["CategoryId"].ToString()  + "/catalog\">" + dt1.Rows[0]["title"].ToString() + "</a></li>";
+                pageunit = "<li class=\"active\"><a href=\"/catalog/" + dt1.Rows[0]["CategoryId"].ToString() + "\">" + dt1.Rows[0]["title"].ToString() + "</a></li>";
                 if (dt1.Rows[0]["parentid"].ToString() != "0")
                 {
                     dt.DefaultView.RowFilter = "categoryid=" + dt1.Rows[0]["parentid"].ToString();
                     dt1 = dt.DefaultView.ToTable();
-                    pageunit = "<li><a href=\"/" + dt1.Rows[0]["CategoryId"].ToString() + "/catalog\">" + dt1.Rows[0]["title"].ToString() + "</a></li>" + pageunit;
+                    pageunit = "<li><a href=\"/catalog/" + dt1.Rows[0]["CategoryId"].ToString() + "\"> " + dt1.Rows[0]["title"].ToString() + "</a></li>" + pageunit;
                     dt1.Dispose();
                     dt.Dispose();
                    

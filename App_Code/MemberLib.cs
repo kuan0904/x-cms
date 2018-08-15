@@ -21,17 +21,19 @@ public class MemberLib
     }
     public class Member
     {
-        public static  String Check_exist(string id,string fbid ="")
+        public static Mmemberdata Check_exist(string id,string fbid ="")
         {
-            string result = "";
-            string strsql = "select email from  MemberData where  email =@id or fbid=@id ";
+            Mmemberdata result = new Mmemberdata ();
+            result.Memberid = 0;
+            string strsql = "select memberid from  MemberData where  email =@id or fbid=@id ";
 
             NameValueCollection nvc = new NameValueCollection
             {
                 { "id", id.ToString() }
             };
             DataTable dt = DbControl.Data_Get(strsql, nvc);
-            if (dt.Rows.Count != 0) result = "Y";
+            if (dt.Rows.Count != 0)
+                result = GetData(dt.Rows[0]["memberid"].ToString()) ;
             dt.Dispose();
             return result;        
 
@@ -39,7 +41,7 @@ public class MemberLib
         public static Mmemberdata Add(string email,string password, string fbid = ""
                 ,string googleid="", string username="",string phone="")
         {
-            string result = "";
+            Mmemberdata result = new Mmemberdata ();
             string strsql = @"insert  into MemberData ( email,password ,fbid,googleid,phone)
             values  ( @email,@password,@fbid,@googleid,@phone ) ";
             NameValueCollection nvc = new NameValueCollection
@@ -55,12 +57,12 @@ public class MemberLib
                 result = GoogleLogin(googleid, email, username);
             else
                 result = Login(email, password, fbid);           
-            return GetData (result );
+            return result  ;
 
         }
-        public static  string  Login(string email, string password,string fbid="")
+        public static Mmemberdata Login(string email, string password,string fbid="")
         {
-            string result = "";
+            Mmemberdata result = new Mmemberdata();
             string strsql = @"select memberid from MemberData  where  (email=@email and password=@password ) ";
             if (fbid != "") {strsql = @"select memberid from MemberData  where  (fbid=@fbid ) "; }
          
@@ -72,26 +74,26 @@ public class MemberLib
               
             };
             DataTable dt = DbControl.Data_Get(strsql, nvc);
-            if (dt.Rows.Count > 0) result = dt.Rows[0]["memberid"].ToString();
+            if (dt.Rows.Count > 0) result =  GetData ( dt.Rows[0]["memberid"].ToString());
             dt.Dispose();
             return result;
 
         }
-        public static string GoogleLogin(string googleid,string email, string displayName)
+        public static Mmemberdata GoogleLogin(string googleid,string email, string displayName)
         {
-            string result = "";
+            Mmemberdata result = new Mmemberdata();
             string strsql = @"select memberid from MemberData  where  (googleid=@googleid ) "; 
             NameValueCollection nvc = new NameValueCollection
             {       
                 {"googleid",googleid }
             };
             DataTable dt = DbControl.Data_Get(strsql, nvc);
-            if (dt.Rows.Count > 0) result = dt.Rows[0]["memberid"].ToString();
+            if (dt.Rows.Count > 0) result = GetData(dt.Rows[0]["memberid"].ToString());
             else
             {
                 MemberLib.Member.Add(email, email, "", googleid, displayName, "");
                 dt = DbControl.Data_Get(strsql, nvc);
-                if (dt.Rows.Count > 0) result = dt.Rows[0]["memberid"].ToString();
+                if (dt.Rows.Count > 0) result = GetData(dt.Rows[0]["memberid"].ToString());
             }
             dt.Dispose();
         

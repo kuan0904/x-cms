@@ -4,8 +4,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Web.Http.Cors;
+
+[EnableCors(origins: "*", headers: "*", methods: "*")]
 public class articleController : ApiController
 {
     // GET api/<controller>

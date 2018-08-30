@@ -21,7 +21,7 @@ public partial class spadmin_edit_tag : System.Web.UI.Page
     {
 
         unitid = Request.QueryString["unitid"];   
-        unitname = unitlib.Get_UnitName(int.Parse(unitid));  
+        unitname = Unitlib.Get_UnitName(int.Parse(unitid));  
 
     }
     protected void Page_Load(object sender, EventArgs e)

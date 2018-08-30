@@ -37,7 +37,7 @@ public partial class spadmin_orderdata : System.Web.UI.Page
         enddate.Text = DateTime.Today.ToString("yyyy/MM/dd");
         strdate.Text = DateTime.Today.AddDays (-7).ToString("yyyy/MM/dd");
         DataTable dt = new DataTable();
-        string strsql = "select * from Receivetime where status=@status";
+        string strsql = "select * from tbl_Receivetime where status=@status";
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("status", "Y");
         dt = DbControl.Data_Get(strsql, nvc);
@@ -45,7 +45,7 @@ public partial class spadmin_orderdata : System.Web.UI.Page
         receivetime.DataBind();
         dt.Dispose();
 
-        strsql = "select * from invoice where status=@status";
+        strsql = "select * from tbl_invoice where status=@status";
         dt = DbControl.Data_Get(strsql, nvc);
         invoice.DataSource = dt;
         invoice.DataBind();
@@ -53,7 +53,7 @@ public partial class spadmin_orderdata : System.Web.UI.Page
 
 
 
-        strsql = "select * from payStatus where status=@status";
+        strsql = "select * from tbl_payStatus where status=@status";
         dt = DbControl.Data_Get(strsql, nvc);
         payStatus.DataSource = dt;
         payStatus.DataBind();
@@ -78,7 +78,7 @@ public partial class spadmin_orderdata : System.Web.UI.Page
         Selected_id.Value = obj.CommandArgument;
      
         DataTable dt= new DataTable() ;
-        string strsql = "select * from OrderData where ord_id=@ord_id";
+        string strsql = "select * from tbl_OrderData where ord_id=@ord_id";
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("ord_id", Selected_id.Value  );
         dt= DbControl.Data_Get(strsql, nvc);
@@ -111,8 +111,8 @@ public partial class spadmin_orderdata : System.Web.UI.Page
         else
             paid.SelectedValue = "N";
         dt.Dispose();        
-        strsql = @"select *  FROM         OrderDetail INNER JOIN
-                      productData ON OrderDetail.p_id = productData.p_id where ord_id=@ord_id";
+        strsql = @"select *  FROM         tbl_OrderDetail INNER JOIN
+                      tbl_productData ON tbl_OrderDetail.p_id = tbl_productData.p_id where ord_id=@ord_id";
         dt = DbControl.Data_Get(strsql, nvc);
         Repeater1.DataSource = dt;
         Repeater1.DataBind();
@@ -197,15 +197,15 @@ public partial class spadmin_orderdata : System.Web.UI.Page
     {
 
         NameValueCollection nvc = new NameValueCollection();
-        string strsql = @" SELECT  *  FROM   OrderData INNER JOIN
-                      payStatus ON OrderData.status =payStatus.id            where ord_id > 0 ";
+        string strsql = @" SELECT  *  FROM   tbl_OrderData INNER JOIN
+                      tbl_payStatus ON tbl_OrderData.status =payStatus.id            where ord_id > 0 ";
         if ( qpaykind.SelectedIndex > 0)
         {
             strsql += " and paymode= '" + qpaykind.SelectedValue + "' ";
         }
         if (qstatus .SelectedIndex > 0)
         {
-            strsql += " and OrderData.status= '" +  qstatus .SelectedValue + "' ";
+            strsql += " and tbl_OrderData.status= '" +  qstatus .SelectedValue + "' ";
         }
         if (strdate.Text != "")   strsql += " and ord_date >= '" + strdate.Text  + "'";               
         if (enddate.Text != "")   strsql += " and ord_date <= '" +  enddate.Text + "'";        

@@ -1,4 +1,4 @@
-/*==================================================================
+﻿/*==================================================================
 | Designer: UTRUST Technology Co.                                  |
 | Auther Email: service(a)utrust.com.tw                            |
 | Author Web: http://www.utrust.com.tw/                            |
@@ -19,7 +19,7 @@
 
 
 * { font-family: "Montserrat","Microsoft JhengHei"; }
-input[type="text"], input[type="url"], input[type="tel"], input[type="email"] {
+input[type="text"], input[type="url"], input[type="tel"], input[type="email"], input[type="password"] {
     font-family: Microsoft JhengHei;
     font-size: 15px;
 }
@@ -333,7 +333,7 @@ h1.logo a {
     margin: 15px 25px;
     height: inherit;
     line-height: initial;
-    background: url(https://www.culturelaunch.net/images/logo.svg) no-repeat;
+    background: url(/images/logo.jpg) no-repeat;
     color: transparent;
     width: 200px;
     height: 60px;

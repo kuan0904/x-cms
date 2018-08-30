@@ -27,9 +27,9 @@
     <link rel="stylesheet" href='assets/font-awesome/css/font-awesome.min.css' />
     <link rel="stylesheet" href='assets/bootstrap/css/bootstrap.min.css' />
     <link rel="stylesheet" href='css/reset.css' type='text/css' />
-    <link rel="stylesheet" href='css/theme.css' type='text/css' />
+    <link rel="stylesheet" href='css/theme.css?v=1' type='text/css' />
     <link rel="stylesheet" href='css/post-layout.css' type='text/css' />
-    <link rel="stylesheet" href='css/style.css' type='text/css' />
+    <link rel="stylesheet" href='css/style.css?v=1' type='text/css' />
     <link rel="shortcut icon" href="favicon.ico" />
     <!--[if lt IE 9]><script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
     <style>
@@ -146,7 +146,7 @@
                                 <span class="input-group-addon">
                                     <i class="fa fa-user fa-lg" aria-hidden="true"></i>
                                 </span>
-                                <input type="text" class="form-control">
+                                <input type="text" id="login_email" class="form-control">
                             </div>
                         </div>
                         <div class="form-group">
@@ -154,12 +154,12 @@
                                 <span class="input-group-addon">
                                     <i class="fa fa-key" aria-hidden="true"></i>
                                 </span>
-                                <input type="text" class="form-control">
+                                <input type="password" id="loginpass" class="form-control">
                             </div>
                         </div>
                         <div class="divide20"></div>
 
-                        <button type="submit" class="btn btn-green btn-lg btn-block" id="">
+                        <button type="button" class="btn btn-green btn-lg btn-block" id="btnLogin">
                             登入
                             <i class="fa fa-angle-right margin-L-5" aria-hidden="true"></i>
                         </button>
@@ -191,17 +191,18 @@
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 
     <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};HandleGoogleApiLibrary()" onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>
+    <script src="/lib/common.js"></script>
 
     <script>
         $(document).ready(function () {
             $(".btn-facebook").click(function () {
-            
+
                 location.href = 'https://www.facebook.com/v2.10/dialog/oauth/?client_id=164103481107660&redirect_uri=https://www.culturelaunch.net/fb_login.ashx&response_type=code';
-                return false ;
+                return false;
             });
             $("#btnLogin").click(function () {
                 var objAccount = $("#login_email");
-                var objPasswd = $("#login_pass");
+                var objPasswd = $("#loginpass");
                 var objVerifyCode = $("#p_VERIFYCODE");
                 var p_ACCOUNT = objAccount.val();
                 var p_PASSWD = objPasswd.val();
@@ -226,12 +227,14 @@
 
                         if (data == "Y") {
                             alert('登入成功');
-                            $.magnificPopup.close();
+                            //$.magnificPopup.close();
+                            location.href = '/index';
                         } else if (data == "-1") {
                             alert("登入失敗");
                             //setInputStyle("error", objAccount, "帳號錯誤請重新輸入");
                             //setInputStyle("error", objPasswd, "密碼錯誤請重新輸入");
                         }
+                        return false;
                     });
                 }
             });

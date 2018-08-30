@@ -92,7 +92,7 @@
                                     <%# Eval("subject") %>
                                 </td>
                                 <td>
-                                   <img src="<%# Eval("pic") %>" width ="300" />
+                                   <img src="/webimages/article/<%# Eval("pic") %>" width ="300" />
                                 </td>
                                 <td>
                                     <%# Eval("status").ToString () =="Y" ? "上架":"下架" %>
@@ -134,6 +134,7 @@
                     $('#postDay').val(result.PostDay);   
                     CKEDITOR.instances['contents'].setData(result.Contents);                           
                     document.getElementById('console').innerHTML = ("<img src=\"" + result.Pic + "\" width=300>");
+                  
                     $('#logoPic').val(result.Pic); 
                     
                 });
@@ -151,7 +152,7 @@
             get_category();           
         });
         function get_category() {
-            var dataValue = "{ kind: 'get' }";
+            var dataValue = "{ kind: 'get' ,classid:'1'}";
             $.postJSON('article.aspx/get_category', dataValue, 'application/json; charset=utf-8', function (result) {
                 if (result != "") {
                     var result = result.d;
@@ -492,6 +493,7 @@
                         FileUploaded: function (up, file, res) {                                                       
                             var json = $.parseJSON(res.response);
                             document.getElementById('console').innerHTML = ("<img src=\"/webimages/article/" + json.result + "\">");
+
                             $("#logoPic").val(json.result);
 
                         },

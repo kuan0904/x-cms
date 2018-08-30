@@ -51,16 +51,37 @@ public class articleController : ApiController
     [ActionName("Getwebmenu")]
     public object Getwebmenu()
     {
-        return unitlib.Get_menu();
+        return Unitlib.Get_menu();
         // string result = JsonConvert.SerializeObject(hotlist);
     }
+
     [ActionName("Getbanner")]
     public object Getbanner(int id = 1)
     {
         List<Banner.MainData> banner1 = new List<Banner.MainData>();
-        banner1 = Banner.DbHandle.Banner_Get_list(1);
+        banner1 = Banner.DbHandle.Banner_Get_list(id);
         return banner1;
         // string result = JsonConvert.SerializeObject(hotlist);
     }
+    // [Route("api/GetPopular/ID/{id:int}")]    
+    [ActionName("Popular")]
+    public object GetPopular(int id = 0)
+    {
+        ;
+        List<article.MainData> hotlist = new List<article.MainData>();
+        hotlist = article.DbHandle.Get_article_list(id.ToString (), "", 5, 1);
+
+        return hotlist;
+       
+    }
+    [ActionName("Recommad")]
+    public object GetRecommad(int id = 0)
+    {
+        List<Banner.MainData> banner1 = new List<Banner.MainData>();
+        banner1 = Banner.DbHandle.Banner_Get_list(id);
+        return banner1;
+
+    }
+
 }
 

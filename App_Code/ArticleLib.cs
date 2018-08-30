@@ -82,11 +82,7 @@ namespace article
     }
     public class Web : ApiController
     {
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
+   
 
         public static List<MainData> Recommend_list(int ClassId)
         {

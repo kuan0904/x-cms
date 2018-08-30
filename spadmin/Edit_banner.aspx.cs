@@ -19,7 +19,7 @@ public partial class spadmin_Edit_banner : System.Web.UI.Page
             etime.Items.Add(i.ToString() );
         }
         unitid = Request.QueryString["unitid"];
-        unitname = unitlib.Get_UnitName(int.Parse(unitid));
+        unitname = Unitlib.Get_UnitName(int.Parse(unitid));
         string strsql = "SELECT *  FROM tbl_banner_class where unitid = (select upperid from unitdata where unitid= @id) order by  sort ";
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("id", Request.QueryString ["unitid"]);

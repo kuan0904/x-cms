@@ -10,6 +10,10 @@ using System.Data.SqlClient;
 using System.Collections.Specialized;
 public partial class detail : System.Web.UI.Page
 {
+    public Unitlib.WebsiteData m = new Unitlib.WebsiteData();
+
+
+
     public string subject = "";
     public string contents = "";
     public string pic = "";
@@ -20,19 +24,30 @@ public partial class detail : System.Web.UI.Page
     public string pagetitle = "";
     public string pageunit = "";
     public string author = "";
+    public string cid = "";
+    protected void Page_LoadComplete(object sender, EventArgs e)
+    {
+        
+       
+        ASP.masterpage_master P  = this.Master as ASP.masterpage_master;
+        P.active = cid;
+       
+    }
     protected void Page_Load(object sender, EventArgs e)
     {
+       
+        Unitlib.WebsiteData m = new Unitlib.WebsiteData();
 
-
-        string Articlid = Request.QueryString["id"];
+ 
+        string Articlid = Request.QueryString["Articlid"];
         Route myRoute = RouteData.Route as Route;     
         if (myRoute != null )
         {
 
-            Articlid = RouteData.Values["id"].ToString();
-           // string verder = (string)Page.RouteData.Values["verder"];
+            Articlid = RouteData.Values["Articlid"].ToString();
+          
         }
-       
+    
         article.MainData MainData = new article.MainData();
         List<article.ItemData> ItemData = new List<article.ItemData>() ;
      
@@ -79,7 +94,7 @@ public partial class detail : System.Web.UI.Page
                 DataTable dt,dt1;
                 dt = (DataTable)Application["category"];
                 dt.DefaultView.RowFilter = "categoryid=" + a.CategoryId;
-              
+                cid = a.CategoryId.ToString ();
                 dt1 = dt.DefaultView.ToTable();
                 pageunit = "<li class=\"active\"><a href=\"/catalog/" + dt1.Rows[0]["CategoryId"].ToString() + "\">" + dt1.Rows[0]["title"].ToString() + "</a></li>";
                 if (dt1.Rows[0]["parentid"].ToString() != "0")

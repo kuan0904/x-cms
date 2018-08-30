@@ -8,16 +8,12 @@
     <title></title>
 </head>
 <body onload="document.Spgateway.submit()">
-<form name='Spgateway' method='post' 
-action='<%=action %>'>
-   
-    MerchantID：
-    <input type='text' name='MerchantID' value='<%=MerchantID %>'/>
-     <input type='text' name='TradeInfo' value='<%= aes %>'/>
-     <input type='text' name='TradeSha' value='<%=Sha %>'/>
-      <input type='text' name='Version' value='1.4'/>
-<input type='submit' value='Submit'/>
-
+<form name='Spgateway' method='post' action='<%=action %>'>
+資料處理中...請稍後!
+    <input type='hidden' name='MerchantID' value='<%=MerchantID %>'/>
+     <input type='hidden' name='TradeInfo' value='<%= aes %>'/>
+     <input type='hidden' name='TradeSha' value='<%=Sha %>'/>
+      <input type='hidden' name='Version' value='1.4'/>
 </form>
 </body>
 </html>

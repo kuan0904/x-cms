@@ -32,9 +32,7 @@
     }
     void Application_Start(object sender, EventArgs e)
     {
-
         Application["FacebookAppId"]   = "1764690486918673";
-
         RouteConfig.RegisterRoutes(RouteTable.Routes);
         //  BundleConfig.RegisterBundles(BundleTable.Bundles);
         string strsql = "";
@@ -59,9 +57,7 @@
             dt.Dispose();
         }
 
-        // 在應用程式啟動時執行的程式碼   
-
-  
+        // 在應用程式啟動時執行的程式碼     
         RouteTable.Routes.MapHttpRoute(
         name: "DefaultApi",
               routeTemplate: "api/{controller}/ID/{id}",

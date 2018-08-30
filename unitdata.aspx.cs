@@ -28,9 +28,9 @@ public partial class unitdata : System.Web.UI.Page
             unitid =int.Parse ( Request.QueryString["unitid"]);
         }
           
-        unitlib. MainData MainData = new unitlib.MainData();
+        Unitlib. MainData MainData = new Unitlib.MainData();
 
-        MainData = unitlib.Get_UnitData(unitid);
+        MainData = Unitlib.Get_UnitData(unitid);
         contents = MainData.Contents;
         unitname = MainData.Subject;
         Session["title"] = unitname + "│" + Application["site_name"];

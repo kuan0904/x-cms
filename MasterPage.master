@@ -30,7 +30,7 @@
 <link rel="stylesheet" href='/assets/bootstrap/css/bootstrap.min.css' />
 <link rel="stylesheet" href='/css/reset.css' type='text/css' />
     <link rel="stylesheet" href='/assets/swipe/swiper.min.css'/>
-<link rel="stylesheet" href='/css/theme.css' type='text/css' />
+<link rel="stylesheet" href='/css/theme.css?v=1' type='text/css' />
 <link rel="stylesheet" href='/css/post-layout.css' type='text/css' />
 <link rel="stylesheet" href='/css/style.css?v=6' type='text/css' />
 <link rel="shortcut icon" href="/favicon.ico" />
@@ -49,7 +49,7 @@
 <script src='/lib/common.js?v=1'></script>
 </head>
 <body >
-  
+
     <form id="form1" runat="server">
        <div class="scroll-up"><i class="fa fa-chevron-up"></i></div>
 
@@ -59,24 +59,28 @@
             <div class="menu-socials-wrap">
                 <ul class="menu-socials">
                     <li>
-                    <a target="_blank" href="#" title="Facebook">
+                    <a target="_blank" href="https://www.facebook.com/%E8%97%9D%E6%99%82%E4%BB%A3-2162933603987210/" title="Facebook">
                         <i class="fa fa-facebook"></i>
                     </a>
                     </li>
-         
+          <li>
+                        <a target="_blank" href="#" title="Google+">
+                            <i class="fa fa-google-plus"></i>
+                        </a>
+                    </li>
                     <li>
                         <a target="_blank" href="#" title=Instagram>
-                        <i class="fa fa-instagram"></i>
+                            <i class="fa fa-instagram"></i>
                         </a>
                     </li>
                     <li>
                         <a target="_blank" href="#" title=Twitter>
-                        <i class="fa fa-twitter"></i>
+                            <i class="fa fa-twitter"></i>
                         </a>
                     </li>
                     <li>
                         <a target="_blank" href="#" title=Youtube>
-                        <i class="fa fa-youtube-play"></i>
+                            <i class="fa fa-youtube-play"></i>
                         </a>
                     </li>
                 </ul>
@@ -95,7 +99,7 @@
                 <asp:Repeater ID="mrptmenu" runat="server" OnItemDataBound ="rptmenu_ItemDataBound">
                     <ItemTemplate>
                         <li class="menu-item sf-dropdown">
-                        <a href="<%# unitlib.GetLnk (Eval("kind").ToString (),Eval ("Id").ToString ()) %>"><%#Eval("title") %><i class="fa fa-chevron-down"></i></a>
+                        <a href="<%# Unitlib.GetLnk (Eval("kind").ToString (),Eval ("Id").ToString ()) %>"><%#Eval("title") %><i class="fa fa-chevron-down"></i></a>
                         <asp:Repeater ID="Repeater1" runat="server">
                             <HeaderTemplate>
                                 <ul class="sub-menu">
@@ -156,11 +160,28 @@
                         <div class="top-menu">
                             <ul class="nav nav-pills">
                                 <li>
-                                    <a target="_blank" href="#" title="Facebook"><i class="fa fa-facebook"></i></a>
+                                    <a target="_blank" href="https://www.facebook.com/%E8%97%9D%E6%99%82%E4%BB%A3-2162933603987210/" title="Facebook"><i class="fa fa-facebook"></i></a>
                                 </li>
-                                <li>
-                                    <a target="_blank" href="#" title="Youtube"><i class="fa fa-youtube-play"></i></a>
-                                </li>
+                                   <li>
+                                <a target="_blank" href="#" title="Google+">
+                                    <i class="fa fa-google-plus"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a target="_blank" href="#" title=Instagram>
+                                    <i class="fa fa-instagram"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a target="_blank" href="#" title=Twitter>
+                                    <i class="fa fa-twitter"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a target="_blank" href="#" title=Youtube>
+                                    <i class="fa fa-youtube-play"></i>
+                                </a>
+                            </li>
                                 <!-- <li>
                                     <a target="_blank" href="#" title="Email"><i class="fa fa-envelope"></i></a>
                                 </li> -->
@@ -203,15 +224,15 @@
                             <div class="main-menu">
                                 <ul class="sf-menu">
                                 <asp:Repeater ID="rptmenu" runat="server" OnItemDataBound ="rptmenu_ItemDataBound">
-                                    <ItemTemplate>
+                                    <ItemTemplate> 
                                     <li class="menu-item sf-dropdown  <%#Eval("Id").ToString() == active ? " active":"" %>">
-                                        <a href="<%# unitlib.GetLnk (Eval("kind").ToString (),Eval ("Id").ToString ()) %>"><%#Eval("title") %></a>
+                                        <a href="<%# Unitlib.GetLnk (Eval("kind").ToString (),Eval ("Id").ToString ()) %>"><%#Eval("title") %></a>
                                         <asp:Repeater ID="Repeater1" runat="server">
                                             <HeaderTemplate>
                                                 <ul class="sub-menu">
                                             </HeaderTemplate>
                                             <ItemTemplate>
-                                                    <li class="menu-item"><a href="<%# unitlib.GetLnk (Eval("kind").ToString (),Eval ("Id").ToString ()) %>"><%#Eval("title") %></a></li>
+                                                    <li class="menu-item"><a href="<%# Unitlib.GetLnk (Eval("kind").ToString (),Eval ("Id").ToString ()) %>"><%#Eval("title") %></a></li>
                                                </ItemTemplate>
                                             <FooterTemplate></ul></FooterTemplate>
                                        </asp:Repeater>                                      
@@ -273,7 +294,7 @@
             </div><!-- col-md-12 END -->
 
             <div class="col-md-12 sub-footer-copy">
-                <p>&copy; 本網頁著作權為 中華民國滑輪溜冰協會 所有 / Copyright 2018 </p>
+                <p>&copy; 本網頁著作權為 藝時代 Cultural Launch 所有 / Copyright 2018 </p>
             </div><!-- col-md-4 END -->
 
 

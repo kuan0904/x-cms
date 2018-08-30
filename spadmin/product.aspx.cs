@@ -20,7 +20,7 @@ public partial class spadmin_product : System.Web.UI.Page
     {
         //DropDownList1.DataBound  += new EventHandler(DropDownList1_DataBound);
         DropDownList1.Items.Add(new ListItem("不區分", ""));
-        string strsql = "select * from tbl_category where parentid =0 and classid=2  and status='Y' ";
+        string strsql = "select * from tbl_category where parentid =0 and classid=2  and status<>'D' ";
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("id", "0");
         DataTable dt =DbControl .Data_Get(strsql, nvc);                 
@@ -32,8 +32,8 @@ public partial class spadmin_product : System.Web.UI.Page
             DropDownList1 .Items.Add(new ListItem(name, id));
         }
         dt.Dispose();
-
-        strsql = "select * from productData where status <> 'D'  ";  
+        categoryid.Items.Insert(0, new ListItem("請選擇", ""));
+        strsql = "select * from tbl_productData where status <> 'D'  ";  
         dt = DbControl.Data_Get(strsql, nvc);
         for (int i = 0; i < dt.Rows.Count; i++)
         {
@@ -58,12 +58,11 @@ public partial class spadmin_product : System.Web.UI.Page
     }
     protected void link_edit(object sender, System.EventArgs e)
     {
-        Image2.Visible = true;
-        Image3.Visible = true ;
+     
         LinkButton obj = sender as LinkButton;
         Selected_id.Value   = obj.CommandArgument;
       
-        string strsql = "select * from productdata where p_id  = @p_id";
+        string strsql = "select * from tbl_productdata where p_id  = @p_id";
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("p_id", Selected_id.Value  );
         DataTable dt = DbControl.Data_Get(strsql, nvc);
@@ -73,7 +72,7 @@ public partial class spadmin_product : System.Web.UI.Page
         storage.Text = dt.Rows[0]["storage"].ToString();
         description.Text = dt.Rows[0]["description"].ToString();
         status.SelectedValue = dt.Rows[0]["status"].ToString();
-        categoryid.SelectedValue = dt.Rows[0]["categoryid"].ToString();
+        categoryid.SelectedIndex = categoryid.Items.IndexOf (categoryid.Items.FindByValue (dt.Rows[0]["categoryid"].ToString()));
         stringArray[1] = dt.Rows[0]["pic1"].ToString();
         stringArray[2] = dt.Rows[0]["pic2"].ToString();
         stringArray[3] = dt.Rows[0]["pic3"].ToString();
@@ -87,14 +86,7 @@ public partial class spadmin_product : System.Web.UI.Page
         freeship.Text = dt.Rows[0]["freeship"].ToString();
         shippingKind.Text = dt.Rows[0]["shippingKind"].ToString();
         Image1.ImageUrl = "../upload/" + stringArray[1] + "?" + DateTime.Now.ToString("yyyyMMddhhmmss");
-        if (stringArray[2] != "") 
-            Image2.ImageUrl = "../upload/" + stringArray[2] + "?" + DateTime.Now.ToString("yyyyMMddhhmmss"); 
-        else
-            Image2.Visible = false;
-        if (stringArray[3] != "")
-            Image3.ImageUrl = "../upload/" + stringArray[3] + "?" + DateTime.Now.ToString("yyyyMMddhhmmss"); 
-        else
-            Image3.Visible = false;
+      
      
         viewcount.Text = dt.Rows[0]["viewcount"].ToString();
         if (dt.Rows[0]["kindid"].ToString() == "2") { kindid.SelectedValue = "2"; }
@@ -138,10 +130,10 @@ public partial class spadmin_product : System.Web.UI.Page
             string strsql = "";
             if (Btn_save.CommandArgument == "copy" || Btn_save.CommandArgument == "add")
             {
-                strsql = "insert into productdata (viewcount) values (@viewcount ) ";
+                strsql = "insert into tbl_productdata (viewcount) values (@viewcount ) ";
                 nvc.Add("viewcount", "0");
                 i = DbControl.Data_add(strsql, nvc);
-                strsql = "select max(p_id ) from productdata  where p_id >@p_id ";
+                strsql = "select max(p_id ) from tbl_productdata  where p_id >@p_id ";
                 nvc.Clear();
                 nvc.Add("p_id", "0");
                 DataTable dt = DbControl.Data_Get(strsql, nvc);
@@ -150,27 +142,16 @@ public partial class spadmin_product : System.Web.UI.Page
 
             string img_path = "../upload/";
             if (Image1.ImageUrl != "") stringArray[1] = p_id.Text + "-1.jpg";
-            if (Image2.ImageUrl != "" &&  Image2.Visible == true ) stringArray[2] = p_id.Text + "-2.jpg";
-            if (Image3.ImageUrl != "" && Image3.Visible == true) stringArray[3] = p_id.Text + "-3.jpg";
-
+         
             if (FileUpload1.FileName != "")
             {
                 FileUpload1.SaveAs(Server.MapPath(img_path + p_id.Text + "-1.jpg"));
                 stringArray[1] = p_id.Text + "-1.jpg";
             }
-            if (FileUpload2.FileName != "" )
-            {
-                FileUpload2.SaveAs(Server.MapPath(img_path + p_id.Text + "-2.jpg"));
-                stringArray[2] = p_id.Text + "-2.jpg";
-            }
-            if (FileUpload3.FileName != "")
-            {
-                FileUpload3.SaveAs(Server.MapPath(img_path + p_id.Text + "-3.jpg"));
-                stringArray[3] = p_id.Text + "-3.jpg";
-            }
+         
             if (sort.Text == "") sort.Text = "0";
 
-            strsql = @"UPDATE  productdata  SET productname=@productname,price=@price,productcode=@productcode,videourl=@videourl
+            strsql = @"UPDATE  tbl_productdata  SET productname=@productname,price=@price,productcode=@productcode,videourl=@videourl
                 ,description = @description, storage = @storage, pic1 = @pic1, pic2 = @pic2,pic3 = @pic3,memo=@memo,
                 categoryid = @categoryid,  status = @status,sort=@sort,shippingfee=@shippingfee,shippingKind=@shippingKind,freeship=@freeship
                ,kindid=@kindid, id_list=@id_list where p_id=@id ";
@@ -225,7 +206,7 @@ public partial class spadmin_product : System.Web.UI.Page
     public void selectSQL(string sorttype = "desc", string sortColumn = "p_id")
     {
       
-        string strsql = " SELECT  * ,(select title from  tbl_category  where tbl_category.categoryid =  productdata.categoryid) as title   from  productdata    where status <> 'D' ";
+        string strsql = " SELECT  * ,(select title from  tbl_category  where tbl_category.categoryid =  tbl_productdata.categoryid) as title   from  tbl_productdata    where status <> 'D' ";
     
         if (search_txt.Text != "")
         {
@@ -310,7 +291,7 @@ public partial class spadmin_product : System.Web.UI.Page
         SqlCommand cmd = new SqlCommand();
 
         conn.Open();
-        cmd = new SqlCommand("update productdata set status = 'D' where p_id = @p_id ", conn);
+        cmd = new SqlCommand("update tbl_productdata set status = 'D' where p_id = @p_id ", conn);
         cmd.Parameters.Add("@p_id", SqlDbType.Int).Value = obj.CommandArgument ;
         cmd.ExecuteNonQuery();
         cmd.Dispose();        
@@ -331,7 +312,7 @@ public partial class spadmin_product : System.Web.UI.Page
         obj.CommandArgument = Selected_id.Value ;
         using (SqlConnection conn = new SqlConnection(classlib.dbConnectionString))
         {
-            string strsql = @"update productdata set " + obj.CommandName + " = '' where p_id =" + obj.CommandArgument;
+            string strsql = @"update tbl_productdata set " + obj.CommandName + " = '' where p_id =" + obj.CommandArgument;
           
             conn.Open();
             SqlDataAdapter myAdapter = new SqlDataAdapter();

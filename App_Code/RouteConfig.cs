@@ -19,22 +19,22 @@ namespace MyPublic
             //routes.EnableFriendlyUrls(settings);
             routes.EnableFriendlyUrls(settings, new Microsoft.AspNet.FriendlyUrls.Resolvers.IFriendlyUrlResolver[] { new MyWebFormsFriendlyUrlResolver() });
 
-            routes.MapPageRoute("article", "Article/{id}", "~/detail.aspx",false, null,new RouteValueDictionary { { "id", "^[0-9]*$" } });
-            routes.MapPageRoute("class", "Class/{id}", "~/detail-course.aspx",false, null,new RouteValueDictionary { { "id", "^[0-9]*$" } });
+            routes.MapPageRoute("article", "Article/{Articlid}", "~/detail.aspx",false, null,new RouteValueDictionary { { "id", "^[0-9]*$" } });
+            routes.MapPageRoute("class", "Class/{Articlid}", "~/detail-course.aspx",false, null,new RouteValueDictionary { { "id", "^[0-9]*$" } });
 
             routes.MapPageRoute("list", "news/{id}", "~/list-text.aspx", false, null,
             new RouteValueDictionary { { "id", "^[0-9]*$" }});
             routes.MapPageRoute("listpage", "news/{id}/page/{*pageindex}", "~/list-text.aspx", false, null,
              new RouteValueDictionary { { "id", "^[0-9]*$" }, { "pageindex", "^[0-9]*$" } });
 
-            routes.MapPageRoute("catalog", "catalog/{id}", "~/list.aspx", false, null,
+            routes.MapPageRoute("catalog", "catalog/{cid}", "~/list.aspx", false, null,
             new RouteValueDictionary { { "id", "^[0-9]*$" } });
-            routes.MapPageRoute("catalog_page", "catalog/{id}/page/{*pageindex}", "~/list.aspx", false, null,
+            routes.MapPageRoute("catalog_page", "catalog/{cid}/page/{*pageindex}", "~/list.aspx", false, null,
             new RouteValueDictionary { { "id", "^[0-9]*$" }, { "pageindex", "^[0-9]*$" } }  );
 
-            routes.MapPageRoute("grid", "emba/{id}", "~/list-grid.aspx", false, null,
+            routes.MapPageRoute("grid", "emba/{cid}", "~/list-grid.aspx", false, null,
             new RouteValueDictionary { { "id", "^[0-9]*$" } });
-            routes.MapPageRoute("grid_page", "emba/{id}/page/{*pageindex}", "~/list-grid.aspx", false, null,
+            routes.MapPageRoute("grid_page", "emba/{cid}/page/{*pageindex}", "~/list-grid.aspx", false, null,
                 new RouteValueDictionary { { "id", "^[0-9]*$" }, { "pageindex", "^[0-9]*$" } });
 
             routes.MapPageRoute("lesson", "lesson/{id}/page/{*pageindex}", "~/list-grid.aspx",

@@ -22,6 +22,7 @@ namespace MyPublic
         {
             config.MapHttpAttributeRoutes();
 
+        
             config.Routes.MapHttpRoute(
             name: "DefaultApi",
                   routeTemplate: "api/{controller}/ID/{id}",
@@ -32,8 +33,7 @@ namespace MyPublic
             routeTemplate: "api/{controller}/{action}/{id}",
             defaults: new { action = "Default", id = System.Web.Http.RouteParameter.Optional });
 
-
-
+        
             GlobalConfiguration.Configuration.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
 
             var cors = new EnableCorsAttribute("*", "*", "*") //打開cors

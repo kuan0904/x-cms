@@ -82,12 +82,13 @@ public partial class spadmin_article : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static string get_category(string kind)    {
+    public static string get_category(string kind,string classid)    {
         string result = "{ \"main\":[";
         if (kind == "get")
         {
-            string strsql = "SELECT *  FROM  tbl_category  where status='Y' and  parentid =0  ";
+            string strsql = "SELECT *  FROM  tbl_category  where status<> 'D' and  parentid =0  and classid=@classid";
             NameValueCollection nvc = new NameValueCollection();
+            nvc.Add("classid", classid);
             DataTable dt = DbControl.Data_Get(strsql, nvc);
             //result = JsonConvert.SerializeObject(dt);
             int i = 0;
@@ -96,7 +97,7 @@ public partial class spadmin_article : System.Web.UI.Page
                 if (i != 0) result += ",";
                 result += "{\"name\":\"" + dt.Rows[i]["title"].ToString() + "\",\"id\":\"" + dt.Rows[i]["categoryid"].ToString() + "\"";
                 result += ",\"detail\":[";
-                strsql = "SELECT *  FROM  tbl_category  where status='Y' and  parentid ="+ dt.Rows[i]["categoryid"].ToString()   ;
+                strsql = "SELECT *  FROM  tbl_category  where status<> 'D' and  parentid ="+ dt.Rows[i]["categoryid"].ToString()   ;
                 nvc = new NameValueCollection();
                 DataTable dt1 = DbControl.Data_Get(strsql, nvc);
                 int j = 0;
@@ -222,7 +223,7 @@ public partial class spadmin_article : System.Web.UI.Page
             Subject = subject,
             SubTitle = subtitle,
             Contents = contents,
-            Pic = pic,
+            Pic = classlib .GetImgNmae( pic),
             PostDay = DateTime.Parse(postday),          
             Status = status,
             Viewcount = 0,

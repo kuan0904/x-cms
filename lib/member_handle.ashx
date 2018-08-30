@@ -9,7 +9,7 @@ using unity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Web.SessionState;
-
+using System.Collections.Specialized;
 public class member_handle : IHttpHandler,IRequiresSessionState {
 
     public void ProcessRequest(HttpContext context)
@@ -29,18 +29,20 @@ public class member_handle : IHttpHandler,IRequiresSessionState {
         string p_PASSWD = context.Request["p_PASSWD"];
         string p_username = context.Request["p_username"];
 
-        string result = "";
+        MemberLib.Mmemberdata  result = new MemberLib.Mmemberdata ();
+        string status = "";
+
         if (p_ACTION == "CheckLogin")
         {
 
 
-            if (   context.Session["memberid"] == null ||  context.Session["memberid"] .ToString() == "")
-                result = "-1";
+            if (   context.Session["memberdata"] == null ||  context.Session["memberdata"] .ToString() == "")
+                status = "-1";
             else
-                result = "Y";
-        context.Response.Write(result);
-        context.Response.End();
-    }
+                status = "Y";
+            context.Response.Write(status);
+            context.Response.End();
+        }
         if (p_ACTION == "Login")
         {
             //if (context.Session["CAPTCHA"] != null & context.Session["CAPTCHA"].ToString() != p_VERIFYCODE)
@@ -49,64 +51,90 @@ public class member_handle : IHttpHandler,IRequiresSessionState {
             //    context.Response.End();
             //}
             result = MemberLib.Member.Login(p_ACCOUNT, p_PASSWD);
-            if (result != "")            {
 
-                context.Session["memberid"] = MemberLib.Member.GetData(result);
-                result = "Y";
+            if (result.Memberid  != 0)            {
+                context.Session["memberdata"] = result;
+                status = "Y";
             }
             else
             {
-                result = "-1";
+                status = "-1";
             }
 
-            context.Response.Write(result);
+            context.Response.Write(status);
             context.Response.End();
         }
         if (p_ACTION == "googleLogin")
         {
-      
-            result = MemberLib.Member.GoogleLogin (p_ACCOUNT, p_PASSWD,p_username);
-            if (result != "")            {
 
-                context.Session["memberid"] = MemberLib.Member.GetData(result);
-                result = "Y";
+            result = MemberLib.Member.GoogleLogin (p_ACCOUNT, p_PASSWD,p_username);
+
+            if (result.Memberid  !=0)            {
+                context.Session["memberdata"] = result;
+
+                status  = "Y";
             }
             else
             {
-                result = "-1";
+                status = "-1";
             }
 
-            context.Response.Write(result);
+            context.Response.Write(status );
             context.Response.End();
         }
         if (p_ACTION == "Register")
         {
             result = MemberLib.Member.Check_exist(p_ACCOUNT);
-            if (result == "Y")
+
+            if (result.Memberid  != 0)
             {
-                result = "-1";
+                status  = "-1";
             }
             else
             {
 
 
-                context.Session["memberid"] = MemberLib.Member.Add (p_ACCOUNT, p_PASSWD);
-                result = "";
+                context.Session["memberdata"] = MemberLib.Member.Add (p_ACCOUNT, p_PASSWD);
+                status = "";
             }
 
-            context.Response.Write(result);
+            context.Response.Write(status);
             context.Response.End();
         }
+        if (p_ACTION == "Update")
+        {
+            if (context.Session["memberdata"] != null)
+            {
+                MemberLib.Mmemberdata o = (MemberLib.Mmemberdata)context.Session["memberdata"];
+                MemberLib.Mmemberdata m = new MemberLib.Mmemberdata();
+                m.Memberid = o.Memberid;
+                m.Address = context.Request["address"];
+                m.Phone = context.Request["phone"];
+                m.Mobile = context.Request["mobile"];
+                m.Username = context.Request["username"];
+                m.Birthday =DateTime.Parse ( context.Request["birthday"]);
+                m.Cityid = int.Parse(context.Request["cityid"]);
+                m.Countyid = int.Parse(context.Request["countyid"]);
+                m.Zip = context.Request["zip"];
+                m.Password  = context.Request["Password"];
+                m.Email = o.Email;
 
+                m= MemberLib.Member.Update(m);
+
+            }
+
+            context.Response.Write(status);
+            context.Response.End();
+        }
 
 
 
     }
 
     public bool IsReusable {
-    get {
-        return false;
+        get {
+            return false;
+        }
     }
-}
 
 }

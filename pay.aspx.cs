@@ -19,6 +19,8 @@ public partial class pay : System.Web.UI.Page
     public string action;
     protected void Page_Load(object sender, EventArgs e)
     {
+        OrderLib.OrderData o = new OrderLib.OrderData();
+        o = OrderLib.Get_ordData(Session["ord_code"].ToString());
         action = "https://core.spgateway.com/MPG/mpg_gateway";//正式ID
         action = "https://ccore.spgateway.com/MPG/mpg_gateway";//測試ID
         MerchantID = "MS357549208"; //正式ID
@@ -27,17 +29,22 @@ public partial class pay : System.Web.UI.Page
         _key = "By8IMdyhhfeTTgACeHciAYe6bGrXc6bA";
         string _Vi = "jXbof2czX0r9FxBf";
         _Vi = "hiDG6VP3CrOA32bM";
+        string _ItemDesc="";
+        foreach (var obj in o.OrderDetail)
+        {
+            _ItemDesc += obj.P_name + ","; 
+        }
         var tradeInfo = new TradeInfo()
         {
             MerchantID = MerchantID,
             RespondType = "JSON",
             TimeStamp = (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds.ToString (),
             Version = "1.4",
-            Amt = 100,
-            ItemDesc = "TTEESSTT",
+            Amt = o.TotalPrice ,
+            ItemDesc = _ItemDesc,
             //InstFlag="3,6",
             //CreditRed = 0,
-            Email = "leokuan@xnet.world",
+            Email = o.Ordemail,
             EmailModify = 0,
             LoginType = 0,
             MerchantOrderNo = DateTime.Now.Ticks.ToString(),

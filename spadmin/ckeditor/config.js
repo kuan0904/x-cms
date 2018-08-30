@@ -17,7 +17,7 @@ CKEDITOR.editorConfig = function (config) {
     config.filebrowserImageBrowseUrl = '../../spadmin/ckfinder/ckfinder.html?type=Images';
     config.filebrowserUploadUrl = '../../spadmin/saveMultiUpload.aspx?kind=fileUpload&type=files&responseType=json';
     config.filebrowserImageUploadUrl = '../../spadmin/saveMultiUpload.aspx?kind=imageUpload&type=Images&responseType=json';
-    config.filebrowserWindowWidth = '800';  //“瀏覽服務器”彈出框的size設置
+    config.filebrowserWindowWidth = '700';  //“瀏覽服務器”彈出框的size設置
     config.filebrowserWindowHeight = '500';
     config.contentsCss = ['/css/theme.css'];
     config.extraPlugins = 'templates';

@@ -29,7 +29,7 @@ public partial class list : System.Web.UI.Page
         if (myRoute != null)
         {    
             PageIdx  = RouteData.Values["pageindex"]==null ? 1:int.Parse ( RouteData.Values["pageindex"].ToString () );
-            cid =  RouteData.Values["id"].ToString ();          
+            cid =  RouteData.Values["cid"].ToString ();          
         }
         else
         {

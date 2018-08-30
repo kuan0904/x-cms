@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="detail.aspx.cs" Inherits="detail" %>
-
+<%@ MasterType VirtualPath="~/MasterPage.master" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
  
 </asp:Content>

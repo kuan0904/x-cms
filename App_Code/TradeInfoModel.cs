@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace SpGatewayHelper.Models
 {
@@ -70,6 +71,10 @@ namespace pay2go.Models
         public string QRcodeR { get; set; }
         public string AllowanceAmt { get; set; }
         public string RemainAmt { get; set; }
-       
+
+        public static implicit operator Result(JToken v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

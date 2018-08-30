@@ -32,12 +32,12 @@ public partial class detail_course_ : System.Web.UI.Page
     {
 
       
-        string Articlid = Request.QueryString["id"];
+        string Articlid = Request.QueryString["Articlid"];
         Route myRoute = RouteData.Route as Route;
         if (myRoute != null)
         {
 
-            Articlid = RouteData.Values["id"].ToString();
+            Articlid = RouteData.Values["Articlid"].ToString();
             // string verder = (string)Page.RouteData.Values["verder"];
         }
 

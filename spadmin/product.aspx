@@ -52,7 +52,7 @@
                                     <td><%#Eval("viewcount") %></td>
                                     <td><%#Eval("sort") %></td>
                                     <td>
-                                        <a href="../shoppingcart?p_ID=<%#Eval("p_id") %>" target="_blank">預覽</a>
+                                        <a href="/market?p_ID=<%#Eval("p_id") %>" target="_blank">預覽</a>
                                     </td>
 
 
@@ -134,22 +134,7 @@
                                     <asp:Image ID="Image1" runat="server" />W360*H360
                                     </td> 
                             </tr>
-                                 <tr>
-                                <td>圖片2</td>
-                                   <td colspan="3"> 
-                                    <asp:FileUpload ID="FileUpload2" runat="server" />
-                                    <asp:Image ID="Image2" runat="server" />
-                                     <asp:LinkButton ID="LinkButton5" runat="server"  OnClick ="img_del"  CommandName="pic2">刪除</asp:LinkButton> 
-                                </td>
-                            </tr>
-                                     <tr>
-                                <td>圖片3</td>
-                                  <td colspan="3"> 
-                                    <asp:FileUpload ID="FileUpload3" runat="server" />   <asp:Image ID="Image3" runat="server" />
-                                      <asp:LinkButton ID="LinkButton4" runat="server"  OnClick ="img_del"  CommandName="pic3">刪除</asp:LinkButton> 
-                       
-                                </td>
-                            </tr>
+                               
                             <tr>
                                 <td>商品類別</td>
                                 <td>
@@ -211,7 +196,7 @@
                                    <tr>
                                 <td>商品文字簡述</td>
                                 <td colspan="3">
-                                    <asp:TextBox ID="memo" runat="server"  Width ="500"   ></asp:TextBox></td>
+                                    <asp:TextBox ID="memo" runat="server"  Width ="500"   TextMode="MultiLine"></asp:TextBox></td>
                             </tr>
                   
                             <tr>

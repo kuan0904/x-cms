@@ -70,7 +70,7 @@ public class LessonLib
 
                 NameValueCollection nvc = new NameValueCollection
             {
-                { "username", item.Usermame },
+                { "name", item.Name  },
                 { "email",item.Email  },
                 { "phone", item.Phone  },
                 { "Lessonid",item.LessonId   },
@@ -84,7 +84,7 @@ public class LessonLib
             }
             return "Y";
         }
-        public static object Get_Lesson(string id = "", string kind = "dt")
+        public static object Get_Lesson(string id = "")
         {
             NameValueCollection nvc = new NameValueCollection();
             string strsql = "select * from    tbl_Lesson  ";
@@ -94,13 +94,7 @@ public class LessonLib
                 nvc.Add("id", id);
             }
             DataTable dt = DbControl.Data_Get(strsql, nvc);
-            if (kind == "dt")
-            {
-                dt.Dispose();
-                return dt;
-            }
-            else
-            {
+        
                 LessonLib.MainData MainData = new LessonLib.MainData();
                 int i = 0;
                 for (i = 0; i < dt.Rows.Count; i++)
@@ -119,9 +113,35 @@ public class LessonLib
                 }
                 dt.Dispose();
                 return MainData;
-            }
+            
         }
+        public static object Get_LessonClass(int id)
+        {
+            NameValueCollection nvc = new NameValueCollection();
+            string strsql = "select * from   tbl_lesson_class  ";
+            
+                strsql += "where lessonId =@id";
+                nvc.Add("id", id.ToString ());
+         
+            DataTable dt = DbControl.Data_Get(strsql, nvc);
 
+            LessonLib.ItemData   MainData = new LessonLib.ItemData();
+            int i = 0;
+            for (i = 0; i < dt.Rows.Count; i++)
+            {
+
+                MainData.Id = (int)dt.Rows[i]["lessonId"];            
+                MainData.Price = (int)dt.Rows[i]["Price"];
+                MainData.Description = (string)dt.Rows[i]["description"];
+                MainData.Sellprice  = (int)dt.Rows[i]["Sellprice"];
+                MainData.Num  = (int)dt.Rows[i]["limitnum"];
+
+
+            }
+            dt.Dispose();
+            return MainData;
+
+        }
         public static object Get_lecturer(string kind = "dt")
         {
             NameValueCollection nvc = new NameValueCollection();
@@ -157,14 +177,21 @@ public class LessonLib
     public class JoinData{
         public int Id { get; set; }
         public string LessonId { get; set; }
-        public string Usermame { get; set; }
+        public string Name { get; set; }
         public string Email { get; set; }     
         public string Status { get; set; }
         public string Phone { get; set; }
       
 
     }
-
+    public class JoinList
+    {
+        public int LessonId { get; set; }
+        public int Num { get; set; }
+        public string LassonName { get; set; }
+        public int Price { get; set; }
+        public int Amount { get; set; }
+    }
 
     public class MainData
     {
@@ -179,8 +206,18 @@ public class LessonLib
         public string Lessontime { get; set; }
         public string Startday { get; set; }
         public string Endday { get; set; }
+        public int Num { get; set; }
     }
-        public class Lecture
+    public class ItemData
+    {
+        public int Id { get; set; }
+        public string Description { get; set; }      
+        public int Price { get; set; }
+        public int Sellprice { get; set; }   
+        public int Num { get; set; }
+
+    }
+    public class Lecture
     {
         public int Id { get; set; }
         public int Tagid { get; set; }

@@ -93,6 +93,42 @@
             else
                  parent.$.fn.colorbox.close();
         }
+      function get_category() {
+            var dataValue = "{ kind: 'get' ,classid:'1'}";
+            $.postJSON('article.aspx/get_category', dataValue, 'application/json; charset=utf-8', function (result) {
+                if (result != "") {
+                    var result = result.d;
+                    result = JSON.parse(result);
+                    result = result.main;
+                    var cb = "";
+                    var s = "";                  
+                    var Category = [];
+                    if (maindata != undefined) {
+                        var c = maindata.Category;
+                        $.each(c, function (key, val) {
+                            Category.push(val.CategoryId);
+                        });
+                    }
+                    $.each(result, function (key, val) {                   
+                        if (val.detail.length > 0) {
+                            cb += "<span style='width:300px'>" + val.name + "</span>:";
+                            for (i = 0; i < val.detail.length; i++) {                               
+                                s = maindata ==  undefined ? "": check_cbx(Category, val.detail[i].id);                                
+                                cb += "<input name='categoryid' class='Big' type='checkbox' value='" + val.detail[i].id + "'" + s + "><span class=lbl><b>" + val.detail[i].name + "</b></span>";
+                            }
+                          
+                        }
+                        else {
+                            s = maindata ==  undefined ? "": check_cbx(Category, val.id);
+                            cb += "<input name='categoryid' class='Big' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl><b>" + val.name + "</b></span>";
+                             
+                        }
+                        cb += "<Br>";
+                    });
+                    $("#category").html(cb);
+                }
+            });
+        }  
     </script>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
@@ -278,7 +314,7 @@ input.Big{
 						<div class="page-header">
                             <h1>  
                                
-                                <script src="ckeditor/ckeditor.js?a=1"></script>
+                                <script src="ckeditor/ckeditor.js?v=2"></script>
                             </h1> 
                             <asp:ContentPlaceHolder ID="ContentPlaceHolder_title" runat="server">
                                 </asp:ContentPlaceHolder>

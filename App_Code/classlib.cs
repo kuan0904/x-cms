@@ -151,7 +151,7 @@ namespace unity {
     public static class classlib
     {
         public static string dbConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["dbconnConnection"].ConnectionString;
-       private static string delivername = "cairnskitchen";
+       private static string delivername = "藝時代";
         private static string servicemail = "leokuan@xnet.world";
         private static string smtpuid = "leokuan@xnet.world";
         private static string smtppwd = "ck43285929tw";

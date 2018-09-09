@@ -89,7 +89,7 @@
                                     <%# Eval("subject") %>
                                 </td>
                                 <td>
-                                   <img src="<%# Eval("pic") %>" width ="300" />
+                                   <img src="/webimages/article/<%# Eval("pic") %>" width ="300" />
                                 </td>
                                 <td>
                                     <%# Eval("status").ToString () =="Y" ? "上架":"下架" %>
@@ -122,7 +122,7 @@
                     $("#status").prop("checked", result.Status  == "Y" ? true : false);
                     $("#recommend").prop("checked", result.Recommend  == "Y" ? true : false);
                     CKEDITOR.instances['contents'].setData(result.Contents);                           
-                    document.getElementById('console').innerHTML = ("<img src=\"/webimages/article/" + result.Pic + "\" width=300>");
+                    document.getElementById('console').innerHTML = ("<img src=\""+ result.Pic + "\" width=300>");
                     $('#logoPic').val(result.Pic); 
                    
                     if (result.Lesson[0] != undefined) {
@@ -224,35 +224,7 @@
 
             });
         });
-        function get_category() {
-            var dataValue = "{ kind: 'get' }";
-            $.postJSON('article.aspx/get_category', dataValue, 'application/json; charset=utf-8', function (result) {
-                if (result != "") {
-                    var result = result.d;
-                    result = JSON.parse(result);
-                    result = result.main;
-                    var cb = "";
-                    var s = "";
-                    $.each(result, function (key, val) {                   
-                        if (val.detail.length > 0) {
-                            cb += "<span style='width:300px'>" + val.name + "</span>:";
-                            for (i = 0; i < val.detail.length; i++) {                               
-                                s = maindata ==  undefined ? "": check_cbx(maindata.Category, val.detail[i].id);                                
-                                cb += "<input name='categoryid' class='ace ace-checkbox-2' type='checkbox' value='" + val.detail[i].id + "'" + s + "><span class=lbl><b>" + val.detail[i].name + "</b></span>";
-                            }
-                          
-                        }
-                        else {
-                            s = maindata ==  undefined ? "": check_cbx(maindata.Category, val.id);
-                            cb += "<input name='categoryid' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl><b>" + val.name + "</b></span>";
-                             
-                        }
-                        cb += "<Br>";
-                    });
-                    $("#category").html(cb);
-                }
-            });
-            }  
+      
         function get_tag() {
             var dataValue = "{ kind: 'get' }";
             $.postJSON('article.aspx/get_tag', dataValue, 'application/json; charset=utf-8', function (result) {

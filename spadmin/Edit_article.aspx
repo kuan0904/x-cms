@@ -1,7 +1,11 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/spadmin/admin.master" AutoEventWireup="true" CodeFile="Edit_article.aspx.cs" Inherits="spadmin_Edit_article" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+   
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
 
+    	
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder_title" runat="Server">
     <script>
@@ -151,42 +155,7 @@
             });         
             get_category();           
         });
-        function get_category() {
-            var dataValue = "{ kind: 'get' ,classid:'1'}";
-            $.postJSON('article.aspx/get_category', dataValue, 'application/json; charset=utf-8', function (result) {
-                if (result != "") {
-                    var result = result.d;
-                    result = JSON.parse(result);
-                    result = result.main;
-                    var cb = "";
-                    var s = "";                  
-                    var Category = [];
-                    if (maindata != undefined) {
-                        var c = maindata.Category;
-                        $.each(c, function (key, val) {
-                            Category.push(val.CategoryId);
-                        });
-                    }
-                    $.each(result, function (key, val) {                   
-                        if (val.detail.length > 0) {
-                            cb += "<span style='width:300px'>" + val.name + "</span>:";
-                            for (i = 0; i < val.detail.length; i++) {                               
-                                s = maindata ==  undefined ? "": check_cbx(Category, val.detail[i].id);                                
-                                cb += "<input name='categoryid' class='Big' type='checkbox' value='" + val.detail[i].id + "'" + s + "><span class=lbl><b>" + val.detail[i].name + "</b></span>";
-                            }
-                          
-                        }
-                        else {
-                            s = maindata ==  undefined ? "": check_cbx(Category, val.id);
-                            cb += "<input name='categoryid' class='Big' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl><b>" + val.name + "</b></span>";
-                             
-                        }
-                        cb += "<Br>";
-                    });
-                    $("#category").html(cb);
-                }
-            });
-        }  
+    
         function check_data(kind) {//將主資料存到SESSION       
             var errmsg = "";
             var content = CKEDITOR.instances['contents'].getData();
@@ -254,17 +223,19 @@
             }
         }    
         function save_db() {
-             var dataValue = "{ kind: 'get' }";
+            var dataValue = "{ kind: 'get' }";
             $.postJSON('article.aspx/Set_DB', dataValue, 'application/json; charset=utf-8', function (result) {
                 if (result != "") {
                     var result = result.d;
                     if (result == '')
                     {
-                        alert('已存檔');
+                       alert('已存檔');
                        location.href = location.href;
                     }
                     else
-                    { alert(result); }
+                    {
+                        alert(result);
+                    }
                 }
             });
 
@@ -331,12 +302,14 @@
                                         </script>
                                     </td>
 
-                                </tr>                   
+                                </tr>  
+                        
                                 <tr>
                                     <td>作者</td>
-                                    <td>
-                                        <input type="text" name="author" id="author" value=""   placeholder="請輸入作者 ..." />
+                                    <td> 
 
+                                        <input type="text" name="author" id="author" value=""   placeholder="請輸入作者 ..." />
+                                         
                                     </td>
                                 </tr>
                                 <tr>
@@ -353,17 +326,7 @@
                                     </td>
 
                                 </tr> 
-                                <!--
-                                <tr>
-                                    <td>標籤</td>
-                                    <td>
-                                        <label id="tag"></label><br />
-                                   
-                                        <a href="Edit_tag.aspx?unitid=13" class="iframe cboxElement"><i class="icon-double-angle-right"></i>標簽管理</a>
-                                    </td>
-
-                                </tr>
-                                -->
+                               
                                   <tr>
                                     <td>推薦</td>
                                     <td>
@@ -436,17 +399,14 @@
             if (!(/msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase()))) {
                 tag_input1.tag(
                     {
-                        placeholder: tag_input.attr('placeholder'),
+                        placeholder: tag_input1.attr('placeholder') ,
                         //enable typeahead by specifying the source array
+                       
                         source: ace.variable_US_STATES,//defined in ace.js >> ace.enable_search_ahead
                     }
                 );
             }
-            else {
-                //display a textarea for old IE, because it doesn't support this plugin or another one I tried!
-                tag_input1.after('<textarea id="' + tag_input.attr('id') + '" name="' + tag_input.attr('name') + '" rows="3">' + tag_input.val() + '</textarea>').remove();
-                //$('#form-field-tags').autosize({append: "\n"});
-            }
+         
 
 
         });
@@ -504,10 +464,53 @@
 
                     }
                 });
+         uploader.init();
 
-                uploader.init();
+    </script>
+    <script>
+    $(function () {
+        var availableTags = [<%=getword()%>
+        ];
+        function split(val) {
+            return val.split(/,\s*/);
+        }
+        function extractLast(term) {
+            return split(term).pop();
+        }
+         //與TAG 結合下拉
+        $(".tags input[type='text']")            
+            .on("keydown", function (event) {
+                if (event.keyCode === $.ui.keyCode.TAB &&
+                    $(this).autocomplete("instance").menu.active) {
+                    event.preventDefault();
+                }
+            })
+            .autocomplete({
+                minLength: 0,
+                source: function (request, response) {
+                    // delegate back to autocomplete, but extract the last term
+                    response($.ui.autocomplete.filter(
+                        availableTags, extractLast(request.term)));
+                },
+                focus: function () {
+                    // prevent value inserted on focus
+                    return false;
+                },
+                select: function (event, ui) {
+                    var terms = split(this.value);
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+                    terms.push(ui.item.value);
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push("");
 
-        </script>
+                    this.value = terms.join(", ");
+                    return false;
+                }
+            });
+    });
+</script>
                 </asp:View>
                 </asp:MultiView>
 

@@ -95,11 +95,12 @@ public partial class spadmin_editImages : System.Web.UI.Page
       foreach (RepeaterItem item in Repeater_image.Items)
         {
             CheckBox chk = (CheckBox)(item.FindControl("chk_del"));
-            HiddenField  imgid = (HiddenField)(item.FindControl("Hidden_id"));
+            HiddenField  imgid = (HiddenField)(item.FindControl("img_id"));
             if (chk.Checked )
             {
                 string strsql = "delete from   tbl_article_file  where imgid=@imgid ";
                 NameValueCollection nvc = new NameValueCollection();
+              
                 nvc.Clear();
                 nvc.Add("imgid", imgid.Value);
                 int i = DbControl.Data_add(strsql, nvc);
@@ -109,7 +110,7 @@ public partial class spadmin_editImages : System.Web.UI.Page
         foreach (RepeaterItem item in Repeater_file.Items)
         {
             CheckBox chk = (CheckBox)(item.FindControl("chk_del"));
-            HiddenField imgid = (HiddenField)(item.FindControl("Hidden_id"));
+            HiddenField imgid = (HiddenField)(item.FindControl("file_id"));
             if (chk.Checked)
             {
                 string strsql = "delete from   tbl_article_file  where imgid=@imgid ";

@@ -438,7 +438,7 @@ namespace article
 
 
             }
-            strsql += " order by articleId desc ";
+            strsql += " order by postday desc,articleId desc ";
             NameValueCollection nvc = new NameValueCollection
             {
                 { "cid", cid },

@@ -133,9 +133,29 @@ public partial class spadmin_Edit_article : System.Web.UI.Page
     }
 
 
-
+   
     protected void LinkButton3_Click(object sender, EventArgs e)
     {
         MultiView1.ActiveViewIndex = 2;
+    }
+
+    public static string   getword()
+    {
+        string result = "";
+        string strsql = "SELECT author FROM tbl_article where author <> ''  GROUP BY   author ";
+        NameValueCollection nvc = new NameValueCollection();
+        DataTable dt = DbControl.Data_Get(strsql, nvc);
+        int i = 0;
+        for (i=0; i < dt.Rows.Count; i++)
+        {
+            string[] s = dt.Rows[i][0].ToString().Split (',');
+            foreach (string k in s)
+            {
+                result += "\"" + k + "\"" + ",";
+
+            }
+
+        }
+        return result;
     }
 }

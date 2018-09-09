@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="market.aspx.cs" Inherits="market" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
-       <script> 
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <script> 
         var pid ='<%=p_id%>';
         var p_id = '<%=p_id%>';
         var price = '<%=price%>';
@@ -20,10 +20,7 @@
             return (v.match(r) == null) ? false : true;
         }
 
-        $(document).ready(function () {
-            $('img').each(function () {
-                $(this).removeAttr('style')
-            });
+        $(document).ready(function () {    
             getCounty();
             $("#p_COUNTYID").change(function () {
                 if ($(this).val() != "") {
@@ -199,208 +196,340 @@
         }
 
     </script>
+
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-        <div class="main-content">
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <div class="main-content">
 
-            <div class="breadArea">
-                <div class="container">
-                    <ol class="breadcrumb">
-                        <li>
-                            <a href="/index">HOME</a>
-                        </li>
-                        <li>商城</li>
-                        <li class="active"><%=productname%></li>
-                    </ol>
-                </div>
-            </div>
-            <!-- breadArea END -->
-
+        <div class="breadArea">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-8 col-sm-12 col-xs-12 main-content">
-                        <div class="main-content-inner">
-                            <article class="post-layout post">
-                                <div class="post-header">
-                                    <div class="post-featured-image">
-                                        <a href="market.html">
-                                            <img class="image-full modal-image size-full" src="<%=pic1%>" width="1350" height="900" />
-                                        </a>
-                                    </div>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="/index">HOME</a>
+                    </li>
+                    <li>商城</li>
+                    <li class="active"><%=productname%></li>
+                </ol>
+            </div>
+        </div>
+        <!-- breadArea END -->
 
-
-
-                                    <!-- meta-info END -->
-                                </div>
-                                <!-- post-header END -->
-
-                                <div class="post-content">
-                                    <h2 class="text-danger"><%=productname%></h2>
-                                 <%=description  %>
-
-                                </div>
-                                <div class="divide40"></div>
-                                <div class="extended-reading" id="produce-list">
-                                    <h3 class="new-index-main-title text-center">購買方案</h3>
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <div class="divide20"></div>
-                                            <!--票券詳細資訊-->
-                                            <table class="table market-tab">
-                                                <tbody>
-                                                    <tr>
-                                                        <th width="20%">品名</th>
-                                                        <th width="47%">樣式</th>
-                                                        <th width="15%">價格</th>
-                                                        <th width="18%">數量</th>
-                                                    </tr>
-                                                    <tr class="has-error">
-                                                        <td>
-                                                            <img src="images/01.jpg" />
-                                                        </td>
-                                                        <td>
-                                                            <p>【活動限定】便攜旋轉萃取咖啡機-礦石黑（贈：安內咖啡粉）</p>
-                                                            <small>119 x 101 x 120 mm</small>
-                                                        </td>
-                                                        <td class="price">
-                                                            NT$999
-                                                            <small>NT$1,200</small>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <!--清單最大值為剛票券數量上限-->
-                                                            <select class="form-control">
-                                                                <option>選擇數量</option>
-                                                                <option>99</option>
-                                                            </select>
-
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <img src="images/02.jpg" />
-                                                        </td>
-                                                        <td>
-                                                            【活動限定】便攜旋轉萃取咖啡機-莧紅色（贈：安內咖啡粉）
-                                                        </td>
-                                                        <td class="price">
-                                                            NT$999
-                                                            <small>NT$1,200</small>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <!--清單最大值為剛票券數量上限-->
-                                                            <select class="form-control">
-                                                                <option>選擇數量</option>
-                                                                <option>99</option>
-                                                            </select>
-
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <div class="divide10"></div>
-                                            <div class="text-center">
-                                                <!--a連結class新增disabled即可禁用，按鈕方式則為disabled="disabled"-->
-                                                <a href="process-step1.html" class="btn btn-pink btn-block btn-lg">
-                                                    <i class="fa fa-shopping-basket" aria-hidden="true"></i>
-                                                    我要購買
-                                                </a>
-                                            </div>
-
-                                            <div class="divide10"></div>
-                                        </div>
-                                    </div>
-
-                                    <!-- news-list END -->
-                                </div>
-                                <!-- post-footer END -->
-
-                            </article>
-
-                        </div>
-                        <!-- main-content-inner END -->
-
-                    </div>
-                    <!-- col-md-8 td-main-content END -->
-
-                    <div class="col-md-4 col-sm-12 col-xs-12 main-sidebar">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-sm-12 col-xs-12 main-content">
+                    <div class="main-content-inner">
                         <article class="post-layout post">
                             <div class="post-header">
-                                <div class="post-information">
-                                    <h1 style="padding-bottom: 1rem;"><%=productname  %></h1>
-                                    <div class="post-description">
-                                     
-                                        <%=MEMO %>
-                                    </div>
-                                    <div class="meta-info">
-                                        <div class="social-media-share-btn">
-                                            <a href="#" class="share-fb">
-                                                <i class="fa fa-2x fa-facebook-official" aria-hidden="true"></i>
-                                            </a>
-                                            <a href="#" class="share-google">
-                                                <i class="fa fa-2x fa-google-plus-square" aria-hidden="true"></i>
-                                            </a>
-                                            <a href="#" class="share-twitter">
-                                                <i class="fa fa-2x fa-twitter" aria-hidden="true"></i>
-                                            </a>
-                                            <a href="#" class="share-print">
-                                                <i class="fa fa-2x fa-print" aria-hidden="true"></i>
+                                <div class="post-featured-image">
+                                    <a href="market.html">
+                                        <img class="image-full modal-image size-full" src="<%=pic1%>" width="1350" height="900" />
+                                    </a>
+                                </div>
+
+
+
+                                <!-- meta-info END -->
+                            </div>
+                            <!-- post-header END -->
+
+                            <div class="post-content">
+                                <h2 class="text-danger"><%=productname%></h2>
+                                <%=description  %>
+                            </div>
+                            <div class="divide40"></div>
+
+                            <div class="extended-reading" id="produce-list">
+                                <h3 class="new-index-main-title text-center">購買方案</h3>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="divide20"></div>
+                                        <!--票券詳細資訊-->
+                                        <table class="table market-tab">
+                                            <tbody>
+                                                <tr>
+                                                    <th width="20%">品名</th>
+                                                    <th width="47%">樣式</th>
+                                                    <th width="15%">價格</th>
+                                                    <th width="18%">數量</th>
+                                                </tr>
+                                                <tr class="has-error">
+                                                    <td>
+                                                        <img src="<%=pic1 %>" />
+                                                    </td>
+                                                    <td>
+                                                        <p><%=productname %></p>
+                                                        <small>119 x 101 x 120 mm</small>
+                                                    </td>
+                                                    <td class="price">NT$<%=price %>
+                                                        <!--small>NT$<%=price %></small-->
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <!--清單最大值為剛票券數量上限-->
+                                                        <select class="form-control" id="num">
+                                                            <option>選擇數量</option>
+                                                            <%for (int i = 1; i < 9; i++)
+                                                                { %>
+                                                            <option><%=i %></option>
+                                                            <%} %>
+                                                        </select>
+
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                            <div class="tickrt-list">
+                                                  <div class="divide20"></div>
+                                                 <section class="form-white-style">
+                                                       <div class="page-header-blue">
+                                                        <h3>訂單資料</h3>
+                                                    </div>
+                                                         <div class="row">
+                                                               <div class="form-group">
+                                                                  <h4>商品總額
+                                                                   <small>$</small><span id="amount">0 </span></h4>
+                                                                <h4>運費 <small>$</small><span id="ship_price"><%= ship_price  %></span></h4>
+                                                                <h4>應付金額 <small>$</small><span id="totalprice"> <%=amount %></span></h4>
+                                                            </div>
+                                                           </div>
+                                                 </section>
+                                            </div> 
+                                        <div class="tickrt-list">
+                                                <div class="divide20"></div>
+                                                <section class="form-white-style">
+                                                    <div class="page-header-blue">
+                                                        <h3>購買人資料</h3>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                          
+                                                            <div class="form-group">
+                                                                <label class="control-label title">性　　別</label>
+                                                                <div class="radio ">
+                                                                    <label>
+                                                                        <input type="radio" name="ord_sex" value="男">
+                                                                        <span class="cr">
+                                                                            <i class="cr-icon fa fa-circle"></i>
+                                                                        </span>
+                                                                        男
+                                                                    </label>
+                                                                </div>
+                                                                <div class="radio ">
+                                                                    <label>
+                                                                        <input type="radio" name="ord_sex" value="女">
+                                                                        <span class="cr">
+                                                                            <i class="cr-icon fa fa-circle"></i>
+                                                                        </span>
+                                                                        女
+                                                                    </label>
+                                                                </div>
+
+
+
+                                                            </div>
+                                                            <div class="form-group has-error">
+                                                                <label class="control-label title">* 姓名</label>
+                                                                <input name="ord_name" type="text" id="ord_name" class="form-control" />
+
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label title">* e-mail</label>
+                                                                <input name="email" type="text" id="email" value="" class="form-control" />
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label title">* 聯絡電話</label>
+                                                                <input name="ord_tel" type="text" id="ord_tel" value="" class="form-control" />
+                                                            </div>
+                                                            <div class="form-group has-error">
+                                                                <label class="control-label title">郵遞區號</label>
+
+
+                                                                <input type="text" size="6" readonly id="p_ZIP" name="p_ZIP" />
+                                                                <input name="ord_zip" type="hidden" id="ord_zip" value="" />
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label title">縣市</label>
+                                                                <select id="p_COUNTYID" name="p_COUNTYID" class="form-control">
+                                                                    <option value="">請選擇</option>
+                                                                    <option value="1">台北市</option>
+                                                                    <option value="2">新北市</option>
+                                                                    <option value="3">基隆市</option>
+                                                                    <option value="4">桃園市</option>
+                                                                    <option value="5">苗栗縣</option>
+                                                                    <option value="6">新竹縣</option>
+                                                                    <option value="7">新竹市</option>
+                                                                    <option value="8">台中市</option>
+                                                                    <option value="10">彰化縣</option>
+                                                                    <option value="11">嘉義市</option>
+                                                                    <option value="12">嘉義縣</option>
+                                                                    <option value="13">雲林縣</option>
+                                                                    <option value="14">台南市</option>
+                                                                    <option value="16">高雄市</option>
+                                                                    <option value="18">屏東縣</option>
+                                                                    <option value="19">台東縣</option>
+                                                                    <option value="20">花蓮縣</option>
+                                                                    <option value="21">宜蘭縣</option>
+                                                                    <option value="22">南投縣</option>
+                                                                    <option value="23">南海島</option>
+                                                                    <option value="24">金門縣</option>
+                                                                    <option value="25">連江縣</option>
+                                                                    <option value="26">釣魚台</option>
+                                                                    <option value="27">澎湖縣</option>
+                                                                    <option value="28">其他</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label title">地區 </label>
+
+
+                                                                <select id="p_CITYID" name="p_CITYID" class="form-control"></select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label title">詳細地址</label>
+                                                                <input id="p_ADDRESS" type="text" name="p_ADDRESS" class="form-control" />
+                                                                <input name="ord_address" type="hidden" id="ord_address" value="" class="form-control" />
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </section>
+                                        </div>
+                                        <div class="form-group">
+                                            送貨方式 
+					  <input type="radio" name="ord_pay" value="cash" checked="checked" />
+                                            <%=shippingKind  %>
+                                        </div>
+
+
+
+                                        <div class="divide10"></div>
+                                        <div class="text-center">
+                                            <!--a連結class新增disabled即可禁用，按鈕方式則為disabled="disabled"-->
+                                            <a href="#" onclick ="chkform();" class="btn btn-pink btn-block btn-lg">
+                                                <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                                                我要購買
                                             </a>
                                         </div>
-                                        <div class="divide20"></div>
-                                        <a href="#produce-list" class="btn btn-pink btn-block">
-                                            <i class="fa fa-shopping-basket" aria-hidden="true"></i> 我要購買
-                                        </a>
+
+                                        <div class="divide10"></div>
                                     </div>
-                                    <!-- post-description END -->
                                 </div>
-                                <!-- post-information END -->
+
+                                <!-- news-list END -->
                             </div>
-                        </article>
+                <!-- post-footer END -->
 
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <!-- post-header END -->
-                                <div class="block-wrap border">
-                                    <div class="block-title">付款方式</div>
-                                    <div class="block-body">
-                                        信用卡 VISA MasterCard ATM 轉帳繳費
-                                    </div>
-                                </div>
-
-                                <!-- block-wrap END -->
-                                <div class="block-wrap border">
-                                    <div class=block-title>注意事項</div>
-                                    <div class="block-body">
-                                        1.全商品採用宅配方式寄送，限台灣本島。
-                                        <br/> 2.即日起下單付款者，將於確認結帳後3～5個工作天內出貨，寄至所填寫的收件地址，如遇假日則順延出貨。
-                                    </div>
-                                </div>
-
-                                <!-- block-wrap END -->
-                                <div class="block-wrap border">
-                                    <div class=block-title>退換貨規則</div>
-                                    <div class="block-body">
-                                        商品提供七天的猶豫權益（非試用期），若要辦理退換貨，貨品須為全新未使用且包裝完整。
-                                    </div>
-                                </div>
-                                <!-- block-wrap END -->
-                            </div>
-                        </div>
-
-
-
-                        <!-- main-sidebar-inner END -->
-                    </div>
-                    <!-- col-md-4 END -->
-
-
-                </div>
-                <!-- row END -->
+                </article>
 
             </div>
-            <!-- container END -->
+            <!-- main-content-inner END -->
 
         </div>
+        <!-- col-md-8 td-main-content END -->
 
+        <div class="col-md-4 col-sm-12 col-xs-12 main-sidebar">
+            <article class="post-layout post">
+                <div class="post-header">
+                    <div class="post-information">
+                        <h1 style="padding-bottom: 1rem;"><%=productname  %></h1>
+                        <div class="post-description">
+
+                            <%=MEMO %>
+                        </div>
+                        <div class="meta-info">
+                            <div class="social-media-share-btn">
+                                <a href="#" class="share-fb">
+                                    <i class="fa fa-2x fa-facebook-official" aria-hidden="true"></i>
+                                </a>
+                                <a href="#" class="share-google">
+                                    <i class="fa fa-2x fa-google-plus-square" aria-hidden="true"></i>
+                                </a>
+                                <a href="#" class="share-twitter">
+                                    <i class="fa fa-2x fa-twitter" aria-hidden="true"></i>
+                                </a>
+                                <a href="#" class="share-print">
+                                    <i class="fa fa-2x fa-print" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                            <div class="divide20"></div>
+                            <a href="#produce-list" class="btn btn-pink btn-block">
+                                <i class="fa fa-shopping-basket" aria-hidden="true"></i>我要購買
+                            </a>
+                        </div>
+                        <!-- post-description END -->
+                    </div>
+                    <!-- post-information END -->
+                </div>
+            </article>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <!-- post-header END -->
+                    <div class="block-wrap border">
+                        <div class="block-title">付款方式</div>
+                        <div class="block-body">
+                            信用卡 VISA MasterCard ATM 轉帳繳費
+                        </div>
+                    </div>
+
+                    <!-- block-wrap END -->
+                    <div class="block-wrap border">
+                        <div class="block-title">注意事項</div>
+                        <div class="block-body">
+                            1.全商品採用宅配方式寄送，限台灣本島。
+                                        <br />
+                            2.即日起下單付款者，將於確認結帳後3～5個工作天內出貨，寄至所填寫的收件地址，如遇假日則順延出貨。
+                        </div>
+                    </div>
+
+                    <!-- block-wrap END -->
+                    <div class="block-wrap border">
+                        <div class="block-title">退換貨規則</div>
+                        <div class="block-body">
+                            商品提供七天的猶豫權益（非試用期），若要辦理退換貨，貨品須為全新未使用且包裝完整。
+                        </div>
+                    </div>
+                    <!-- block-wrap END -->
+                </div>
+            </div>
+
+
+
+            <!-- main-sidebar-inner END -->
+        </div>
+        <!-- col-md-4 END -->
+
+
+    </div>
+    <!-- row END -->
+
+    </div>
+            <!-- container END -->
+
+    </div>
+        <script>  
+           
+         $(document).ready(function () {  
+              //分享至臉書
+	        $(".share-fb").click(function () {
+	        window.open('https://www.facebook.com/share.php?u='.concat(encodeURIComponent(location.href)), "_blank", "toolbar=yes,location=yes, directories=no, status=no,menubar=yes,scrollbars=yes,esizable=no, copyhistory=yes, width=600,  height=400")
+            })
+            $(".share-twitter").click(function () {
+                text=   $(document).find("title").text();
+	            window.open('https://twitter.com/share?text='+ text +'&url='.concat(encodeURIComponent(location.href)), "_blank", "toolbar=yes,location=yes, directories=no, status=no,menubar=yes,scrollbars=yes,esizable=no, copyhistory=yes, width=600,  height=400")
+            })
+            $(".share-google").click(function () {
+	            window.open('https://plus.google.com/share?url='.concat(encodeURIComponent(location.href)), "_blank", "toolbar=yes,location=yes, directories=no, status=no,menubar=yes,scrollbars=yes,esizable=no, copyhistory=yes, width=600,  height=400")
+            })
+
+            $(".share-print").click(function () {
+                window.print();
+            })
+       
+    });
+
+
+
+    </script>
 </asp:Content>
 

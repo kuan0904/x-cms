@@ -32,7 +32,7 @@
     <link rel="stylesheet" href='/assets/swipe/swiper.min.css'/>
 <link rel="stylesheet" href='/css/theme.css?v=1' type='text/css' />
 <link rel="stylesheet" href='/css/post-layout.css' type='text/css' />
-<link rel="stylesheet" href='/css/style.css?v=6' type='text/css' />
+<link rel="stylesheet" href='/css/style.css' type='text/css' />
 <link rel="shortcut icon" href="/favicon.ico" />
 <!--[if lt IE 9]><script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 

@@ -20,7 +20,7 @@ namespace MyPublic
             routes.EnableFriendlyUrls(settings, new Microsoft.AspNet.FriendlyUrls.Resolvers.IFriendlyUrlResolver[] { new MyWebFormsFriendlyUrlResolver() });
 
             routes.MapPageRoute("article", "Article/{Articlid}", "~/detail.aspx",false, null,new RouteValueDictionary { { "id", "^[0-9]*$" } });
-            routes.MapPageRoute("class", "Class/{Articlid}", "~/detail-course.aspx",false, null,new RouteValueDictionary { { "id", "^[0-9]*$" } });
+            routes.MapPageRoute("class", "Class/{Articlid}", "~/process-step1.aspx", false, null,new RouteValueDictionary { { "id", "^[0-9]*$" } });
 
             routes.MapPageRoute("list", "news/{id}", "~/list-text.aspx", false, null,
             new RouteValueDictionary { { "id", "^[0-9]*$" }});

@@ -192,7 +192,7 @@
 </script>
 
                 <div class="form-actions" style="text-align: center">
-                    <asp:Button ID="Btn_save" runat="server" class="btn btn-primary" Text="更新排序" ValidationGroup="check1" OnClick ="Btn_save_Click"  />
+                    <asp:Button ID="Btn_save" runat="server" class="btn btn-primary" Text="更新排序及狀態" ValidationGroup="check1" OnClick ="Btn_save_Click"  />
                   <button class="btn btn-primary" id="rtn">返回</button> 
                 </div>
                  連結輸入請先按滑鼠右鍵

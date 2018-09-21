@@ -109,20 +109,13 @@
                             Category.push(val.CategoryId);
                         });
                     }
-                    $.each(result, function (key, val) {                   
-                        if (val.detail.length > 0) {
-                            cb += "<span style='width:300px'>" + val.name + "</span>:";
+                    $.each(result, function (key, val) {    
+                        s = maindata ==  undefined ? "": check_cbx(Category, val.id);   
+                        cb += "<input name='categoryid' class='Big' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl><b>" + val.name + "</b></span>";
                             for (i = 0; i < val.detail.length; i++) {                               
-                                s = maindata ==  undefined ? "": check_cbx(Category, val.detail[i].id);                                
-                                cb += "<input name='categoryid' class='Big' type='checkbox' value='" + val.detail[i].id + "'" + s + "><span class=lbl><b>" + val.detail[i].name + "</b></span>";
-                            }
-                          
-                        }
-                        else {
-                            s = maindata ==  undefined ? "": check_cbx(Category, val.id);
-                            cb += "<input name='categoryid' class='Big' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl><b>" + val.name + "</b></span>";
-                             
-                        }
+                            s = maindata ==  undefined ? "": check_cbx(Category, val.detail[i].id);                                
+                            cb += "<input name='categoryid' class='Big' type='checkbox' value='" + val.detail[i].id + "'" + s + "><span class=lbl><b>" + val.detail[i].name + "</b></span>";
+                        }                      
                         cb += "<Br>";
                     });
                     $("#category").html(cb);
@@ -446,10 +439,10 @@ input.Big{
 					onCleanup:function(){ alert('onCleanup: colorbox has begun the close process'); },
 					onClosed:function(){ alert('onClosed: colorbox has completely closed'); }
 				});
-                console.log($('#slider').data('type')); //  "slideShow"
-            console.log($('#slider span:eq(1)').data('size'));   
+            //    console.log($('#slider').data('type')); //  "slideShow"
+            //console.log($('#slider span:eq(1)').data('size'));   
           
-              console.log($('.photo').data('size'));   
+            //  console.log($('.photo').data('size'));   
        //  console.log(photo[0].dataset.size);   //  "xs"
 			});
 		</script>

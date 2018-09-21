@@ -23,7 +23,8 @@ body {
 .text-danger {
     color: #e6253a;
 }
-.btn-green, .btn-gray, .btn-pink, .btn-more {
+
+.btn-green, .btn-gray, .btn-pink, .btn-more, .btn-collection {
     letter-spacing: 2px;    
     -webkit-border-radius: 32px;
     -moz-border-radius: 32px;
@@ -66,15 +67,15 @@ body {
 
 .btn-gray {
     color: #fff;
-    background-color: #ddd;
-    border-color: #ddd;
+    background-color: #c8c8c8;
+    border-color: #c8c8c8;
     
 }
 
 .btn-gray:hover, .btn-gray:focus {
     color: #fff;
-    background-color: #aaa;
-    border-color: #aaa;
+    background-color: #888;
+    border-color: #888;
 }
 
 .btn-pink {
@@ -101,6 +102,18 @@ body {
     color: #fff;
     border-color: #036935;
     background: #036935;
+}
+
+.btn-collection {
+    color: #aaa;
+    background-color: #eee;
+    border-color: #eee;
+}
+
+.btn-collection:hover, .btn-collection:focus {
+    color: #fff;
+    background-color: #eb6877;
+    border-color: #eb6877;
 }
 
 .btn-facebook, .btn-google {
@@ -3006,6 +3019,9 @@ embed {
 .category a {
     color: #e30026;
     white-space: nowrap;
+}
+.category a:hover, .category a:focus {
+    color: #c70223;
 }
 
 .post-footer {
@@ -7273,6 +7289,79 @@ body.animation-stack-type2 .post a.td-sml-link-to-image>img {
     border: 0;
     background: #fff;
 }
+
+
+
+
+/*---------------------------------------------*/
+.login-input-box {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .login-input100 { 
+    padding: 0 30px 0 70px;
+  }
+  
+  
+  /*------------------------------------------------------------------
+  [ Focus ]*/
+  .focus-input100 {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    color: rgba(0,91,234, 0.6);
+  }
+  
+  .symbol-input100 {
+    font-size: 14px;
+    color: #555;  
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    border-radius: 25px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding-left: 25px;
+    pointer-events: none;
+    -webkit-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    transition: all .3s ease;
+  }
+  
+  .login-input100:focus + .focus-input100 + .symbol-input100 {
+    color: #058745;;
+  }
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*****checkbox+radio-style*****/
 .checkbox label,
 .radio label {
@@ -7412,10 +7501,41 @@ textarea {
     border: 1px solid #ddd;
 }
 
+.news-grid .member-course .thumbnail  {
+    margin: 0;
+    margin-bottom: 0; 
+    border-radius: 0;
+}
+
 
 .member-course-info {
-    padding: 15px;
+    padding: 15px 0;    
 }
+
+.member-course-info .notice {
+    margin: 15px 0;
+    padding: 15px;
+    background: #f3f3f3;
+    font-family: "Montserrat","Microsoft JhengHei";
+}
+
+.member-course-info .notice h4 {
+    margin: 5px 0;
+    font-size: 18px;
+    font-family: "Montserrat","Microsoft JhengHei";
+    color: #036935;
+    font-weight: bold;
+}
+
+.member-course-info .notice a {
+    color: #058745;
+}
+
+.member-course-info .notice a:hover,
+.member-course-info .notice a:focus {
+    color: #02582c;
+}
+
 .member-course-title {
     height: 2.5em;
     margin: 8px 0;
@@ -7445,6 +7565,12 @@ textarea {
     padding: 5px 0;
     font-size: 1em;
     color: #888; 
+}
+.member-course-date a {
+    color: #888; 
+}
+.member-course-date a:hover, a:focus {
+    color: #058745;
 }
 .member-cours-description {
     height: 5.5em;
@@ -7482,6 +7608,7 @@ textarea {
 .member-cours-heart:hover i {    
     color: #fff;
 }
+
 
 .member-cours-more {
     width: 12rem;
@@ -7617,7 +7744,7 @@ textarea {
     margin-bottom: 0px;
   }
 .process-tab tr.total {
-    background: #fff8d5;
+    background: #fefae3;
     font-weight: bold;
   }
 .process-tab tr.underline {
@@ -7668,10 +7795,8 @@ textarea {
 }
 
 
-
 .new-index-main-title {
     margin: 40px 15px 30px;
-    
     border-bottom: 1px solid #333;
     font-family: 'Playfair Display', serif;
     color: #333;
@@ -7690,6 +7815,7 @@ h2.new-index-main-title {
     padding: 10px 0;
     font-size: 36px;
 }
+
 h3.new-index-main-title {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -7749,7 +7875,7 @@ h3.new-index-list-title {
 }
 
 .login-box {
-    margin-top: 10px;
+    margin-top: 4em;
     padding: 30px;
     background: rgba(255, 255, 255, 0.9);
     -webkit-border-radius: 8px;
@@ -7811,6 +7937,60 @@ h3.new-index-list-title {
 }
 
 
+.form-ticket .form-group {
+
+}
+
+.form-ticket .form-group .form-control {
+    margin: .5rem 0;
+}
+
+
+.market-tab {
+    font-size: 16px;
+    color: #333;
+    font-family: "Montserrat","Microsoft JhengHei";
+}
+.market-tab p, .market-tab td.price {
+    margin: 0;
+    font-size: 16px;
+    font-family: "Montserrat","Microsoft JhengHei";
+    color: #555;
+}
+
+.market-tab small {
+    font-size: 13px;
+    color: #888;
+}
+
+.market-tab > tbody > tr > th {
+    text-align: center;
+    font-weight: 700;
+    border: 0;
+    background: #ddd;
+}
+
+
+.market-tab > tbody > tr > td {
+    padding: 10px;
+    background: #fff;
+    border: 0;
+}
+
+.market-tab td.price {
+    margin: 5px;
+}
+.market-tab td.price small {
+    color: #eb6877;
+    text-decoration: line-through;
+}
+
+
+
+
+
+
+
 .btn-margin-15 {
     margin: 15px 0;
 }
@@ -7826,7 +8006,6 @@ h3.new-index-list-title {
 .margin-L-5 {
     margin-left: 5px;
 }
-
 
 .post-header .padding-RL-15 {
     padding: 0 15px;

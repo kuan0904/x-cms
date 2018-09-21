@@ -61,28 +61,50 @@ public class LessonLib
     }
     public class DbHandle
     {
-        public static string JoinAdd(JoinData  item)
+        public static object  JoinAdd(JoinData  item)
         {
-            using (SqlConnection conn = new SqlConnection(DbControl.dbConnectionString))
-            {
-                string strsql = @"insert into Tbl_LessonJoin (username,email,phone,LessonId) values   
-                (@username,@email,@phone,@LessonId) ";
+         
+                string strsql = @"INSERT  into Tbl_Joindata( username, email, phone,  memberid, 
+                status, paymode,ticketkind, Articleid,totalprice)   values
+                ( @username, @email, @phone,  @memberid, @status, @paymode,@ticketkind, @Articleid,@totalprice) ";
 
                 NameValueCollection nvc = new NameValueCollection
             {
-                { "name", item.Name  },
+                { "username", item.Name  },
                 { "email",item.Email  },
                 { "phone", item.Phone  },
-                { "Lessonid",item.LessonId   },
-                { "status", item.Status  }
-                //{ "endday",ad.EndDay.ToString("yyyy/MM/dd") },
+                { "memberid","0" },
+                { "status","Y" },
+                { "paymode",item.Paymode  },
+                { "ticketkind",item.TicketKind  },
+                { "Articleid",item.Articleid .ToString ()   },
+                { "totalprice", item.TotalPrice.ToString () },
+            
               
             };
                 DbControl.Data_add(strsql, nvc);
+                int joinid = 0;
+                strsql = "select max (joinid) from  Tbl_Joindata";
+                nvc.Clear();
+                DataTable dt = DbControl.Data_Get(strsql, nvc);
+                joinid = (int)dt.Rows[0][0];
+                 item.Id = joinid;
+                foreach (JoinList j in item.JoinLists)
+                {
+                    strsql = @"INSERT INTO tbl_joindetail(joinid, username, phone, email, lessonid,amount)
+                        VALUES (@joinid, @username, @phone, @email, @lessonid,@amount)";
+                    nvc.Clear();
+                    nvc.Add("joinid", joinid.ToString());
+                    nvc.Add("username", j.Name);
+                    nvc.Add("phone", j.Phone);
+                    nvc.Add("email", j.Email);
+                    nvc.Add("amount", j.Amount .ToString ());
+                    nvc.Add("lessonid", j.LessonId .ToString());
+                DbControl.Data_add(strsql, nvc);
 
+            };          
 
-            }
-            return "Y";
+            return item ;
         }
         public static object Get_Lesson(string id = "")
         {
@@ -174,21 +196,25 @@ public class LessonLib
 
 
     }
-    public class JoinData{
+    public class JoinData {
         public int Id { get; set; }
-        public string LessonId { get; set; }
+        public int Articleid { get; set; }
         public string Name { get; set; }
-        public string Email { get; set; }     
+        public string Email { get; set; }
         public string Status { get; set; }
         public string Phone { get; set; }
-      
-
+        public string Paymode { get; set; }
+        public string TicketKind { get; set; }
+        public List<JoinList> JoinLists { get; set; }
+        public int TotalPrice {get;set ;}
     }
     public class JoinList
     {
         public int LessonId { get; set; }
-        public int Num { get; set; }
-        public string LassonName { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+      
+        public string Phone { get; set; }
         public int Price { get; set; }
         public int Amount { get; set; }
     }

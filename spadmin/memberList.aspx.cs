@@ -51,7 +51,7 @@ public partial class spadmin_memberList : System.Web.UI.Page
             SqlCommand cmd = new SqlCommand();
             SqlDataReader rs;
 
-            string strsql = "select * from MemberData where memberid = @memberid";
+            string strsql = "select * from tbl_MemberData where memberid = @memberid";
             cmd = new SqlCommand(strsql, conn);
             cmd.Parameters.Add("memberid", SqlDbType.Int).Value = Selected_id.Value;
             memberid = Selected_id.Value;
@@ -75,7 +75,7 @@ public partial class spadmin_memberList : System.Web.UI.Page
             rs.Close();
             cmd.Dispose();
 
-            strsql = @" SELECT *    FROM   OrderData  where OrderData.memberid=@memberid order by ord_id desc ";
+            strsql = @" SELECT *    FROM   tbl_OrderData  where memberid=@memberid order by ord_id desc ";
             cmd = new SqlCommand(strsql, conn);
             cmd.Parameters.Add("@memberid", SqlDbType.Int).Value = Selected_id.Value;
             rs = cmd.ExecuteReader();
@@ -105,7 +105,7 @@ public partial class spadmin_memberList : System.Web.UI.Page
         {
             SqlCommand cmd = new SqlCommand();
             conn.Open();
-           string strsql = @"update  MemberData set username=@username,gender=@gender,
+           string strsql = @"update  tbl_MemberData set username=@username,gender=@gender,
                 phone=@phone,zip=@zip,cityid=@cityid,countyid=@countyid,address=@address
 ,birthday=@birthday
             WHERE  memberid=@memberid";
@@ -158,7 +158,7 @@ public partial class spadmin_memberList : System.Web.UI.Page
     {
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("id", "0");
-        string strsql = "select  * from  memberdata where   memberid >@id ";
+        string strsql = "select  * from  tbl_memberdata where   memberid >@id ";
         if (keyword.Text != "")
         {
             strsql += " and (  username like '%' + @keyword + '%'  or email like '%' + @keyword + '%' or phone like '%' + @keyword + '%' )";

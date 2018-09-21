@@ -18,6 +18,7 @@ public partial class list_grid : System.Web.UI.Page
     public static int PageIdx = 1;
     public static string unitname = "";
     public string pagetitle = "";
+    public string Breadcrumb = "";
     protected void Page_Init(object sender, EventArgs e)
     {
         Session["description"] = Application["description"];
@@ -64,14 +65,11 @@ public partial class list_grid : System.Web.UI.Page
         list_detail.DataBind();
         hotlist.Clear();
 
-
-        DataTable dt;
-        dt = (DataTable)Application["category"];
-        dt.DefaultView.RowFilter = "categoryid=" + cid;
-        dt = dt.DefaultView.ToTable();
-        pagetitle = dt.Rows[0]["title"].ToString();
+        pagetitle = Unitlib.Get_title((List<Unitlib.MenuModel>)Session["webmenu"], int.Parse(cid));
+        Session["active"] = Unitlib.Set_activeId((List<Unitlib.MenuModel>)Session["webmenu"], int.Parse(cid));
         Session["title"] = pagetitle + "│" + Application["site_name"];
-        dt.Dispose();
+        Breadcrumb = Unitlib.Get_Breadcrumb((List<Unitlib.MenuModel>)Session["webmenu"], int.Parse(cid));
+
     }
 
     public static string PagePaging()

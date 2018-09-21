@@ -68,11 +68,12 @@ public partial class spadmin_admin : System.Web.UI.MasterPage
         { 
             strsql = @"SELECT * FROM PowerList INNER JOIN UnitData ON PowerList.unitid = UnitData.unitid 
             where  adminpage is not null  and adminpage <> '' 
-             and  unitdata.upperid=@unitid
+             and  unitdata.upperid=@unitid and PowerList.user_id =@user_id
           and status<>'D' order by sort "; 
         }
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("unitid", unitid);
+        nvc.Add("user_id", userid);
         DataTable dt = DbControl.Data_Get(strsql, nvc);
         string itemdata = "";
         if (dt.Rows.Count > 0)    

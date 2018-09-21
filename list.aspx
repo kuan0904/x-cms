@@ -21,7 +21,7 @@
         <div class="container">
             <ol class="breadcrumb">
                 <li><a href="/index">HOME</a></li>
-                <li class="active"><%=pagetitle  %></li>
+                <%=Breadcrumb  %>
             </ol>
         </div>
     </div>
@@ -49,14 +49,14 @@
                              <asp:Repeater ID="Repeaterbanner" runat="server" EnableViewState ="false">
                                     <ItemTemplate>
                                     <div class="swiper-slide item">
-                                    <div class="image" style="background-image: url('<%#Eval("pic") %>');">
+                                    <div class="image" style="background-image: url('/webimages/article/<%#Eval("pic") %>');">
                                         <div class="carousel-caption">
                                             <div class="container">
-                                                <h3><a href="<%# Banner.Web.Get_url (Eval("url").ToString (),Eval("categoryid").ToString (),Eval("articleId").ToString ()) %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
-                                                <p><%#Eval("contents") %></p>
+                                                <h3><a href="/Article/<%#Eval("id") %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
+                                                <p><%#Eval("subject") %></p>
                                             </div>
                                         </div>
-                                        <a href="<%# Banner.Web.Get_url (Eval("url").ToString (),Eval("categoryid").ToString (),Eval("articleId").ToString ()) %>" class="view-more" title="了解更多">我想了解</a>
+                                        <a href="/Article/<%#Eval("id") %>" class="view-more" title="了解更多">我想了解</a>
                                     </div>
                                 </div>
                                     </ItemTemplate>
@@ -89,7 +89,8 @@
                                         <div class="meta-info">
                                             <div class="new-list-date">
                                                 <time datetime="<%#Eval("PostDay") %>"><%# DateTime.Parse ( Eval("PostDay").ToString()).ToString ("yyyy/MM/dd")  %></time>
-                                            </div>
+                                            </div>   <div class=post-views>
+                                                        <i class="fa fa-eye"></i><%#Eval("Viewcount") %></div>
                                             <div class="new-list-tags">
                                                 <%#article.Web.Get_Keyword_link ( Eval("keywords").ToString ())%>
                                             </div>
@@ -140,7 +141,7 @@
            
 
                 <div class="block-wrap">
-                <iframe src="https://www.facebook.com/plugins/page.php?href=https://www.facebook.com/%E8%97%9D%E6%99%82%E4%BB%A3-2162933603987210/%2F&tabs=timeline&width=300&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=1355515061131043" width="300" height="500" scrolling="no" frameborder="0" allowTransparency="true" style="display: block; width: 300px; margin: auto;">
+                <iframe src="https://www.facebook.com/plugins/page.php?href=<%=Application["fb_url"] %>%2F&tabs=timeline&width=300&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=1355515061131043" width="300" height="500" scrolling="no" frameborder="0" allowTransparency="true" style="display: block; width: 300px; margin: auto;">
                                     </iframe>      </div>
 
                 <!-- </div> -->

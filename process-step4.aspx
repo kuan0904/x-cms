@@ -1,24 +1,10 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="process-step4.aspx.cs" Inherits="process_step4" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-         <div class="main-content">
-
-           
-            <div class="breadArea">
-                <div class="container">
-                    <ol class="breadcrumb">
-                        <li>
-                            <a href="/">HOME</a>
-                        </li>
-                         <%=pageunit %>
-                    </ol>
-                </div>
-            </div>
-            <!-- breadArea END -->
-
-            <div class="container">
+  <div class="container">
                 <div class="row">
                     <div class="col-xs-12">
                         <article class="post-layout post">
@@ -32,23 +18,23 @@
                         </article>
                         <div class="row">
                             <div class="col-md-6 col-sm-12 col-xs-12">
-                                <img src="https://i.ytimg.com/vi/RGLaVd9dbgk/maxresdefault.jpg" alt="" title="【台北場】 筆尖溫度｜一起來學手寫 「義大利體藝術字」">
+                                <img src="<%=pic  %>" alt="" title="<%=subject %>">
                             </div>
                             <div class="col-md-6 col-sm-12 col-xs-12">
                                 <div class="member-course-info">
                                     <div class="member-order-detail-title">
-                                        【台北場】 筆尖溫度｜一起來學手寫 「義大利體藝術字」
+                                        <%=subject %>
                                     </div>
                                     <div class="member-course-date">
                                         <p>
-                                            <i class="fa fa-calendar margin-R-5"></i>2018/07/27（五）至2018/07/27（五）
+                                            <i class="fa fa-calendar margin-R-5"></i><%= startday %><%=endday  %>
                                         </p>
                                         <p>
-                                            <a href="https://goo.gl/maps/PDy6Mi5xbtB2" target="_blank">
-                                                <i class="fa fa-map-marker margin-R-5"></i>110 台北市信義區菸廠路88號</a>
+                                                <a href="https://www.google.com.tw/maps?q=<%=address %>" class="link" target="_blank"><i class="fa fa-map-marker margin-R-5"></i><%=address %></a>
+
                                         </p>
                                     </div>
-                                    <div class="notice">
+                                     <div class="notice">
                                         <h4>注意事項</h4>
                                         退票須知：委託藝時代退款
                                         <br/> 票券有效日期開始8天前可申請退票，酌收10%手續費，請詳閱
@@ -192,8 +178,6 @@
                     <!-- row END -->
                 </div>
             </div>
-
-
-        </div>
+            </div>
 </asp:Content>
 

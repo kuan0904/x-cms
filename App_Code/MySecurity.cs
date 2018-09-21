@@ -72,11 +72,11 @@ public static class MySecurity
         var hashedDataBytes = md5Hasher.ComputeHash(encoder.GetBytes(phrase));
         return ByteArrayToHexString(hashedDataBytes);
     }
-    static string SimpleTripleDes(string Data)
+    public static string SimpleTripleDes(string Data)
  
         {
-            byte[] key = Encoding.UTF8.GetBytes("edcvfrtg        ");
-            byte[] iv = Encoding.UTF8.GetBytes("3456ytre");
+            byte[] key = Encoding.UTF8.GetBytes("networld23222635");
+            byte[] iv = Encoding.UTF8.GetBytes("xnet2322");
             byte[] data = Encoding.UTF8.GetBytes(Data);
             byte[] enc = new byte[0];
 
@@ -84,7 +84,7 @@ public static class MySecurity
             //System.Security.Cryptography.TripleDESCryptoServiceProvider des = new System.Security.Cryptography.TripleDESCryptoServiceProvider();
             //byte[] inputByteArray = System.Text.Encoding.UTF8.GetBytes(Data);
             //des.Key = System.Text.Encoding.UTF8.GetBytes("edcvfrtg");
-            //des.IV = System.Text.Encoding.UTF8.GetBytes("3456ytre");
+            //des.IV = System.Text.Encoding.UTF8.GetBytes("xnet2635");
             //des.Mode = System.Security.Cryptography.CipherMode.CBC;
             //des.Padding = System.Security.Cryptography.PaddingMode.PKCS7;
             //System.IO.MemoryStream ms = new System.IO.MemoryStream();
@@ -105,10 +105,10 @@ public static class MySecurity
             return ByteArrayToString(enc);
         }
 
-    static string SimpleTripleDesDecrypt(string Data)
+    public  static string SimpleTripleDesDecrypt(string Data)
     {
-            byte[] key = Encoding.UTF8.GetBytes("edcvfrtg        ");
-            byte[] iv = Encoding.UTF8.GetBytes("3456ytre");
+            byte[] key = Encoding.UTF8.GetBytes("networld23222635");
+            byte[] iv = Encoding.UTF8.GetBytes("xnet2322");
             byte[] data = StringToByteArray(Data);
             byte[] enc = new byte[0];
             TripleDES tdes = TripleDES.Create();

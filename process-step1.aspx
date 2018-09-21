@@ -73,76 +73,33 @@
                             <!-- post-header END -->
                         </article>
                         <div class="row">
+                         
+                               
                             <div class="col-md-6 col-sm-12 col-xs-12">
-                                <img src="<%=pic %>"  alt="" title="<%=subject  %>">
-                                    <%=contents %> 
+                                <img src="<%=pic  %>" alt="" title="<%=subject %>">
                             </div>
                             <div class="col-md-6 col-sm-12 col-xs-12">
-                                
                                 <div class="member-course-info">
-                                      <ul class="category">
-                                            <li class="entry-category"><%=tags%></li>
-                                        </ul>
                                     <div class="member-order-detail-title">
-                                       <%=subject  %>
+                                        <%=subject %>
                                     </div>
                                     <div class="member-course-date">
                                         <p>
-                                            <i class="fa fa-calendar margin-R-5"></i>   <%=startday  %>至<%=endday  %> <%=lessontime  %>
+                                            <i class="fa fa-calendar margin-R-5"></i><%= startday %><%=endday  %>
                                         </p>
                                         <p>
-                                            <a href="https://www.google.com.tw/maps?q=<%=address %>" target="_blank"><i class="fa fa-map-marker margin-R-5"></i><%=address %></a>
+                                             <a href="https://www.google.com.tw/maps?q=<%=address %>" class="link" target="_blank"><i class="fa fa-map-marker margin-R-5"></i><%=address %></a>
+
                                         </p>
                                     </div>
-                                     <asp:Repeater ID="Repeater1" runat="server" EnableViewState="False">
-                                <ItemTemplate>
-                                <div class="block-wrap border">
-                                    <div class="block-header">
-                                        <div class="media">
-                                            <img src="/webimages/people/<%#Eval("pic") %>" alt="" title="<%#Eval("Subject") %>">
-                                        </div>
-                                        <div class="desc">
-                                            <a data-toggle="collapse" href="#desc-01">
-                                                <span class="label">講師</span><span class="name"><%#Eval("Subject") %></span>
-                                                <span class="note"><%#Eval("title") %></span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="block-body box collapse in" id="desc-01">
-                                      <div class="well">
-                                       <%#Eval("contents") %>     </div>
-                                    </div>
-                                </div><!-- block-wrap END -->
-
-                                </ItemTemplate>
-                            </asp:Repeater>
                                     <div class="notice">
                                         <h4>注意事項</h4>
                                         退票須知：委託藝時代退款<br/>
                                         票券有效日期開始8天前可申請退票，酌收10%手續費，請詳閱
                                         <a href="cp.html" target="_blank">退款操作說明</a>
                                     </div>
-                                 
                                     <!-- meta-info END -->
                                 </div>
-                                <div class="post-sharing">
-                                        <div class="sharing-group">
-                                              <a class="btn-share facebook" href="#" >
-                                                    <div class="icon-elements facebook"></div>
-                                                    <div class="social-text">Facebook</div>
-                                                </a>
-
-                                                 <a class="btn-share twitter" href="#"><div class="icon-elements twitter"></div><div class="social-text">Twitter</div></a>
-
-                                                <a class="btn-share google" href="#" ><div class="icon-elements googleplus"></div></a>
-
-                                                <a class="btn-share pinterest" href="#" ><div class="icon-elements pinterest"></div></a>
-
-                                                <a class="btn-share whatsapp" href="#"><div class="icon-elements whatsapp"></div></a>
-
-                                            <div class="clearfix"></div>
-                                        </div><!-- sharing-group END -->
-                                    </div>
                             </div>
                             <div class="col-xs-12">
                                 <hr>

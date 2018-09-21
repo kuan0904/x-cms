@@ -53,7 +53,7 @@
                                                 <th runat="server">名稱</th>
                                                 <th runat="server">排序 </th>
                                                 <th runat="server">狀態</th>
-                                                  <th runat="server">刪除</th>
+                                                <th runat="server">刪除</th>
                                             </tr>
                                         </thead>
                                         <tr id="itemPlaceholder" runat="server">
@@ -87,7 +87,7 @@
                         <h2>網站版位設定</h2>
                     </div>  
 
-                    <div class="box-content"> <asp:HiddenField ID="classid" runat="server" />
+                    <div class="box-content">
                        
                             <table  class="table table-striped table-bordered bootstrap-datatable datatable">
                              
@@ -110,7 +110,22 @@
                                     </td>
                                 </tr>
 
-
+                                   <tr>
+                                    <td>
+                                        連結</td>
+                                    <td>
+                                        <asp:TextBox ID="pagename" runat="server"></asp:TextBox>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>型態</td>
+                                    <td>
+                                        <asp:DropDownList ID="kind" runat="server">
+                                            <asp:ListItem Value ="1">LIST</asp:ListItem>
+                                            <asp:ListItem Value ="2">GRID</asp:ListItem>
+                                             <asp:ListItem Value ="3">LINK</asp:ListItem>
+                                        </asp:DropDownList></td>
+                                </tr>
                                 <tr>
                                     <td>
                                         優先順序</td>

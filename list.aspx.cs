@@ -10,13 +10,14 @@ using System.Data.SqlClient;
 using System.Collections.Specialized;
 public partial class list : System.Web.UI.Page
 {
-    public static  int Totalrow  = 0;
+    public static int Totalrow = 0;
     public static int Pagecount = 0;
     public static int PageSize = 5;
     public static int PageIdx = 1;
     public static string unitname = "";
     public string pagetitle = "";
-      protected void Page_Init(object sender, EventArgs e)
+    public string Breadcrumb = "";
+    protected void Page_Init(object sender, EventArgs e)
     {
         Session["description"] = Application["description"];
         Session["keywords"] = Application["keywords"];
@@ -27,51 +28,47 @@ public partial class list : System.Web.UI.Page
         string cid = "";
         Route myRoute = RouteData.Route as Route;
         if (myRoute != null)
-        {    
-            PageIdx  = RouteData.Values["pageindex"]==null ? 1:int.Parse ( RouteData.Values["pageindex"].ToString () );
-            cid =  RouteData.Values["cid"].ToString ();          
+        {
+            PageIdx = RouteData.Values["pageindex"] == null ? 1 : int.Parse(RouteData.Values["pageindex"].ToString());
+            cid = RouteData.Values["cid"].ToString();
         }
         else
         {
             cid = Request.QueryString["cid"];
-            PageIdx = Request.QueryString["pageindex"] == null ? 1 : int.Parse (Request.QueryString["pageindex"]);
+            PageIdx = Request.QueryString["pageindex"] == null ? 1 : int.Parse(Request.QueryString["pageindex"]);
         }
 
         if (cid == null) Response.Redirect("/index");
-          unitname =  "/catalog/" + cid ;
-        List<Banner.MainData> banner1 = new List<Banner.MainData>();
-        if (Request.QueryString["kind"] == "preview")
-            banner1 = Banner.DbHandle.Banner_Get_list(1, "preview");
-        else
-            banner1 = Banner.DbHandle.Banner_Get_list(1);
-        Repeaterbanner.DataSource = banner1;
-        Repeaterbanner.DataBind();
-        banner1.Clear();
+        unitname = "/catalog/" + cid;
+        //List<Banner.MainData> banner1 = new List<Banner.MainData>();
+        //if (Request.QueryString["kind"] == "preview")
+        //    banner1 = Banner.DbHandle.Banner_Get_list(1, "preview");
+        //else
+        //    banner1 = Banner.DbHandle.Banner_Get_list(1);
 
-        List<article.MainData> hotlist = new List<article.MainData>();  
+
+        List<article.MainData> hotlist = new List<article.MainData>();
+        hotlist = article.Web.Recommend_list(int.Parse (cid));      
+        Repeaterbanner.DataSource = hotlist;
+        Repeaterbanner.DataBind(); 
+
+
         hotlist = article.DbHandle.Get_article_list(cid, "", PageSize, PageIdx);
-       
-        foreach (var p in hotlist)
+        foreach (var t in hotlist)
         {
-        
-
-            Totalrow  = p.TotalRows;
+            Totalrow = t.TotalRows;
             break;
         }
-     
         hot_list_detail.DataSource = hotlist;
         hot_list_detail.DataBind();
         hotlist.Clear();
 
-     
-        DataTable dt;    
-        dt = (DataTable)Application["category"];
-        dt.DefaultView.RowFilter = "categoryid=" + cid;
-        dt = dt.DefaultView.ToTable();
-        pagetitle = dt.Rows[0]["title"].ToString();
-     
+
+        pagetitle = Unitlib.Get_title((List<Unitlib.MenuModel>)Session["webmenu"], int.Parse(cid));
+        Session["active"] = Unitlib.Set_activeId((List<Unitlib.MenuModel>)Session["webmenu"] , int.Parse(cid));  
         Session["title"] = pagetitle + "│" + Application["site_name"];
-        dt.Dispose();
+        Breadcrumb = Unitlib.Get_Breadcrumb((List<Unitlib.MenuModel>)Session["webmenu"], int.Parse(cid));
+
     }
 
     public static string PagePaging()

@@ -15,7 +15,7 @@ using System.Collections.Specialized;
 public partial class admin_EditClass : System.Web.UI.Page
 {
     static string  strsql  = "";
-   
+    public string classid= "";
 
     protected void Page_Init(object sender, EventArgs e)
     {
@@ -27,13 +27,14 @@ public partial class admin_EditClass : System.Web.UI.Page
         nvc.Add("unitid", unitid);
         
         DataTable dt = DbControl.Data_Get(strsql, nvc);
-        string classid = dt.Rows[0]["classid"].ToString();
+        classid = dt.Rows[0]["classid"].ToString();
+       
         strsql = "SELECT *  FROM tbl_category where parentid =0 and classid=@classid ";
         nvc.Clear();
         nvc.Add("classid", classid);
         dt = DbControl.Data_Get(strsql, nvc);
         DropDownList2.Items.Add(new ListItem("設為上層", "0"));
-
+        DropDownList1.Items.Add(new ListItem("第一層", "0"));
         for (int i = 0; i< dt.Rows.Count; i++){
             DropDownList1.Items.Add(new ListItem(dt.Rows [i]["title"].ToString (), dt.Rows[i]["categoryid"].ToString()));
             DropDownList2.Items.Add(new ListItem(dt.Rows[i]["title"].ToString(), dt.Rows[i]["categoryid"].ToString()));
@@ -66,9 +67,10 @@ public partial class admin_EditClass : System.Web.UI.Page
 
         string strsql = @"SELECT * ,
 (select title from tbl_category a where a.categoryid = b.parentid ) as upname
-            FROM tbl_category b where b.parentid =@parentid  ";
+            FROM tbl_category b where b.parentid =@parentid  and classid=@classid ";
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("parentid", DropDownList1.SelectedValue);
+        nvc.Add("classid",classid);
         DataTable dt = DbControl.Data_Get(strsql, nvc);
         ListView1.DataSource = dt;
         ListView1.DataBind();
@@ -108,7 +110,8 @@ public partial class admin_EditClass : System.Web.UI.Page
             class_name.Text = rs["Title"].ToString();
             parentid.Value  = rs["parentid"].ToString();    
             sort.Text = rs["sort"].ToString();
-          
+            pagename.Text = rs["pagename"].ToString();
+            kind.SelectedValue = rs["kind"].ToString();
         }
         rs.Close();
         cmd.Dispose();
@@ -121,29 +124,36 @@ public partial class admin_EditClass : System.Web.UI.Page
 
     protected void Btn_save_Click(object sender, System.EventArgs e)
     {
-        string strsql = "";
 
+       
+        
+       
+     
         //-----------------------------------------------------------------------
 
         if (Btn_save.CommandArgument == "add")
         {
-            strsql = " insert into  tbl_category( parentid, classId, sort, status,  title, createdate, createuserid, filename) values ";
-            strsql += "(@parentid, @classId, @sort, @status,  @title, getdate(), '"+ Session["userid"].ToString() + "', @filename ) ";
+            strsql = " insert into  tbl_category( parentid, classId, sort, status,  title, createdate, createuserid,kind,pagename) values ";
+            strsql += "(@parentid, @classId, @sort, @status,  @title, getdate(), '"+ Session["userid"].ToString() + "',@kind,@pagename) ";
         }
         else {
             strsql = "update  tbl_category set parentid=@parentid,sort=@sort,status=@status, title=@title";
-            strsql += " where categoryid =@categoryid";
+            strsql += ",kind=@kind,pagename=@pagename where categoryid =@categoryid";
         }
         SqlConnection conn = new SqlConnection(classlib.dbConnectionString);
         SqlCommand cmd = new SqlCommand();    
         conn.Open();
         cmd = new SqlCommand(strsql, conn);
+
+
+
         cmd.Parameters.Add("parentid", SqlDbType.NVarChar).Value = DropDownList2.SelectedValue;
-        cmd.Parameters.Add("classId", SqlDbType.NVarChar).Value = DropDownList1.SelectedValue;
+        cmd.Parameters.Add("classId", SqlDbType.NVarChar).Value = classid;
         cmd.Parameters.Add("sort", SqlDbType.NVarChar).Value = sort.Text;
         cmd.Parameters.Add("status", SqlDbType.NVarChar).Value = status.SelectedValue;
-        cmd.Parameters.Add("title", SqlDbType.NVarChar).Value =class_name.Text;       
-       
+        cmd.Parameters.Add("title", SqlDbType.NVarChar).Value =class_name.Text;
+        cmd.Parameters.Add("kind", SqlDbType.NVarChar).Value = kind .SelectedValue;
+        cmd.Parameters.Add("pagename", SqlDbType.NVarChar).Value = pagename.Text;
         if (Btn_save.CommandArgument == "add")
         {
        
@@ -159,6 +169,7 @@ public partial class admin_EditClass : System.Web.UI.Page
         MultiView1.ActiveViewIndex = 0;      
         cleaninput();
         selectSQL();
+        Session["webmenu"] = Unitlib.Get_menu();
     }
 
 

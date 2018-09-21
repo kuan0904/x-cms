@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Hot_list.aspx.cs" Inherits="Hot_list" %>
 
-                                    <h2 class="new-index-main-title text-center">Popular</h2>
+                                    <h2 class="new-index-main-title text-center">熱門文章</h2>
                                     <div class="news-wrap news-list">
                                         <asp:Repeater ID="news_hotlist" runat="server" EnableViewState ="false" >
                                             <ItemTemplate>

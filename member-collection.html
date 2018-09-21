@@ -57,33 +57,33 @@
                         </a>
                     </li>
                     <li>
-                        <a target="_blank" href="#" title=Instagram>
+                        <a target="_blank" href="#" title="Instagram">
                             <i class="fa fa-instagram"></i>
                         </a>
                     </li>
                     <li>
-                        <a target="_blank" href="#" title=Twitter>
+                        <a target="_blank" href="#" title="Twitter">
                             <i class="fa fa-twitter"></i>
                         </a>
                     </li>
                     <li>
-                        <a target="_blank" href="#" title=Youtube>
+                        <a target="_blank" href="#" title="Youtube">
                             <i class="fa fa-youtube-play"></i>
                         </a>
                     </li>
                 </ul>
-                <div class=btn-close-mob>
+                <div class="btn-close-mob">
                     <a href="#">
-                        <i class=icon-close-mob></i>
+                        <i class="icon-close-mob"></i>
                     </a>
                 </div>
                 <!-- btn-close-mob END -->
             </div>
             <!-- menu-socials-wrap END -->
 
-            <div class=login-section>
-                <div class=guest-wrap>
-                    <a href="login.html">登入/註冊</a>
+            <div class="login-section">
+                <div class="guest-wrap">
+                    <a id="login-link-mob">登入</a>
                 </div>
                 <!-- guest-wrap END -->
             </div>
@@ -142,6 +142,14 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="menu-item">
+                        <a href="list.html">專題報導</i>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="list.html">人物</i>
+                        </a>
+                    </li>
                     <li class="menu-item sf-dropdown">
                         <a href="list.html">跨界媒合
                             <i class="fa fa-chevron-down"></i>
@@ -155,12 +163,92 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="menu-item sf-dropdown">
+                        <a href="member-edit.html">會員專區
+                            <i class="fa fa-chevron-down"></i>
+                        </a>
+                        <ul class=sub-menu>
+                            <li>
+                                <a href="member-order.html">查詢訂單</a>
+                            </li>
+                            <li>
+                                <a href="member-collection.html">我的收藏</a>
+                            </li>
+
+                            <li>
+                                <a href="member-edit.html">修改個人資料</a>
+                            </li>
+                            <li>
+                                <a href="member-password.html">變更密碼</a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
             <!-- mobile-content END -->
         </div>
         <!-- container END -->
 
+        <div class="register-section">
+            <div id="btn-login-mob" class="login-animation">
+                <div class="login-close">
+                    <a href="#" class="btn-back">
+                        <i class="fa fa-chevron-down"></i>
+                    </a>
+                    <div class="login-title">登入</div>
+                    <div class="btn-close-mob">
+                        <a href="#">
+                            <i class="icon-close-mob"></i>
+                        </a>
+                    </div>
+                    <!-- btn-close-mob END -->
+                </div>
+                <!-- login-close END -->
+
+                <div class="login-form-wrap">
+                    <div class="login-panel-title">
+                        <span>歡迎</span>請登入您的帳戶</div>
+                    <div class="alert-err"></div>
+                    <div class="login-inputs">
+                        <input class="login-input" type="text" name="login_email" id="login_email-mob" value="" required>
+                        <label>your username</label>
+                    </div>
+                    <div class="login-inputs">
+                        <input class="login-input" type="password" name="login_pass" id="login_pass-mob" value="" required>
+                        <label>your password</label>
+                    </div>
+                    <input type="button" name="login_button" id="login_button-mob" class="login-button" value="登  入">
+                    <div class="login-info-text">
+                        <a href="#" id=forgot-pass-link-mob>忘記密碼</a>
+                    </div>
+                </div>
+                <!-- login-form-wrap END -->
+            </div>
+            <!-- btn-login-mob END -->
+
+            <div id="forgot-pass-mob" class="login-animation">
+                <div class="forgot-pass-close">
+                    <a href="#" class="btn-back">
+                        <i class="fa fa-chevron-down"></i>
+                    </a>
+                    <div class="login-title">密碼重置</div>
+                </div>
+                <!-- forgot-pass-close END -->
+
+                <div class="login-form-wrap">
+                    <div class="login-panel-title">重置您的密碼</div>
+                    <div class="alert-err"></div>
+                    <div class="login-inputs">
+                        <input class="login-input" type="text" name="forgot_email" id="forgot_email-mob" value="" required>
+                        <label>your email</label>
+                    </div>
+                    <input type="button" name="forgot_button" id="forgot_button-mob" class="login-button" value="寄送密碼">
+                </div>
+                <!-- login-form-wrap END -->
+            </div>
+            <!-- forgot-pass-mob END -->
+        </div>
+        <!-- register-section END -->
     </div>
     <!-- mobile-nav END -->
 
@@ -187,201 +275,228 @@
 
     <div id="outer-wrap" class="wrapper">
 
-            <div class="header">
+        <div class="header">
 
-                    <div class="top-bar">
-                        <div class="container">
-                            <div class="top-menu">
-                                <ul class="nav nav-pills">
-                                    <li>
-                                        <a target="_blank" href="#" title="Facebook">
-                                            <i class="fa fa-facebook"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a target="_blank" href="#" title="Google+">
-                                            <i class="fa fa-google-plus"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a target="_blank" href="#" title=Instagram>
-                                            <i class="fa fa-instagram"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a target="_blank" href="#" title=Twitter>
-                                            <i class="fa fa-twitter"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a target="_blank" href="#" title=Youtube>
-                                            <i class="fa fa-youtube-play"></i>
-                                        </a>
-                                    </li>
-                                    <!-- <li>
+            <div class="top-bar">
+                <div class="container">
+                    <div class="top-menu">
+                        <ul class="nav nav-pills">
+                            <li>
+                                <a target="_blank" href="#" title="Facebook">
+                                    <i class="fa fa-facebook"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a target="_blank" href="#" title="Youtube">
+                                    <i class="fa fa-youtube-play"></i>
+                                </a>
+                            </li>
+                            <!-- <li>
                                             <a target="_blank" href="#" title="Email"><i class="fa fa-envelope"></i></a>
                                         </li> -->
-                                    <li>
-                                        <a class="menu-item" href="login.html">
-                                            <i class="fa fa-user"></i> 登入 / 註冊
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="menu-item" href="member-edit.html">
-                                            <i class="fa fa-user"></i>　Hi 會員名稱
-                                        </a>
-                                    </li>
-                                </ul>
+                            <li>
+                                <a class="login-modal-js menu-item" href="#login-form" data-effect="mpf-login-effect">
+                                    <i class="fa fa-user"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu-item" href="member-edit.html">
+                                    <i class="fa fa-user"></i>　Hi 會員名稱
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- top-menu END -->
+                </div>
+                <!-- container END -->
+            </div>
+            <!-- top-bar END -->
+
+            <!-- logo center -->
+            <div class="logo">
+                <a href="hp.html" title="藝時代 Cultural Launch">
+                    <span class="visual-hidden">藝時代 Cultural Launch</span>
+                </a>
+            </div>
+
+            <div class="navbar">
+
+                <div id="header-navbar" class="header-main-menu">
+                    <div class="container">
+
+                        <div class="navbar-header">
+                            <button type="button" id=navbar-sticky-menu class="navbar-toggle collapsed">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+
+                            <div class="navbar-brand">
+                                <a href="hp.html">
+                                    <span class="visual-hidden">藝時代 Cultural Launch</span>
+                                </a>
                             </div>
-                            <!-- top-menu END -->
                         </div>
-                        <!-- container END -->
-                    </div>
-                    <!-- top-bar END -->
-        
-                    <!-- logo center -->
-                    <div class="logo">
-                        <a href="hp.html" title="藝時代 Cultural Launch">
-                            <span class="visual-hidden">藝時代 Cultural Launch</span>
-                        </a>
-                    </div>
-        
-                    <div class="navbar">
-        
-                        <div id="header-navbar" class="header-main-menu">
-                            <div class="container">
-        
-                                <div class="navbar-header">
-                                    <button type="button" id=navbar-sticky-menu class="navbar-toggle collapsed">
-                                        <span class="sr-only">Toggle navigation</span>
-                                        <span class="icon-bar"></span>
-                                        <span class="icon-bar"></span>
-                                        <span class="icon-bar"></span>
-                                    </button>
-        
-                                    <div class="navbar-brand">
-                                        <a href="hp.html">
-                                            <span class="visual-hidden">藝時代 Cultural Launch</span>
-                                        </a>
-                                    </div>
-                                </div>
-                                <!-- navbar-header END -->
-        
-                                <div class="main-menu">
-                                    <ul class="sf-menu">
-                                        <li class="menu-item sf-dropdown">
-                                            <a href="list.html">最新消息</a>
-                                            <ul class="sub-menu">
-                                                <li class="menu-item">
-                                                    <a href="list.html">產業動態</a>
-                                                </li>
-                                                <li class="menu-item">
-                                                    <a href="list.html">文化政策</a>
-                                                </li>
-                                                <li class="menu-item">
-                                                    <a href="list.html">民間文藝</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="menu-item sf-dropdown">
-                                            <a href="list-grid.html">活動</a>
-                                            <ul class="sub-menu">
-                                                <li class="menu-item">
-                                                    <a href="list-grid.html">展覽</a>
-                                                </li>
-                                                <li class="menu-item">
-                                                    <a href="list-grid.html">表演</a>
-                                                </li>
-                                                <li class="menu-item">
-                                                    <a href="list-grid.html">體驗</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="menu-item sf-dropdown">
-                                            <a href="list-grid.html">藝MBA</a>
-                                            <ul class="sub-menu">
-                                                <li class="menu-item">
-                                                    <a href="list-grid.html">產業經營</a>
-                                                </li>
-                                                <li class="menu-item">
-                                                    <a href="list-grid.html">設計</a>
-                                                </li>
-                                                <li class="menu-item">
-                                                    <a href="list-grid.html">跨界創新</a>
-                                                </li>
-                                                <li class="menu-item">
-                                                    <a href="list-grid.html">在地創生</a>
-                                                </li>
-                                            </ul>
+                        <!-- navbar-header END -->
+
+                        <div class="main-menu">
+                            <ul class="sf-menu">
+                                <li class="menu-item sf-dropdown">
+                                    <a href="list.html">最新消息</a>
+                                    <ul class="sub-menu">
+                                        <li class="menu-item">
+                                            <a href="list.html">產業動態</a>
                                         </li>
                                         <li class="menu-item">
-                                            <a href="list.html">專題報導</a>
+                                            <a href="list.html">文化政策</a>
                                         </li>
                                         <li class="menu-item">
-                                            <a href="list.html">人物</a>
-                                        </li>
-                                        <li class="menu-item sf-dropdown">
-                                            <a href="list.html">跨界媒合</a>
-                                            <ul class="sub-menu">
-                                                <li class="menu-item">
-                                                    <a href="list.html">文創人才</a>
-                                                </li>
-                                                <li class="menu-item">
-                                                    <a href="list.html">群眾募資</a>
-                                                </li>
-                                            </ul>
+                                            <a href="list.html">民間文藝</a>
                                         </li>
                                     </ul>
-                                    <!-- menu-main-1 END -->
-                                </div>
-                                <!-- main-menu END -->
-        
-                                <div class="search-wrapper">
-                                    <div id="top-search">
-                                        <div class="header-search-wrap">
-                                            <div class="dropdown header-search">
-                                                <a id="header-btn-search" href="#" role="button" class="dropdown-toggle" data-toggle=dropdown>
-                                                    <i class="fa fa-search"></i>
-                                                </a>
-                                                <a id="header-btn-search-mob" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
-                                                    <i class="fa fa-search"></i>
-                                                </a>
-                                            </div>
-                                            <!-- dropdown END -->
-                                        </div>
-                                        <!-- header-search-wrap END -->
-                                    </div>
-                                    <!-- top-search END -->
-                                </div>
-                                <!-- search-wrapper END -->
-        
+                                </li>
+                                <li class="menu-item sf-dropdown">
+                                    <a href="list.html">活動</a>
+                                    <ul class="sub-menu">
+                                        <li class="menu-item">
+                                            <a href="list-grid.html">展覽</a>
+                                        </li>
+                                        <li class="menu-item">
+                                            <a href="list-grid.html">表演</a>
+                                        </li>
+                                        <li class="menu-item">
+                                            <a href="list-grid.html">體驗</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item sf-dropdown">
+                                    <a href="list.html">藝MBA</a>
+                                    <ul class="sub-menu">
+                                        <li class="menu-item">
+                                            <a href="list-grid.html">產業經營</a>
+                                        </li>
+                                        <li class="menu-item">
+                                            <a href="list-grid.html">設計</a>
+                                        </li>
+                                        <li class="menu-item">
+                                            <a href="list-grid.html">跨界創新</a>
+                                        </li>
+                                        <li class="menu-item">
+                                            <a href="list-grid.html">在地創生</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item">
+                                    <a href="list.html">專題報導</a>
+                                </li>
+                                <li class="menu-item">
+                                    <a href="list.html">人物</a>
+                                </li>
+                                <li class="menu-item sf-dropdown">
+                                    <a href="list.html">跨界媒合</a>
+                                    <ul class="sub-menu">
+                                        <li class="menu-item">
+                                            <a href="list.html">文創人才</a>
+                                        </li>
+                                        <li class="menu-item">
+                                            <a href="list.html">群眾募資</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <!-- menu-main-1 END -->
+                        </div>
+                        <!-- main-menu END -->
+
+                        <div class="search-wrapper">
+                            <div id="top-search">
                                 <div class="header-search-wrap">
                                     <div class="dropdown header-search">
-                                        <div class="dropDown-search" aria-labelledby="header-btn-search">
-                                            <div class="search-form">
-                                                <div role="search">
-                                                    <input class="needsclick" id=search-input type=text value="" name=s autocomplete=off />
-                                                    <input class="wpb_button wpb_btn-inverse btn" type=submit id=header-search-top value=Search />
-                                                </div>
-                                            </div>
-                                            <!-- search-form END -->
-                                        </div>
-                                        <!-- dropDown-search END -->
+                                        <a id="header-btn-search" href="#" role="button" class="dropdown-toggle" data-toggle=dropdown>
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                        <a id="header-btn-search-mob" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
+                                            <i class="fa fa-search"></i>
+                                        </a>
                                     </div>
                                     <!-- dropdown END -->
                                 </div>
                                 <!-- header-search-wrap END -->
-        
                             </div>
-                            <!-- container END -->
+                            <!-- top-search END -->
                         </div>
-                        <!-- navbar header-navbar END -->
-        
+                        <!-- search-wrapper END -->
+
+                        <div class="header-search-wrap">
+                            <div class="dropdown header-search">
+                                <div class="dropDown-search" aria-labelledby="header-btn-search">
+                                    <div class="search-form">
+                                        <div role="search">
+                                            <input class="needsclick" id=search-input type=text value="" name=s autocomplete=off />
+                                            <input class="wpb_button wpb_btn-inverse btn" type=submit id=header-search-top value=Search />
+                                        </div>
+                                    </div>
+                                    <!-- search-form END -->
+                                </div>
+                                <!-- dropDown-search END -->
+                            </div>
+                            <!-- dropdown END -->
+                        </div>
+                        <!-- header-search-wrap END -->
+
                     </div>
-                    <!-- navbar END -->
-        
+                    <!-- container END -->
                 </div>
-                <!-- header END -->
+                <!-- navbar header-navbar END -->
+
+            </div>
+            <!-- navbar END -->
+
+            <div id=login-form class="white-popup-block mfp-hide mfp-with-anim">
+                <div class=login-wrap>
+                    <a href="#" class="btn-back">
+                        <i class="fa fa-chevron-left"></i>
+                    </a>
+
+                    <div id=login-pop class="login-form-div display-block">
+                        <div class=login-panel-title>會員登入</div>
+                        <div class=login-panel-descr>歡迎！請登入您的帳號</div>
+                        <div class=alert-err></div>
+                        <div class=login-inputs>
+                            <input class=login-input type=text name=login_email id=login_email value="" required>
+                            <label>your username</label>
+                        </div>
+                        <div class=login-inputs>
+                            <input class=login-input type=password name=login_pass id=login_pass value="" required>
+                            <label>your password</label>
+                        </div>
+                        <input type=button name=login_button id=login_button class="wpb_button btn login-button" value="登 入">
+                        <div class=login-info-text>
+                            <a href="#" id=forgot-pass-link>忘記密碼?</a>
+                        </div>
+                    </div>
+                    <!-- login-pop END -->
+
+                    <div id=forgot-pass-pop class="login-form-div display-none">
+                        <div class=login-panel-title>密碼重置</div>
+                        <div class=login-panel-descr>重置您的密碼</div>
+                        <div class=alert-err></div>
+                        <div class=login-inputs>
+                            <input class=login-input type=text name=forgot_email id=forgot_email value="" required>
+                            <label>your email</label>
+                        </div>
+                        <input type=button name=forgot_button id=forgot_button class="wpb_button btn login-button" value="寄送密碼">
+                        <div class=login-info-text>我們將會寄送密碼至您的信箱</div>
+                    </div>
+                    <!-- forgot-pass-pop END -->
+                </div>
+                <!-- login-wrap END -->
+            </div>
+            <!-- login-form END -->
+
+        </div>
+        <!-- header END -->
 
 
         <div class="main-content">
@@ -456,14 +571,14 @@
                                     <div class="thumbnail">
                                         <div class="pic effect">
                                             <img src="https://d1f5je0f1yvok5.cloudfront.net/photo/q/n/z/qnzas7TMHrDU5_V15pKS_A_o.jpg" alt="" title="松果手感 - 夢幻系手作乾燥花">
-                                            <a class="view-more" href="detail-course.html"  target="_blank" title="了解更多">
+                                            <a class="view-more" href="detail.html" title="了解更多">
                                                 <span>more</span>
                                             </a>
                                         </div>
 
-                                        <div class="member-course-info ">
+                                        <div class="member-course-info" style="padding:15px;">
                                             <div class="member-course-title ">
-                                                <a href="detail-course.html"  target="_blank" title="松果手感 - 夢幻系手作乾燥花">松果手感 - 夢幻系手作乾燥花（加入收藏時愛心高亮）</a>
+                                                <a href="detail.html" title="松果手感 - 夢幻系手作乾燥花">松果手感 - 夢幻系手作乾燥花（加入收藏時愛心高亮）</a>
                                             </div>
                                             <div class="member-course-date">2018/07/27（五）至2018/07/27（五）
                                             </div>
@@ -476,7 +591,7 @@
                                                     <i class="fa fa-heart fa-lg" aria-hidden="true"></i>
                                                 </div>
                                                 <div class="member-cours-more pull-right">
-                                                    <a class="btn btn-pink btn-block " href="detail-course.html"  target="_blank" >倒數中</a>
+                                                    <a class="btn btn-green btn-block " href="detail-course.html" role="button">熱銷中</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -490,14 +605,14 @@
                                     <div class="thumbnail">
                                         <div class="pic effect">
                                             <img src="https://d1f5je0f1yvok5.cloudfront.net/photo/q/n/z/qnzas7TMHrDU5_V15pKS_A_o.jpg" alt="" title="松果手感 - 夢幻系手作乾燥花">
-                                            <a class="view-more" href="detail-course.html"  target="_blank" title="了解更多">
+                                            <a class="view-more" href="detail.html" title="了解更多">
                                                 <span>more</span>
                                             </a>
                                         </div>
 
-                                        <div class="member-course-info ">
+                                        <div class="member-course-info"  style="padding:15px;">
                                             <div class="member-course-title ">
-                                                <a href="detail-course.html"  target="_blank" title="松果手感 - 夢幻系手作乾燥花">松果手感 - 夢幻系手作乾燥花</a>
+                                                <a href="detail.html" title="松果手感 - 夢幻系手作乾燥花">松果手感 - 夢幻系手作乾燥花</a>
                                             </div>
                                             <div class="member-course-date">2018/07/27（五）至2018/07/27（五）
                                             </div>
@@ -510,7 +625,7 @@
                                                     <i class="fa fa-heart fa-lg" aria-hidden="true"></i>
                                                 </div>
                                                 <div class="member-cours-more pull-right">
-                                                    <a class="btn btn-green btn-block " href="detail-course.html"  target="_blank" >熱銷中</a>
+                                                    <a class="btn btn-green btn-block " href="detail-course.html" role="button">熱銷中</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -524,14 +639,14 @@
                                     <div class="thumbnail">
                                         <div class="pic effect">
                                             <img src="https://d1f5je0f1yvok5.cloudfront.net/photo/q/n/z/qnzas7TMHrDU5_V15pKS_A_o.jpg" alt="" title="松果手感 - 夢幻系手作乾燥花">
-                                            <a class="view-more" href="detail-course.html"  target="_blank" title="了解更多">
+                                            <a class="view-more" href="detail.html" title="了解更多">
                                                 <span>more</span>
                                             </a>
                                         </div>
 
-                                        <div class="member-course-info ">
+                                        <div class="member-course-info" style="padding:15px;">
                                             <div class="member-course-title ">
-                                                <a href="detail-course.html"  target="_blank" title="松果手感 - 夢幻系手作乾燥花">松果手感 - 夢幻系手作乾燥花</a>
+                                                <a href="detail.html" title="松果手感 - 夢幻系手作乾燥花">松果手感 - 夢幻系手作乾燥花</a>
                                             </div>
                                             <div class="member-course-date">2018/07/27（五）至2018/07/27（五）
                                             </div>
@@ -544,7 +659,7 @@
                                                     <i class="fa fa-heart fa-lg" aria-hidden="true"></i>
                                                 </div>
                                                 <div class="member-cours-more pull-right">
-                                                    <span class="btn btn-gray btn-block " >已結束</span>
+                                                    <a class="btn btn-green btn-block " href="detail-course.html" role="button">熱銷中</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -558,14 +673,14 @@
                                     <div class="thumbnail">
                                         <div class="pic effect">
                                             <img src="https://d1f5je0f1yvok5.cloudfront.net/photo/q/n/z/qnzas7TMHrDU5_V15pKS_A_o.jpg" alt="" title="松果手感 - 夢幻系手作乾燥花">
-                                            <a class="view-more" href="detail-course.html"  target="_blank" title="了解更多">
+                                            <a class="view-more" href="detail.html" title="了解更多">
                                                 <span>more</span>
                                             </a>
                                         </div>
 
-                                        <div class="member-course-info ">
+                                        <div class="member-course-info"  style="padding:15px;">
                                             <div class="member-course-title ">
-                                                <a href="detail-course.html"  target="_blank" title="松果手感 - 夢幻系手作乾燥花">松果手感 - 夢幻系手作乾燥花</a>
+                                                <a href="detail.html" title="松果手感 - 夢幻系手作乾燥花">松果手感 - 夢幻系手作乾燥花</a>
                                             </div>
                                             <div class="member-course-date">2018/07/27（五）至2018/07/27（五）
                                             </div>
@@ -578,7 +693,7 @@
                                                     <i class="fa fa-heart fa-lg" aria-hidden="true"></i>
                                                 </div>
                                                 <div class="member-cours-more pull-right">
-                                                    <a class="btn btn-green btn-block " href="detail-course.html"  target="_blank">熱銷中</a>
+                                                    <a class="btn btn-green btn-block " href="detail-course.html" role="button">熱銷中</a>
                                                 </div>
                                             </div>
                                         </div>

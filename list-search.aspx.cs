@@ -23,6 +23,7 @@ public partial class list_search : System.Web.UI.Page
         Session["description"] = Application["description"];
         Session["keywords"] = Application["keywords"];
         Session["image"] = Session["websiteurl"] + "/images/fbShare.jpg";
+        Session["active"] = "";
     }
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -54,13 +55,7 @@ public partial class list_search : System.Web.UI.Page
         hotlist.Clear();
 
 
-        DataTable dt;
-        dt = (DataTable)Application["category"];
-      //  dt.DefaultView.RowFilter = "categoryid=" + cid;
-        dt = dt.DefaultView.ToTable();
-        pagetitle = dt.Rows[0]["title"].ToString();
 
-        dt.Dispose();
     }
     public static string PagePaging()
     {

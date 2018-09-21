@@ -27,26 +27,27 @@ public partial class detail_course_ : System.Web.UI.Page
     public string price = "";
     public string sellprice = "";
     public string title = "";
-   public  string address = "";
+    public string address = "";
+    public string Articleid = "";
     protected void Page_Load(object sender, EventArgs e)
     {
 
       
-        string Articlid = Request.QueryString["Articlid"];
+        Articleid = Request.QueryString["Articleid"];
         Route myRoute = RouteData.Route as Route;
         if (myRoute != null)
         {
 
-            Articlid = RouteData.Values["Articlid"].ToString();
+            Articleid = RouteData.Values["Articleid"].ToString();
             // string verder = (string)Page.RouteData.Values["verder"];
         }
 
         article.MainData MainData = new article.MainData();
         List<article.Lecturer> Lecturer = new List<article.Lecturer>();
 
-        if (Articlid != null && Articlid !="0")
+        if (Articleid != null && Articleid !="0")
         {
-            MainData = article.DbHandle.Get_article(int.Parse(Articlid));
+            MainData = article.DbHandle.Get_article(int.Parse(Articleid));
         }
         else if (Session["MainData"] != null)
         {
@@ -85,29 +86,26 @@ public partial class detail_course_ : System.Web.UI.Page
             Session["description"] = unity.classlib.noHTML(contents);
             Session["keywords"] = MainData.Keywords;
             article.DbHandle.Add_views(MainData.Id);
-
             List<article.Category> cate = new List<article.Category>();
-            cate = (List<article.Category>)article.DbHandle.Get_article_category(MainData.Id );
-
+            cate = (List<article.Category>)article.DbHandle.Get_article_category(MainData.Id);
             foreach (var a in cate)
             {
-                DataTable dt, dt1;
-                dt = (DataTable)Application["category"];
-                dt.DefaultView.RowFilter = "categoryid=" + a.CategoryId;
-
-                dt1 = dt.DefaultView.ToTable();
-                pageunit = "<li class=\"active\"><a href=\"/" + dt1.Rows[0]["CategoryId"].ToString() + "/catalog\">" + dt1.Rows[0]["title"].ToString() + "</a></li>";
-                if (dt1.Rows[0]["parentid"].ToString() != "0")
+                List<Unitlib.MenuModel> subMenu = (List<Unitlib.MenuModel>)Session["webmenu"];
+                var data = subMenu.SelectMany(x => x.Detial).FirstOrDefault(c => c.Id == a.CategoryId);
+                if (data != null)
                 {
-                    dt.DefaultView.RowFilter = "categoryid=" + dt1.Rows[0]["parentid"].ToString();
-                    dt1 = dt.DefaultView.ToTable();
-                    pageunit = "<li><a href=\"/" + dt1.Rows[0]["CategoryId"].ToString() + "/catalog\">" + dt1.Rows[0]["title"].ToString() + "</a></li>" + pageunit;
-                    dt1.Dispose();
-                    dt.Dispose();
-
+                    var p = subMenu.Find(x => x.Id == data.ParentId);
+                    if (p != null)
+                    {
+                        pageunit += "<li class=\"active\"><a href=\"/catalog/" + p.Id.ToString() + "\">" + p.Title.ToString() + "</a></li>";
+                    }
+                    pageunit += "<li class=\"active\"><a href=\"/catalog/" + data.Id.ToString() + "\">" + data.Title.ToString() + "</a></li>";
                 }
+
                 break;
+
             }
+      
 
         }
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.Routing;
 using System.Data;
-
+using System.Linq;
 public partial class process_step1 : System.Web.UI.Page
 {
     public string subject = "";
@@ -28,21 +28,21 @@ public partial class process_step1 : System.Web.UI.Page
     {
 
 
-        string Articlid = Request.QueryString["Articlid"];
+        string Articleid = Request.QueryString["Articleid"];
         Route myRoute = RouteData.Route as Route;
         if (myRoute != null)
         {
 
-            Articlid = RouteData.Values["Articlid"].ToString();
+            Articleid = RouteData.Values["Articleid"].ToString();
             // string verder = (string)Page.RouteData.Values["verder"];
         }
 
         article.MainData MainData = new article.MainData();
         List<article.Lecturer> Lecturer = new List<article.Lecturer>();
 
-        if (Articlid != null && Articlid != "0")
+        if (Articleid != null && Articleid != "0")
         {
-            MainData = article.DbHandle.Get_article(int.Parse(Articlid));
+            MainData = article.DbHandle.Get_article(int.Parse(Articleid));
         }
         else if (Session["MainData"] != null)
         {
@@ -84,21 +84,18 @@ public partial class process_step1 : System.Web.UI.Page
             List<article.Category> cate = new List<article.Category>();
             cate = (List<article.Category>)article.DbHandle.Get_article_category(MainData.Id);
 
+         
+
             foreach (var a in cate)
             {
-                DataTable dt, dt1;
-                dt = (DataTable)Application["category"];
-                dt.DefaultView.RowFilter = "categoryid=" + a.CategoryId;
-
-                dt1 = dt.DefaultView.ToTable();
-                pageunit = "<li class=\"active\"><a href=\"/" + dt1.Rows[0]["CategoryId"].ToString() + "/catalog\">" + dt1.Rows[0]["title"].ToString() + "</a></li>";
-                if (dt1.Rows[0]["parentid"].ToString() != "0")
+                List<Unitlib.MenuModel> subMenu = (List<Unitlib.MenuModel>)Session["webmenu"];
+                var p = subMenu.FirstOrDefault(x => x.Detial.Any(y => y.Id == a.CategoryId));
+                pageunit = "<li class=\"active\"><a href=\"/catalog/" + p.Id.ToString() + "\">" + p.Title.ToString() + "</a></li>";
+                if (p.ParentId != 0)
                 {
-                    dt.DefaultView.RowFilter = "categoryid=" + dt1.Rows[0]["parentid"].ToString();
-                    dt1 = dt.DefaultView.ToTable();
-                    pageunit = "<li><a href=\"/" + dt1.Rows[0]["CategoryId"].ToString() + "/catalog\">" + dt1.Rows[0]["title"].ToString() + "</a></li>" + pageunit;
-                    dt1.Dispose();
-                    dt.Dispose();
+                    var q = subMenu.FirstOrDefault(x => x.Detial.Any(y => y.ParentId == p.Id));
+                    pageunit = "<li><a href=\"/catalog/" + q.Id + "\"> " + q.Title + "</a></li>" + pageunit;
+
 
                 }
                 break;

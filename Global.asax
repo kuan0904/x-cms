@@ -25,38 +25,29 @@
         if (dt.Rows.Count !=0)
             Session ["websiteurl"] = dt.Rows[0]["value"].ToString ();
         dt.Dispose();
-
+        Session["active"]  = "";
         Application["description"] = Session["description"];
         Application["keywords"] = Session["keywords"];
 
     }
     void Application_Start(object sender, EventArgs e)
     {
-        Application["FacebookAppId"]   = "1764690486918673";
-        RouteConfig.RegisterRoutes(RouteTable.Routes);
+      
         //  BundleConfig.RegisterBundles(BundleTable.Bundles);
         string strsql = "";
         DataTable dt;
         NameValueCollection nvc = new NameValueCollection();
-        if (Application["category"] == null)
+
+        strsql = "SELECT * FROM   WebSiteInfo  ";
+        dt = DbControl.Data_Get(strsql, nvc);
+        foreach (DataRow  dr in dt.Rows)
         {
-            strsql = "SELECT * FROM  tbl_category where status='Y' ";
+            Application[dr["webid"].ToString()] = dr["value"].ToString();
 
-            dt = DbControl.Data_Get(strsql, nvc);
-            Application["category"] = dt;
-            dt.Dispose();
         }
-        if (Application["site_name"] == null)
-        {
+        dt.Dispose();
 
-            strsql = "SELECT * FROM   WebSiteInfo where webid= 'site_name' ";
-
-            dt = DbControl.Data_Get(strsql, nvc);
-            if (dt.Rows.Count !=0)
-                Application["site_name"] = dt.Rows[0]["value"].ToString ();
-            dt.Dispose();
-        }
-
+        RouteConfig.RegisterRoutes(RouteTable.Routes);
         // 在應用程式啟動時執行的程式碼     
         RouteTable.Routes.MapHttpRoute(
         name: "DefaultApi",

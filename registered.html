@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-Hant-TW">
 
 <head>
@@ -8,7 +8,7 @@
     <meta name="theme-color" content="#b483a6">
     <meta name="msapplication-navbutton-color" content="#b483a6">
     <meta name="apple-mobile-web-app-status-bar-style" content="#b483a6">
-    <meta name="author" content="Xnet 智媒科技" />
+    <meta name="author" content="UTRUST 信諾科技" />
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta property="og:title" content="" />
@@ -43,57 +43,60 @@
                 <div class="login-box">
                     <div class="login-header text-center">
                         <div class="login-logo">
-                            <a href="/index" title="藝時代 Cultural Launch">藝時代</a>
+                            <a href="hp.html" title="藝時代 Cultural Launch">藝時代</a>
                         </div>
-                        <div class="login-box-title">註冊個人帳號</div>
+                        <div class="login-box-title"></div>
                     </div>
                     <form class="form-member form-login">
                         <div class="form-group  text-center">
                             <label>註冊個人帳號</label>
                         </div>
                         <div class="form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon">
+                            <div class="login-input-box">
+                                <input class="login-input100 form-control"  placeholder="帳號">
+                                <span class="focus-input100"></span>
+                                <span class="symbol-input100">
+                                    <i class="fa fa-user fa-lg" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="login-input-box">
+                                <input class="login-input100 form-control"  placeholder="密碼">
+                                <span class="focus-input100"></span>
+                                <span class="symbol-input100">
+                                    <i class="fa fa-key" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="login-input-box">
+                                <input class="login-input100 form-control"  placeholder="Email">
+                                <span class="focus-input100"></span>
+                                <span class="symbol-input100">
                                     <i class="fa fa-envelope" aria-hidden="true"></i>
                                 </span>
-                                <input type="text" id="regist_email" class="form-control" placeholder="Email">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="fa fa-key" aria-hidden="true"></i>
-                                </span>
-                                <input type="password" id="regist_pass" class="form-control" placeholder="密碼">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="fa fa-key" aria-hidden="true"></i>
-                                </span>
-                                <input type="password" id="regist_pass1" class="form-control" placeholder="確認密碼">
                             </div>
                         </div>
                         <div class="divide20"></div>
-                        <button type="button" id="btnRegister" class="btn btn-green btn-lg btn-block">登入</button>
+                        <button type="submit" class="btn btn-green btn-lg btn-block">登入</button>
                     </form>
                     <div class="divide20"></div>
                     <div class="text-center login-text">
-                        <p>
-                            按下註冊鈕的同時，表示您已詳閱我們的
+                        <p>按下註冊鈕的同時，表示您已詳閱我們的
                             <a href="#">資料使用政策與使用條款</a>，同意使用藝時代所提供的服務並訂閱電子報。
                         </p>
-                        <p>
-                            已經有帳號了？
+                        <p>已經有帳號了？
                             <span class="lead">
                                 <a href="login.html">馬上登入</a>
                             </span>
                         </p>
                     </div>
                 </div>
+                <div class="divide40"></div>
             </div>
             <!-- col-sm-12 -main-content END -->
+
             <!-- col-md-8 td-main-content END -->
         </div>
         <!-- row END -->
@@ -101,77 +104,10 @@
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/lib/common.js?v=2"></script>
-
-    <script>
-
-        $(document).ready(function () {
-
-            $("#btnRegister").click(function () {
-                //if ($("#rad2").prop("checked")) {
-                var objNewAccount = $("#regist_email");
-                var objNewPasswd = $("#regist_pass");
-                var objChkPasswd = $("#regist_pass1");
-                //var objMobile = $("#p_MOBILE");
-                var p_NEW_ACCOUNT = objNewAccount.val();
-                var p_NEW_PASSWD = objNewPasswd.val();
-                var p_CHK_PASSWD = objChkPasswd.val();
-
-                if (p_NEW_ACCOUNT == "") {
-                    setInputStyle("warning", objNewAccount, "請輪入Email");
-                } else if (!validEmail(p_NEW_ACCOUNT)) {
-                    alert("帳號非EMail格式");
-                    setInputStyle("error", objNewAccount, "Email錯誤請重新輸入");
-                } else if (p_NEW_PASSWD == "") {
-                    setInputStyle("warning", objNewPasswd, "請輸入密碼");
-                } else if ((p_NEW_PASSWD.length < 6) || (p_NEW_PASSWD.length > 15)) {
-                    alert("密碼長度不對");
-                    setInputStyle("error", objNewPasswd, "密碼錯誤請重新輸入");
-                } else if (p_CHK_PASSWD == "") {
-                    setInputStyle("warning", objChkPasswd, "請輸入確認密碼");
-                } else if (p_CHK_PASSWD != p_NEW_PASSWD) {
-                    alert("請確認兩次輸入的密碼是否相同");
-                    setInputStyle("error", objNewPasswd, "密碼錯誤請重新輸入");
-                    setInputStyle("error", objChkPasswd, "確認密碼錯誤請重新輸入");
-                    //} else if (p_MOBILECODE.length < 4 || p_MOBILE < 6) {
-                    //    alert("行動電話長度不對");
-                    //    setInputStyle("error", objMobile, "行動電話錯誤請重新輸入");
-                } else {
-                    $.post('/lib/member_handle.ashx', {
-                        "p_ACCOUNT": p_NEW_ACCOUNT, "p_PASSWD": p_NEW_PASSWD,
-                        "p_ACTION": "Register", "_": new Date().getTime()
-                    }, function (data) {
-                        if (data == "0") {
-                            alert("註冊失敗");
-                        } else if (data == "-1") {
-                            alert("帳號已經存在");
-                            setInputStyle("error", objNewAccount, "帳號錯誤請重新輸入");
-                        }
-                        else {
-                            alert('加入成功');
-                            location.href = '/index';
-                           // $.magnificPopup.close();
-                        }
-                    });
-                }
-                //} else {
-                //    alert("尚未同意會員服務使用條款");
-                //}
-            });
-            $("#p_NEW_ACCOUNT").blur(function () {
-                if ($(this).val() != "") {
-                    if (!validEmail($(this).val())) {
-                        alert("帳號非EMail格式");
-                        $(this).focus();
-                    }
-                }
-            });
-
-
-        });
-
-
-    </script>>
+    <script src="assets/swipe/swiper.min.js"></script>
+    <script src='js/device.js'></script>
+    <script src='js/theme.js'></script>
+    <script src='js/script.js'></script>
 
 </body>
 

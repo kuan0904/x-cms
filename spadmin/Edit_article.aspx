@@ -186,8 +186,9 @@
                     errmsg += ('文章主圖未上傳\r\n');
                 }
             } else {
-                postday = "2018/1/1";
+                
             }
+            if (postday =="")  postday = "2018/1/1";
             var categoryid = $('input:checkbox:checked[name="categoryid"]').map(function () { return $(this).val(); }).get();
             var tags = $('input:checkbox:checked[name="tags"]').map(function () { return $(this).val(); }).get();              
             var recommend = $("#recommend").prop("checked") == true ? "Y" : "N";     

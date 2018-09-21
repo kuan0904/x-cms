@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="detail.aspx.cs" Inherits="detail" %>
-<%@ MasterType VirtualPath="~/MasterPage.master" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
- <script>
+     <script>
      $(document).ready(function () {
           if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
           
@@ -16,6 +16,9 @@
 </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+    
+        <div class="main-content">
+
        <div class="breadArea">
                     <div class="container">
                         <ol class="breadcrumb">
@@ -24,156 +27,231 @@
                            
                         </ol>
                     </div>
-                </div><!-- breadArea END -->
+                </div>
+            <!-- breadArea END -->
 
-                <div class="container">
-
-                    <a href="javascript: history.go(-1)" class="btn btn-back">
-                        <span class="fa fa-angle-left"></span>BACK
-                    </a>
-
-                    <div class="row">
-
-                        <div class="col-md-8 col-sm-8 main-content">
-                            <div class="main-content-inner">
-
-                                <article class="post-layout post">
-
-                                    <div class="post-header">
-
-                                        <div class="post-featured-image"><%=pic %> </div>
-                                        <div class="post-information">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-sm-12 col-xs-12 main-content">
+                        <div class="main-content-inner">
+                            <article class="post-layout post">
+                                <div class="post-header">
+                                    <div class="divide20"></div>
+                                    <div class="post-information-RL-15">
+                                        
                                             <ul class="category">
                                                 <li class="entry-category"><%=tags%></li>
                                             </ul>
-                                            <h1><%=subject %></h1>
-                                            <div class="meta-info">
+                                            
+                                        <h1><%=subject %></h1>
+                                        <div class="meta-info clearfix">
+                                                 <div class="pull-left social-media-share-btn">                                                
+                                                <a href="#" class="share-fb" data-item="<%=Articleid%>"  title="facebook">
+                                                    <i class="fa fa-2x fa-facebook-official" aria-hidden="true"></i>
+                                                </a>
+                                                <a href="#" class="share-google" data-item="<%=Articleid%>"  title="google">
+                                                    <i class="fa fa-2x fa-google-plus-square" aria-hidden="true"></i>
+                                                </a>
+                                                <a href="#" class="share-twitter" data-item="<%=Articleid%>" title="twitter">
+                                                    <i class="fa fa-2x fa-twitter" aria-hidden="true"></i>
+                                                </a>
+                                                <a href="#" class="share-print" data-item="<%=Articleid%>" title="print">
+                                                    <i class="fa fa-2x fa-print" aria-hidden="true"></i>
+                                                </a>
+                                                <a href="#" class="share-collection" title="加入收藏" data-item="<%=Articleid%>">
+                                                    <i class="fa fa-2x fa-heart" aria-hidden="true"></i>
+                                                </a>
+                                            </div>
+                                            <div class="pull-rigt text-right">
                                                 <div class="post-author">
                                                     <span>By</span>
-                                                    <a href="#/author/admin/"> <%= author  %></a>
+                                                   <%= author  %>
                                                     <span> - </span>
-                                                </div>
-                                                <span class="post-date"><time datetime="<%=postday %>"><%=postday %></time></span>
-                                                <div class="post-views">
-                                                    <i class="fa fa-eye"></i><%=viewcount  %></div>
-                                                <div class="post-comments">
-                                                    <a href="#respond"><i class="fa fa-comments"></i>0</a>
-                                                </div>
-                                                <div class="post-keywords">
-                                                    <i class="fa fa-tags"></i>
-                                                     <%= keywords %>
-                                                   
-                                                </div>
+                                                </div> 
+                                                <span class="post-date">
+                                                    <time datetime="<%=postday %>"><%=postday %></time>
+                                                </span>  
+                                                <div class=post-views>
+                                                        <i class="fa fa-eye"></i><%=viewcount  %></div>
                                             </div>
-                                        </div><!-- meta-info END -->
+                                        </div>
+                                    </div>
+                                    <div class="post-featured-image"><%=pic %> </div>
 
-                                        <div class="post-sharing">
-                                            <span class="post-share-title">SHARE</span>
-                                            <div class="sharing-group">
-                                                <a class="btn-share facebook" href="#" >
-                                                    <div class="icon-elements facebook"></div>
-                                                    <div class="social-text">Facebook</div>
-                                                </a>
 
-                                                <a class="btn-share twitter" href="#"><div class="icon-elements twitter"></div><div class="social-text">Twitter</div></a>
 
-                                                <a class="btn-share google" href="#" ><div class="icon-elements googleplus"></div></a>
+                                    <!-- meta-info END -->
+                                </div>
+                                <!-- post-header END -->
 
-                                                <a class="btn-share pinterest" href="#" ><div class="icon-elements pinterest"></div></a>
+                                <div class="post-content">
+                                  <%=contents %>        
+                                </div><!-- post-content END -->
+  
+                <asp:Repeater ID="Repeater_file" runat="server" >   
+                                            <HeaderTemplate>
+                                    <h2>相關檔案</h2>
+                                      <section class="section-top-0 section-sm-top-0">
+                                        <div class="shell">
+                                          <div class="range">
+                                            <div class="cell-md-10 cell-lg-8">
+                                              <div class="table-mobile">
+                                                <table class="table table-striped">
+                                                  <thead>
+                                                  <tr>
+                                                      <th>#</th>
+                                                      <th>下載報名表</th>
+                                                      <th>檔案名稱</th>
+                                                    </tr>
+                                                  </thead>
+                                                    <tbody>
+                                                    </HeaderTemplate>
+                                                    <ItemTemplate>
+                                                   <tr>
+                                                        <td><%# Container.ItemIndex + 1 %></td>
+                                                        <td><a href="/webimages/files/<%#Eval("filename") %>" class ="download" target="_blank"><img src="/images/download-file.svg" alt="" width="50"></a></td>
+                                                        <td><%#Eval("filename") %></td>
+                                                    </tr>
+                                                </ItemTemplate>
+                                                 <FooterTemplate>   
+                                                        </tbody>
+                                                        </table>
+                                                        </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </section>
+                                             </FooterTemplate>
+                                        </asp:Repeater> 
+                                
 
-                                                <a class="btn-share whatsapp" href="#"><div class="icon-elements whatsapp"></div></a>
+                                <!-- post-content END -->
+                                <div class="center-block text-center">
+                                    <div class="post-tags">
+                                        <%= keywords %>
+                                    </div>
+                                </div>
+                                <div class="divide20"></div>
+                              
+                                <div class="extended-reading">
+                                    <h3 class="new-index-main-title text-center">延伸閱讀</h3>
+                                    <div class="extended-list">
+                                        <ul class="fa-ul">
+                                            <asp:Repeater ID="extended_list" runat="server">
+                                                <ItemTemplate>
+                                                      <li>
+                                                <i class="fa-li fa fa-angle-right"></i><a href="/Article/<%#Eval("id") %>"><%#Eval("subject") %></a></li>
+                                       
+                                                </ItemTemplate>
+                                            </asp:Repeater>
 
-                                                <div class="clearfix"></div>
-                                            </div><!-- sharing-group END -->
-                                        </div><!-- post-sharing END -->
-                                    </div><!-- post-header END -->
+                                            </ul>
+                                    </div>
 
-                                    <div class="post-content">
-                                      <%=contents %>          </div><!-- post-content END -->
+                                    <!-- news-list END -->
+                                </div>
+                                <!-- post-footer END -->
 
-                                    <div class="post-footer">
-                                        <div class="post-sharing">
-                                            <span class="post-share-title">SHARE</span>
-                                            <div class="sharing-group">
-                                                <a class="btn-share facebook" href="#" >
-                                                    <div class="icon-elements facebook"></div>
-                                                    <div class="social-text">Facebook</div>
-                                                </a>
+                            </article>
 
-                                                <a class="btn-share twitter" href="#"><div class="icon-elements twitter"></div><div class="social-text">Twitter</div></a>
+                        </div>
+                        <!-- main-content-inner END -->
 
-                                                <a class="btn-share google" href="#" ><div class="icon-elements googleplus"></div></a>
+                    </div>
+                    <!-- col-md-8 td-main-content END -->
 
-                                                <a class="btn-share pinterest" href="#"><div class="icon-elements pinterest"></div></a>
+                    <div class="col-md-4 col-sm-12 col-xs-12 main-sidebar">
+                        <!-- <div class=main-sidebar-inner> -->
+                        <div class="block-wrap" id="ad_banner1"></div>   
 
-                                                <a class="btn-share whatsapp" href="#"><div class="icon-elements whatsapp"></div></a>
+                        <div class="block-wrap">
+                
+                            <div class="topic text-center">
+                                    <div class="topic-words">
+                                        <div class="underline"></div>
+                                        <h1>訂閱電子報</h1>
+                                    </div>
+                            </div>
 
-                                                <div class="clearfix"></div>
-                                            </div><!-- sharing-group END -->
-                                        </div><!-- post-sharing END -->
-                                    </div><!-- post-footer END -->
+                            <div class="epaper-box">
+                                <p>精選國內外設計與藝文大事、設計大師最新訪談，每週最新資訊定期遞送給您。</p>
+                                <div class="form">
+                                    <div class="form-group">
+                                        <label class="sr-only" for="exampleInputEmail2">Email</label>
+                                          <input type="email" class="form-control" id="InputEmail" placeholder="yourmail@example.com">
+                                    </div>
+                                    <button   id="Emailregist"  class="btn btn-green btn-block">訂閱
+                                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
 
-                                </article>
+                        <div class="block-wrap" id="hot_list">
+                            <!-- news-list END -->
+                        </div>
 
-                            </div><!-- main-content-inner END -->
+                        <div class="block-wrap">
+                                
+                                <div class="topic text-center">
+                                        <div class="topic-words">
+                                            <div class="underline"></div>
+                                            <h1>追蹤我們</h1>
+                                        </div>
+                                </div>
 
-                        </div><!-- col-md-8 td-main-content END -->
+                            <!-- <div class="divide20"></div> -->
+                            <div class="fb-page" data-href="<%=Application["fb_url"] %>" data-tabs="timeline" data-width="400" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="<%=Application["fb_url"] %>" class="fb-xfbml-parse-ignore"><a href="<%=Application["fb_url"] %>"><%=Application["site_name"] %></a></blockquote></div>
+                        </div>
+                        <div class="block-wrap" id="ad_banner2"></div>   
+                        <!-- </div> -->
+                        <!-- main-sidebar-inner END -->
+                    </div>
+                    <!-- col-md-4 END -->
 
-                        <div class="col-md-4 col-sm-4 main-sidebar">
-                            <!-- <div class=main-sidebar-inner> -->
 
-                                <div class="block-wrap" id="ad_banner1"></div>   
+                </div>
+                <!-- row END -->
+               
 
-                                <div class="block-wrap">
-                                    <div class=block-title>訂閱電子報</div>
-                                    <div class="epaper-box">
-                                        <p>精選國內外設計與藝文大事、設計大師最新訪談，每週最新資訊定期遞送給您。</p>
-                                        <div class="form-inline">
-                                          <div class="form-group">
-                                            <label class="sr-only" for="exampleInputEmail2">Email</label>
-                                            <input type="email" class="form-control" id="InputEmail" placeholder="yourmail@example.com">
-                                          </div>
-                                          <button type="button" id="Emailregist" class="btn btn-default">訂閱</button>
+                          
+            </div>
+            <!-- container END -->
+            </div> 
+    <div class="main-content" style="background: rgb(245, 253, 168);">
+                <div class="container-fluid">
+                    <div class=main-content-inner>
+                        <div class="container">
+                            <div class="news-wrap">
+                            <asp:Repeater ID="Repeater2" runat="server">
+                            <ItemTemplate>
+                                <div class="col-md-4 col-sm-4 col-xs-12 big-banner-box">
+                                    <div class="thumbnail">
+                                        <div class="pic effect">
+                                            <img src="<%#Eval("pic") %>" alt="" title="<%#Eval("subject") %>">
+                                            <a class="view-more" href="/Article/<%#Eval("id") %>" title="了解更多">
+                                                <span><%#Eval("subject") %></span>
+                                            </a>
+                                            <div class="category">
+                                                 <%# article.Web.Get_category_link  ((int) Eval("id"))%>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                              <div class="block-wrap"  id="hot_list"></div>
-                                <div class="block-wrap">
-                                    <iframe src="https://www.facebook.com/plugins/page.php?href=https://www.facebook.com/%E8%97%9D%E6%99%82%E4%BB%A3-2162933603987210/%2F&tabs=timeline&width=300&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=1355515061131043" width="300" height="500" scrolling="no" frameborder="0" allowTransparency="true" style="display: block; width: 300px; margin: auto;">
-                                    </iframe>
-                                </div>
-                                <div class="block-wrap" id="ad_banner2"></div>   
-                            <!-- </div> --><!-- main-sidebar-inner END -->
-                        </div><!-- col-md-4 END -->
-
-
-                    </div><!-- row END -->
-                    <!-- Line 分享按鈕 -->
-<script>
-//<![CDATA[
-(function() {
-var img = "http://2.bp.blogspot.com/-tsIDMPhBx18/VPGxHZtjsnI/AAAAAAAALIU/1b_VO721HDw/s1600/line-share-button.png", // line 按鈕圖示
-title = document.title,
-url = "http://" + location.hostname + location.pathname,
-href, html;
-
-// 行動裝置語法
-if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-href = "http://line.naver.jp/R/msg/text/?" + title + "%0D%0A" + url;
-} else {
-// 網頁版語法
-href = "https://lineit.line.me/share/ui?url=" + encodeURIComponent(url);
-}
-html = "<a href='" + href + "' target='_blank'><img src='" + img + "'/></a>";
-//document.write(html);
-})();
-//]]>
-</script>
-<!-- Designed by WFU BLOG -->
-
-                             <a href="https://social-plugins.line.me/lineit/share?url=<%= Request.Url.AbsoluteUri %>&text=<%=subject  %>%0D%0A<%= Request.Url.AbsoluteUri %>&from=line_scheme"  target="_blank"><i class="ico-line-img"></i></a>
-
-                    </div><!-- container END -->
+                                <!-- col-md-12 END -->
+                                </ItemTemplate>
+                            </asp:Repeater>
+                            </div>
+                        </div>
+                        <!-- news-list END -->
+                    </div>
+                </div>
+                <!-- main-content-inner END -->
+            </div>
+        <a href="javascript: history.go(-1)" class="btn btn-back">
+                        <span class="fa fa-angle-left"></span>BACK
+                    </a>
+       <a href="https://social-plugins.line.me/lineit/share?url=<%= Request.Url.AbsoluteUri %>&text=<%=subject  %>%0D%0A<%= Request.Url.AbsoluteUri %>&from=line_scheme"  target="_blank"><i class="ico-line-img"></i></a>
 
 </asp:Content>
 

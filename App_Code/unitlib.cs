@@ -19,11 +19,55 @@ public class Unitlib
     {
         string result = "";
         if (kind == "1") result = "/catalog/" + id;
-        if (kind == "2") result = "/emba/" + id;
-        if (kind == "3") result = "/catalog/" + id;
-        if (kind == "4") result = "/Article/" + id;
-        if (kind == "5") result = "/page/" + id;
-        if (page != "") result += "/page/" + page;
+        else if (kind == "2") result = "/emba/" + id;
+        else if (kind == "3") result = page;
+        else if (kind == "4") result = "/Article/" + id;
+        else if (kind == "5") result = "/news/" + id;
+        else result = "/catalog/" + id;
+        return result;
+    }
+    public static string Get_Breadcrumb(List<Unitlib.MenuModel> subMenu, int cid  )
+    {
+        string result  = "";
+        var data = subMenu.Find(x => x.Id ==  cid  );
+        if (data != null)
+        {
+            result  += "<li class=\"active\"><a href=\"/catalog/" + data.Id.ToString() + "\">" + data.Title.ToString() + "</a></li>";
+        }
+
+        //data = subMenu.FirstOrDefault(x => x.Detial.Any(y => y.Id == cid));
+         data = subMenu.SelectMany(x => x.Detial).FirstOrDefault(c => c.Id == cid);
+        if (data != null)
+        {
+            var p = subMenu.Find(x => x.Id == data.ParentId);
+            result  += "<li><a href=\"/catalog/" + p.Id.ToString() + "\">" + p.Title.ToString() + "</a></li>";
+            result  += "<li class=\"active\"><a href=\"/catalog/" + data.Id.ToString() + "\">" + data.Title.ToString() + "</a></li>";
+        }
+        return result ;
+    }
+    public static string Set_activeId(List<Unitlib.MenuModel> subMenu, int cid)
+    {
+        string result = cid.ToString();
+   
+        var p = subMenu.SelectMany(x => x.Detial).FirstOrDefault(c => c.Id == cid);
+        if (p != null) result = p.ParentId.ToString() ;
+
+        return result;
+    }
+    public static string Get_title(List<Unitlib.MenuModel> subMenu, int cid)
+    {
+        string result = "";
+        var data = subMenu.Find(x => x.Id == cid);
+        if (data != null)
+        {
+            result =  data.Title.ToString() ;
+        }      
+        data = subMenu.SelectMany(x => x.Detial).FirstOrDefault(c => c.Id == cid);
+        if (data != null)
+        {
+            result = data.Title.ToString();
+        }
+
         return result;
     }
     public static MainData Get_UnitData(int unitid)
@@ -88,21 +132,25 @@ public class Unitlib
                     Id = (int)dt2.Rows[j]["categoryid"],
                     Title = dt2.Rows[j]["title"].ToString(),
                     Kind = dt2.Rows[j]["kind"].ToString(),
-                    ParentId = (int)dt2.Rows[j]["parentid"]
+                    ParentId = (int)dt2.Rows[j]["parentid"],
+                    Pagename = dt2.Rows[j]["Pagename"].ToString()
+
                 });
             }
-            dt2.Dispose();
+         
             Menu.Add(new MenuModel
             {
                 Id = (int)dt1.Rows[i]["categoryid"],
                 Title = dt1.Rows[i]["title"].ToString(),
                 Kind = dt1.Rows[i]["kind"].ToString(),
                 ParentId = (int)dt1.Rows[i]["parentid"],
+                 Pagename = dt1.Rows[i]["pagename"].ToString(),
                 Detial = subMenu
 
             });
-            dt1.Dispose();
+           dt2.Dispose();
         }
+        dt1.Dispose();
         dt.Dispose();
 
         return Menu;
@@ -122,6 +170,7 @@ public class Unitlib
         public string Title { get; set; }
         public string Kind { get; set; }
         public int ParentId { get; set; }
+        public string  Pagename { get; set; }
         public List<MenuModel> Detial { get; set; }
     }
     public class WebsiteData

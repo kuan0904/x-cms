@@ -37,23 +37,38 @@ public class articleController : ApiController
 
         foreach (var p in hotlist)
         {
-
-
             Totalrow = p.TotalRows;
             break;
         }
-
-
-        return hotlist;
-        // string result = JsonConvert.SerializeObject(hotlist);
+        return hotlist;       
     }
-
+  
     [ActionName("Getwebmenu")]
     public object Getwebmenu()
     {
         return Unitlib.Get_menu();
         // string result = JsonConvert.SerializeObject(hotlist);
     }
+
+    [ActionName("SocialShare")]
+    [HttpPost] // post方法二
+    public object SocialShare(dynamic obj)
+    {
+
+        article.Web.Add_Socialshare (Convert.ToString(obj.id), Convert.ToString(obj.kind), Convert.ToString(obj.url));
+        return "";
+    }
+
+
+    [ActionName("AddCollection")]
+    [HttpPost] // post方法二
+    public object AddCollection(dynamic obj)
+    {
+
+        article.Web.Add_Collection (Convert.ToString(obj.id), Convert.ToString(obj.memberid));
+        return "";
+    }
+
 
     [ActionName("Getbanner")]
     public object Getbanner(int id = 1)

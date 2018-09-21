@@ -16,14 +16,14 @@
                 <div class="breadArea">
                     <div class="container">
                         <ol class="breadcrumb">
-                            <li><a href="hp.html">HOME</a></li>
-                            <li class="active"><%=pagetitle  %></li>
+                            <li><a href="/">HOME</a></li>
+                            <%=Breadcrumb  %>
                         </ol>
                     </div>
                 </div><!-- breadArea END -->
 
                 <div class="container">
-                    <h1 class="site-title">藝時代 Cultural Launch</h1>
+                    <h1 class="site-title"><%=Application["site_name"]%></h1>
 
                     <div class="titlePic">
                         <div class="jumbotron">

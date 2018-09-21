@@ -1,4 +1,4 @@
-﻿/*==================================================================
+/*==================================================================
 | Designer: UTRUST Technology Co.                                  |
 | Auther Email: service(a)utrust.com.tw                            |
 | Author Web: http://www.utrust.com.tw/                            |
@@ -19,7 +19,7 @@
 
 
 * { font-family: "Montserrat","Microsoft JhengHei"; }
-input[type="text"], input[type="url"], input[type="tel"], input[type="email"], input[type="password"] {
+input[type="text"], input[type="url"], input[type="tel"], input[type="email"] {
     font-family: Microsoft JhengHei;
     font-size: 15px;
 }
@@ -333,7 +333,7 @@ h1.logo a {
     margin: 15px 25px;
     height: inherit;
     line-height: initial;
-    background: url(/images/logo.jpg) no-repeat;
+    background: url(../images/logo.svg) no-repeat;
     color: transparent;
     width: 200px;
     height: 60px;
@@ -347,7 +347,7 @@ h1.logo a {
 }
 .logo.emba a,
 .navbar-brand.emba a {
-    background: url(https://www.culturelaunch.net/images/logo.svg) no-repeat;
+    background: url(../images/logo-emba.png) no-repeat;
     background-size: contain;
 }
 
@@ -360,7 +360,7 @@ h1.logo a {
     margin: 0;
 }
 .affix .navbar-brand.emba a {
-    background: url(../images/header-logo-emba.png) no-repeat center;
+    background: url(../images/logo-emba.png) no-repeat center;
 
 }
 
@@ -426,18 +426,16 @@ h1.logo a {
     }
     .logo.emba a,
     .navbar-brand.emba a,
-    .navbar-brand a {
+    .affix .logo.emba a,
+    .affix .navbar-brand.emba a {
         float: inherit;
         margin: auto;
-        background: url(../images/header-logo-white.svg) no-repeat center;
-        width: 245px;
-        height: 100%;
+        background: url(../images/logo-emba-white.png) no-repeat center;
+        width: 60%;
         background-size: contain;
     }
 
-    .affix .logo.emba a,
-    .affix .navbar-brand.emba a,
-    .affix .navbar-brand a {
+    .navbar-brand a, .affix .navbar-brand a {
         float: inherit;
         margin: auto;
         background: url(../images/header-logo-white.svg) no-repeat center;
@@ -934,7 +932,6 @@ h1.logo a {
         margin-right: 0;
     }
     .news-grid .col-md-4 {
-        padding-left: 0;
     }
 }
 
@@ -945,7 +942,7 @@ h1.logo a {
 }
 .main-content>.container {
     background: #fff;
-    min-height: 800px;
+    min-height: 450px;
     border-radius: 2px;
 }
 .main-content .btn-back {
@@ -1573,9 +1570,9 @@ h1.logo a {
     padding: 15px 0;
     display: block;
     color: #036935;
-    font-size: 27px;
+    font-size: 24px;
     font-family: "Montserrat","Microsoft JhengHei";
-    letter-spacing: 2px;    
+    letter-spacing: 1px;    
     border-bottom: 1px solid #036935;
     
 }
@@ -1779,23 +1776,23 @@ h1.logo a {
 /* block-wrap border */
 .body-affix .main-sidebar>.block-wrap.border ,
 .block-wrap.border {
-    border: #BFBFBF solid 1px;
-    margin: 15px 20px;
-    width: 85%;
+    border: #ddd solid 1px;
+    margin: 15px 0;
+    width: 100%;
     padding: 0;
 }
 .main-sidebar .block-wrap.border .block-title:after  {
     display: none;
 }
 .block-wrap.border .block-title {
-    border-bottom: #BFBFBF solid 1px;
-    margin: 15px 15px 20px;
-    padding: 5px 10px 10px;
+    border-bottom: #ddd solid 1px;
+    margin: 20px;
+    padding: 15px 0;
     font-weight: bold;
 }
 .block-wrap .block-body {
     font-size: 16px;
-    line-height: 25px;
+    line-height: 30px;
     margin: 15px 20px 20px;
 }
 .block-wrap .block-body .btn {
@@ -1835,11 +1832,11 @@ h1.logo a {
     padding: 15px;
 }
 .block-header .desc .label {
-    border: #000 solid 1px;
+    border: #ddd solid 1px;
     border-radius: 0;
     padding: 5px;
     display: inline-block;
-    color: #000;
+    color: #888;
 }
 .block-header .desc .name {
     display: block;
@@ -1863,7 +1860,7 @@ h1.logo a {
     }
 }
 .price {
-    color: red;
+    color: #eb6877;
     font-size: 24px;
     font-weight: bold;
 }
@@ -1889,10 +1886,23 @@ h1.logo a {
     line-height: 30px;
     margin: 0 0 20px;
 }
+.main-sidebar .post-description p {
+    margin-bottom: 0;
+    padding: 5px 0;
+    color: #888;
+}
+.main-sidebar .post-description a {
+    color: #888;
+}
+.main-sidebar .post-description a:hover,
+.main-sidebar .post-description a:focus {
+    color: #058745;
+}
 .main-sidebar .post-description ul li {
     list-style: none;
     line-height: 30px;
 }
+
 
 /* tag-group */
 .tag-group {}
@@ -1970,24 +1980,23 @@ footer .tag-group li {
 }
 .news-grid.row {
     /*margin-left: -15px;*/
-    margin: 15px 0 10px -15px;
+    margin: 15px 0 10px 0;
 }
 .news-grid .main-title {
     margin: 10px 15px;
 }
 .news-grid.row .col-md-4 {
-    padding-right: 0;
 }
 .news-grid .thumbnail {
     border:none;
-    margin: 0;
+    margin: 10px 5px;
     max-height: 500px;
     overflow: hidden;
 }
 @media( max-width: 414px){
   .news-grid .thumbnail {
     min-height: inherit;
-    margin-bottom: 15px;
+    margin: 15px 0;
   }
   .main-content-inner .news-wrap {
     margin-left: 0;
@@ -2013,7 +2022,13 @@ footer .tag-group li {
 .news-list .caption .title a {
     font-family: "Montserrat","Microsoft JhengHei";
     font-weight: 400;
-    color: #000;
+    color: #333;
+}
+.news-grid .thumbnail .caption .title a:hover,
+.news-list .caption .title a:hover,
+.news-grid .thumbnail .caption .title a:focus,
+.news-list .caption .title a:focus {
+    color: #555;
 }
 .news-grid .thumbnail .caption .meta-info {
     margin-bottom: 5px;
@@ -2053,6 +2068,12 @@ footer .tag-group li {
 @media(max-width: 768px){
     .news-wrap .caption .btn-read-more {
         display: none;
+    }
+    .news-grid .caption .meta-info .post-date {
+        width: 100%;
+        line-height: 40px;
+        text-align: right;
+        font-size: 20px;
     }
 }
 @media(min-width: 768px){

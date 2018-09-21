@@ -43,150 +43,185 @@
 
     <div class="menu-background"></div>
     <div id="mobile-nav">
-            <div class="container">
-                <div class="menu-socials-wrap">
-                    <ul class="menu-socials">
-                        <li>
-                            <a target="_blank" href="#" title="Facebook">
-                                <i class="fa fa-facebook"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a target="_blank" href="#" title="Google+">
-                                <i class="fa fa-google-plus"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a target="_blank" href="#" title=Instagram>
-                                <i class="fa fa-instagram"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a target="_blank" href="#" title=Twitter>
-                                <i class="fa fa-twitter"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a target="_blank" href="#" title=Youtube>
-                                <i class="fa fa-youtube-play"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class=btn-close-mob>
+        <div class="container">
+            <div class="menu-socials-wrap">
+                <ul class="menu-socials">
+                    <li>
+                        <a target="_blank" href="#" title="Facebook">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="#" title="Google+">
+                            <i class="fa fa-google-plus"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="#" title="Instagram">
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="#" title="Twitter">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="#" title="Youtube">
+                            <i class="fa fa-youtube-play"></i>
+                        </a>
+                    </li>
+                </ul>
+                <div class="btn-close-mob">
+                    <a href="#">
+                        <i class="icon-close-mob"></i>
+                    </a>
+                </div>
+                <!-- btn-close-mob END -->
+            </div>
+            <!-- menu-socials-wrap END -->
+
+            <div class="login-section">
+                <div class="guest-wrap">
+                    <a id="login-link-mob">登入</a>
+                </div>
+                <!-- guest-wrap END -->
+            </div>
+            <!-- login-section END -->
+
+            <div class="mobile-content">
+                <ul class="mobile-main-menu">
+                    <li class="menu-item sf-dropdown">
+                        <a href="list.html">最新消息
+                            <i class="fa fa-chevron-down"></i>
+                        </a>
+                        <ul class=sub-menu>
+                            <li>
+                                <a href="list.html">產業動態</a>
+                            </li>
+                            <li>
+                                <a href="list.html">文化政策</a>
+                            </li>
+                            <li>
+                                <a href="list.html">民間文藝</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item sf-dropdown">
+                        <a href="list-grid.html">活動
+                            <i class="fa fa-chevron-down"></i>
+                        </a>
+                        <ul class=sub-menu>
+                            <li>
+                                <a href="list-grid.html">展覽</a>
+                            </li>
+                            <li>
+                                <a href="list-grid.html">表演</a>
+                            </li>
+                            <li>
+                                <a href="list-grid.html">體驗</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item sf-dropdown">
+                        <a href="list-grid.html">藝MBA
+                            <i class="fa fa-chevron-down"></i>
+                        </a>
+                        <ul class=sub-menu>
+                            <li>
+                                <a href="list-grid.html">產業經營</a>
+                            </li>
+                            <li>
+                                <a href="list-grid.html">設計</a>
+                            </li>
+                            <li>
+                                <a href="list-grid.html">跨界創新</a>
+                            </li>
+                            <li>
+                                <a href="list-grid.html">在地創生</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item sf-dropdown">
+                        <a href="list.html">跨界媒合
+                            <i class="fa fa-chevron-down"></i>
+                        </a>
+                        <ul class=sub-menu>
+                            <li>
+                                <a href="list.html">文創人才</a>
+                            </li>
+                            <li>
+                                <a href="list.html">群眾募資</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- mobile-content END -->
+        </div>
+        <!-- container END -->
+
+        <div class="register-section">
+            <div id="btn-login-mob" class="login-animation">
+                <div class="login-close">
+                    <a href="#" class="btn-back">
+                        <i class="fa fa-chevron-down"></i>
+                    </a>
+                    <div class="login-title">登入</div>
+                    <div class="btn-close-mob">
                         <a href="#">
-                            <i class=icon-close-mob></i>
+                            <i class="icon-close-mob"></i>
                         </a>
                     </div>
                     <!-- btn-close-mob END -->
                 </div>
-                <!-- menu-socials-wrap END -->
-    
-                <div class=login-section>
-                    <div class=guest-wrap>
-                        <a href="login.html">登入/註冊</a>
+                <!-- login-close END -->
+
+                <div class="login-form-wrap">
+                    <div class="login-panel-title">
+                        <span>歡迎</span>請登入您的帳戶</div>
+                    <div class="alert-err"></div>
+                    <div class="login-inputs">
+                        <input class="login-input" type="text" name="login_email" id="login_email-mob" value="" required>
+                        <label>your username</label>
                     </div>
-                    <!-- guest-wrap END -->
+                    <div class="login-inputs">
+                        <input class="login-input" type="password" name="login_pass" id="login_pass-mob" value="" required>
+                        <label>your password</label>
+                    </div>
+                    <input type="button" name="login_button" id="login_button-mob" class="login-button" value="登  入">
+                    <div class="login-info-text">
+                        <a href="#" id=forgot-pass-link-mob>忘記密碼</a>
+                    </div>
                 </div>
-                <!-- login-section END -->
-    
-                <div class="mobile-content">
-                    <ul class="mobile-main-menu">
-                        <li class="menu-item sf-dropdown">
-                            <a href="list.html">最新消息
-                                <i class="fa fa-chevron-down"></i>
-                            </a>
-                            <ul class=sub-menu>
-                                <li>
-                                    <a href="list.html">產業動態</a>
-                                </li>
-                                <li>
-                                    <a href="list.html">文化政策</a>
-                                </li>
-                                <li>
-                                    <a href="list.html">民間文藝</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="menu-item sf-dropdown">
-                            <a href="list-grid.html">活動
-                                <i class="fa fa-chevron-down"></i>
-                            </a>
-                            <ul class=sub-menu>
-                                <li>
-                                    <a href="list-grid.html">展覽</a>
-                                </li>
-                                <li>
-                                    <a href="list-grid.html">表演</a>
-                                </li>
-                                <li>
-                                    <a href="list-grid.html">體驗</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="menu-item sf-dropdown">
-                            <a href="list-grid.html">藝MBA
-                                <i class="fa fa-chevron-down"></i>
-                            </a>
-                            <ul class=sub-menu>
-                                <li>
-                                    <a href="list-grid.html">產業經營</a>
-                                </li>
-                                <li>
-                                    <a href="list-grid.html">設計</a>
-                                </li>
-                                <li>
-                                    <a href="list-grid.html">跨界創新</a>
-                                </li>
-                                <li>
-                                    <a href="list-grid.html">在地創生</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="menu-item">
-                            <a href="list.html">專題報導</a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="list.html">人物</a>
-                        </li>
-                        <li class="menu-item sf-dropdown">
-                            <a href="list.html">跨界媒合
-                                <i class="fa fa-chevron-down"></i>
-                            </a>
-                            <ul class=sub-menu>
-                                <li>
-                                    <a href="list.html">文創人才</a>
-                                </li>
-                                <li>
-                                    <a href="list.html">群眾募資</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="menu-item sf-dropdown">
-                            <a href="list.html">會員專區
-                                <i class="fa fa-chevron-down"></i>
-                            </a>
-                            <ul class=sub-menu>
-                                <li>
-                                    <a href="member-order.html">查詢訂單</a>
-                                </li>
-                                <li>
-                                    <a href="member-collection.html">我的收藏</a>
-                                </li>
-                                <li>
-                                    <a href="member-edit.html">修改個人資料</a>
-                                </li>
-                                <li>
-                                    <a href="member-password.html">變更密碼</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-                <!-- mobile-content END -->
+                <!-- login-form-wrap END -->
             </div>
-            <!-- container END -->
-    
+            <!-- btn-login-mob END -->
+
+            <div id="forgot-pass-mob" class="login-animation">
+                <div class="forgot-pass-close">
+                    <a href="#" class="btn-back">
+                        <i class="fa fa-chevron-down"></i>
+                    </a>
+                    <div class="login-title">密碼重置</div>
+                </div>
+                <!-- forgot-pass-close END -->
+
+                <div class="login-form-wrap">
+                    <div class="login-panel-title">重置您的密碼</div>
+                    <div class="alert-err"></div>
+                    <div class="login-inputs">
+                        <input class="login-input" type="text" name="forgot_email" id="forgot_email-mob" value="" required>
+                        <label>your email</label>
+                    </div>
+                    <input type="button" name="forgot_button" id="forgot_button-mob" class="login-button" value="寄送密碼">
+                </div>
+                <!-- login-form-wrap END -->
+            </div>
+            <!-- forgot-pass-mob END -->
         </div>
+        <!-- register-section END -->
+    </div>
     <!-- mobile-nav END -->
 
     <div class="search-background"></div>
@@ -213,7 +248,6 @@
     <div id="outer-wrap" class="wrapper">
 
         <div class="header">
-
             <div class="top-bar">
                 <div class="container">
                     <div class="top-menu">
@@ -224,36 +258,16 @@
                                 </a>
                             </li>
                             <li>
-                                <a target="_blank" href="#" title="Google+">
-                                    <i class="fa fa-google-plus"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a target="_blank" href="#" title=Instagram>
-                                    <i class="fa fa-instagram"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a target="_blank" href="#" title=Twitter>
-                                    <i class="fa fa-twitter"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a target="_blank" href="#" title=Youtube>
+                                <a target="_blank" href="#" title="Youtube">
                                     <i class="fa fa-youtube-play"></i>
                                 </a>
                             </li>
                             <!-- <li>
-                                            <a target="_blank" href="#" title="Email"><i class="fa fa-envelope"></i></a>
-                                        </li> -->
+                                    <a target="_blank" href="#" title="Email"><i class="fa fa-envelope"></i></a>
+                                </li> -->
                             <li>
-                                <a class="menu-item" href="login.html">
-                                    <i class="fa fa-user"></i> 登入 / 註冊
-                                </a>
-                            </li>
-                            <li>
-                                <a class="menu-item" href="member-edit.html">
-                                    <i class="fa fa-user"></i>　Hi 會員名稱
+                                <a class="login-modal-js menu-item" href="#login-form" data-effect="mpf-login-effect">
+                                    <i class="fa fa-user"></i>
                                 </a>
                             </li>
                         </ul>
@@ -267,7 +281,7 @@
             <!-- logo center -->
             <div class="logo">
                 <a href="hp.html" title="藝時代 Cultural Launch">
-                    <span class="visual-hidden">藝時代 Cultural Launch</span>
+                    <span class=visual-hidden>藝時代 Cultural Launch</span>
                 </a>
             </div>
 
@@ -286,7 +300,7 @@
 
                             <div class="navbar-brand">
                                 <a href="hp.html">
-                                    <span class="visual-hidden">藝時代 Cultural Launch</span>
+                                    <span class=visual-hidden>藝時代 Cultural Launch</span>
                                 </a>
                             </div>
                         </div>
@@ -294,7 +308,7 @@
 
                         <div class="main-menu">
                             <ul class="sf-menu">
-                                <li class="menu-item sf-dropdown">
+                                <li class="menu-item sf-dropdown active">
                                     <a href="list.html">最新消息</a>
                                     <ul class="sub-menu">
                                         <li class="menu-item">
@@ -361,14 +375,14 @@
                         </div>
                         <!-- main-menu END -->
 
-                        <div class="search-wrapper">
-                            <div id="top-search">
-                                <div class="header-search-wrap">
+                        <div class=search-wrapper>
+                            <div id=top-search>
+                                <div class=header-search-wrap>
                                     <div class="dropdown header-search">
-                                        <a id="header-btn-search" href="#" role="button" class="dropdown-toggle" data-toggle=dropdown>
+                                        <a id=header-btn-search href="#" role=button class="dropdown-toggle " data-toggle=dropdown>
                                             <i class="fa fa-search"></i>
                                         </a>
-                                        <a id="header-btn-search-mob" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
+                                        <a id=header-btn-search-mob href="#" role=button class="dropdown-toggle " data-toggle=dropdown>
                                             <i class="fa fa-search"></i>
                                         </a>
                                     </div>
@@ -380,12 +394,12 @@
                         </div>
                         <!-- search-wrapper END -->
 
-                        <div class="header-search-wrap">
+                        <div class=header-search-wrap>
                             <div class="dropdown header-search">
-                                <div class="dropDown-search" aria-labelledby="header-btn-search">
-                                    <div class="search-form">
-                                        <div role="search">
-                                            <input class="needsclick" id=search-input type=text value="" name=s autocomplete=off />
+                                <div class=dropDown-search aria-labelledby=header-btn-search>
+                                    <div class=search-form>
+                                        <div role=search>
+                                            <input class=needsclick id=search-input type=text value="" name=s autocomplete=off />
                                             <input class="wpb_button wpb_btn-inverse btn" type=submit id=header-search-top value=Search />
                                         </div>
                                     </div>
@@ -404,6 +418,48 @@
 
             </div>
             <!-- navbar END -->
+
+            <div id=login-form class="white-popup-block mfp-hide mfp-with-anim">
+                <div class=login-wrap>
+                    <a href="#" class=btn-back>
+                        <i class="fa fa-chevron-left"></i>
+                    </a>
+
+                    <div id=login-pop class="login-form-div display-block">
+                        <div class=login-panel-title>會員登入</div>
+                        <div class=login-panel-descr>歡迎！請登入您的帳號</div>
+                        <div class=alert-err></div>
+                        <div class=login-inputs>
+                            <input class=login-input type=text name=login_email id=login_email value="" required>
+                            <label>your username</label>
+                        </div>
+                        <div class=login-inputs>
+                            <input class=login-input type=password name=login_pass id=login_pass value="" required>
+                            <label>your password</label>
+                        </div>
+                        <input type=button name=login_button id=login_button class="wpb_button btn login-button" value="登 入">
+                        <div class=login-info-text>
+                            <a href="#" id=forgot-pass-link>忘記密碼?</a>
+                        </div>
+                    </div>
+                    <!-- login-pop END -->
+
+                    <div id=forgot-pass-pop class="login-form-div display-none">
+                        <div class=login-panel-title>密碼重置</div>
+                        <div class=login-panel-descr>重置您的密碼</div>
+                        <div class=alert-err></div>
+                        <div class=login-inputs>
+                            <input class=login-input type=text name=forgot_email id=forgot_email value="" required>
+                            <label>your email</label>
+                        </div>
+                        <input type=button name=forgot_button id=forgot_button class="wpb_button btn login-button" value="寄送密碼">
+                        <div class=login-info-text>我們將會寄送密碼至您的信箱</div>
+                    </div>
+                    <!-- forgot-pass-pop END -->
+                </div>
+                <!-- login-wrap END -->
+            </div>
+            <!-- login-form END -->
 
         </div>
         <!-- header END -->
@@ -434,12 +490,12 @@
                                     <div class="post-information-RL-15">
                                         <ul class="category">
                                             <li class="entry-category">
-                                                <a href="search.html">人物/職場</a>
+                                                <a href="#">人物/職場</a>
                                             </li>
                                         </ul>
                                         <h1>新創團隊想成為搶手數位行銷人？學習寫程式讓你技能大加分！</h1>
                                         <div class="meta-info clearfix">
-                                            <div class="pull-left social-media-share-btn">
+                                            <div class="pull-left social-media-share-btn">                                                
                                                 <a href="#" class="share-fb">
                                                     <i class="fa fa-2x fa-facebook-official" aria-hidden="true"></i>
                                                 </a>
@@ -451,6 +507,9 @@
                                                 </a>
                                                 <a href="#" class="share-print">
                                                     <i class="fa fa-2x fa-print" aria-hidden="true"></i>
+                                                </a>
+                                                <a href="#" class="share-collection" title="加入收藏">
+                                                    <i class="fa fa-2x fa-heart" aria-hidden="true"></i>
                                                 </a>
                                             </div>
                                             <div class="pull-rigt text-right">
@@ -569,8 +628,8 @@
                                 <!-- post-content END -->
                                 <div class="center-block text-center">
                                     <div class="post-tags">
-                                        <a class="label label-keyword" href="search.html">關鍵字</a>
-                                        <a class="label label-keyword" href="search.html">關鍵字</a>
+                                        <a class="label label-keyword">關鍵字</a>
+                                        <a class="label label-keyword">關鍵字</a>
                                     </div>
                                 </div>
                                 <div class="divide20"></div>
@@ -579,21 +638,13 @@
                                     <div class="extended-list">
                                         <ul class="fa-ul">
                                             <li>
-                                                <i class="fa-li fa fa-angle-right"></i>
-                                                <a href="list.html">新創團隊想成為搶手數位行銷人？學習寫程式讓你技能大加分！</a>
-                                            </li>
+                                                <i class="fa-li fa fa-angle-right"></i><a href="list.html">新創團隊想成為搶手數位行銷人？學習寫程式讓你技能大加分！</a></li>
                                             <li>
-                                                <i class="fa-li fa fa-angle-right"></i>
-                                                <a href="list.html">如何選擇適合自己的內容管理系統（CMS）</a>
-                                            </li>
+                                                <i class="fa-li fa fa-angle-right"></i><a href="list.html">如何選擇適合自己的內容管理系統（CMS）</a></li>
                                             <li>
-                                                <i class="fa-li fa fa-angle-right"></i>
-                                                <a href="list.html">新創團隊想成為搶手數位行銷人？學習寫程式讓你技能大加分！</a>
-                                            </li>
+                                                <i class="fa-li fa fa-angle-right"></i><a href="list.html">新創團隊想成為搶手數位行銷人？學習寫程式讓你技能大加分！</a></li>
                                             <li>
-                                                <i class="fa-li fa fa-angle-right"></i>
-                                                <a href="list.html">如何選擇適合自己的內容管理系統（CMS）</a>
-                                            </li>
+                                                <i class="fa-li fa fa-angle-right"></i><a href="list.html">如何選擇適合自己的內容管理系統（CMS）</a></li>
                                         </ul>
                                     </div>
 

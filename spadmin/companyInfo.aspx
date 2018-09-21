@@ -10,15 +10,18 @@
     <script >
         var companyinfo;
     function getdata() {   
-    $.postJSON('companyinfo.ashx', { "action": "get", "_": new Date().getTime() }, function (data) {       
-        if (data != "") {
-             companyinfo = JSON.parse(data);                                         
-       
+    $.post('companyinfo.ashx', { "action": "get", "_": new Date().getTime() }, function (data) {       
+        if (data != "") {             
+            companyinfo = JSON.parse(data);                                         
+            companyinfo = companyinfo[0];           
             $.each(companyinfo, function (key, val) {
+                var data = val;
+            
                 var id = "#" + key
+             
                 if (key == 'logoPic') {
                     $(id).val(val);
-                    document.getElementById('console').innerHTML = ("<img src=\"upload/" + val + "\">");                  
+                    document.getElementById('console').innerHTML = ("<img src=\"" + val + "\">");                  
                    
                 }
                 else if ($(id) != undefined) {
@@ -98,15 +101,27 @@
                     </div>
                 </div>
                    <div class="form-group">
-                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1">facebook id</label>
+                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1">FacebookAppId</label>
                     <div class="col-sm-9">
-                        <input type="text" id="facebookid" placeholder="facebook id" class="col-xs-10 col-sm-5" />
+                        <input type="text" id="FacebookAppId" placeholder="FacebookAppId" class="col-xs-10 col-sm-5" />
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1">FacebookAppSecret</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="FacebookAppSecret" placeholder="FacebookAppSecret" class="col-xs-10 col-sm-5" />
                     </div>
                 </div>
                    <div class="form-group">
-                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1">google id</label>
+                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1">googleapi Key</label>
                     <div class="col-sm-9">
-                        <input type="text" id="googleid" placeholder="google id" class="col-xs-10 col-sm-5" />
+                        <input type="text" id="googleapiKey" placeholder="googleapi Key" class="col-xs-10 col-sm-5" />
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1">google clientId</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="googleclientId" placeholder="google clientId" class="col-xs-10 col-sm-5" />
                     </div>
                 </div>
               <div class="form-group">
@@ -144,9 +159,7 @@
                     container: document.getElementById('container'), // ... or DOM Element itself
                     url: '/spadmin/saveMultiUpload?kind=companylogo',
                     multipart: true,
-                    //flash_swf_url : 'js/Moxie.swf',
-                    //silverlight_xap_url : 'js/Moxie.xap',
-
+                 
                     filters: {
                         max_file_size: '10mb',
                         mime_types: [
@@ -184,8 +197,7 @@
                             // alert(up);
                             //  alert(file.id);
                             var json = $.parseJSON(res.response);
-                           // $("#pd_img ul").append('<li><a href="#">刪除</a><br><image src="upload/' + json.result + '"><input type="hidden" name="pd_img" value="' + json.result + '"</li>');
-                             document.getElementById('console').innerHTML = ("<img src=\"upload/" + json.result + "\">");                  
+                                document.getElementById('console').innerHTML = ("<img src=\"" + json.result + "\">");                  
                                 $("#logoPic").val(json.result);
 
                         },

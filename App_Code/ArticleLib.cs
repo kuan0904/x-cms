@@ -82,7 +82,36 @@ namespace article
     }
     public class Web : ApiController
     {
-   
+        public static string Add_Socialshare(string id, string kind, string url)
+        {
+            string value = "";
+            string strsql = @"insert into tbl_SocialShare (articleId,kind,url) values 
+            (@articleId,@kind,@url) ";
+            NameValueCollection nvc = new NameValueCollection();
+            nvc.Add("articleId", id);
+            nvc.Add("kind", kind);
+            nvc.Add("url", url);
+            DbControl.Data_add(strsql, nvc);
+            return value;
+        }
+        public static string Add_Collection(string articleId, string  memberid)
+        {
+            string value = "";
+            string strsql = @"delete from  tbl_articleCollection where articleId =@articleId 
+                and memberid =@memberid";
+
+            NameValueCollection nvc = new NameValueCollection
+            {
+                { "memberid", memberid },
+                { "articleId", articleId }
+            };
+            DbControl.Data_add (strsql, nvc);
+
+            strsql = @"insert into tbl_articleCollection (articleId,memberid) values 
+            (@articleId,@memberid) ";   
+            DbControl.Data_add(strsql, nvc);
+            return value;
+        }
 
         public static List<MainData> Recommend_list(int ClassId)
         {

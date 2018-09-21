@@ -10,9 +10,13 @@ using System.Collections.Specialized;
 using System.Data;
 
 using System.Data.SqlClient;
-public class companyinfo : IHttpHandler {
+public class companyinfo : IHttpHandler,IRequiresSessionState {
 
     public void ProcessRequest (HttpContext context) {
+        if (context.Session["userid"] == null)
+        {
+              context.Response.End();
+        }
         string p_ACTION = context.Request["action"];
         if (p_ACTION == "get") {
 
@@ -20,9 +24,8 @@ public class companyinfo : IHttpHandler {
             NameValueCollection nvc = new NameValueCollection();
             DataTable dt =DbControl .Data_Get(strsql, nvc);
             string result= JsonConvert.SerializeObject(dt, Formatting.Indented);
-            result = result.Replace("[", "").Replace("]", "").Replace("\r\n", "");
-            result = JsonConvert.SerializeObject(result);
-
+           // result = result.Replace("[", "").Replace("]", "").Replace("\r\n", "");
+          //  result = JsonConvert.SerializeObject(result);
             context.Response.Write(result);
             context.Response.End();
         }
@@ -30,8 +33,9 @@ public class companyinfo : IHttpHandler {
 
             string strsql = @"update companydata set  companyNo=@companyNo,
             companyName=@companyName,systemName=@systemName,
-            address=@address,phone=@phone,facebookid=@facebookid,
-            googleid=@googleid,logoPic=@logoPic";
+            address=@address,phone=@phone,FacebookAppId=@FacebookAppId,
+            FacebookAppSecret=@FacebookAppSecret,googleclientId=@googleclientId,
+            googleapiKey=@googleapiKey,logoPic=@logoPic";
             int i = 0;
             using (SqlConnection conn = new SqlConnection(unity.classlib.dbConnectionString))
             {
@@ -43,8 +47,10 @@ public class companyinfo : IHttpHandler {
                 cmd.Parameters.Add("@systemName", SqlDbType.VarChar).Value = context.Request["systemName"];
                 cmd.Parameters.Add("@address", SqlDbType.VarChar).Value = context.Request["address"];
                 cmd.Parameters.Add("@phone", SqlDbType.VarChar).Value = context.Request["phone"];
-                cmd.Parameters.Add("@facebookid", SqlDbType.VarChar).Value = context.Request["facebookid"];
-                cmd.Parameters.Add("@googleid", SqlDbType.VarChar).Value = context.Request["googleid"];           
+                cmd.Parameters.Add("@FacebookAppId", SqlDbType.VarChar).Value = context.Request["FacebookAppId"];
+                cmd.Parameters.Add("@FacebookAppSecret", SqlDbType.VarChar).Value = context.Request["FacebookAppSecret"];
+                cmd.Parameters.Add("@googleapiKey", SqlDbType.VarChar).Value = context.Request["googleapiKey"];     
+                cmd.Parameters.Add("@googleclientId", SqlDbType.VarChar).Value = context.Request["googleclientId"];   
                 cmd.Parameters.Add("@logoPic", SqlDbType.VarChar).Value = context.Request["logoPic"];
                 i=cmd.ExecuteNonQuery();
                 cmd.Dispose();

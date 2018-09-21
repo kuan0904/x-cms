@@ -112,8 +112,8 @@ public partial class Account_Login : Page
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 SqlDataReader rs;
-                cmd.Parameters.Add("@account_pid", SqlDbType.VarChar, 20).Value = unity.classlib.RemoveBadSymbol(UserName.Text.Trim());
-                cmd.Parameters.Add("@account_pwd", SqlDbType.VarChar, 20).Value = unity.classlib.RemoveBadSymbol(Password.Text.Trim());
+                cmd.Parameters.Add("@account_pid", SqlDbType.VarChar, 20).Value = UserName.Text.Trim();
+                cmd.Parameters.Add("@account_pwd", SqlDbType.VarChar, 20).Value = Password.Text.Trim();
                 rs = cmd.ExecuteReader();
                 if (rs.Read())
                 {

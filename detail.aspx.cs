@@ -13,7 +13,7 @@ public partial class detail : System.Web.UI.Page
     public Unitlib.WebsiteData m = new Unitlib.WebsiteData();
 
 
-
+    public string Breadcrumb = "";
     public string subject = "";
     public string contents = "";
     public string pic = "";
@@ -25,35 +25,34 @@ public partial class detail : System.Web.UI.Page
     public string pageunit = "";
     public string author = "";
     public string cid = "";
+    public string Articleid = "";
     protected void Page_LoadComplete(object sender, EventArgs e)
-    {
-        
+    {       
        
         ASP.masterpage_master P  = this.Master as ASP.masterpage_master;
         P.active = cid;
-       
+      
+     
     }
     protected void Page_Load(object sender, EventArgs e)
     {
        
         Unitlib.WebsiteData m = new Unitlib.WebsiteData();
 
- 
-        string Articlid = Request.QueryString["Articlid"];
+
+        Articleid = Request.QueryString["Articleid"];
         Route myRoute = RouteData.Route as Route;     
         if (myRoute != null )
         {
-
-            Articlid = RouteData.Values["Articlid"].ToString();
-          
+            Articleid = RouteData.Values["Articleid"].ToString();          
         }
     
         article.MainData MainData = new article.MainData();
         List<article.ItemData> ItemData = new List<article.ItemData>() ;
      
-        if (Articlid != null)
+        if (Articleid != null)
         {
-            MainData = article.DbHandle.Get_article(int.Parse(Articlid));
+            MainData = article.DbHandle.Get_article(int.Parse(Articleid));
         }
         else if (Session["MainData"] != null)
         {
@@ -62,7 +61,7 @@ public partial class detail : System.Web.UI.Page
         }
         if (MainData != null)
         {
-           
+          
             if (MainData.kind =="Y" || MainData.kind == "L") Response.Redirect("/Class/" + MainData.Id );
             subject = MainData.Subject;
             Session["title"] = subject + "│" + Application["site_name"];
@@ -85,28 +84,36 @@ public partial class detail : System.Web.UI.Page
                 contents += s.Contents;
             }
             article.DbHandle.Add_views(MainData.Id);
-   
-            List<article.Category>  cate = new List<article.Category >();
-            cate = (List<article.Category>) article.DbHandle.Get_article_category(MainData.Id );         
 
-            foreach (var a in cate)
+            List<article.MainData> hotlist = new List<article.MainData>();
+            hotlist = article.DbHandle.Get_article_list("", "", 5, 1);
+            extended_list.DataSource = hotlist;
+            extended_list.DataBind();
+
+            DataTable dt;
+            string strsql = "select* from tbl_article_file where  status <> 'D' and  (articleid =@articleid or tempid=@articleId) and kind='F' order by sort";
+            NameValueCollection nvc = new NameValueCollection();
+            nvc.Add("articleid", MainData.Id.ToString());
+            dt = DbControl.Data_Get(strsql, nvc);
+            if (dt.Rows.Count > 0)
             {
-                DataTable dt,dt1;
-                dt = (DataTable)Application["category"];
-                dt.DefaultView.RowFilter = "categoryid=" + a.CategoryId;
-                cid = a.CategoryId.ToString ();
-                dt1 = dt.DefaultView.ToTable();
-                pageunit = "<li class=\"active\"><a href=\"/catalog/" + dt1.Rows[0]["CategoryId"].ToString() + "\">" + dt1.Rows[0]["title"].ToString() + "</a></li>";
-                if (dt1.Rows[0]["parentid"].ToString() != "0")
-                {
-                    dt.DefaultView.RowFilter = "categoryid=" + dt1.Rows[0]["parentid"].ToString();
-                    dt1 = dt.DefaultView.ToTable();
-                    pageunit = "<li><a href=\"/catalog/" + dt1.Rows[0]["CategoryId"].ToString() + "\"> " + dt1.Rows[0]["title"].ToString() + "</a></li>" + pageunit;
-                    dt1.Dispose();
-                    dt.Dispose();
-                   
-                }
+                Repeater_file.DataSource = dt;
+                Repeater_file.DataBind();
+            }
+            dt.Dispose();
+            nvc.Clear();
+
+            List<article.Category>  cate = new List<article.Category >();
+            cate = (List<article.Category>) article.DbHandle.Get_article_category(MainData.Id );   
+            foreach (var a in cate)
+            {              
+              
+                cid = a.CategoryId.ToString  ();
+                pagetitle = Unitlib.Get_title((List<Unitlib.MenuModel>)Session["webmenu"], int.Parse(cid));
+                Session["active"] = Unitlib.Set_activeId((List<Unitlib.MenuModel>)Session["webmenu"], int.Parse(cid));            
+                Breadcrumb = Unitlib.Get_Breadcrumb((List<Unitlib.MenuModel>)Session["webmenu"], int.Parse(cid));
                 break;
+              
             }
         }
     }

@@ -13,11 +13,12 @@ public partial class MasterPage : System.Web.UI.MasterPage
     public Unitlib.WebsiteData Webdata = new Unitlib.WebsiteData();
 
     public string logo = "";
-    public string active = "";
+    public string active ;
     public string FacebookAppId = "164103481107660";
     public string cid = "";
     public string _status = "";
     public string _link = "";
+    public string Articleid = "";
     protected void Page_Init(object sender, EventArgs e)
     {
         if (Session["webmenu"] == null)
@@ -36,33 +37,23 @@ public partial class MasterPage : System.Web.UI.MasterPage
             _status = "Hi 會員名稱";
             _link = "/member-edit.aspx";
         }
+      
 
     }
-    protected void Page_Load(object sender, EventArgs e) {
-       
-      
+
+    protected void Page_Load(object sender, EventArgs e) {   
         Route myRoute = Page.RouteData.Route as Route;
         if (myRoute != null)       {
-           cid =Page.RouteData.Values["cid"] == null  ? "" :Page.RouteData.Values["cid"].ToString();
-
-           
+            cid =Page.RouteData.Values["cid"] == null  ? "" :Page.RouteData.Values["cid"].ToString();
+            Articleid = Page.RouteData.Values["Articleid"] == null ? "" : Page.RouteData.Values["Articleid"].ToString();
         }
-        else
-        {
-            cid = Request.QueryString["cid"];
-
-           
-        }
-      if (cid != null)    active = cid;
-      
-        List <Unitlib.MenuModel> subMenu = (List<Unitlib.MenuModel>) Session["webmenu"];
-        var parent = subMenu.FirstOrDefault(x => x.Detial.Any(y => y.Id.ToString () == cid));
-        if (parent != null) active = parent.Id.ToString();
         rptmenu.DataSource = Session["webmenu"];//  JsonConvert.SerializeObject(aa);
         rptmenu.DataBind();
         mrptmenu.DataSource = Session["webmenu"];//  JsonConvert.SerializeObject(aa);
-        mrptmenu.DataBind();
-      
+        mrptmenu.DataBind();      
+        if (Session["active"].ToString() == "3") logo = " emba";
+        if (Application["site_name"].ToString ().IndexOf ( "藝時代")==-1) logo = "";
+     
     }
 
     protected void rptmenu_ItemDataBound(object sender, RepeaterItemEventArgs e)

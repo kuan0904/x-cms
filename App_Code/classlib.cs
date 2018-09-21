@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Security.Cryptography;
 using System.Text;
 using System.Drawing.Imaging;
+using System.Collections.Specialized;
 /// <summary>
 /// classlib 的摘要描述
 /// C# 字串變數, 如何包含雙引號或反斜線
@@ -152,19 +153,11 @@ namespace unity {
     {
         public static string dbConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["dbconnConnection"].ConnectionString;
        private static string delivername = "藝時代";
-        private static string servicemail = "leokuan@xnet.world";
-        private static string smtpuid = "leokuan@xnet.world";
+        private static string servicemail = "event@xnet.world";
+        private static string smtpuid = "event@xnet.world";
         private static string smtppwd = "ck43285929tw";
-        private static string FBid = "164103481107660";
-        public static string[] payStatus =
-   { "未支付" , "ATM已付款", "信用卡已付款"
-            ,  "已退款"
-            ,  "待發貨"
-            ,  "已發貨"
-            ,  "已退貨"
-            ,  "已完成"
-            ,  "進行中"
-            ,  "已消" };
+        private static string FBid = "5505361323222635";
+      
         public static System.Drawing.Image ZoomImage(System.Drawing.Image bitmap, int destWidth, int destHeight)
         {
             try
@@ -302,6 +295,7 @@ namespace unity {
             }
             return value;
         }
+   
         public static string SubString (string str,int length,string kind)
         {
           if (kind == "notag") str = noHTML(str);
@@ -813,7 +807,7 @@ namespace unity {
             DataTable dt = new DataTable();
             using (SqlConnection conn = new SqlConnection(dbConnectionString))
             {
-                string strsql = "SELECT  * from  county ";
+                string strsql = "SELECT  * from  tbl_county ";
                 conn.Open();
                 SqlDataAdapter myAdapter = new SqlDataAdapter();
                 SqlCommand CMD = new SqlCommand(strsql, conn);
@@ -833,7 +827,7 @@ namespace unity {
             DataTable dt = new DataTable();
             using (SqlConnection conn = new SqlConnection(dbConnectionString))
             {
-                string strsql = "SELECT  * from  city where countyid =@countyid";
+                string strsql = "SELECT  * from  tbl_city where countyid =@countyid";
                 conn.Open();
                 SqlDataAdapter myAdapter = new SqlDataAdapter();
                 SqlCommand CMD = new SqlCommand(strsql, conn);
@@ -854,7 +848,7 @@ namespace unity {
             string name = "";
             using (SqlConnection conn = new SqlConnection(dbConnectionString))
             {
-                string strsql = "SELECT  * from  county where countyid=@countyid ";
+                string strsql = "SELECT  * from  tbl_county where countyid=@countyid ";
                 conn.Open();
                 SqlDataReader rs;
                 SqlCommand cmd = new SqlCommand(strsql, conn);

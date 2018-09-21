@@ -34,12 +34,11 @@
                         </ol>
                     </div>
                 </div><!-- breadArea END -->
+          <div class="main-content">
 
+    
                 <div class="container">
 
-                    <a href="javascript: history.go(-1)" class="btn btn-back">
-                        <span class="fa fa-angle-left"></span>BACK
-                    </a>
 
                     <div class="row">
 
@@ -123,7 +122,7 @@
                                     <div class="block-body">
                                         <span class="price">NT $<%#Eval("sellprice") %></span>
                                         <span class="cost">NT $<%#Eval("price") %></span>
-                                        <a href="#" class="btn btn-danger btn-block" id="join<%#Eval("lessonId") %>" onclick="checkjoin('<%#Eval("lessonId")%>')";>立即報名</a>
+                                        <a href="/process-step1?Articleid=<%=Articleid %>&lessonId=<%#Eval("lessonId") %>" class="btn btn-danger btn-block"  >立即報名</a>
                                     </div>
                                 </div><!-- block-wrap END -->
 
@@ -163,7 +162,12 @@
 
 
                     </div><!-- row END -->
-
+                          <a href="javascript: history.go(-1)" class="btn btn-back">
+                        <span class="fa fa-angle-left"></span>BACK
+                    </a>
                 </div><!-- container END -->
+              
+              
+              </div>
 </asp:Content>
 

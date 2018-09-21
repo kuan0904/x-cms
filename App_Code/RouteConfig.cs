@@ -19,8 +19,8 @@ namespace MyPublic
             //routes.EnableFriendlyUrls(settings);
             routes.EnableFriendlyUrls(settings, new Microsoft.AspNet.FriendlyUrls.Resolvers.IFriendlyUrlResolver[] { new MyWebFormsFriendlyUrlResolver() });
 
-            routes.MapPageRoute("article", "Article/{Articlid}", "~/detail.aspx",false, null,new RouteValueDictionary { { "id", "^[0-9]*$" } });
-            routes.MapPageRoute("class", "Class/{Articlid}", "~/process-step1.aspx", false, null,new RouteValueDictionary { { "id", "^[0-9]*$" } });
+            routes.MapPageRoute("article", "Article/{Articleid}", "~/detail.aspx",false, null,new RouteValueDictionary { { "Articleid", "^[0-9]*$" } });
+            routes.MapPageRoute("class", "Class/{Articleid}", "~/detail-course.aspx", false, null,new RouteValueDictionary { { "Articleid", "^[0-9]*$" } });
 
             routes.MapPageRoute("list", "news/{id}", "~/list-text.aspx", false, null,
             new RouteValueDictionary { { "id", "^[0-9]*$" }});

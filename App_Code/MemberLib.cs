@@ -150,7 +150,7 @@ public class MemberLib
                 m.Email = dt.Rows[0]["email"].ToString();
                 m.Memberid = (int) dt.Rows[0]["memberid"];
                 m.Phone = dt.Rows[0]["Phone"].ToString();
-                m.Password = dt.Rows[0]["Password"].ToString();
+                m.Password =MySecurity.SimpleTripleDes(  dt.Rows[0]["Password"].ToString());
                 m.Username = dt.Rows[0]["Username"].ToString();
                 m.Address = dt.Rows[0]["Address"].ToString();
                 m.Zip = dt.Rows[0]["zip"].ToString();

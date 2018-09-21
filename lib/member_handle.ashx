@@ -37,9 +37,9 @@ public class member_handle : IHttpHandler,IRequiresSessionState {
 
 
             if (   context.Session["memberdata"] == null ||  context.Session["memberdata"] .ToString() == "")
-                status = "-1";
+                status = "";
             else
-                status = "Y";
+               status = JsonConvert.SerializeObject(context.Session["memberdata"]);
             context.Response.Write(status);
             context.Response.End();
         }

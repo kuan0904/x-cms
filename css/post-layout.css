@@ -1138,7 +1138,11 @@
   margin-right: 5px; 
 }
 
-.social-media-share-btn .share-fb, .social-media-share-btn .share-google, .social-media-share-btn .share-twitter, .social-media-share-btn .share-print, .social-media-share-btn .share-collection {
+.social-media-share-btn .share-fb,
+.social-media-share-btn .share-google,
+.social-media-share-btn .share-twitter,
+.social-media-share-btn .share-pinterest,
+.social-media-share-btn .share-collection {
   color: #aaa;
   -webkit-transition: all .3s ease; 
     -moz-transition: all .3s ease; 
@@ -1146,21 +1150,27 @@
     transition: all .3s ease;
 }
 
-.social-media-share-btn .share-collection:hover, .social-media-share-btn .share-collection:focus {
+.social-media-share-btn .share-collection:hover,
+.social-media-share-btn .share-collection:focus,
+.social-media-share-btn .share-collection.active {
   color: #fa7080;
 }
 
-.social-media-share-btn .share-fb:hover, .social-media-share-btn .share-fb:focus {
+.social-media-share-btn .share-fb:hover,
+.social-media-share-btn .share-fb:focus {
   color: #4267b2;
 }
-.social-media-share-btn .share-google:hover, .social-media-share-btn .share-google:focus {
+.social-media-share-btn .share-google:hover,
+.social-media-share-btn .share-google:focus {
   color: #dd4a40;
 }
-.social-media-share-btn .share-twitter:hover, .social-media-share-btn .share-twitter:focus {
+.social-media-share-btn .share-twitter:hover,
+.social-media-share-btn .share-twitter:focus {
   color: #41abe1;
 }
-.social-media-share-btn .share-print:hover, .social-media-share-btn .share-print:focus {
-  color: #555;
+.social-media-share-btn .share-pinterest:hover,
+.social-media-share-btn .share-pinterest:focus {
+  color: #cb2027;
 }
 
 .extended-reading {

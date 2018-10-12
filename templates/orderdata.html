@@ -1,0 +1,101 @@
+﻿<div class="col-md-10 col-sm-9 col-xs-12">
+    <div class="post-information">
+        <h1>訂單編號：@ord_code@</h1>
+    </div>
+    <!-- post-information END -->
+    <!-- post-header END -->
+
+
+
+    <div class="col-xs-12">
+        <h3>訂購人資訊</h3>
+
+        <table class="table process-tab">
+            <tr class="underline">
+                <td>姓名</td>
+                <td>@ordername@</td>
+
+            </tr>
+            <tr>
+
+                <td>e-mail</td>
+                <td>@ordermail@</td>
+
+            </tr>
+            <tr>
+                <td>電話</td>
+                <td>@orderphone@</td>
+
+            </tr>
+
+
+
+        </table>
+        <h3>收件人資訊</h3>
+
+        <table class="table process-tab">
+            <tr class="underline">
+                <td>姓名</td>
+                <td>@shipname@</td>
+
+            </tr>
+            <tr>
+
+                <td>電話</td>
+                <td>@shipphone@</td>
+
+            </tr>
+            <tr>
+                <td>地址</td>
+                <td>@shipaddress@</td>
+
+            </tr>
+
+
+
+        </table>
+
+        <hr>
+        <h3>購買資訊</h3>
+        <table class="table process-tab">
+            <tr>
+                <td width="40%">品名</td>
+                <td width="20%">單價</td>
+                <td width="20%">數量</td>
+                <td width="20%">小計</td>
+            </tr>
+            @detail@
+            <tr class="underline">
+                <td>取貨方式</td>
+                <td colspan="3">@delivery_kind@</td>
+            </tr>
+            <tr class="underline">
+                <td>運費</td>
+                <td colspan="3">@ShipPrice@</td>
+            </tr>
+            <tr class="underline">
+                <td>付款方式</td>
+                <td  colspan="3">
+                    @paymode@
+
+                </td>
+            </tr>
+            <tr class="total underline">
+                <td  colspan="3">總計</td>
+                <td class="text-right">@TotalPrice@</td>
+            </tr>
+        </table>
+
+
+        <div class="member-course-info">
+
+            <div class="notice">
+                <h4>注意事項</h4>
+                1.全商品採用宅配方式寄送，限台灣本島。<br /> 2.即日起下單付款者，將於確認結帳後3～5個工作天內出貨，寄至所填寫的收件地址，如遇假日則順延出貨。
+                <br /> 商品提供七天的猶豫權益（非試用期），若要辦理退換貨，貨品須為全新未使用且包裝完整。
+            </div>
+            <!-- meta-info END -->
+        </div>
+    </div>
+    <!-- col-md-4 col-sm-6 col-xs-6 END -->
+</div>

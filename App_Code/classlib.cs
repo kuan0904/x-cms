@@ -135,166 +135,117 @@ namespace unity {
                 return bitmap;
             }
         }
-        public static void ResizeImg(int PicWidth, int PicHeight, string filePath, string saveFilePath)
+
+        public static void ResizeImg(int destWidth, int destHeight, string filePath, string saveFilePath)
         { //重新設定大小
 
-            System.Drawing.Image originalImage;
+            System.Drawing.Image sourImage;
             WebClient webC = new WebClient();
-            originalImage = System.Drawing.Image.FromStream(webC.OpenRead(filePath));
-            originalImage = ZoomImage(originalImage, PicWidth, PicHeight);
-            originalImage.Save(saveFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
+            sourImage = System.Drawing.Image.FromStream(webC.OpenRead(filePath));
+            sourImage = RotateImage(sourImage);
+            webC.Dispose();
+            webC = null;
 
+            int width = 0, height = 0;
+            //按比例縮放         
+            int sourWidth = sourImage.Width;
+            int sourHeight = sourImage.Height;
+            if (sourHeight > destHeight || sourWidth > destWidth)
+            {
+                if ((sourWidth * destHeight) > (sourHeight * destWidth))
+                {
+                    width = destWidth;
+                    height = (destWidth * sourHeight) / sourWidth;
+                }
+                else
+                {
+                    height = destHeight;
+                    width = (sourWidth * destHeight) / sourHeight;
+                }
+
+            }
+            else
+            {
+                width = sourWidth;
+                height = sourHeight;
+
+            }
+
+            Bitmap destBitmap = new Bitmap(width, height);
+            Graphics g = Graphics.FromImage(destBitmap);
+            g.Clear(Color.Transparent);
+            //設置畫布的描繪品質                
+            // g.Clear(Color.Transparent);
+            g.Clear(Color.Black);
+            g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+            g.DrawImage(sourImage, new Rectangle(0, 0, width, height), new Rectangle(0, 0, sourWidth, sourHeight), GraphicsUnit.Pixel);
+            g.Dispose();
+            //設置壓縮品質     
+            System.Drawing.Imaging.EncoderParameters encoderParams = new System.Drawing.Imaging.EncoderParameters();
+            long[] quality = new long[1];
+            quality[0] = 100;
+            System.Drawing.Imaging.EncoderParameter encoderParam = new System.Drawing.Imaging.EncoderParameter(System.Drawing.Imaging.Encoder.Quality, quality);
+            encoderParams.Param[0] = encoderParam;
+            sourImage.Dispose();
+            sourImage = null;
+            destBitmap.Save(saveFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
+            destBitmap.Dispose();
+            destBitmap = null;
+        }
+        //指定裁圖範圍、縮圖
+        public static void CutImg(int PointX, int PointY, int CutWidth, int CutHeight, int picWidth, int picHeight, string filePath, string saveFilePath)
+        {
+            //PointX PointY: 起點   CutWidth CutHeight: 裁圖長寬  PicWidth PicHeight: 縮圖長寬
+
+
+            //只裁圖
+            if (picWidth == 0)
+            {
+                picHeight = CutHeight;
+                picWidth = CutWidth;
+            }
+
+            FileStream sFileStream = File.OpenRead(filePath);
+
+
+
+            System.Drawing.Image imgPhoto = null;
+            imgPhoto = System.Drawing.Image.FromStream(sFileStream);
+            System.Drawing.Image bmPhoto = new System.Drawing.Bitmap(picWidth, picHeight);
+            Graphics gbmPhoto = System.Drawing.Graphics.FromImage(bmPhoto);
+
+            gbmPhoto.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+            gbmPhoto.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            gbmPhoto.Clear(Color.Transparent);
+
+
+            gbmPhoto.DrawImage(imgPhoto, new Rectangle(0, 0, picWidth, picHeight), new Rectangle(PointX, PointY, CutWidth, CutHeight), GraphicsUnit.Pixel);
+            bmPhoto.Save(saveFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
+            sFileStream.Close();
+            gbmPhoto.Dispose();
+            bmPhoto.Dispose();
+            imgPhoto.Dispose();
+            sFileStream.Dispose();
 
         }
 
 
+
     }
+
+
     public static class classlib
     {
         public static string dbConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["dbconnConnection"].ConnectionString;
        private static string delivername = "藝時代";
         private static string servicemail = "event@xnet.world";
         private static string smtpuid = "event@xnet.world";
-        private static string smtppwd = "ck43285929tw";
-        private static string FBid = "5505361323222635";
+        private static string smtppwd = "5505361323222635";
+       
       
-        public static System.Drawing.Image ZoomImage(System.Drawing.Image bitmap, int destWidth, int destHeight)
-        {
-            try
-            {
-                System.Drawing.Image sourImage = bitmap;
-                int width = 0, height = 0;
-                //按比例縮放         
-                int sourWidth = sourImage.Width;
-                int sourHeight = sourImage.Height;
-                if (sourHeight > destHeight || sourWidth > destWidth)
-                {
-                    if ((sourWidth * destHeight) > (sourHeight * destWidth))
-                    {
-                        width = destWidth;
-                        height = (destWidth * sourHeight) / sourWidth;
-                    }
-                    else
-                    {
-                        height = destHeight;
-                        width = (sourWidth * destHeight) / sourHeight;
-                    }
-                }
-                else
-                {
-                    width = sourWidth;
-                    height = sourHeight;
-                }
-                Bitmap destBitmap = new Bitmap(destWidth, destHeight);
-                Graphics g = Graphics.FromImage(destBitmap);
-                g.Clear(Color.Transparent);
-                //設置畫布的描繪品質   
-                // webpic = Image_ChangeOpacity(webpic, 0f);  
-                // g.Clear(Color.Transparent);
-                // g.Clear(Color.Black);
-                g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                // g.DrawImage(sourImage, new Rectangle((destWidth - width) / 2, (destHeight - height) / 2, width, height), 0, 0, sourImage.Width, sourImage.Height, GraphicsUnit.Pixel);
-                //高度置中
-                g.DrawImage(sourImage, new Rectangle((destWidth - width) / 2, (destHeight - height), width, height), 0, 0, sourImage.Width, sourImage.Height, GraphicsUnit.Pixel);
-                //齊底
-                g.Dispose();
-                //設置壓縮品質     
-                System.Drawing.Imaging.EncoderParameters encoderParams = new System.Drawing.Imaging.EncoderParameters();
-                long[] quality = new long[1];
-                quality[0] = 100;
-                System.Drawing.Imaging.EncoderParameter encoderParam = new System.Drawing.Imaging.EncoderParameter(System.Drawing.Imaging.Encoder.Quality, quality);
-                encoderParams.Param[0] = encoderParam;
-                sourImage.Dispose();
-                return destBitmap;
-            }
-            catch
-            {
-                return bitmap;
-            }
-        }
-        public static string get_ord_status(string id)
-        {
-            string value = "";
-            using (SqlConnection conn = new SqlConnection(dbConnectionString))
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand();
-                SqlDataReader rs;
-                string strsql;
-                strsql = @"SELECT * from payStatus where id=@id ";
-                cmd = new SqlCommand(strsql, conn);
-                cmd.Parameters.Add("@id", SqlDbType.VarChar).Value = id;
-                rs = cmd.ExecuteReader();
-                if (rs.Read()) value = rs["name"].ToString();
-                rs.Close();
-                cmd.Dispose();
-                conn.Close();
-            }
-            return value;
-        }
-        public static string getPaymode(string id)
-        {
-            string value = "";
-            using (SqlConnection conn = new SqlConnection(dbConnectionString))
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand();
-                SqlDataReader rs;
-                string strsql;
-                strsql = @"SELECT * from paymode where id=@id ";
-                cmd = new SqlCommand(strsql, conn);
-                cmd.Parameters.Add("@id", SqlDbType.VarChar).Value = id;
-                rs = cmd.ExecuteReader();
-                if (rs.Read()) value = rs["name"].ToString();
-                rs.Close();
-                cmd.Dispose();
-                conn.Close();
 
-            }
-            return value;
-        }
-        public static string getReceivetime(string id)
-        {
-            string value = "";
-            using (SqlConnection conn = new SqlConnection(dbConnectionString))
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand();
-                SqlDataReader rs;
-                string strsql;
-                strsql = @"SELECT * from Receivetime where id=@id ";
-                cmd = new SqlCommand(strsql, conn);
-                cmd.Parameters.Add("@id", SqlDbType.VarChar).Value = id;
-                rs = cmd.ExecuteReader();
-                if (rs.Read()) value = rs["name"].ToString();
-                rs.Close();
-                cmd.Dispose();
-                conn.Close();
-            }
-            return value;
-        }
-        public static string getInvoice(string id)
-        {
-            string value = "";
-            using (SqlConnection conn = new SqlConnection(dbConnectionString))
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand();
-                SqlDataReader rs;
-                string strsql;
-                strsql = @"SELECT * from invoice where id=@id ";
-                cmd = new SqlCommand(strsql, conn);
-                cmd.Parameters.Add("@id", SqlDbType.VarChar).Value = id;
-                rs = cmd.ExecuteReader();
-                if (rs.Read()) value = rs["name"].ToString();
-                rs.Close();
-                cmd.Dispose();
-                conn.Close();
-            }
-            return value;
-        }
    
         public static string SubString (string str,int length,string kind)
         {
@@ -675,8 +626,7 @@ namespace unity {
 
             return result;
         }            
-        #region "圖片處理"
-
+   
 
         public static string setImgPath(string imgstr, string other = "")
         {
@@ -694,47 +644,10 @@ namespace unity {
 
 
 
-        //指定裁圖範圍、縮圖
-        public static void CutImg(int PointX, int PointY, int CutWidth, int CutHeight, int picWidth, int picHeight, string filePath, string saveFilePath)
-        {
-            //PointX PointY: 起點   CutWidth CutHeight: 裁圖長寬  PicWidth PicHeight: 縮圖長寬
-
-
-            //只裁圖
-            if (picWidth == 0)
-            {
-                picHeight = CutHeight;
-                picWidth = CutWidth;
-            }
-
-            FileStream sFileStream = File.OpenRead(filePath);
-
-
-
-            System.Drawing.Image imgPhoto = null;
-            imgPhoto = System.Drawing.Image.FromStream(sFileStream);
-            System.Drawing.Image bmPhoto = new System.Drawing.Bitmap(picWidth, picHeight);
-            Graphics gbmPhoto = System.Drawing.Graphics.FromImage(bmPhoto);
-
-            gbmPhoto.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-            gbmPhoto.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            gbmPhoto.Clear(Color.Transparent);
-
-
-            gbmPhoto.DrawImage(imgPhoto, new Rectangle(0, 0, picWidth, picHeight), new Rectangle(PointX, PointY, CutWidth, CutHeight), GraphicsUnit.Pixel);
-            bmPhoto.Save(saveFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
-            sFileStream.Close();
-            gbmPhoto.Dispose();
-            bmPhoto.Dispose();
-            imgPhoto.Dispose();
-            sFileStream.Dispose();
-
-        }
-
 
      
 
-        #endregion
+     
         public static string RemoveHTMLTag(string htmlSource)
         {
             if (htmlSource == null) htmlSource = ""; 
@@ -777,7 +690,17 @@ namespace unity {
             isNum = Double.TryParse(Convert.ToString(Expression), System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo, out retNum);
             return isNum;
         }
+        public static DataTable  Get_Message(int id)
+        {
 
+            string strsql = "SELECT  * from    tbl_message  where msg_id=@msg_id ";
+            NameValueCollection nvc = new NameValueCollection();
+            nvc.Add("msg_id", id.ToString());
+            DataTable dt = DbControl.Data_Get(strsql, nvc);
+         
+
+            return dt;
+        }
         public static string Get_cityName(string id)
         {
 

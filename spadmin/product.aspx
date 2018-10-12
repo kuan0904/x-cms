@@ -135,18 +135,7 @@
                                     </td> 
                             </tr>
                                
-                            <tr>
-                                <td>商品類別</td>
-                                <td>
-                                    <asp:RadioButtonList ID="kindid" runat="server">
-                                        <asp:ListItem Value ="1" >單一商品</asp:ListItem>
-                                        <asp:ListItem  Value ="2">組合商品</asp:ListItem>
-                                    </asp:RadioButtonList>                                  
-                                </td>
-                                 <td>排序</td>
-                                <td>
-                                    <asp:TextBox ID="sort" runat="server"></asp:TextBox></td>
-                            </tr>
+                         
                             <tr>
                                 <td >價格</td>
                             <td>
@@ -158,15 +147,7 @@
                                     <asp:TextBox ID="storage" runat="server"  TextMode="Number"></asp:TextBox>                               
                                </td> 
                             </tr>   
-                            <tr>
-                                <td>成員</td>
-                                <td colspan ="3">
-                                    <asp:CheckBoxList ID="CheckBoxList1" runat="server" RepeatDirection="Horizontal" RepeatColumns="5"></asp:CheckBoxList>
-
-
-                                </td>
-
-                            </tr>
+                  
                             <tr>
                                 <td>運費</td>
                                 <td>    
@@ -174,14 +155,16 @@
                                     
                                     </td> 
                                 <td>運送方式</td>
-                                <td>
-                                    <asp:TextBox ID="shippingKind" runat="server"></asp:TextBox></td> 
+                                <td> <asp:DropDownList ID="shippingKind" runat="server">
+                                    </asp:DropDownList>        
+                                  </td> 
                             </tr>      
                             <tr>
                                 <td>免運費金額</td>
                                 <td> <asp:TextBox ID="freeship" runat="server" TextMode="Number"></asp:TextBox></td>
-                                <td></td>
-                                <td></td>
+                                 <td>排序</td>
+                                <td>
+                                    <asp:TextBox ID="sort" runat="server"></asp:TextBox></td>
                             </tr>                   
                             <tr>
                                 <td>商品介紹</td>
@@ -234,7 +217,11 @@
                     return false;
                 }
              
-                      
+                     if ($("#<%=categoryid.ClientID  %>").val() == '') {
+                    alert('請選擇產品類別');
+                    return false;
+                }
+                   
              
                                    
             }

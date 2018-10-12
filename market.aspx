@@ -139,7 +139,7 @@
             var num = $("#num").val();
 
             if (typeof (ord_pay) == "undefined") {
-                alert('請選擇付款方式');
+                alert('請選擇送貨方式方式');
                 flag = false;
                 return false;
             }
@@ -182,7 +182,23 @@
 
             if (flag == true) {
                 if (confirm('請先詳細檢查過訂單資訊是否完整而正確!\n確定要送出訂單?')) {
-                    $.post('/lib/orderdata.ashx', { "ord_name": x1, "ord_sex": ord_sex, "ord_tel": x2, "email": email, "p_CITYID": x32, "ord_zip": x3, "p_COUNTYID": x31, "ord_pay": ord_pay, "p_ADDRESS": x33, "p_id": p_id, "price": price, "num": num, "ship_price": ship_price, "pid": pid }, function (data) {
+                    $.post('/lib/orderdata.ashx', {
+                        "ord_name": x1,
+                        "ord_sex": ord_sex,
+                        "ord_tel": x2,
+                        "email": email,
+                        "p_CITYID": x32,
+                        "ord_zip": x3,
+                        "p_COUNTYID": x31,
+                        "ord_pay": ord_pay,
+                        "p_ADDRESS": x33,
+                        "p_id": p_id,
+                        "price": price,
+                        "num": num,
+                        "ship_price": ship_price,
+                        "pid": pid
+                      
+                    }, function (data) {
 
                         if (data == '-1') {
                             alert('產品銷售完畢');
@@ -396,8 +412,8 @@
                                         </div>
                                         <div class="form-group">
                                             送貨方式 
-					  <input type="radio" name="ord_pay" value="cash" checked="checked" />
-                                            <%=shippingKind  %>
+					  <input type="radio" name="ord_pay" value="<%=shippingKind  %>" checked  />
+                                            <%=OrderLib.getdelivery_kind (shippingKind)  %>
                                         </div>
 
 

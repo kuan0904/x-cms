@@ -361,6 +361,11 @@ h1.logo a {
 }
 .affix .navbar-brand.emba a {
     background: url(../images/logo-emba.png) no-repeat center;
+	width: 250px;
+    height: 45px;
+    background-size: contain;
+    padding: 0;
+    margin: 0;
 
 }
 

@@ -70,13 +70,14 @@ public class Unitlib
 
         return result;
     }
-    public static MainData Get_UnitData(int unitid)
+    public static MainData Get_UnitData(int  unitid  ,string unitname ="")
     {
 
-        string strsql = "SELECT *  FROM unitdata  where unitid =  @unitid  ";
+        string strsql = "SELECT *  FROM unitdata  where (unitid =  @unitid  or unitname=@unitname) and status='Y' ";
         NameValueCollection nvc = new NameValueCollection
         {
-            { "unitid", unitid.ToString() }
+            { "unitid", unitid .ToString () },
+            { "unitname", unitname  }
         };
         DataTable dt = DbControl.Data_Get(strsql, nvc);
         MainData MainData = new MainData();
@@ -137,20 +138,19 @@ public class Unitlib
 
                 });
             }
-         
+            dt2.Dispose();
             Menu.Add(new MenuModel
             {
                 Id = (int)dt1.Rows[i]["categoryid"],
                 Title = dt1.Rows[i]["title"].ToString(),
                 Kind = dt1.Rows[i]["kind"].ToString(),
                 ParentId = (int)dt1.Rows[i]["parentid"],
-                 Pagename = dt1.Rows[i]["pagename"].ToString(),
+                Pagename = dt1.Rows[i]["Pagename"].ToString(),
                 Detial = subMenu
 
             });
-           dt2.Dispose();
+            dt1.Dispose();
         }
-        dt1.Dispose();
         dt.Dispose();
 
         return Menu;

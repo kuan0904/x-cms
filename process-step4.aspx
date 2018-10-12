@@ -10,7 +10,7 @@
                         <article class="post-layout post">
                             <div class="post-header">
                                 <div class="post-information">
-                                    <h1>訂單編號：A123456</h1>
+                                    <h1>訂單編號：<%=ord_code %></h1>
                                 </div>
                                 <!-- post-information END -->
                             </div>

@@ -17,18 +17,19 @@ public class member_handle : IHttpHandler,IRequiresSessionState {
 
         //安全性,上線要加
         string check = context.Request["_"];
-        if (unity.classlib.IsNumeric(check) == false)
-        {
-            context.Response.End();
 
-        }
 
         string p_ACTION = context.Request["p_ACTION"];
         string p_VERIFYCODE = context.Request["p_VERIFYCODE"];
         string p_ACCOUNT = context.Request["p_ACCOUNT"];
         string p_PASSWD = context.Request["p_PASSWD"];
         string p_username = context.Request["p_username"];
+   
+        if (unity.classlib.IsNumeric(check) == false)
+        {
+            context.Response.End();
 
+        }
         MemberLib.Mmemberdata  result = new MemberLib.Mmemberdata ();
         string status = "";
 
@@ -39,7 +40,7 @@ public class member_handle : IHttpHandler,IRequiresSessionState {
             if (   context.Session["memberdata"] == null ||  context.Session["memberdata"] .ToString() == "")
                 status = "";
             else
-               status = JsonConvert.SerializeObject(context.Session["memberdata"]);
+                status = JsonConvert.SerializeObject(context.Session["memberdata"]);
             context.Response.Write(status);
             context.Response.End();
         }
@@ -95,7 +96,7 @@ public class member_handle : IHttpHandler,IRequiresSessionState {
 
 
                 context.Session["memberdata"] = MemberLib.Member.Add (p_ACCOUNT, p_PASSWD);
-                status = "";
+                status = "Y";
             }
 
             context.Response.Write(status);
@@ -120,13 +121,26 @@ public class member_handle : IHttpHandler,IRequiresSessionState {
                 m.Email = o.Email;
 
                 m= MemberLib.Member.Update(m);
-
+                context.Session["memberdata"] = m;
+                status = JsonConvert.SerializeObject(context.Session["memberdata"]);
+                context.Response.Write(status);
+            }
+            else
+            {
+                context.Response.Write(status);
             }
 
-            context.Response.Write(status);
-            context.Response.End();
-        }
 
+
+        }
+        if (p_ACTION== "forget_password")
+        {
+
+
+            string msg = MemberLib.Mail .Get_password(p_ACCOUNT);
+            if (msg == "") msg = "Y";
+            context.Response.Write(msg);
+        }
 
 
     }

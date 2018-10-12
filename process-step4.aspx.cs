@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
+using System.Collections.Specialized;
 public partial class process_step4 : System.Web.UI.Page
 {
     public string subject = "";
@@ -28,17 +29,21 @@ public partial class process_step4 : System.Web.UI.Page
     public int totalprice = 0;
     public int totalnum = 0;
     public int num = 0;
-
+    public string cid = "";
+    public string ord_code = "";
     protected void Page_Load(object sender, EventArgs e)
     {
+        string ord_date = DateTime.Today.ToString("yyyy/MM/dd");
+        ord_code = OrderLib.Get_ord_code(ord_date);
         article.MainData MainData = new article.MainData();
+        string paymode = Request["paymode"];
         MainData = HttpContext.Current.Session["MainData"] as article.MainData;
         List<article.Lecturer> Lecturer = new List<article.Lecturer>();
         List<LessonLib.ItemData> classdata = new List<LessonLib.ItemData>();
         List<LessonLib.JoinData> joindata = new List<LessonLib.JoinData>();
         if (MainData != null)
         {
-
+         
             subject = MainData.Subject;
             Session["title"] = subject + "│" + Application["site_name"];
             pic = MainData.Pic;
@@ -54,7 +59,7 @@ public partial class process_step4 : System.Web.UI.Page
                 lessondetail = MainData.Lesson[0].LessonDetail;
                 lessontime = MainData.Lesson[0].Lessontime;
                 Lecturer = article.DbHandle.Get_Lecturer_list(MainData.Lesson[0].Lecturer);
-
+               
             }
 
             keywords = article.Web.Get_Keyword_link(MainData.Keywords);
@@ -67,27 +72,16 @@ public partial class process_step4 : System.Web.UI.Page
 
             List<article.Category> cate = new List<article.Category>();
             cate = (List<article.Category>)article.DbHandle.Get_article_category(MainData.Id);
-
             foreach (var a in cate)
             {
-                DataTable dt, dt1;
-                dt = (DataTable)Application["category"];
-                dt.DefaultView.RowFilter = "categoryid=" + a.CategoryId;
 
-                dt1 = dt.DefaultView.ToTable();
-                pageunit = "<li class=\"active\"><a href=\"/" + dt1.Rows[0]["CategoryId"].ToString() + "/catalog\">" + dt1.Rows[0]["title"].ToString() + "</a></li>";
-                if (dt1.Rows[0]["parentid"].ToString() != "0")
-                {
-                    dt.DefaultView.RowFilter = "categoryid=" + dt1.Rows[0]["parentid"].ToString();
-                    dt1 = dt.DefaultView.ToTable();
-                    pageunit = "<li><a href=\"/" + dt1.Rows[0]["CategoryId"].ToString() + "/catalog\">" + dt1.Rows[0]["title"].ToString() + "</a></li>" + pageunit;
-                    dt1.Dispose();
-                    dt.Dispose();
-
-                }
+                cid = a.CategoryId.ToString();
+                pagetitle = Unitlib.Get_title((List<Unitlib.MenuModel>)Session["webmenu"], int.Parse(cid));
+                Session["active"] = Unitlib.Set_activeId((List<Unitlib.MenuModel>)Session["webmenu"], int.Parse(cid));
+                //   Breadcrumb = Unitlib.Get_Breadcrumb((List<Unitlib.MenuModel>)Session["webmenu"], int.Parse(cid));
                 break;
-            }
 
+            }
             string[] joinnum = Request.Form["joinnum"].Split(',');
             string[] lessonid = Request.Form["lessonid"].Split(',');
             List<LessonLib.JoinList> item = new List<LessonLib.JoinList>();
@@ -116,40 +110,83 @@ public partial class process_step4 : System.Web.UI.Page
                 for (j = 0; j <int.Parse ( joinnum[i]); j++)
                 {
 
+                   
                     item.Add(new LessonLib.JoinList
                     {
-                        LessonId = int.Parse(lessonid[i]),
-                        Name = cname[i],
-                        Phone = cphone[i],
-                        Email = cemail[i],
-                       Amount = int.Parse(sellprice[i]),
+                        LessonId = int.Parse(lessonid[j]),
+                        Name = cname[j],
+                        Phone = cphone[j],
+                        Email = cemail[j],
+                        Amount = int.Parse(sellprice[j]),
 
                     });
+                   
                 }
                 i++;
             }
             num = classdata.Count;
             //Repeater1.DataSource = classdata;
             //Repeater1.DataBind();
-         
-       
-         
+           
+          
+            int ship_free = 0;
+            string memberid = "0";
+            if (Session["memberdata"] != null)
+            {
+                MemberLib.Mmemberdata m = (MemberLib.Mmemberdata) Session["memberdata"];
+                memberid = m.Memberid.ToString();
+            }
+            OrderLib.OrderData o = new OrderLib.OrderData
+            { 
+                Ord_code = ord_code ,
+                Ord_id = 0,
+                Memberid =memberid ,
+                Paymode = paymode,
+                Invoice="",
+                Contents="",
+                ShipPrice= ship_free,
+                Discount = 0,
+                TotalPrice=totalprice ,              
+                Delivery_kind="",
+                Orddate =DateTime.Today ,
+                Companyno="",
+                Title="",
+                ReceiveTime="",
+                coupon_no="",
+                Paid="",
+                Status="N",
+                SubPrice=totalprice,
+                Ordname =Request["cname"],
+                Ordgender="",
+                Ordemail=Request ["cemail"],
+                Ordphone = Request["cphone"],
+                Ordzip="",
+                Ordaddress="",
+                Shipname="",
+                Shipphone="",
+                Shipzip="",
+                Shipaddress ="",
+                Shipgender="",
+                Ordcityid = new OrderLib.ItemData() { Id=0,Name=""},
+                Ordcountyid  = new OrderLib.ItemData() { Id = 0, Name = "" },
+                Shipcity = new OrderLib.ItemData() { Id = 0, Name = "" },
+                Shipcounty = new OrderLib.ItemData() { Id = 0, Name = "" },
+            };
+            o = OrderLib.AddOrdData (o);
+           
+            LessonLib.JoinData jdata = new LessonLib.JoinData
+            {
+                Ord_code =ord_code ,
+                Articleid = MainData.Id,              
+                TicketKind = Request.Form["kind"],           
+                JoinLists = item
+            };
 
-            LessonLib.JoinData jdata = new LessonLib.JoinData();
-            jdata.Articleid = MainData.Id;
-            jdata.Email = Request.Form["cemail"];
-            jdata.Phone = Request.Form["cphone"];
-            jdata.Name = Request.Form["cname"];
-            jdata.Paymode = Request.Form["paymode"];
-            jdata.TicketKind = Request.Form["kind"];
-            jdata.TotalPrice = totalprice;
-            jdata.JoinLists = item;
 
 
-         
             LessonLib.DbHandle.JoinAdd(jdata);
         }
     }
 
-
+   
 }

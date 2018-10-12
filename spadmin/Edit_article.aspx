@@ -2,13 +2,53 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
    
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="/resources/demos/style.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
     	
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder_title" runat="Server">
-    <script>
+ <script >
+    $.extend({
+      jYoutube: function( url, size ){
+        if(url === null){ return ""; }
+
+        size = (size === null) ? "big" : size;
+        var vid;
+        var results;
+
+        results = url.match("[\?&]v=([^&#]*)");
+
+        vid = ( results === null ) ? url : results[1];
+
+        if(size == "small"){
+          return "http://img.youtube.com/vi/"+vid+"/2.jpg";
+        }else {
+          return "http://img.youtube.com/vi/"+vid+"/0.jpg";
+        }
+      }
+    });
+    $(document).ready(function () {
+
+    
+        $('img:first').click(function() {
+            $('iframe:first').fadeToggle('400');
+        });
+  
+    // Get youtube video thumbnail on user click
+    var url = '';
+    $('#youtubeurl').blur(function(){
+            // Check for empty input field
+            if($('#youtubeurl').val() != ''){
+                // Get youtube video's thumbnail url
+                // using jYoutube jQuery plugin
+                url = $.jYoutube($('#youtubeurl').val());
+            
+                // Now append this image to <div id="thumbs">
+                $('#thumbs').append($('<img src="'+url+'" />'));
+            }
+        });
+    });
+
      $(function () {
           $("#postday").datepicker();
           $("#postday").datepicker("option", "dateFormat", "yy/mm/dd");
@@ -30,7 +70,7 @@
                         <div class="box-header well" data-original-title>
                             <asp:TextBox ID="searchtxt" runat="server"></asp:TextBox><asp:Button ID="Btn_find"  class="btn btn-yellow" runat="server" Text="搜尋"  OnClick ="Btn_find_Click"/>
                                          <asp:LinkButton ID="btn_add" runat="server" Text=""  OnClick ="btn_add_Click"  class="btn btn-app btn-primary btn-xs"><i class="icon-edit bigger-230"></i>新增資料</asp:LinkButton> 
-                            <asp:LinkButton ID="LinkButton3" runat="server" OnClick ="LinkButton3_Click">LinkButton</asp:LinkButton>
+                        
                 </div>
                     <asp:ListView ID="ListView1" runat="server" DataKeyNames="articleId" OnPagePropertiesChanging="ContactsListView_PagePropertiesChanging">
                         <EmptyDataTemplate>
@@ -129,18 +169,19 @@
                     result = JSON.parse(result);
                     maindata = result;                              
                     $('#postday').datepicker("setDate", new Date(result.PostDay));
-                    $('#subject').val(result.Subject);                                           
+                    $('#subject').val(result.Subject);   
+                    $('#SubTitle').val(result.SubTitle);     
                     $('#keywords').val(result.Keywords);                 
                     $('#author').val(result.Author);
                     $("#status").prop("checked", result.Status == "Y" ? true : false);
-                  
+                    $('#youtubeurl').val(result.YoutubeUrl);     
                     $("#recommend").prop("checked", result.Recommend  == "Y" ? true : false);
                     $('#postDay').val(result.PostDay);   
                     CKEDITOR.instances['contents'].setData(result.Contents);                           
                     document.getElementById('console').innerHTML = ("<img src=\"" + result.Pic + "\" width=300>");
                   
                     $('#logoPic').val(result.Pic); 
-                    
+                     $("#youtubeurl").trigger("blur");
                 });
             }
         }
@@ -193,17 +234,30 @@
             var tags = $('input:checkbox:checked[name="tags"]').map(function () { return $(this).val(); }).get();              
             var recommend = $("#recommend").prop("checked") == true ? "Y" : "N";     
             var dataValue = {
-                id: articleId, subject: $("#subject").val(), subtitle: ''
-                , contents: content, pic: $("#logoPic").val(), keywords: $("#keywords").val()
-                , status: status, categoryid: categoryid,recommend :recommend
-                , tags: tags, author: $("#author").val(), postday: postday,
-                kind: "A"
-                ,Lesson: [{
-                    Id: 0, StartDay:"", EndDay: "", Lecturer: [], Lessontime: "", Address:"" ,
-                    LessonDetail: { Id: 0, LessonId: 0, Price: 0, Sellprice:0, Limitnum:0, Description: "" }
-                }]
-      
+                Id: articleId,
+                Subject: $("#subject").val(),
+                SubTitle: $("#SubTitle").val(),
+                Contents: content,
+                Pic: $("#logoPic").val(),
+                PostDay: postday,
+                Status: status,
+                Viewcount: "0",
+                Keywords: $("#keywords").val(),               
+                Category: categoryid,
+                Recommend: recommend,
+                Tags: tags,
+                Author: $("#author").val(),               
+                kind: "A",                
+                Tempid :"",
+                YoutubeUrl:$("#youtubeurl").val(),
+                    Lesson: [{
+                        Id: 0, StartDay:"", EndDay: "", Lecturer: [], Lessontime: "", Address:"" ,
+                        LessonDetail: { Id: 0, LessonId: 0, Price: 0, Sellprice:0, Limitnum:0, Description: "" }
+                    }]
+             
             };
+          //   var result = dataValue.postdata[0];         
+         
             if (errmsg == '') {
                 $.postJSON('article.aspx/Set_data', JSON.stringify(dataValue), 'application/json; charset=utf-8', function (result) {
                     result = result.d;
@@ -231,7 +285,7 @@
                     if (result == '')
                     {
                        alert('已存檔');
-                       location.href = location.href;
+                        history.back();
                     }
                     else
                     {
@@ -260,6 +314,18 @@
                                     <td>主標題(*)</td>
                                     <td>
                                         <input id="subject" type="text" style="width: 500px" placeholder="必填"  /></td>
+                                </tr>       
+                                <tr>
+                                    <td>副標題</td>
+                                    <td>
+                                        <input id="SubTitle" type="text" style="width: 500px" placeholder=""  /></td>
+                                </tr>
+                                <tr>
+                                    <td>youtube連結</td>
+                                    <td> <input id="youtubeurl" type="text" style="width: 500px" placeholder="youtube連結"  />
+                                      <br />
+                                        <span id="thumbs"></span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>主圖示(750x500)(*)</td>
@@ -520,7 +586,5 @@
     </div>
      
        
- 
-
 </asp:Content>
 

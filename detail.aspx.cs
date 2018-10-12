@@ -12,7 +12,7 @@ public partial class detail : System.Web.UI.Page
 {
     public Unitlib.WebsiteData m = new Unitlib.WebsiteData();
 
-
+    public string iscollection = "";
     public string Breadcrumb = "";
     public string subject = "";
     public string contents = "";
@@ -59,6 +59,7 @@ public partial class detail : System.Web.UI.Page
 
             MainData = HttpContext.Current.Session["MainData"] as article.MainData;
         }
+
         if (MainData != null)
         {
           
@@ -114,6 +115,15 @@ public partial class detail : System.Web.UI.Page
                 Breadcrumb = Unitlib.Get_Breadcrumb((List<Unitlib.MenuModel>)Session["webmenu"], int.Parse(cid));
                 break;
               
+            }
+
+            if (Session["memberdata"] != null)
+            {
+                MemberLib.Mmemberdata o = (MemberLib.Mmemberdata) Session["memberdata"];
+                iscollection = MemberLib.Member.Is_collection(o.Memberid.ToString (), MainData.Id.ToString ())=="Y"? " active ":"";
+                
+
+
             }
         }
     }

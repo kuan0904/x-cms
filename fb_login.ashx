@@ -93,23 +93,21 @@ public class fb_login : IHttpHandler ,IRequiresSessionState {
             }
             context.Session["memberdata"] = result;
         }
+        string msg = "";
 
-        string msg = "<script>alert('登入成功');location.href='"+ server_name  + "/index.aspx';</script>";
+        if (returnurl != "" && returnurl != "undefined" && returnurl != "1")
+        {
+            returnurl = Base64Decode(returnurl);
+            if (returnurl.IndexOf("http") == -1)
+            {
+                if (returnurl.Substring(0, 1) == "/")
+                    returnurl = server_name + returnurl;
+                else
+                    returnurl = server_name + "/" + returnurl;
+            }
 
-
-        //if (returnurl != "" && returnurl != "undefined"  && returnurl !="1")
-        //{
-        //    returnurl = Base64Decode(returnurl);
-        //    if (returnurl.IndexOf("http") == -1)
-        //    {
-        //        if (returnurl.Substring (0,1) =="/")
-        //            returnurl = server_name + returnurl;
-        //        else
-        //            returnurl = server_name + "/" +  returnurl;
-        //    }
-
-        //    msg = "<script>alert('登入成功');location.href='"+ returnurl   +"';</script>";
-        //}
+            msg = "<script>alert('登入成功');location.href='" + returnurl + "';</script>";
+        }
 
         context.Response.Write(msg);
 

@@ -7946,12 +7946,16 @@ h3.new-index-list-title {
 }
 
 
-.market-tab {
+
+
+
+.market-tab, .market-tab-2 {
     font-size: 16px;
     color: #333;
     font-family: "Montserrat","Microsoft JhengHei";
 }
-.market-tab p, .market-tab td.price {
+.market-tab p, .market-tab td.price,
+.market-tab-2 p, .market-tab-2 td.price{
     margin: 0;
     font-size: 16px;
     font-family: "Montserrat","Microsoft JhengHei";
@@ -7963,19 +7967,21 @@ h3.new-index-list-title {
     color: #888;
 }
 
-.market-tab > tbody > tr > th {
+.market-tab > tbody > tr > th,
+.market-tab-2 > tbody > tr > th {
     text-align: center;
     font-weight: 700;
     border: 0;
     background: #ddd;
 }
 
-
-.market-tab > tbody > tr > td {
+.market-tab > tbody > tr > td,
+.market-tab-2 > tbody > tr > td {
     padding: 10px;
     background: #fff;
     border: 0;
 }
+
 
 .market-tab td.price {
     margin: 5px;
@@ -7984,9 +7990,23 @@ h3.new-index-list-title {
     color: #eb6877;
     text-decoration: line-through;
 }
+.market-tab-2 tr.underline {
+    border-bottom: 1px solid #ddd;
+}
 
+.market-tab-2 > tbody > tr > th {
+    background: #058745;
+    color: white;
+}
 
+.market-tab-2 > tbody > tr > td > a {
+    color: #058745;
+}
 
+.market-tab-2 > tbody > tr > td > a:hover,
+.market-tab-2 > tbody > tr > td > a:focus {
+    color: #036935;
+}
 
 
 

@@ -207,7 +207,7 @@
 				</td>
                 </tr>
             	<tr><td>
-                        	訂購商品： <%#OrderLib.get_pd  (Eval ("ord_id").ToString ()) %>
+                        	訂購商品： 
             		付款方式：<%# OrderLib.getPaymode (Eval("paymode").ToString ()) %><br>
             		取貨方式，宅配到府<br>
             		應付金額：<%#Eval("totalprice") %>元<br>

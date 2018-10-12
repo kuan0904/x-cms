@@ -17,20 +17,18 @@ public partial class unitdata : System.Web.UI.Page
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-        int  unitid = 0;
+        int    unitid = 0;
+        string pagename = "";
         Route myRoute = RouteData.Route as Route;
         if (myRoute != null)
         {
-            unitid = RouteData.Values["id"] == null ? 1 : int.Parse(RouteData.Values["id"].ToString());
-        }
-        else
-        {
-            unitid =int.Parse ( Request.QueryString["unitid"]);
-        }
-          
-        Unitlib. MainData MainData = new Unitlib.MainData();
+            unitid = RouteData.Values["id"] == null ? 0 :int.Parse ( RouteData.Values["id"].ToString());
 
-        MainData = Unitlib.Get_UnitData(unitid);
+            pagename = RouteData.Values["pagename"] == null ? "1" : RouteData.Values["pagename"].ToString();
+        }
+      
+        Unitlib. MainData MainData = new Unitlib.MainData();
+        MainData = Unitlib.Get_UnitData(unitid, pagename);
         contents = MainData.Contents;
         unitname = MainData.Subject;
         Session["title"] = unitname + "│" + Application["site_name"];

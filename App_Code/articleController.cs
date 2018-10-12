@@ -13,9 +13,7 @@ public class articleController : ApiController
     public IEnumerable<string> Get()
     {
         return new string[] { "value1", "value2" };
-    }
-
-    
+    }    
     public object  Get(int id)
     {
         object dd = article.DbHandle.Get_article(id);
@@ -28,12 +26,13 @@ public class articleController : ApiController
         //   return obj.cid;
         int Totalrow = 0;
         string cid = Convert.ToString(obj.cid);
-        string keyword = obj.keyword == null ? "" : Convert.ToString(obj.keyword);
+        string keyword = Convert.ToString(obj.keyword)  ?? "" ;
         int PageSize = obj.pagesize == null ? 5 : Convert.ToInt16(obj.pagesize);
         int PageIdx = obj.idx == null ? 1 : Convert.ToInt16(obj.idx);
+        string sort = Convert.ToString(obj.sort) ?? ""; 
         List<article.MainData> hotlist = new List<article.MainData>();
 
-        hotlist = article.DbHandle.Get_article_list(cid, keyword, PageSize, PageIdx);
+        hotlist = article.DbHandle.Get_article_list(cid, keyword, PageSize, PageIdx,sort );
 
         foreach (var p in hotlist)
         {
@@ -41,8 +40,7 @@ public class articleController : ApiController
             break;
         }
         return hotlist;       
-    }
-  
+    }  
     [ActionName("Getwebmenu")]
     public object Getwebmenu()
     {
@@ -58,23 +56,21 @@ public class articleController : ApiController
         article.Web.Add_Socialshare (Convert.ToString(obj.id), Convert.ToString(obj.kind), Convert.ToString(obj.url));
         return "";
     }
-
-
     [ActionName("AddCollection")]
     [HttpPost] // post方法二
     public object AddCollection(dynamic obj)
     {
 
-        article.Web.Add_Collection (Convert.ToString(obj.id), Convert.ToString(obj.memberid));
+        article.Web.Add_Collection (Convert.ToString(obj.id), Convert.ToString(obj.memberid), Convert.ToString(obj.collection));
         return "";
     }
-
 
     [ActionName("Getbanner")]
     public object Getbanner(int id = 1)
     {
         List<Banner.MainData> banner1 = new List<Banner.MainData>();
         banner1 = Banner.DbHandle.Banner_Get_list(id);
+ 
         return banner1;
         // string result = JsonConvert.SerializeObject(hotlist);
     }
@@ -98,5 +94,13 @@ public class articleController : ApiController
 
     }
 
+    [ActionName("ADbanner")]
+    public object GetAD(int id = 0)
+    {
+        List<Banner.MainData> banner1 = new List<Banner.MainData>();
+        banner1 = Banner.DbHandle.AD_Get_list(id);
+        return banner1;
+
+    }
 }
 

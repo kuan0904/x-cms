@@ -3,13 +3,13 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
      <script>
      $(document).ready(function () {
-          if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      //    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
           
               $('img').each(function () {
                 $(this).removeAttr('style')
             });
              
-        }
+     //   }
 
         
      });
@@ -45,7 +45,7 @@
                                             
                                         <h1><%=subject %></h1>
                                         <div class="meta-info clearfix">
-                                                 <div class="pull-left social-media-share-btn">                                                
+                                                  <div class="pull-left social-media-share-btn">                                              
                                                 <a href="#" class="share-fb" data-item="<%=Articleid%>"  title="facebook">
                                                     <i class="fa fa-2x fa-facebook-official" aria-hidden="true"></i>
                                                 </a>
@@ -55,10 +55,10 @@
                                                 <a href="#" class="share-twitter" data-item="<%=Articleid%>" title="twitter">
                                                     <i class="fa fa-2x fa-twitter" aria-hidden="true"></i>
                                                 </a>
-                                                <a href="#" class="share-print" data-item="<%=Articleid%>" title="print">
-                                                    <i class="fa fa-2x fa-print" aria-hidden="true"></i>
+                                                <a href="#" class="share-pinterest" data-item="<%=Articleid%>" title="pinterest">
+                                                        <i class="fa fa-2x fa-pinterest" aria-hidden="true"></i>
                                                 </a>
-                                                <a href="#" class="share-collection" title="加入收藏" data-item="<%=Articleid%>">
+                                                <a href="#" class="share-collection<%=iscollection%>" title="加入收藏" data-item="<%=Articleid%>">
                                                     <i class="fa fa-2x fa-heart" aria-hidden="true"></i>
                                                 </a>
                                             </div>
@@ -88,41 +88,41 @@
                                   <%=contents %>        
                                 </div><!-- post-content END -->
   
-                <asp:Repeater ID="Repeater_file" runat="server" >   
-                                            <HeaderTemplate>
-                                    <h2>相關檔案</h2>
-                                      <section class="section-top-0 section-sm-top-0">
-                                        <div class="shell">
-                                          <div class="range">
-                                            <div class="cell-md-10 cell-lg-8">
-                                              <div class="table-mobile">
-                                                <table class="table table-striped">
-                                                  <thead>
-                                                  <tr>
-                                                      <th>#</th>
-                                                      <th>下載報名表</th>
-                                                      <th>檔案名稱</th>
-                                                    </tr>
-                                                  </thead>
-                                                    <tbody>
-                                                    </HeaderTemplate>
-                                                    <ItemTemplate>
-                                                   <tr>
-                                                        <td><%# Container.ItemIndex + 1 %></td>
-                                                        <td><a href="/webimages/files/<%#Eval("filename") %>" class ="download" target="_blank"><img src="/images/download-file.svg" alt="" width="50"></a></td>
-                                                        <td><%#Eval("filename") %></td>
-                                                    </tr>
-                                                </ItemTemplate>
-                                                 <FooterTemplate>   
-                                                        </tbody>
-                                                        </table>
-                                                        </div>
+                                <asp:Repeater ID="Repeater_file" runat="server" >   
+                                        <HeaderTemplate>
+                                <h2>相關檔案</h2>
+                                    <section class="section-top-0 section-sm-top-0">
+                                    <div class="shell">
+                                        <div class="range">
+                                        <div class="cell-md-10 cell-lg-8">
+                                            <div class="table-mobile">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>下載報名表</th>
+                                                    <th>檔案名稱</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                </HeaderTemplate>
+                                                <ItemTemplate>
+                                                <tr>
+                                                    <td><%# Container.ItemIndex + 1 %></td>
+                                                    <td><a href="/webimages/files/<%#Eval("filename") %>" class ="download" target="_blank"><img src="/images/download-file.svg" alt="" width="50"></a></td>
+                                                    <td><%#Eval("filename") %></td>
+                                                </tr>
+                                            </ItemTemplate>
+                                                <FooterTemplate>   
+                                                    </tbody>
+                                                    </table>
                                                     </div>
-                                                  </div>
                                                 </div>
-                                              </section>
-                                             </FooterTemplate>
-                                        </asp:Repeater> 
+                                                </div>
+                                            </div>
+                                            </section>
+                                            </FooterTemplate>
+                                    </asp:Repeater> 
                                 
 
                                 <!-- post-content END -->
@@ -130,9 +130,22 @@
                                     <div class="post-tags">
                                         <%= keywords %>
                                     </div>
-                                </div>
-                                <div class="divide20"></div>
-                              
+                                </div> 
+                                <div class="divide20"></div>        
+                                     <div class="post-information-RL-15">
+                                        
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = 'https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.1&appId=164103481107660&autoLogAppEvents=1';
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+                                         <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#Article<%=Articleid %>" data-numposts="5"></div>
+
+                                     </div> 
+                                <div class="divide20"></div>                              
                                 <div class="extended-reading">
                                     <h3 class="new-index-main-title text-center">延伸閱讀</h3>
                                     <div class="extended-list">
@@ -218,6 +231,8 @@
             </div>
             <!-- container END -->
             </div> 
+
+ 
     <div class="main-content" style="background: rgb(245, 253, 168);">
                 <div class="container-fluid">
                     <div class=main-content-inner>

@@ -81,19 +81,19 @@ function addClass(el, className) {
     else if (!hasClass(el, className))
         el.className += ' ' + className;
 }
-var imgContainers, len;
-if (!Modernizr.objectfit) {
-    imgContainers = document.querySelectorAll('.pic');
-    len = imgContainers.length;
-    for (var i = 0; i < len; i++) {
-        if (window.CP.shouldStopExecution(1)) {
-            break;
-        }
-        var $container = imgContainers[i], imgUrl = $container.querySelector('img').getAttribute('src');
-        if (imgUrl) {
-            $container.style.backgroundImage = 'url(' + imgUrl + ')';
-            addClass($container, 'compat-object-fit');
-        }
-    }
-    window.CP.exitedLoop(1);
-}
+//var imgContainers, len;
+//if (!Modernizr.objectfit) {
+//    imgContainers = document.querySelectorAll('.pic');
+//    len = imgContainers.length;
+//    for (var i = 0; i < len; i++) {
+//        if (window.CP.shouldStopExecution(1)) {
+//            break;
+//        }
+//        var $container = imgContainers[i], imgUrl = $container.querySelector('img').getAttribute('src');
+//        if (imgUrl) {
+//            $container.style.backgroundImage = 'url(' + imgUrl + ')';
+//            addClass($container, 'compat-object-fit');
+//        }
+//    }
+//    window.CP.exitedLoop(1);
+//}

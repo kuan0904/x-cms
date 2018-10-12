@@ -49,9 +49,9 @@
                                                         <span class="post-date"><time datetime="<%#  Eval("Strdat").ToString()  %>"><%# DateTime.Parse ( Eval("Strdat").ToString()).ToString ("yyyy/MM/dd")  %></time></span>
                                                         <span class="post-reciprocal"><%#Eval("subject") %></span>
                                                     </div><!-- meta-info END -->
-                                                    <h3><a href="<%# Banner.Web.Get_url (Eval("url").ToString (),Eval("categoryid").ToString (),Eval("articleId").ToString ()) %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
+                                                    <h3><a href="<%# Eval("url") %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
                                                 </div>
-                                                <a href="<%# Banner.Web.Get_url (Eval("url").ToString (),Eval("categoryid").ToString (),Eval("articleId").ToString ()) %>" class="view-more" title="了解更多">我想了解</a>
+                                                <a href="<%#Eval("url") %>" class="view-more" title="了解更多">我想了解</a>
                                             </div>
                                         </div>
                                           </ItemTemplate>

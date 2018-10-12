@@ -7,7 +7,8 @@ using System.Data.SqlClient;
 using System.Collections.Specialized;
 using System.Web;
 using System.Collections.Generic;
-public class Handler : IHttpHandler {
+
+public class Handler : IHttpHandler  {
 
     public void ProcessRequest (HttpContext context) {
         string result = "";
@@ -25,19 +26,12 @@ public class Handler : IHttpHandler {
             result = ContactUs.Add(itemData);
             context.Response.Write(result);
         }
-        if (kind == "joinlesson")
+        if (kind == "bookingepeper")
         {
-            LessonLib.JoinData itemData = new LessonLib.JoinData();
-                
-            itemData.Email = context.Request["email"];
-            itemData.LessonId  = context.Request["LessonId"];
-            itemData.Phone = context.Request["Phone"];
-            itemData.Usermame  = context.Request["username"];          
-            itemData.Status = "Y";
-            result = LessonLib.DbHandle.JoinAdd (itemData);
-            context.Response.Write(result);
-           
+            string msg = DbControl.EmailRegist(context.Request["email"]);
+            context.Response.Write("Y");
         }
+
     }
 
     public bool IsReusable {

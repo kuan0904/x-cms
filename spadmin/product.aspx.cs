@@ -33,16 +33,21 @@ public partial class spadmin_product : System.Web.UI.Page
         }
         dt.Dispose();
         categoryid.Items.Insert(0, new ListItem("請選擇", ""));
-        strsql = "select * from tbl_productData where status <> 'D'  ";  
-        dt = DbControl.Data_Get(strsql, nvc);
+
+        strsql = "select * from  tbl_delivery_kind where status<>'D' ";        
+        nvc.Add("id", "0");
+         dt = DbControl.Data_Get(strsql, nvc);
         for (int i = 0; i < dt.Rows.Count; i++)
         {
-            string name = dt.Rows[i]["productname"].ToString();
-            string id = dt.Rows[i]["p_id"].ToString();
-            CheckBoxList1.Items.Add (new ListItem(name, id));
-
+            string name = dt.Rows[i]["name"].ToString();
+            string id = dt.Rows[i]["id"].ToString();
+            shippingKind.Items.Add(new ListItem(name, id));
+          
         }
         dt.Dispose();
+        shippingKind.Items.Insert(0, new ListItem("請選擇", ""));
+
+      
 
 
     }
@@ -84,27 +89,12 @@ public partial class spadmin_product : System.Web.UI.Page
         productcode.Text  = dt.Rows[0]["productcode"].ToString();
         shippingfee.Text = dt.Rows[0]["shippingfee"].ToString();
         freeship.Text = dt.Rows[0]["freeship"].ToString();
-        shippingKind.Text = dt.Rows[0]["shippingKind"].ToString();
-        Image1.ImageUrl = "../upload/" + stringArray[1] + "?" + DateTime.Now.ToString("yyyyMMddhhmmss");
+
+        shippingKind.SelectedIndex = shippingKind.Items.IndexOf(shippingKind.Items.FindByValue(dt.Rows[0]["shippingKind"].ToString()));
+        Image1.ImageUrl = "/upload/" + stringArray[1] + "?" + DateTime.Now.ToString("yyyyMMddhhmmss");
       
      
         viewcount.Text = dt.Rows[0]["viewcount"].ToString();
-        if (dt.Rows[0]["kindid"].ToString() == "2") { kindid.SelectedValue = "2"; }
-        else { kindid.SelectedValue = "1"; }
-        string[] strary = dt.Rows[0]["id_list"].ToString().Split(';');
-            int i = 0;    
-            int j = 0;
-            for (j = 0;j < CheckBoxList1.Items.Count; j++)
-            {
-            CheckBoxList1.Items[j].Selected = false;
-                for (i=0;i<strary.Length - 1; i++)
-                  {
-                        if (CheckBoxList1.Items[j].Value == strary[i]) CheckBoxList1.Items[j].Selected = true;
-
-                }
-
-            }
-
         MultiView1.ActiveViewIndex = 1;
         Btn_save.CommandArgument = "edit";
         if (obj.CommandName == "copy")
@@ -172,13 +162,9 @@ public partial class spadmin_product : System.Web.UI.Page
             nvc.Add("shippingfee", shippingfee.Text);
             nvc.Add("freeship", freeship.Text);
             nvc.Add("shippingKind", shippingKind.Text);
-            nvc.Add("kindid", kindid.SelectedValue);
+            nvc.Add("kindid", "1");
             string id_list = "";
-            for (i = 0; i < CheckBoxList1.Items.Count; i++)
-            {
-                if (CheckBoxList1.Items[i].Selected == true)
-                    id_list += CheckBoxList1.Items[i].Value + ";";
-            }
+      
             nvc.Add("id_list", id_list);
             i = DbControl.Data_Update (strsql, nvc, p_id.Text);    
             selectSQL();

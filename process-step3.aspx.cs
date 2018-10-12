@@ -29,6 +29,7 @@ public partial class process_step3 : System.Web.UI.Page
     public int totalnum = 0;
     public int num = 0;
     public string Articleid = "";
+    public string cid = "";
     protected void Page_Load(object sender, EventArgs e)
     {
         article.MainData MainData = new article.MainData();
@@ -69,25 +70,15 @@ public partial class process_step3 : System.Web.UI.Page
 
             List<article.Category> cate = new List<article.Category>();
             cate = (List<article.Category>)article.DbHandle.Get_article_category(MainData.Id);
-
             foreach (var a in cate)
             {
-                DataTable dt, dt1;
-                dt = (DataTable)Application["category"];
-                dt.DefaultView.RowFilter = "categoryid=" + a.CategoryId;
 
-                dt1 = dt.DefaultView.ToTable();
-                pageunit = "<li class=\"active\"><a href=\"/" + dt1.Rows[0]["CategoryId"].ToString() + "/catalog\">" + dt1.Rows[0]["title"].ToString() + "</a></li>";
-                if (dt1.Rows[0]["parentid"].ToString() != "0")
-                {
-                    dt.DefaultView.RowFilter = "categoryid=" + dt1.Rows[0]["parentid"].ToString();
-                    dt1 = dt.DefaultView.ToTable();
-                    pageunit = "<li><a href=\"/" + dt1.Rows[0]["CategoryId"].ToString() + "/catalog\">" + dt1.Rows[0]["title"].ToString() + "</a></li>" + pageunit;
-                    dt1.Dispose();
-                    dt.Dispose();
-
-                }
+                cid = a.CategoryId.ToString();
+                pagetitle = Unitlib.Get_title((List<Unitlib.MenuModel>)Session["webmenu"], int.Parse(cid));
+                Session["active"] = Unitlib.Set_activeId((List<Unitlib.MenuModel>)Session["webmenu"], int.Parse(cid));
+                //   Breadcrumb = Unitlib.Get_Breadcrumb((List<Unitlib.MenuModel>)Session["webmenu"], int.Parse(cid));
                 break;
+
             }
 
             string[] joinnum = Request.Form["joinnum"].Split(',');

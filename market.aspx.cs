@@ -87,27 +87,7 @@ public partial class market : System.Web.UI.Page
                 shippingKind = rs["shippingKind"].ToString();
                 DESCRIPTION = rs["DESCRIPTION"].ToString();
                 MEMO = rs["MEMO"].ToString();
-                if (rs["kindid"].ToString() == "2")
-                {
-                    NameValueCollection nvc = new NameValueCollection();
-                    string[] strary = rs["id_list"].ToString().Split(';');
-                    strsql = "select * from tbl_productData where status <> 'D'  and p_id in ( ";
-                    for (int i = 0; i < strary.Length; i++)
-                    {
-                        if (strary[i].ToString().Trim() != "")
-                        {
-                            if (i > 0) strsql += ",";
-                            strsql += strary[i];
-                        }
-                    }
-                    strsql += " )";
-
-                    //DataTable dt = DbControl.Data_Get(strsql, nvc);
-                    ////Repeater1.DataSource = dt;
-                    ////Repeater1.DataBind();
-                    //dt.Dispose();
-
-                }
+              
             }
             cmd.Dispose();
             rs.Close();

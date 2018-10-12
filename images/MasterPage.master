@@ -1,0 +1,492 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <meta name="theme-color" content="#b483a6">
+    <meta name="msapplication-navbutton-color" content="#b483a6">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#b483a6">
+    <meta name="author" content="Xnet 智媒科技" />
+    <meta name="keywords" content="<%=Session ["keywords"] %>" />
+    <meta name="description" content="<%=Session ["description"] %>" />
+    <meta property="fb:app_id" content="<%=Application["FacebookAppId"]%>" />
+    <meta property="og:title" content="<%=Session["title"] %>" />
+    <meta property="og:description" content="<%=Session ["description"] %>" />
+    <meta property="og:site_name" content="<%=Application["site_name"]%>" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="<%=Request.Url.AbsoluteUri %>" />
+    <meta property="og:image" content="<%=Session ["image"] %>" />
+    <meta property="fb:admins" content="" />
+    <meta name="robots" content="index,follow" />
+    <meta name="robots" content="noindex,follow" />
+    <meta name="robots" content="index,nofollow" />
+    <meta name="robots" content="noindex,nofollow" />
+
+    <title><%=Session["title"] %></title>
+    <link rel="stylesheet" href='/assets/font-awesome/css/font-awesome.min.css' />
+    <link rel="stylesheet" href='/assets/bootstrap/css/bootstrap.min.css' />
+    <link rel="stylesheet" href='/css/reset.css' type='text/css' />
+    <link rel="stylesheet" href='/assets/swipe/swiper.min.css' />
+    <link rel="stylesheet" href='/css/theme.css?v=1' type='text/css' />
+    <link rel="stylesheet" href='/css/post-layout.css' type='text/css' />
+    <link rel="stylesheet" href='/css/style.css' type='text/css' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <!--[if lt IE 9]><script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+    <script src="/js/jquery-1.9.1.min.js"></script>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <style>
+        .btn-facebook {
+            color: #fff;
+            background-color: #3a5795;
+            border-color: #3a5795;
+        }
+    </style>
+    <script src='/lib/common.js?v=2'></script>
+</head>
+<body>
+
+    <form id="form1" runat="server">
+        <div class="scroll-up"><i class="fa fa-chevron-up"></i></div>
+
+        <div class="menu-background"></div>
+        <div id="mobile-nav">
+            <div class="container">
+                <div class="menu-socials-wrap">
+                    <ul class="menu-socials">
+                        <li>
+                            <a target="_blank" href="<%=Application["fb_url"] %>" title="Facebook">
+                                <i class="fa fa-facebook"></i>
+                            </a>
+                        </li>
+                        <!--
+                     <li>
+                        <a target="_blank" href="#" title="Google+">
+                            <i class="fa fa-google-plus"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a target="_blank" href="#" title=Twitter>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </li>                   
+                    -->
+                        <li>
+                            <a target="_blank" href="<%=Application["ig_url"] %>" title="Instagram">
+                                <i class="fa fa-instagram"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" href="#" title="Youtube">
+                                <i class="fa fa-youtube-play"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="btn-close-mob">
+                        <a href="#"><i class="icon-close-mob"></i></a>
+                    </div>
+                    <!-- btn-close-mob END -->
+                </div>
+                <!-- menu-socials-wrap END -->
+
+                <div class="login-section">
+                    <div class="guest-wrap">
+                        <a href="/login.html">登入</a>
+                    </div>
+                    <!-- guest-wrap END -->
+                </div>
+                <!-- login-section END -->
+                <div class="mobile-content">
+                    <ul class="mobile-main-menu">
+                        <asp:Repeater ID="mrptmenu" runat="server" OnItemDataBound="rptmenu_ItemDataBound">
+                            <ItemTemplate>
+                                <li class="menu-item sf-dropdown">
+                                    <a href="<%# Unitlib.GetLnk (Eval("kind").ToString (),Eval ("Id").ToString ()) %>"><%#Eval("title") %><i class="fa fa-chevron-down"></i></a>
+                                    <asp:Repeater ID="Repeater1" runat="server">
+                                        <HeaderTemplate>
+                                            <ul class="sub-menu">
+                                        </HeaderTemplate>
+                                        <ItemTemplate>
+                                            <li class="menu-item"><a href="hp.html"><%#Eval("title") %></a></li>
+                                        </ItemTemplate>
+                                        <FooterTemplate></ul></FooterTemplate>
+                                    </asp:Repeater>
+                                </li>
+                            </ItemTemplate>
+                        </asp:Repeater>
+
+
+                        <li class="menu-item sf-dropdown"><a href="/account.html">會員中心<i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
+                </div>
+                <!-- mobile-content END -->
+            </div>
+            <!-- container END -->
+
+            <div class="register-section">
+                <div id="btn-login-mob" class="login-animation">
+                    <div class="login-close">
+                        <a href="#" class="btn-back"><i class="fa fa-chevron-down"></i></a>
+                        <div class="login-title">登入</div>
+                        <div class="btn-close-mob">
+                            <a href="#"><i class="icon-close-mob"></i></a>
+                        </div>
+                        <!-- btn-close-mob END -->
+                    </div>
+
+
+                </div>
+
+                <!-- forgot-pass-mob END -->
+            </div>
+            <!-- register-section END -->
+        </div>
+        <!-- mobile-nav END -->
+
+        <div class="search-background"></div>
+        <div class="search-wrap-mob">
+            <div class="dropDown-search">
+
+                <div class="search-form">
+                    <div class="search-close">
+                        <a href="#"><i class="icon-close-mob"></i></a>
+                    </div>
+                    <div role="search" class="search-input">
+                        <span>搜尋</span>
+                        <input id="search-input-mob" name="s" type="text" autocomplete="off" />
+                    </div>
+                </div>
+                <!-- search-form END -->
+            </div>
+        </div>
+        <!-- search-wrap-mob END -->
+
+
+        <div id="outer-wrap" class="wrapper">
+            <div class="header">
+                <div class="top-bar">
+                    <div class="container">
+                        <div class="top-menu">
+                            <ul class="nav nav-pills">
+                                <li>
+                                    <a target="_blank" href="<%=Application["fb_url"] %>" title="Facebook"><i class="fa fa-facebook"></i></a>
+                                </li>
+
+                                <li>
+                                    <a target="_blank" href="<%=Application["ig_url"] %>" title="Instagram">
+                                        <i class="fa fa-instagram"></i>
+                                    </a>
+                                </li>
+                                <!--
+                            <li>
+                                <a target="_blank" href="#" title="Google+">
+                                    <i class="fa fa-google-plus"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a target="_blank" href="#" title=Twitter>
+                                    <i class="fa fa-twitter"></i>
+                                </a>
+                            </li>
+                                -->
+                                <li>
+                                    <a target="_blank" href="#" title="Youtube">
+                                        <i class="fa fa-youtube-play"></i>
+                                    </a>
+                                </li>
+                                <!-- <li>
+                                    <a target="_blank" href="#" title="Email"><i class="fa fa-envelope"></i></a>
+                                </li> -->
+                                <li>
+                                    <a href="<%=_link %>"><i class="fa fa-user"></i><%=_status %></a>
+
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- top-menu END -->
+                    </div>
+                    <!-- container END -->
+                </div>
+                <!-- top-bar END -->
+
+                <!-- logo center -->
+                <div class="logo">
+                    <a href="/index" title="<%=Application["site_name"] %>">
+                        <span class="visual-hidden"><%=Application["site_name"] %></span>
+                    </a>
+                </div>
+
+                <div class="navbar">
+
+                    <div id="header-navbar" class="header-main-menu">
+                        <div class="container">
+
+                            <div class="navbar-header">
+                                <button type="button" id="navbar-sticky-menu" class="navbar-toggle collapsed">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+
+                                <div class="navbar-brand">
+                                    <a href="/">
+                                        <span class="visual-hidden"><%=Application["site_name"] %></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- navbar-header END -->
+
+                            <div class="main-menu">
+                                <ul class="sf-menu">
+                                    <asp:Repeater ID="rptmenu" runat="server" OnItemDataBound="rptmenu_ItemDataBound">
+                                        <ItemTemplate>
+                                            <li class="menu-item sf-dropdown  <%#Eval("Id").ToString() == active ? " active":"" %>">
+                                                <a href="<%# Unitlib.GetLnk (Eval("kind").ToString (),Eval ("Id").ToString ()) %>"><%#Eval("title") %></a>
+                                                <asp:Repeater ID="Repeater1" runat="server">
+                                                    <HeaderTemplate>
+                                                        <ul class="sub-menu">
+                                                    </HeaderTemplate>
+                                                    <ItemTemplate>
+                                                        <li class="menu-item"><a href="<%# Unitlib.GetLnk (Eval("kind").ToString (),Eval ("Id").ToString ()) %>"><%#Eval("title") %></a></li>
+                                                    </ItemTemplate>
+                                                    <FooterTemplate></ul></FooterTemplate>
+                                                </asp:Repeater>
+                                            </li>
+                                        </ItemTemplate>
+                                    </asp:Repeater>
+
+                                </ul>
+                                <!-- menu-main-1 END -->
+                            </div>
+                            <!-- main-menu END -->
+
+                            <div class="search-wrapper">
+                                <div id="top-search">
+                                    <div class="header-search-wrap">
+                                        <div class="dropdown header-search">
+                                            <a id="header-btn-search" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search"></i></a>
+                                            <a id="header-btn-search-mob" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search"></i></a>
+                                        </div>
+                                        <!-- dropdown END -->
+                                    </div>
+                                    <!-- header-search-wrap END -->
+                                </div>
+                                <!-- top-search END -->
+                            </div>
+                            <!-- search-wrapper END -->
+
+                            <div class="header-search-wrap">
+                                <div class="dropdown header-search">
+                                    <div class="dropDown-search" aria-labelledby="header-btn-search">
+                                        <div class="search-form">
+                                            <div role="search">
+                                                <input class="needsclick" id="search-input" type="text" value="" name="s1" />
+                                                <input class="wpb_button wpb_btn-inverse btn" type="submit" name="header-search" id="header-search-top" value="Search" />
+                                            </div>
+                                        </div>
+                                        <!-- search-form END -->
+                                    </div>
+                                    <!-- dropDown-search END -->
+                                </div>
+                                <!-- dropdown END -->
+                            </div>
+                            <!-- header-search-wrap END -->
+
+                        </div>
+                        <!-- container END -->
+                    </div>
+                    <!-- navbar header-navbar END -->
+
+                </div>
+                <!-- navbar END -->
+
+
+
+            </div>
+            <!-- header END -->
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+
+            <footer class="footer">
+                <div class="sub-footer">
+                    <div class="container">
+                        <div class="row">
+
+                            <div class="col-md-12 sub-footer-menu">
+
+                                <a href="/AboutUs">關於我們</a>
+                                <a href="/Advertisement">廣告刊登</a>
+                                <a href="/Copyright">版權聲明</a>
+                                <a href="/SiteMap">網站導覽</a>
+                                <a href="/ContactUs">聯絡我們</a>
+
+                            </div>
+                            <!-- col-md-12 END -->
+
+                            <div class="col-md-12 sub-footer-copy">
+                                <p><%=Application["Copyright"] %></p>
+                            </div>
+                            <!-- col-md-4 END -->
+
+
+                        </div>
+                        <!-- row END -->
+                    </div>
+                    <!-- container END -->
+
+                </div>
+                <!-- sub-footer END -->
+
+            </footer>
+            <!-- footer END -->
+
+
+        </div>
+        <!-- wrapper END -->
+
+
+        <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src='/js/device.js'></script>
+        <script src='/js/theme.js'></script>
+        <script src="/assets/swipe/swiper.min.js"></script>
+        <script src="/assets/magnific/jquery.magnific-popup.min.js"></script>
+        <script src='/js/script.js?v=1'></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/shave/2.1.3/shave.min.js"></script>
+        <!-- 隱藏文字 -->
+
+        <script>  
+
+            $(document).ready(function () {
+                text = $(document).find("title").text();
+                var dataValue = {};
+
+                var dataValue = { "kind": "list" };
+                $.post('/hot_list', dataValue, function (result) { $("#hot_list").html(result); });
+                dataValue = { "classid": "2" };
+                $.post('/AdBanner', dataValue, function (result) { $("#ad_banner1").html(result); });
+                $.post('/AdBanner', dataValue, function (result) { $("#ad_banner2").html(result); });
+                //分享至臉書
+                $(".share-fb").click(function () {                  
+                    dataValue = { "id": $(this).data('item'), "kind": "fb", "url": encodeURIComponent(location.href) };
+                    alert(dataValue);
+                    $.postJSON('/api/article/SocialShare',JSON.stringify( dataValue), 'application/json; charset=utf-8',function (result) {});
+                    window.open('https://www.facebook.com/share.php?u='.concat(encodeURIComponent(location.href)), "_blank", "toolbar=yes,location=yes, directories=no, status=no,menubar=yes,scrollbars=yes,esizable=no, copyhistory=yes, width=600,  height=400")
+                 })
+                $(".share-twitter").click(function () {                 
+                    dataValue = { "id": $(this).data('item'),"kind": "twitter" ,"url":encodeURIComponent(location.href) };
+                    $.postJSON('/api/article/SocialShare',JSON.stringify( dataValue),'application/json; charset=utf-8', function (result) {});
+                    window.open('https://twitter.com/share?text=' + text + '&url='.concat(encodeURIComponent(location.href)), "_blank", "toolbar=yes,location=yes, directories=no, status=no,menubar=yes,scrollbars=yes,esizable=no, copyhistory=yes, width=600,  height=400")
+                })
+                $(".share-google").click(function () {                  
+                    dataValue = { "id": $(this).data('item'),"kind": "google" ,"url":encodeURIComponent(location.href) };
+                    $.postJSON('/api/article/SocialShare',JSON.stringify( dataValue),'application/json; charset=utf-8', function (result) {});
+                    window.open('https://plus.google.com/share?url='.concat(encodeURIComponent(location.href)), "_blank", "toolbar=yes,location=yes, directories=no, status=no,menubar=yes,scrollbars=yes,esizable=no, copyhistory=yes, width=600,  height=400")
+                })
+                $(".share-print").click(function () {                  
+                    dataValue = { "id": $(this).data('item'),"kind": "pinterest" ,"url":encodeURIComponent(location.href) };
+                    $.postJSON('/api/article/SocialShare',JSON.stringify( dataValue),'application/json; charset=utf-8', function (result) {});
+                    window.open('https://pinterest.com/pin/create/button/?description=' + text + '&url='.concat(encodeURIComponent(location.href)), "_blank", "toolbar=yes,location=yes, directories=no, status=no,menubar=yes,scrollbars=yes,esizable=no, copyhistory=yes, width=600,  height=400")
+                })
+
+                $(".share-collection").click(function () {
+                    dataValue = { "p_ACTION": "CheckLogin", "_": new Date().getTime() };
+                       $.post('/lib/member_handle.ashx', {                                       
+                            "p_ACTION": "CheckLogin", "_": new Date().getTime()
+                        }, function (data) {
+                            if (data == "") {
+                                alert('請先登入或加入會員');                               
+                            }
+                            else {
+                                data = JSON.parse(data);
+                              
+                                dataValue = { "id": $(this).data('item'), "kind": data.Memberid };
+                                alert(data.Memberid);
+                                $.postJSON('/api/article/AddCollection',JSON.stringify( dataValue),'application/json; charset=utf-8', function (result) {});
+           
+                            }
+                        });
+
+
+                       })
+                $('input[name="s1"]').keypress(function (e) {
+                    if (e.which == 13) {
+                        $('input[name="header-search"]').trigger("click");
+                        return false;    //<---- Add this line
+                    }
+                });
+                $('input[name="s"]').keypress(function (e) {
+                    if (e.which == 13) {
+                        $('input[name="header-search"]').trigger("click");
+                        return false;    //<---- Add this line
+                    }
+                });
+                $('input[name="header-search"]').click(function () {
+                    var text = "";
+
+                    if ($('input[name="s1"]') != undefined) {
+                        text = $('input[name="s1"]').val();
+                    }
+                    if ($('input[name="s"]').val() != "") {
+                        text = $('input[name="s"]').val();
+                    }
+
+                    location.href = '/search/' + text;
+                    return false;
+                })
+                $('#Emailregist').click(function () {
+                    var text = $('#InputEmail').val();
+                    $.post('/lib/registemail.ashx', { "email": text }, function (result) {
+                        if (result != "") {
+
+                            alert(result);
+
+                        }
+                    });
+
+                })
+
+
+
+            });
+
+            function setInputStyle(a, b, msg) {
+                //  b.prop("placeholder", d);
+                switch (a) {
+                    case "reset":
+                        //     b.parent().prop("class", "form-group");
+                        var c = b.next();
+                        c.remove();
+                        break;
+                    case "warning":
+                        //     b.parent().prop("class", "form-group has-warning has-feedback");
+                        alert(msg);
+                        b.focus();
+                        break;
+                    case "error":
+                        //   b.parent().prop("class", "form-group has-error has-feedback");
+                        alert(msg);
+                        b.focus();
+                        break;
+                }
+            }
+
+
+        </script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', '<%=Application["gaid"] %>');
+        </script>
+
+
+    </form>
+</body>
+</html>

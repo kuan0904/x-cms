@@ -35,7 +35,7 @@ namespace MyPublic
             routes.MapPageRoute("grid", "emba/{cid}", "~/list-grid.aspx", false, null,
             new RouteValueDictionary { { "id", "^[0-9]*$" } });
             routes.MapPageRoute("grid_page", "emba/{cid}/page/{*pageindex}", "~/list-grid.aspx", false, null,
-                new RouteValueDictionary { { "id", "^[0-9]*$" }, { "pageindex", "^[0-9]*$" } });
+            new RouteValueDictionary { { "id", "^[0-9]*$" }, { "pageindex", "^[0-9]*$" } });
 
             routes.MapPageRoute("lesson", "lesson/{id}/page/{*pageindex}", "~/list-grid.aspx",
                 false, null,new RouteValueDictionary { { "id", "^[0-9]*$" }, { "pageindex", "^[0-9]*$" } }   );
@@ -46,6 +46,7 @@ namespace MyPublic
 
             routes.MapPageRoute("search", "search/{keyword}/{*pageindex}", "~/list-search.aspx",  false, null,
                 new RouteValueDictionary { { "pageindex", "^[0-9]*$" } });
+            routes.MapPageRoute("unitdata", "page/{pagename}", "~/unitdata.aspx", false,null);
 
             routes.MapPageRoute("Copyright", "CopyRight/{id}", "~/unitdata.aspx", true, new RouteValueDictionary { { "id", "22" } });
             routes.MapPageRoute("aboutus", "AboutUs/{id}", "~/unitdata.aspx", true,new RouteValueDictionary { { "id", "20" } });

@@ -69,6 +69,7 @@
                 error: function (xhr, error) { callback(''); }
             });
         };
+      
         function check_cbx(obj, val) {//check checkbox item ,設定勾選
             var s = "";          
             if (obj != undefined) {

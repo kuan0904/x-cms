@@ -24,6 +24,7 @@ public partial class process_step1 : System.Web.UI.Page
     public string sellprice = "";
     public string title = "";
     public string address = "";
+    public string cid = "";
     protected void Page_Load(object sender, EventArgs e)
     {
 
@@ -51,7 +52,7 @@ public partial class process_step1 : System.Web.UI.Page
         }
         if (MainData != null)
         {
-
+            Session["MainData"] = MainData;
             subject = MainData.Subject;
             Session["title"] = subject + "│" + Application["site_name"];
             pic = MainData.Pic;
@@ -69,8 +70,8 @@ public partial class process_step1 : System.Web.UI.Page
                 Repeater2.DataBind();
                 lessontime = MainData.Lesson[0].Lessontime;
                 Lecturer = article.DbHandle.Get_Lecturer_list(MainData.Lesson[0].Lecturer);
-                Repeater1.DataSource = Lecturer;
-                Repeater1.DataBind();
+                //Repeater1.DataSource = Lecturer;
+                //Repeater1.DataBind();
             }
 
             keywords = article.Web.Get_Keyword_link(MainData.Keywords);
@@ -81,24 +82,19 @@ public partial class process_step1 : System.Web.UI.Page
             Session["keywords"] = MainData.Keywords;
             article.DbHandle.Add_views(MainData.Id);
 
+        
+
             List<article.Category> cate = new List<article.Category>();
             cate = (List<article.Category>)article.DbHandle.Get_article_category(MainData.Id);
-
-         
-
             foreach (var a in cate)
             {
-                List<Unitlib.MenuModel> subMenu = (List<Unitlib.MenuModel>)Session["webmenu"];
-                var p = subMenu.FirstOrDefault(x => x.Detial.Any(y => y.Id == a.CategoryId));
-                pageunit = "<li class=\"active\"><a href=\"/catalog/" + p.Id.ToString() + "\">" + p.Title.ToString() + "</a></li>";
-                if (p.ParentId != 0)
-                {
-                    var q = subMenu.FirstOrDefault(x => x.Detial.Any(y => y.ParentId == p.Id));
-                    pageunit = "<li><a href=\"/catalog/" + q.Id + "\"> " + q.Title + "</a></li>" + pageunit;
 
-
-                }
+                cid = a.CategoryId.ToString();
+                pagetitle = Unitlib.Get_title((List<Unitlib.MenuModel>)Session["webmenu"], int.Parse(cid));
+                Session["active"] = Unitlib.Set_activeId((List<Unitlib.MenuModel>)Session["webmenu"], int.Parse(cid));
+             //   Breadcrumb = Unitlib.Get_Breadcrumb((List<Unitlib.MenuModel>)Session["webmenu"], int.Parse(cid));
                 break;
+
             }
 
         }

@@ -57,24 +57,37 @@
                                         </div><!-- post-description END -->
                                     </div><!-- post-information END -->
 
-                                    <div class="post-sharing">
-                                        <div class="sharing-group">
-                                              <a class="btn-share facebook" href="#" >
-                                                    <div class="icon-elements facebook"></div>
-                                                    <div class="social-text">Facebook</div>
+                             <div class="meta-info clearfix">
+                                                  <div class="pull-left social-media-share-btn">                                              
+                                                <a href="#" class="share-fb" data-item="<%=Articleid%>"  title="facebook">
+                                                    <i class="fa fa-2x fa-facebook-official" aria-hidden="true"></i>
                                                 </a>
-
-                                                 <a class="btn-share twitter" href="#"><div class="icon-elements twitter"></div><div class="social-text">Twitter</div></a>
-
-                                                <a class="btn-share google" href="#" ><div class="icon-elements googleplus"></div></a>
-
-                                                <a class="btn-share pinterest" href="#" ><div class="icon-elements pinterest"></div></a>
-
-                                                <a class="btn-share whatsapp" href="#"><div class="icon-elements whatsapp"></div></a>
-
-                                            <div class="clearfix"></div>
-                                        </div><!-- sharing-group END -->
-                                    </div><!-- post-sharing END -->
+                                                <a href="#" class="share-google" data-item="<%=Articleid%>"  title="google">
+                                                    <i class="fa fa-2x fa-google-plus-square" aria-hidden="true"></i>
+                                                </a>
+                                                <a href="#" class="share-twitter" data-item="<%=Articleid%>" title="twitter">
+                                                    <i class="fa fa-2x fa-twitter" aria-hidden="true"></i>
+                                                </a>
+                                                <a href="#" class="share-pinterest" data-item="<%=Articleid%>" title="pinterest">
+                                                        <i class="fa fa-2x fa-pinterest" aria-hidden="true"></i>
+                                                </a>
+                                                <a href="#" class="share-collection active" title="加入收藏" data-item="<%=Articleid%>">
+                                                    <i class="fa fa-2x fa-heart" aria-hidden="true"></i>
+                                                </a>
+                                            </div>
+                                            <div class="pull-rigt text-right">
+                                                <div class="post-author">
+                                                    <span>By</span>
+                                                   <%= author  %>
+                                                    <span> - </span>
+                                                </div> 
+                                                <span class="post-date">
+                                                    <time datetime="<%=postday %>"><%=postday %></time>
+                                                </span>  
+                                                <div class=post-views>
+                                                        <i class="fa fa-eye"></i><%=viewcount  %></div>
+                                            </div>
+                                        </div>
                                 </div><!-- post-header END -->
 
                                 <div class="block-wrap border">

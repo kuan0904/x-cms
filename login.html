@@ -191,10 +191,12 @@
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 
     <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};HandleGoogleApiLibrary()" onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>
-    <script src="/lib/common.js?v=2"></script>
+    <script src="/lib/common.js?v=4"></script>
 
     <script>
         $(document).ready(function () {
+            var url = base64_decode(getParameterByName("returnurl"));
+            if (url == null || url == '') url = '/index';
             $(".btn-facebook").click(function () {
 
                 location.href = 'https://www.facebook.com/v2.10/dialog/oauth/?client_id=164103481107660&redirect_uri=https://www.culturelaunch.net/fb_login.ashx&response_type=code';
@@ -228,7 +230,7 @@
                         if (data == "Y") {
                             alert('登入成功');
                             //$.magnificPopup.close();
-                            location.href = '/index';
+                            location.href = url;
                         } else if (data == "-1") {
                             alert("登入失敗");
                             //setInputStyle("error", objAccount, "帳號錯誤請重新輸入");

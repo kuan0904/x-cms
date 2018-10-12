@@ -19,7 +19,7 @@ public class MemberLib
         // TODO: 在這裡新增建構函式邏輯
         //
     }
-    public class Member
+    public class Member : System.Collections.Specialized.NameObjectCollectionBase
     {
         public static Mmemberdata Update(Mmemberdata m )
         {
@@ -30,7 +30,7 @@ public class MemberLib
             ,mobile=@mobile
             ,cityid=@cityid 
             ,countyid=@countyid
-            ,zip=@zip
+            ,zip=@zip,birthday=@birthday
             ,address=@address,password=@password where  memberid=@memberid";
 
             NameValueCollection nvc = new NameValueCollection
@@ -53,13 +53,14 @@ public class MemberLib
         }
         public static Mmemberdata Check_exist(string id,string fbid ="")
         {
+           
             Mmemberdata result = new Mmemberdata ();
             result.Memberid = 0;
             string strsql = "select memberid from  tbl_MemberData where  email =@id or fbid=@id ";
 
             NameValueCollection nvc = new NameValueCollection
             {
-                { "id", id.ToString() }
+                { "id", id  }
             };
             DataTable dt = DbControl.Data_Get(strsql, nvc);
             if (dt.Rows.Count != 0)
@@ -86,7 +87,10 @@ public class MemberLib
                     { "phone", phone  }
                 };
                 DbControl.Data_add(strsql, nvc);
+                result = Login(email, password, "");
+                Mail.Join_member(result.Memberid);
             }
+
             if (googleid != "") { 
                 result = GoogleLogin(googleid, email, username);
           
@@ -136,7 +140,7 @@ public class MemberLib
         }
         public static Mmemberdata GetData(string memberid)
         {
-            
+           
             string strsql = @"select * from tbl_MemberData  where  (memberid =@memberid) ";
             NameValueCollection nvc = new NameValueCollection
             {
@@ -162,8 +166,161 @@ public class MemberLib
             return m ;
 
         }
-    }
+        public static  string Is_collection(string memberid, string articleId)
+        {
+            string result = "";
+            string strsql = @"select * from     tbl_articleCollection where articleId =@articleId 
+                and memberid =@memberid";
 
+            NameValueCollection nvc = new NameValueCollection
+            {
+                { "memberid", memberid },
+                { "articleId", articleId }
+            };
+
+            DataTable dt = DbControl.Data_Get(strsql, nvc);
+            if (dt.Rows.Count == 0)
+                result = "";
+
+            else result = "Y";
+            dt.Dispose();
+
+            return result;
+
+        }
+        public static dynamic MyOrderData(string memberid)
+        {
+
+            string strsql = @" select  * FROM  tbl_OrderData         
+             where memberid =@memberid";
+
+            NameValueCollection nvc = new NameValueCollection
+            {
+                { "memberid", memberid },
+
+            };
+
+            DataTable result = DbControl.Data_Get(strsql, nvc);
+
+
+            return result;
+
+
+        }
+        public static dynamic MyJoinLesson(string memberid)
+        {
+
+            string strsql = @" SELECT          *
+                    FROM              tbl_OrderData INNER JOIN
+                            tbl_Joindata ON tbl_OrderData.ord_code = tbl_Joindata.ord_code INNER JOIN
+                            tbl_article ON tbl_Joindata.Articleid = tbl_article.articleId  
+             where memberid =@memberid";
+
+            NameValueCollection nvc = new NameValueCollection
+            {
+                { "memberid", memberid },
+
+            };
+
+            DataTable result = DbControl.Data_Get(strsql, nvc);
+
+
+            return result;
+
+
+        }
+        public static dynamic MyCollection(string memberid ){
+          
+            string strsql = @" select  tbl_article.*
+FROM              tbl_article INNER JOIN
+                            tbl_articleCollection ON tbl_article.articleId = tbl_articleCollection.articleid
+ where memberid =@memberid";
+
+            NameValueCollection nvc = new NameValueCollection
+            {
+                { "memberid", memberid },
+              
+            };
+
+            DataTable result = DbControl.Data_Get(strsql, nvc);
+           
+
+            return result;
+
+
+        }
+    }
+    public class Mail
+    {
+        public static string Join_member(int memberid)
+
+        {
+            string site_name = "";
+            Mmemberdata result = new Mmemberdata();
+            result = Member.GetData(memberid.ToString());
+            string filename = HttpContext.Current.Server.MapPath("/templates/letter.html");
+            string mailbody = unity.classlib.GetTextString(filename);
+            DataTable dt = unity.classlib.Get_Message(5);
+            string msg = "";
+            if (dt.Rows.Count > 0)
+            {
+     
+                site_name = HttpContext.Current.Application["site_name"].ToString();
+                string textbody = dt.Rows[0]["contents"].ToString().Replace("@site_name@", site_name);
+                string subject = dt.Rows[0]["title"].ToString().Replace("@site_name@", site_name); ;
+                mailbody = mailbody.Replace("@title@", subject);
+                textbody = textbody.Replace("@email@", result.Email);
+                textbody = textbody.Replace("@password@", result.Password);
+                mailbody = mailbody.Replace("@mailbody@", textbody);
+                msg = unity.classlib.SendsmtpMail(result.Email , subject, mailbody, "gmail");
+
+            }
+            if (result.Memberid == 0)
+            {
+                return "-1";
+            }
+            else
+            {
+                return msg;
+            }
+
+        }
+        public static string Get_password(string email)
+
+        {
+            string site_name = "";
+            Mmemberdata result = new Mmemberdata();
+            result = Member.Check_exist(email);
+            string filename = HttpContext.Current.Server.MapPath("/templates/letter.html");
+            string mailbody = unity.classlib.GetTextString(filename);
+            DataTable dt = unity.classlib.Get_Message(6);
+            string msg = "";
+            if (dt.Rows.Count > 0)
+            {
+                //foreach (var o in obj)
+                // {
+                //     if (o.Key == "site_name") site_name = o.Value;
+                // }
+                site_name = HttpContext.Current.Application["site_name"].ToString();
+                string textbody = dt.Rows[0]["contents"].ToString().Replace("@site_name@", site_name);
+                string subject = dt.Rows[0]["title"].ToString().Replace("@site_name@", site_name); ;
+                mailbody = mailbody.Replace("@title@", subject);
+                textbody = textbody.Replace("@password@", result.Password);
+                mailbody = mailbody.Replace("@mailbody@", textbody);
+                msg = unity.classlib.SendsmtpMail(email, subject, mailbody, "gmail");
+
+            }
+            if (result.Memberid == 0)
+            {
+                return "-1";
+            }
+            else
+            {
+                return msg;
+            }
+
+        }
+    }
     public class Mmemberdata {
 
         public int Memberid { get; set; }

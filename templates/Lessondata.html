@@ -1,0 +1,161 @@
+﻿<div class="col-md-10 col-sm-9 col-xs-12">
+    <article class="post-layout post">
+        <div class="post-header">
+            <div class="post-information">
+                <h1>訂單編號：@ord_code@</h1>
+            </div>
+            <!-- post-information END -->
+        </div>
+        <!-- post-header END -->
+    </article>
+    <div class="row">
+        <div class="col-md-6 col-sm-12 col-xs-12">
+            <img src="@pic@" alt="" title="@subject@">
+        </div>
+        <div class="col-md-6 col-sm-12 col-xs-12">
+            <div class="member-course-info">
+                <div class="member-order-detail-title">
+                    @subject@
+                </div>
+                <div class="member-course-date">
+                    <p>
+                        <i class="fa fa-calendar margin-R-5 " aria-hidden="true"></i>@classdate@
+                    </p>
+                    <p>
+                        <a href="https://goo.gl/maps/@address@" target="_blank"><i class="fa fa-map-marker margin-R-5 " aria-hidden="true"></i>@address@</a>
+                    </p>
+                </div>
+                <div class="member-order-amount">
+                    <span class="number">@totalprice@</span>
+                    <span class="label label-no-payment">@paid@</span>
+                </div>
+                <div class="btn-margin-15">
+                    <a class="btn btn-pink" role="button" data-toggle="modal" data-target="#cancel-order">
+                        我要取消 / 退款
+                    </a>
+                </div>
+                <!-- meta-info END -->
+
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <hr>
+            <!--票券詳細資訊-->
+            <table class="table process-tab">
+                <tbody>
+                    <tr>
+                        <td width="20%" rowspan="2">票券</td>
+                        <td width="40%">早鳥票</td>
+                        <td width="20%">NT$500 x 2</td>
+                        <td width="20%" class="text-right">NT$1,000</td>
+                    </tr>
+                    <tr>
+                        <td>VIP套票</td>
+                        <td>NT$1,000 x 1</td>
+                        <td class="text-right">NT$2,000</td>
+                    </tr>
+                    <tr class="underline">
+                        <td>取票方式</td>
+                        <td colspan="3">郵寄取票</td>
+                    </tr>
+                    <tr class="underline">
+                        <td>付款方式</td>
+                        <td colspan="3">
+                            ATM
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <p>銀行代碼：000（XX銀行）</p>
+                                    <p>帳號：1234-XXXXX-XXXXX</p>
+                                </div>
+                            </div>
+                            銀行匯款
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <p>ＸＸ銀行ＸＸ分行</p>
+                                    <p>戶名：XX公司</p>
+                                    <p>帳號：1234-XXXXX-XXXXX</p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="underline">
+                        <td colspan="3">取票手續費</td>
+                        <td class="text-right">NT$60</td>
+                    </tr>
+                    <tr class="total underline">
+                        <td colspan="3">總計</td>
+                        <td class="text-right">NT$2,060</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="detail-notice">
+                <div class="col-md-10 col-md-offset-2 col-sm-9 col-xs-12">
+                    <div class="divide20"></div>
+                    <section class="form-white-style">
+                        <div class="page-header-blue">
+                            <h3>聯絡人資訊</h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <form class="form-horizontal form-fill">
+                                    <div class="form-group">
+                                        <label class="col-xs-12 control-label title">姓名</label>
+                                        <label class="col-xs-12 control-label text">@ordername@</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-12 control-label title">e-mail</label>
+                                        <label class="col-xs-12 control-label text">@ordermail@</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-12 control-label title">聯絡電話</label>
+                                        <label class="col-xs-12 control-label text">@orderphone@</label>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="form-white-style">
+                        <div class="page-header-blue">
+                            <h3>早鳥票</h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10 col-sm-9 col-xs-8">
+                                <form class="form-horizontal form-fill text-left">
+                                    <div class="form-group">
+                                        <label class="col-xs-12 control-label title">報名序號</label>
+                                        <label class="col-xs-12 control-label text">01</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-12 control-label title">票號</label>
+                                        <label class="col-xs-12 control-label text">123456-01</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-12 control-label title">姓名</label>
+                                        <label class="col-xs-12 control-label text">XXX</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-12 control-label title">e-mail</label>
+                                        <label class="col-xs-12 control-label text">123@abc.com</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-12 control-label title">聯絡電話</label>
+                                        <label class="col-xs-12 control-label text">0900000000</label>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-2 col-sm-3 col-xs-4">
+                                <div>
+                                    <img src="images/qrcode.jpg" class="img-responsive">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <div class="divide20"></div>
+                    <!-- col-md-4 col-sm-6 col-xs-6 END -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- col-md-4 col-sm-6 col-xs-6 END -->
+</div>

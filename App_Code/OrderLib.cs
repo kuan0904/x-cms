@@ -23,23 +23,15 @@ public class OrderLib
         // TODO: 在這裡新增建構函式邏輯
         //
     }
-    public static string[] payStatus =
-       { "未支付" , "ATM已付款", "信用卡已付款"
-            ,  "已退款"
-            ,  "待發貨"
-            ,  "已發貨"
-            ,  "已退貨"
-            ,  "已完成"
-            ,  "進行中"
-            ,  "已消" };
-
+ 
     public static string get_ord_status(string id)
     {
         string value = "";
   
             string strsql;
-            strsql = @"SELECT * from payStatus where id=@id ";
+            strsql = @"SELECT * from tbl_payStatus where id=@id ";
         NameValueCollection nvc = new NameValueCollection();
+        nvc.Add("id", id);
         DataTable dt = DbControl.Data_Get(strsql, nvc);
         if (dt.Rows.Count > 0) value = dt.Rows[0]["name"].ToString();
         dt.Dispose();
@@ -49,8 +41,25 @@ public class OrderLib
     {
         string value = "";
 
-        string strsql = @"SELECT * from paymode where id=@id ";
+        string strsql = @"SELECT * from tbl_paymode where id=@id ";
         NameValueCollection nvc = new NameValueCollection();
+        nvc.Add("id", id);
+        DataTable dt = DbControl.Data_Get(strsql, nvc);
+        if (dt.Rows.Count > 0) value = dt.Rows[0]["name"].ToString();
+        dt.Dispose();
+
+
+        return value;
+    }
+    public static string getdelivery_kind(string id)
+    {
+        string value = "";
+
+        string strsql = @"SELECT * from tbl_delivery_kind where id=@id ";
+        NameValueCollection nvc = new NameValueCollection
+        {
+            { "id", id }
+        };
         DataTable dt = DbControl.Data_Get(strsql, nvc);
         if (dt.Rows.Count > 0) value = dt.Rows[0]["name"].ToString();
         dt.Dispose();
@@ -62,9 +71,10 @@ public class OrderLib
     {
         string value = "";
 
-        string  strsql = @"SELECT * from Receivetime where id=@id ";
+        string  strsql = @"SELECT * from tbl_Receivetime where id=@id ";
             NameValueCollection nvc = new NameValueCollection();
-            DataTable dt = DbControl.Data_Get(strsql, nvc);
+        nvc.Add("id", id);
+        DataTable dt = DbControl.Data_Get(strsql, nvc);
             if (dt.Rows.Count > 0) value = dt.Rows[0]["name"].ToString();
             dt.Dispose();
             return value;
@@ -74,15 +84,32 @@ public class OrderLib
         string value = "";
      
             string strsql;
-            strsql = @"SELECT * from invoice where id=@id ";
+            strsql = @"SELECT * from tbl_invoice where id=@id ";
         NameValueCollection nvc = new NameValueCollection();
+        nvc.Add("id", id);
         DataTable dt = DbControl.Data_Get(strsql, nvc);
         if (dt.Rows.Count > 0) value = dt.Rows[0]["name"].ToString();
         dt.Dispose();
         return value;
-      
+
     }
-    
+    public string Get_ord_pdname(string ord_code)
+    {
+        string msg = "";
+        string strsql = @"SELECT cast(tbl_product.productname AS NVARCHAR) + ','
+       FROM tbl_product INNER JOIN order_detail ON tbl_product.p_id = order_detail.p_id
+       WHERE order_detail.ord_code = @ord_code
+       FOR XML PATH('') ";
+        NameValueCollection nvc = new NameValueCollection();
+        nvc.Add("ord_code", ord_code);
+        DataTable dt = DbControl .Data_Get(strsql, nvc);
+
+        if (dt.Rows.Count > 0) msg = dt.Rows[0][0].ToString();
+        return msg;
+    }
+
+
+
     public static string Get_ord_code(string ord_date)
     {
         string ord_code = "";
@@ -129,8 +156,8 @@ public class OrderLib
         o.Orddate = DateTime.Parse(dt.Rows[0]["ord_date"].ToString());
         o.TotalPrice  =(int) dt.Rows[0]["TotalPrice"] ;
         o.Ordname  = dt.Rows[0]["ordname"].ToString();
-
-      
+        o.Memberid = dt.Rows[0]["Memberid"].ToString();
+        o.Delivery_kind = dt.Rows[0]["delivery_kind"].ToString();
         o.Ordemail  = dt.Rows[0]["email"].ToString();     
         o.Ordname  = dt.Rows[0]["ordname"].ToString();
         o.Shipphone  = dt.Rows[0]["shipname"].ToString();
@@ -139,7 +166,7 @@ public class OrderLib
         o.Title = dt.Rows[0]["title"].ToString();
         o.Companyno  = dt.Rows[0]["companyno"].ToString();
         o.Shipzip = dt.Rows[0]["zip"].ToString();
-
+        o.Ordaddress = dt.Rows[0]["ordaddress"].ToString();
         strsql = @"select *  FROM    tbl_city  where cityid=@id";
         nvc.Clear();
         nvc.Add("id", dt.Rows[0]["cityid"].ToString ());
@@ -191,7 +218,59 @@ public class OrderLib
         return o;
        
     }
-    public static string get_pd(string ord_id)
+    public static OrderLib.OrderData AddOrdData(OrderLib.OrderData o)
+    {
+        string strsql = @"insert into tbl_OrderData
+            (ord_code, memberid, paymode, invoice,  receivetime, contents,  SubPrice, DeliveryPrice, DiscountPrice, 
+                TotalPrice, status,ordname,ordphone,ordaddress,shipname,shipphone,shipaddress,companyno,title
+            ,ordgender,shipgender,coupon_no,email,zip,cityid,countryid,delivery_kind) values 
+                (@ord_code,@memberid, @paymode, @invoice, @receivetime, @contents,@SubPrice, @DeliveryPrice, 
+                @DiscountPrice,@TotalPrice, @status,@ordname,@ordphone,@ordaddress,@shipname,@shipphone,@shipaddress
+                ,@companyno,@title,@ordgender,@shipgender,@coupon_no,@email,@zip,@cityid,@countryid,@delivery_kind)";
+
+        NameValueCollection nvc = new NameValueCollection
+        {
+            { "ord_code", o.Ord_code  },
+            { "memberid", o.Memberid   },
+            { "receivetime", o.ReceiveTime    },
+            { "contents", o.Contents    },
+            { "SubPrice", o.SubPrice.ToString ()     },
+            { "DeliveryPrice", o.ShipPrice .ToString ()    },
+            { "DiscountPrice", o.Discount.ToString  ()   },
+            { "TotalPrice", o.TotalPrice .ToString ()  },
+            { "status", o.Status   },
+            { "paymode", o.Paymode    },
+            { "invoice", o.Invoice     },
+            { "ordname", o.Ordname     },
+            { "ordphone", o.Ordphone    },
+            { "ordaddress", o.Ordaddress    },
+            { "shipname", o.Shipname    },
+            { "shipphone", o.Shipphone    },
+            { "shipaddress", o.Shipaddress   },
+            { "companyno", o.Companyno    },
+            { "title", o.Title    },
+            { "ordgender", o.Ordgender     },
+            { "shipgender", o.Shipgender   },
+            { "coupon_no", o.coupon_no    },
+            { "email", o.Ordemail     },
+            { "zip", o.Ordzip    },
+            { "delivery_kind", o.Delivery_kind },
+            { "cityid",o. Ordcityid.Id .ToString ()    },
+            { "countryid", o.Ordcountyid.Id  .ToString ()    },
+
+        };
+        int i = DbControl.Data_add(strsql, nvc);
+        nvc.Clear();
+
+
+        strsql = @"select max(ord_id)   from  tbl_orderdata   ";
+        DataTable dt = DbControl.Data_Get(strsql, nvc);
+        o.Ord_id = (int)dt.Rows[0][0];
+        return o;
+
+
+    }
+    public static string Get_pd(string ord_id)
     {
         string msg = "";
       
@@ -210,42 +289,7 @@ public class OrderLib
           
         return msg;
     }
-    public static string Get_coupon_price(string memberid, string discount_no, string price)
-    {
-        string cc_money = "0";
-
-            string strsql = @"SELECT  *     FROM    coupon    WHERE  sn =@sn 
-                and num >0 and convert(varchar, getdate(), 111) between strdate and enddate   ";
-        NameValueCollection nvc = new NameValueCollection();
-        nvc.Add("sn", discount_no);
-        DataTable dt = DbControl.Data_Get(strsql, nvc);
-        if (dt.Rows.Count > 0)
-          
-            {
-                if (dt.Rows[0]["status"].ToString() == "N") cc_money = "-1";
-                else if (dt.Rows[0]["memberid"].ToString() != "" && dt.Rows[0]["memberid"].ToString() != memberid)
-                { cc_money = "-2"; }
-                else
-                {
-
-                    if (dt.Rows[0]["addition"].ToString() == "Y")
-                    {
-                        int x = int.Parse(price) / (int)dt.Rows[0]["useprice"];
-                        cc_money = ((int)dt.Rows[0]["money"] * x).ToString();// "100";
-                    }
-                    else
-                    {
-                        cc_money = dt.Rows[0]["money"].ToString();
-                    }
-                }
-
-            }
-          
-
-  
-        return cc_money;
-    }
-    public class OrderData
+     public class OrderData
     {
         public string Ord_code { get; set; }
         public int Ord_id { get; set; }
@@ -281,6 +325,7 @@ public class OrderLib
         public string Status { get; set; }
         public List<OrderDetail > OrderDetail { get; set; }
         public DateTime Orddate { get; set; }
+        public string  coupon_no { get; set; }
     }
     public class ItemData
     {

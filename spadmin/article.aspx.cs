@@ -181,15 +181,17 @@ public partial class spadmin_article : System.Web.UI.Page
     }
   
     [WebMethod(EnableSession = true)]
-    public static string Set_data( string kind,string id,string[] categoryid
-        , string subject, string subtitle,string contents, string pic,string postday,string recommend
-        , string[] tags,  string author, string keywords, string status, List<article.Lesson> Lesson  )
+    public static dynamic Set_data(string kind, string Id, string[] Category
+        , string Subject, string SubTitle, string Contents, string Pic, string PostDay, string Recommend
+        , string[] Tags, string Author, string Keywords, string Status, List<article.Lesson> Lesson
+        ,string  YoutubeUrl)
     {
+        //如果用dynamic 傳,就會有LIST        postdata = postdata[0];
         string result = "";
-        List<Category> ItemData = new List<Category>();;
-        foreach (string s in categoryid)
+        List<Category> ItemData = new List<Category>(); ;
+        foreach (string s in Category)
         {
-           
+
             NameValueCollection nvc = new NameValueCollection();
             string strsql = @"SELECT  categoryid, title as name,
                             kind 
@@ -213,30 +215,34 @@ public partial class spadmin_article : System.Web.UI.Page
             }
             dt.Dispose();
         }
+
         MainData MainData = new MainData
         {
-            
-            Id = int.Parse(id),
-            Subject = subject,
-            SubTitle = subtitle,
-            Contents = contents,
-            Pic = classlib .GetImgNmae( pic),
-            PostDay = DateTime.Parse(postday),          
-            Status = status,
+
+            Id = int.Parse(Id),
+            Subject = Subject,
+            SubTitle = SubTitle,
+            Contents = Contents,
+            Pic = classlib.GetImgNmae(Pic),
+            PostDay = DateTime.Parse(PostDay),
+            Status = Status,
             Viewcount = 0,
-            Keywords = keywords,
-            Tags = tags,
-            Category =ItemData ,
-            Author = author,
-            Lesson =Lesson ,
-            Recommend = recommend,
-            kind =kind        ,
-            Tempid = HttpContext.Current.Session["uploadid"].ToString ()
+            Keywords = Keywords,
+            Tags = Tags,
+            Category = ItemData,
+            Author = Author,
+            Lesson = Lesson,
+            Recommend = Recommend,
+            kind = kind,
+            Tempid = HttpContext.Current.Session["uploadid"].ToString(),
+            YoutubeUrl =YoutubeUrl  ,
+          //  Category =  postdata["Category"]  ,
+          //  Lesson = postdata.Lesson  ,
         };
    
         HttpContext.Current.Session["MainData"] = MainData;     
       
-        return (result);
+        return (result );
 
     }
     [WebMethod(EnableSession = true)]

@@ -16,8 +16,8 @@ public partial class MasterPage : System.Web.UI.MasterPage
     public string active ;
     public string FacebookAppId = "164103481107660";
     public string cid = "";
-    public string _status = "";
-    public string _link = "";
+    //public string _status = "";
+    //public string _link = "";
     public string Articleid = "";
     protected void Page_Init(object sender, EventArgs e)
     {
@@ -27,16 +27,16 @@ public partial class MasterPage : System.Web.UI.MasterPage
             Session["webmenu"] = menu;
         }
 
-        if (Session["memberdata"] == null)
-        {
-            _status = "登入 / 註冊";
-            _link = "/login.html";
-        }
-        else
-        {
-            _status = "Hi 會員名稱";
-            _link = "/member-edit.aspx";
-        }
+        //if (Session["memberdata"] == null)
+        //{
+        //    _status = "登入 / 註冊";
+        //    _link = "/login.html";
+        //}
+        //else
+        //{
+        //    _status = "Hi 會員名稱";
+        //    _link = "/member-edit.aspx";
+        //}
       
 
     }
@@ -55,7 +55,22 @@ public partial class MasterPage : System.Web.UI.MasterPage
         if (Application["site_name"].ToString ().IndexOf ( "藝時代")==-1) logo = "";
      
     }
-
+    public string checkitem(object sender, int id)
+    {
+        List<Unitlib.MenuModel> menus = new List<Unitlib.MenuModel>();
+        menus = (List<Unitlib.MenuModel>)Session["webmenu"];
+        foreach (Unitlib.MenuModel m1 in menus)
+        {
+            if (m1.Id == id)
+            {
+                foreach (var x in m1.Detial)
+                {
+                    return " sf-dropdown ";
+                }
+            }
+        }
+        return " ";
+    }
     protected void rptmenu_ItemDataBound(object sender, RepeaterItemEventArgs e)
     {
 

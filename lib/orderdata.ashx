@@ -20,17 +20,17 @@ using System.Collections.Specialized;
 using unity;
 using System.Web.SessionState;
 public class orderdata : IHttpHandler,IRequiresSessionState {
-       
+
     public void ProcessRequest(HttpContext context)
     {
-            //測試卡號4000-2211-1111-1111
+        //測試卡號4000-2211-1111-1111
         string ord_date = DateTime.Today.ToString("yyyy/MM/dd");
         string ord_code =OrderLib.Get_ord_code(ord_date);
         int DeliveryPrice = 180;
         int ship_free = 1600;
         int amount = 0;
         int totalprice = 0;
-        string paymode = "";
+        string paymode = context.Request ["ord_pay"];
         string receivetime = "";
         string email =  context.Request ["email"];
         string zip = context.Request ["ord_zip"];
@@ -40,13 +40,13 @@ public class orderdata : IHttpHandler,IRequiresSessionState {
         string gender =  context.Request ["ord_sex"];
         string username = context.Request ["ord_name"];
         string phone =  context.Request ["ord_tel"];
-        string shipzip = "";
-        string shipaddress = "";
-        string shipcityid = "p_CITYID";
-        string shipcountyid = "";
-        string shipgender = "";
-        string shipname = "";
-        string shipphone = "";
+        string shipzip = context.Request ["ord_zip"];
+        string shipaddress = context.Request ["p_ADDRESS"];
+        string shipcityid = context.Request ["p_CITYID"];
+        string shipcountyid = context.Request ["p_COUNTYID"];
+        string shipgender =context.Request ["ord_sex"];
+        string shipname = context.Request ["ord_name"];
+        string shipphone =context.Request ["ord_tel"];
         string contents = "";
         string invoice = "";
         string companyno = "";
@@ -56,7 +56,7 @@ public class orderdata : IHttpHandler,IRequiresSessionState {
         string p_id =  context.Request ["p_id"];
         string pid =  context.Request ["pid"];
         int discountprice = 0;
-
+        string shippingKind = "";
         string  num = context.Request ["num"]   ;
         string  price = context.Request ["price"] ;
         cityid =cityid.Split('-')[0];
@@ -73,25 +73,29 @@ public class orderdata : IHttpHandler,IRequiresSessionState {
             rs = cmd.ExecuteReader();
             if (rs.Read())
             {
-                paymode = rs["shippingKind"].ToString();
+                shippingKind = rs["shippingKind"].ToString();
                 DeliveryPrice = (int)rs["shippingfee"];
                 storage = (int)rs["storage"];
                 if (storage < 1) status = "-1";
-
-
             }
             cmd.Dispose();
             rs.Close();
+            string memberid = "0";
+            if (context.Session["memberdata"] != null)
+            {
+                MemberLib.Mmemberdata m = (MemberLib.Mmemberdata)context.Session["memberdata"];
+                memberid = m.Memberid.ToString ();
+            }
             strsql = @"insert into tbl_OrderData
             (ord_code, memberid, paymode, invoice,  receivetime, contents,  SubPrice, DeliveryPrice, DiscountPrice, 
                 TotalPrice, status,ordname,ordphone,ordaddress,shipname,shipphone,shipaddress,companyno,title
-            ,ordgender,shipgender,coupon_no,email,zip,cityid,countryid) values 
+            ,ordgender,shipgender,coupon_no,email,zip,cityid,countryid,delivery_kind) values 
                 (@ord_code,@memberid, @paymode, @invoice, @receivetime, @contents,@SubPrice, @DeliveryPrice, 
                 @DiscountPrice,@TotalPrice, @status,@ordname,@ordphone,@ordaddress,@shipname,@shipphone,@shipaddress
-                ,@companyno,@title,@ordgender,@shipgender,@coupon_no,@email,@zip,@cityid,@countryid)";
+                ,@companyno,@title,@ordgender,@shipgender,@coupon_no,@email,@zip,@cityid,@countryid,@delivery_kind)";
             cmd = new SqlCommand(strsql, conn);
             cmd.Parameters.Add("@ord_code", SqlDbType.VarChar).Value = ord_code;
-            cmd.Parameters.Add("@memberid", SqlDbType.VarChar).Value = "0";
+            cmd.Parameters.Add("@memberid", SqlDbType.VarChar).Value = memberid;
             cmd.Parameters.Add("@receivetime", SqlDbType.NVarChar).Value = receivetime;
             cmd.Parameters.Add("@contents", SqlDbType.NVarChar).Value = contents;
             cmd.Parameters.Add("@SubPrice", SqlDbType.VarChar).Value = amount ;
@@ -116,6 +120,7 @@ public class orderdata : IHttpHandler,IRequiresSessionState {
             cmd.Parameters.Add("@zip", SqlDbType.VarChar).Value = zip ;
             cmd.Parameters.Add("@cityid", SqlDbType.VarChar).Value =cityid ;
             cmd.Parameters.Add("@countryid", SqlDbType.VarChar).Value = countyid ;
+            cmd.Parameters.Add("@delivery_kind", SqlDbType.VarChar).Value = shippingKind;
             cmd.ExecuteNonQuery();
             cmd.Dispose();
 
@@ -178,10 +183,10 @@ public class orderdata : IHttpHandler,IRequiresSessionState {
             cmd.Parameters.Add("@TotalPrice", SqlDbType.VarChar).Value =totalprice;
             cmd.Parameters.Add("@SubPrice", SqlDbType.VarChar).Value = totalprice - DeliveryPrice;
             cmd.Parameters.Add("@DeliveryPrice", SqlDbType.VarChar).Value = DeliveryPrice;
-             cmd.Parameters.Add("@ord_date", SqlDbType.Date).Value =DateTime.Today.ToString ("yyyy/MM/dd");
+            cmd.Parameters.Add("@ord_date", SqlDbType.Date).Value =DateTime.Today.ToString ("yyyy/MM/dd");
             status  = cmd.ExecuteNonQuery().ToString ();
             cmd.Dispose();
-            
+
             context.Response.Write(status );
             context.Session["ord_code"] =  ord_code  ;
             conn.Close();

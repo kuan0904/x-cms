@@ -94,7 +94,7 @@ namespace article
             DbControl.Data_add(strsql, nvc);
             return value;
         }
-        public static string Add_Collection(string articleId, string  memberid)
+        public static string Add_Collection(string articleId, string memberid, string flag)
         {
             string value = "";
             string strsql = @"delete from  tbl_articleCollection where articleId =@articleId 
@@ -105,14 +105,15 @@ namespace article
                 { "memberid", memberid },
                 { "articleId", articleId }
             };
-            DbControl.Data_add (strsql, nvc);
-
-            strsql = @"insert into tbl_articleCollection (articleId,memberid) values 
-            (@articleId,@memberid) ";   
             DbControl.Data_add(strsql, nvc);
+            if (flag == "add"){
+                strsql = @"insert into tbl_articleCollection (articleId,memberid) values 
+                (@articleId,@memberid) ";
+                DbControl.Data_add(strsql, nvc);
+            }
             return value;
         }
-
+   
         public static List<MainData> Recommend_list(int ClassId)
         {
             List<MainData> MainData = new List<MainData>();
@@ -271,6 +272,7 @@ namespace article
                 MainData.Viewcount = (int)dt.Rows[0]["Viewcount"];
                 MainData.kind = dt.Rows[0]["kind"].ToString();
                 MainData.Recommend = dt.Rows[0]["Recommend"].ToString();
+                MainData.YoutubeUrl  = dt.Rows[0]["YoutubeUrl"].ToString();
             }
             dt.Dispose();
             nvc.Clear();
@@ -431,10 +433,10 @@ namespace article
                     DataTable dt = Get_tbl_tag(int.Parse(s));
                     ItemData.Add(new Lecturer
                     {
-                         Id = (int)dt.Rows[0]["tagid"],
+                        Id = (int)dt.Rows[0]["tagid"],
                         Subject = dt.Rows[0]["tagName"].ToString(),
                         Contents = dt.Rows[0]["Contents"].ToString(),
-                         Pic = dt.Rows[0]["Pic"].ToString(),
+                        Pic = dt.Rows[0]["Pic"].ToString(),
                         Title =dt.Rows [0]["Title"].ToString ()
                     });
                 }
@@ -442,7 +444,7 @@ namespace article
             return ItemData;
         }
    
-        public static List<article.MainData> Get_article_list(string cid, string KeyWords="", int rows = 10, int page = 0)
+        public static List<article.MainData> Get_article_list(string cid, string KeyWords="", int rows = 10, int page = 0,string sort ="")
         {
 
             List<article.MainData> MainData = new List<article.MainData>();
@@ -457,7 +459,8 @@ namespace article
             }
             if (KeyWords != "")
             {
-                strsql += @" and ( subject like @s or subtitle like @s or author like @s
+                strsql += @" and ( subject like @s   or Contents like @s
+            or subtitle like @s or author like @s
                     or keywords like @s 
                         or  articleId in (
                         SELECT    tbl_article_tag.articleId
@@ -467,7 +470,21 @@ namespace article
 
 
             }
-            strsql += " order by postday desc,articleId desc ";
+            switch  (sort)
+               
+            {
+                case "id":
+                    strsql += " order articleId desc ";
+                    break;
+                case "views":
+                    strsql += " order by ViewCount desc,articleId desc ";
+                    break;
+
+                default:
+                    strsql += " order by postday desc,articleId desc ";
+                    break;
+            }
+           
             NameValueCollection nvc = new NameValueCollection
             {
                 { "cid", cid },
@@ -498,7 +515,8 @@ namespace article
                     Status = dt.Rows[idx]["Status"].ToString(),
                     Keywords = dt.Rows[idx]["Keywords"].ToString(),
                     Viewcount = (int)dt.Rows[idx]["viewcount"],
-                    Author = dt.Rows[idx]["Author"].ToString()
+                    Author = dt.Rows[idx]["Author"].ToString(),
+                    YoutubeUrl= dt.Rows[idx]["YoutubeUrl"].ToString(),
                 });
                 nvc.Clear();
                 nvc = new NameValueCollection
@@ -575,7 +593,7 @@ namespace article
             string strsql = @"update  tbl_article set 
                     subject =@subject,pic=@pic,subtitle=@subtitle,postday=@postday,contents=@contents ,
                     keywords=@keywords,status=@status,author=@author,recommend=@recommend
-                    ,kind=@kind
+                    ,kind=@kind,YoutubeUrl=@YoutubeUrl
                     where articleId =@id ";
             NameValueCollection nvc = new NameValueCollection
             {
@@ -588,7 +606,8 @@ namespace article
                 { "author", ad.Author },
                 { "status", ad.Status },
                 {"recommend",ad.Recommend  },
-                { "kind", ad.kind =="L" ? "Y":"N" }
+                { "kind", ad.kind =="L" ? "Y":"N" },
+                {"YoutubeUrl",ad.YoutubeUrl  }
                 //{ "startday",ad.StartDay.ToString("yyyy/MM/dd")  },
                 //{ "endday",ad.EndDay.ToString("yyyy/MM/dd") },
               
@@ -734,6 +753,7 @@ namespace article
         public string Recommend { get; set; }
         public List<Lesson> Lesson { get; set; }
         public string Tempid { get; set; }
+        public string YoutubeUrl { get; set; }
      
     }
     public class ItemData

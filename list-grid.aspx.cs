@@ -47,6 +47,7 @@ public partial class list_grid : System.Web.UI.Page
             banner1 = Banner.DbHandle.Banner_Get_list(5, "preview");
         else
             banner1 = Banner.DbHandle.Banner_Get_list(5);
+      
         Repeater1.DataSource = banner1;
         Repeater1.DataBind();
         banner1.Clear();

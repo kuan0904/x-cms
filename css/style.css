@@ -1,4 +1,4 @@
-/*==================================================================
+﻿/*==================================================================
 | Designer: UTRUST Technology Co.                                  |
 | Auther Email: service(a)utrust.com.tw                            |
 | Author Web: http://www.utrust.com.tw/                            |
@@ -1173,12 +1173,13 @@ h1.logo a {
     padding: 20px;
     background: #f3f3f3;
 }
-.post-content blockquote p {
-    font-family: "Montserrat","Microsoft JhengHei";
-    color: #000;
-    font-size: 22px;
-    font-style: initial;
-}
+    .post-content blockquote p {
+        font-family: "Montserrat","Microsoft JhengHei";
+        color: #008080;
+        font-size: 16px;
+        font-style: initial;
+        text-align: left;
+    }
 .tip {
     border-left: #3598db solid 3px;
     padding: 5px 10px;

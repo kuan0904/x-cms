@@ -15,14 +15,15 @@ public partial class spadmin_product : System.Web.UI.Page
 {
 
     public string[] stringArray = new string[5];
-    
+    public string keywords = "";
+    public string groupproductcode = "";
     protected void Page_Init(object sender, EventArgs e)
     {
         //DropDownList1.DataBound  += new EventHandler(DropDownList1_DataBound);
         DropDownList1.Items.Add(new ListItem("不區分", ""));
-        string strsql = "select * from tbl_category where parentid =0 and classid=2  and status<>'D' ";
+        string strsql = "select * from tbl_category where parentid =0 and classid=@classid  and status<>'D' ";
         NameValueCollection nvc = new NameValueCollection();
-        nvc.Add("id", "0");
+        nvc.Add("classid", "2");
         DataTable dt =DbControl .Data_Get(strsql, nvc);                 
         for (int i = 0; i < dt.Rows.Count; i++)
         {
@@ -33,6 +34,19 @@ public partial class spadmin_product : System.Web.UI.Page
         }
         dt.Dispose();
         categoryid.Items.Insert(0, new ListItem("請選擇", ""));
+
+        nvc.Clear();
+        nvc.Add("classid", "3");
+        dt = DbControl.Data_Get(strsql, nvc);
+        for (int i = 0; i < dt.Rows.Count; i++)
+        {
+            string name = dt.Rows[i]["title"].ToString();
+            string id = dt.Rows[i]["categoryid"].ToString();
+            supplierid.Items.Add(new ListItem(name, id));
+        
+        }
+        dt.Dispose();
+        supplierid.Items.Insert(0, new ListItem("請選擇", ""));
 
         strsql = "select * from  tbl_delivery_kind where status<>'D' ";        
         nvc.Add("id", "0");
@@ -82,18 +96,21 @@ public partial class spadmin_product : System.Web.UI.Page
         stringArray[2] = dt.Rows[0]["pic2"].ToString();
         stringArray[3] = dt.Rows[0]["pic3"].ToString();
         stringArray[0] = dt.Rows[0]["logo"].ToString();
-        stringArray[4] = dt.Rows[0]["banner"].ToString();
+        keywords = dt.Rows[0]["keyword"].ToString();
         sort.Text = dt.Rows[0]["sort"].ToString();
         memo.Text = dt.Rows[0]["memo"].ToString();
         videourl.Text   = dt.Rows[0]["videourl"].ToString();
         productcode.Text  = dt.Rows[0]["productcode"].ToString();
         shippingfee.Text = dt.Rows[0]["shippingfee"].ToString();
         freeship.Text = dt.Rows[0]["freeship"].ToString();
-
+        supplierid.SelectedIndex = supplierid.Items.IndexOf(supplierid.Items.FindByValue(dt.Rows[0]["supplierid"].ToString()));
+        groupproductcode = dt.Rows[0]["groupproductcode"].ToString();
         shippingKind.SelectedIndex = shippingKind.Items.IndexOf(shippingKind.Items.FindByValue(dt.Rows[0]["shippingKind"].ToString()));
         Image1.ImageUrl = "/upload/" + stringArray[1] + "?" + DateTime.Now.ToString("yyyyMMddhhmmss");
-      
-     
+        //groupproductcode.Items.Clear();
+        //groupproductcode.Items.Add(new ListItem("無", ""));
+        spec.Text = dt.Rows[0]["spec"].ToString();
+       
         viewcount.Text = dt.Rows[0]["viewcount"].ToString();
         MultiView1.ActiveViewIndex = 1;
         Btn_save.CommandArgument = "edit";
@@ -102,8 +119,30 @@ public partial class spadmin_product : System.Web.UI.Page
       
             Btn_save.CommandArgument = "copy";
         }
-        
+        //strsql = "select * from tbl_productdata  where  isgroup =   @id  order by p_id desc";
+        //nvc.Clear();
+        //nvc.Add("id", "Y");
+        //dt = DbControl.Data_Get(strsql, nvc);
+        //
+        //for ( i = 0; i < dt.Rows.Count; i++)
+        //{
+        //    string name = dt.Rows[i]["productname"].ToString();
+        //    string id = dt.Rows[i]["p_id"].ToString();
+        //    groupproductcode.Items.Add(new ListItem(name, id));
 
+        //}
+        //dt.Dispose();
+        //strsql = "select * from tbl_productdata where groupproductcode  = @p_id";
+        //nvc.Clear();
+        //nvc.Add("p_id", Selected_id.Value);
+        //dt = DbControl.Data_Get(strsql, nvc);
+        supplierid_SelectedIndexChanged( sender, e);
+        //groupproductlabel.Text = "";
+        //for (i = 0; i < dt.Rows.Count; i++)
+        //{
+        //    groupproductlabel.Text += dt.Rows[i]["productname"].ToString() + "(" + dt.Rows[i]["productcode"].ToString() + "/庫存數:" + dt.Rows[i]["storage"].ToString() + ")<Br>";
+
+        //}
     }
     protected void Btn_add_Click(object sender, System.EventArgs e)
     {
@@ -141,10 +180,14 @@ public partial class spadmin_product : System.Web.UI.Page
          
             if (sort.Text == "") sort.Text = "0";
 
-            strsql = @"UPDATE  tbl_productdata  SET productname=@productname,price=@price,productcode=@productcode,videourl=@videourl
-                ,description = @description, storage = @storage, pic1 = @pic1, pic2 = @pic2,pic3 = @pic3,memo=@memo,
-                categoryid = @categoryid,  status = @status,sort=@sort,shippingfee=@shippingfee,shippingKind=@shippingKind,freeship=@freeship
-               ,kindid=@kindid, id_list=@id_list where p_id=@id ";
+            strsql = @"UPDATE  tbl_productdata  SET productname=@productname,price=@price
+                ,productcode=@productcode,videourl=@videourl
+                ,description = @description, storage = @storage, pic1 = @pic1, pic2 = @pic2
+                ,keyword = @keyword,memo=@memo,
+                categoryid = @categoryid,  status = @status,sort=@sort,shippingfee=@shippingfee
+                ,shippingKind=@shippingKind,freeship=@freeship
+               ,kindid=@kindid, id_list=@id_list,supplierid=@supplierid,spec=@spec
+                ,groupproductcode=@groupproductcode where p_id=@id ";
             nvc.Clear();
             nvc.Add("productname", productname.Text);
             nvc.Add("price", price.Text);
@@ -157,11 +200,21 @@ public partial class spadmin_product : System.Web.UI.Page
             nvc.Add("pic1", stringArray[1] == null ? "" : stringArray[1]);
             nvc.Add("pic2", stringArray[2] == null ? "" : stringArray[2]);
             nvc.Add("pic3", stringArray[3] == null ? "" : stringArray[3]);
+            nvc.Add("keyword", Request["keywords"]);
             nvc.Add("memo", memo.Text);
+            nvc.Add("spec",  spec .ToString ());
             nvc.Add("sort", sort.Text);
             nvc.Add("shippingfee", shippingfee.Text);
             nvc.Add("freeship", freeship.Text);
             nvc.Add("shippingKind", shippingKind.Text);
+            nvc.Add ("supplierid", supplierid.SelectedValue);
+            groupproductcode = "";
+            foreach (ListItem v in groupproduct.Items)
+            {
+                if (v.Selected) groupproductcode += v.Value + ",";
+
+            }
+            nvc.Add("groupproductcode", groupproductcode);
             nvc.Add("kindid", "1");
             string id_list = "";
       
@@ -309,5 +362,38 @@ public partial class spadmin_product : System.Web.UI.Page
             conn.Close();
             link_edit(obj, e);
         }
+    }
+
+    protected void supplierid_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        groupproduct.Items.Clear();
+        string strsql = @" SELECT  *  from  tbl_productdata    where status <> 'D'  
+         and  supplierid = @supplierid and p_id <> @pid";     
+        NameValueCollection nvc = new NameValueCollection();
+        nvc.Add("pid", Selected_id.Value );
+        nvc.Add("supplierid", supplierid.SelectedValue);
+        DataTable dt = DbControl.Data_Get(strsql, nvc);
+        for (int i = 0; i < dt.Rows.Count; i++)
+        {
+            string name = dt.Rows[i]["productname"].ToString() + "/NT:" + dt.Rows[i]["price"].ToString();
+            string id = dt.Rows[i]["p_id"].ToString();
+            groupproduct.Items.Add(new ListItem(name, id));
+        
+
+
+        }
+        string[] s = groupproductcode.Split(',');
+
+    
+        foreach (ListItem i in groupproduct .Items)
+        {
+           i.Selected =  Array.IndexOf(s, i.Value )  ==-1?false:true ;
+
+
+        }
+     
+       
+
+        dt.Dispose();
     }
 }

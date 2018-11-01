@@ -80,9 +80,7 @@ public partial class process_step1 : System.Web.UI.Page
 
             Session["description"] = unity.classlib.noHTML(contents);
             Session["keywords"] = MainData.Keywords;
-            article.DbHandle.Add_views(MainData.Id);
-
-        
+     
 
             List<article.Category> cate = new List<article.Category>();
             cate = (List<article.Category>)article.DbHandle.Get_article_category(MainData.Id);

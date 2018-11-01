@@ -23,7 +23,10 @@
     <meta name="robots" content="index,nofollow" />
     <meta name="robots" content="noindex,nofollow" />
     <title>會員中心 │ 藝時代 Cultural Launch</title>
-
+    <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">   
+    <META HTTP-EQUIV="EXPIRES" CONTENT="0">
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT">
     <link rel="stylesheet" href='assets/font-awesome/css/font-awesome.min.css' />
     <link rel="stylesheet" href='assets/bootstrap/css/bootstrap.min.css' />
     <link rel="stylesheet" href='css/reset.css' type='text/css' />
@@ -135,9 +138,7 @@
                             <button type="button" class="btn btn-facebook btn-lg btn-block">
                                 <i class="fa fa-facebook" aria-hidden="true"></i>使用Facebook登入
                             </button>
-                            <button type="button" class="btn btn-google btn-lg btn-block" id="login-button">
-                                <i class="fa fa-google" aria-hidden="true"></i>使用Google登入
-                            </button>
+                    
                             <div class="divide20"></div>
                             <label>或使用藝時代帳號登入</label>
                         </div>
@@ -190,13 +191,13 @@
     <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 
-    <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};HandleGoogleApiLibrary()" onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>
-    <script src="/lib/common.js?v=4"></script>
+     <script src="/lib/common.js?v=5"></script>
 
     <script>
         $(document).ready(function () {
-            var url = base64_decode(getParameterByName("returnurl"));
+            var url =getParameterByName("returnurl");
             if (url == null || url == '') url = '/index';
+            url = base64_decode(url);
             $(".btn-facebook").click(function () {
 
                 location.href = 'https://www.facebook.com/v2.10/dialog/oauth/?client_id=164103481107660&redirect_uri=https://www.culturelaunch.net/fb_login.ashx&response_type=code';
@@ -240,85 +241,10 @@
                     });
                 }
             });
-            $("#login-button").on('click', function () {
-                $("#login-button").attr('disabled', 'disabled');
-
-                // API call for Google login
-                gapi.auth2.getAuthInstance().signIn().then(
-                    // On success
-                    function (success) {
-                        // API call to get user information
-                        gapi.client.request({ path: 'https://www.googleapis.com/plus/v1/people/me' }).then(
-                            // On success
-                            function (success) {
-                                console.log(success);
-                                var user_info = JSON.parse(success.body);
-                                console.log(user_info);
-                                var data = { "p_ACCOUNT": user_info.id, "p_PASSWD": user_info.emails[0].value, "p_PASSWD": user_info.emails[0].value, "p_username": user_info.displayName, "p_ACTION": "googleLogin", "_": new Date().getTime() };
-                                $.post('/lib/member_handle.ashx', data, function (data) {
-
-                                    if (data == "Y") {
-                                        alert('登入成功');
-
-                                    } else if (data == "-1") {
-                                        alert("登入失敗");
-                                        //setInputStyle("error", objAccount, "帳號錯誤請重新輸入");
-                                        //setInputStyle("error", objPasswd, "密碼錯誤請重新輸入");
-                                    }
-                                });
-
-                                //$("#user-information div").eq(0).find("span").text(user_info.displayName);
-                                //$("#user-information div").eq(1).find("span").text(user_info.id);
-                                //$("#user-information div").eq(2).find("span").text(user_info.gender);
-                                //$("#user-information div").eq(3).find("span").html('<img src="' + user_info.image.url + '" />');
-                                //$("#user-information div").eq(4).find("span").text(user_info.emails[0].value);
-
-                                $("#user-information").show();
-                                $("#login-button").hide();
-                            },
-                            // On error
-                            function (error) {
-                                $("#login-button").removeAttr('disabled');
-                                alert('Error : Failed to get user user information');
-                            }
-                        );
-                    },
-                    // On error
-                    function (error) {
-                        $("#login-button").removeAttr('disabled');
-                        alert('Error : Login Failed');
-                    }
-                );
-            });
+            
         });
 
-        function HandleGoogleApiLibrary() {
-            // Load "client" & "auth2" libraries
-            gapi.load('client:auth2', {
-                callback: function () {
-                    // Initialize client library
-                    // clientId & scope is provided => automatically initializes auth2 library
-                    gapi.client.init({
-                        apiKey: 'AIzaSyBnDVUVUIroavX9FIyf7QbSEjNvQqvfx9g',
-                        clientId: '754193213942-a9fobo4p4djkdrgal6naqt0rue48qdvo.apps.googleusercontent.com',
-                        scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me'
-                    }).then(
-                        // On success
-                        function (success) {
-                            // After library is successfully loaded then enable the login button
-                            $("#login-button").removeAttr('disabled');
-                        },
-                        // On error
-                        function (error) {
-                            alert('Error : Failed to Load Library');
-                        }
-                    );
-                },
-                onerror: function () {
-                    // Failed to load libraries
-                }
-            });
-        }
+      
     </script>
 </body>
 

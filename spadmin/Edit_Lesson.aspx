@@ -300,13 +300,14 @@
             if ($("#address").val() == '') {
                 errmsg += ('請輸入上課地點\r\n');
             }
-
+           var postday = $("#postday").val();
+            if (postday =="")  postday = "2018/1/1";
             var categoryid = $('input:checkbox:checked[name="categoryid"]').map(function () { return $(this).val(); }).get();
-            var tags = $('input:checkbox:checked[name="tags"]').map(function () { return $(this).val(); }).get();  
+            var tags = $('input:checkbox:checked[name="tags"]').map(function () { return $(this).val(); }).get();              
+            var recommend = $("#recommend").prop("checked") == true ? "Y" : "N";       var categoryid = $('input:checkbox:checked[name="categoryid"]').map(function () { return $(this).val(); }).get();
             var lecturerid = $('input:checkbox:checked[name="lecturerid"]').map(function () { return $(this).val(); }).get();
             var status = $("#status").prop("checked") == true ? "Y" : "N";   
-            var recommend = $("#recommend").prop("checked") == true ? "Y" : "N";     
-        
+         
          var Detail = "[";
             var i = 0;
             $("ul#detailitem li").each(function () {
@@ -327,11 +328,22 @@
        
            Detail = JSON.parse(Detail);      
             var dataValue = {
-                 id: articleId, subject: $("#subject").val(), subtitle: $("#subtitle").val()
-                , contents: content, pic: $("#logoPic").val(), keywords: $("#keywords").val()
-                , status: status, categoryid: categoryid
-                , tags: tags, author: "", postday: $("#postday").val(),recommend:recommend
-                ,  kind: "L",
+                Id: articleId,
+                Subject: $("#subject").val(),
+                SubTitle: $("#subtitle").val(),
+                Contents: content,
+                Pic: $("#logoPic").val(),
+                PostDay: postday,
+                Status: status,
+                Viewcount: "0",
+                Keywords: $("#keywords").val(),               
+                Category: categoryid,
+                Recommend: recommend,
+                Tags: tags,
+                Author: "",               
+                kind: "L",
+                Tempid: "",
+                YoutubeUrl:$("#youtubeurl").val(),
                 Lesson: [{
                     Id: articleId, StartDay: $("#startday").val(), EndDay: $("#endday").val(), Lecturer: lecturerid,
                     Lessontime: $("#lessontime").val(), Address: $("#address").val(),
@@ -444,7 +456,13 @@
                                         </div>
                                     </td>
                                 </tr>
-                                                                                                
+                                <tr>
+                                    <td>youtube連結</td>
+                                    <td> <input id="youtubeurl" type="text" style="width: 500px" placeholder="youtube連結"  />
+                                      <br />
+                                        <span id="thumbs"></span>
+                                    </td>
+                                </tr>                                                            
                                 <tr>
                                     <td>內容(*)</td>
                                     <td>

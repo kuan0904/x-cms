@@ -15,7 +15,7 @@ public partial class member_edit : System.Web.UI.Page
         Session["title"] = "個人資料修改│會員中心│" + Application["site_name"];
         if (Session["memberdata"] == null)
         {
-            Response.Redirect("login.html?page=member");
+            Response.Redirect("login.html?returnurl=");
         }
         else
         {

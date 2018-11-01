@@ -36,10 +36,6 @@ public partial class member_order_detail : System.Web.UI.Page
                 }
                 htmlstr = htmlstr.Replace("@detail@", detailstr);
             }
-
-
-
-
            
        }
     }

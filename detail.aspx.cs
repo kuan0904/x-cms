@@ -15,6 +15,7 @@ public partial class detail : System.Web.UI.Page
     public string iscollection = "";
     public string Breadcrumb = "";
     public string subject = "";
+    public string subtitle = "";
     public string contents = "";
     public string pic = "";
     public string postday = "";
@@ -65,8 +66,10 @@ public partial class detail : System.Web.UI.Page
           
             if (MainData.kind =="Y" || MainData.kind == "L") Response.Redirect("/Class/" + MainData.Id );
             subject = MainData.Subject;
+            subtitle = MainData.SubTitle ;
+            if (subtitle != "") subtitle = "<blockquote><p>" + subtitle + "</p></blockquote>";
             Session["title"] = subject + "│" + Application["site_name"];
-            pic = MainData.Pic;
+            pic = MainData.Pic.IndexOf ("/") <0 ? "/webimages/article/" + MainData.Pic : MainData.Pic;
             Session["image"] = Session["websiteurl"] + pic;
             pic = "<a href=\"" + pic + "\">" + "<img class=\"image-full modal-image size-full\" src=\"" + pic + "\" width=\"1350\" height=\"900\" /></a>";
             postday = MainData.PostDay.ToString("yyyy/MM/dd");

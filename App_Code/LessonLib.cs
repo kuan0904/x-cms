@@ -38,11 +38,11 @@ public class LessonLib
                 }
                 else
                 {
-                    List<Lecture> Lecture = new List<Lecture>();
+                    List< article.Lecturer> Lecture = new List<article.Lecturer>();
                     int i = 0;
                     for (i = 0; i < dt.Rows.Count; i++)
                     {
-                        Lecture.Add(new Lecture
+                        Lecture.Add(new article.Lecturer
                         {
                             Id = (int)dt.Rows[i]["tagid"],
                             Title = (string)dt.Rows[i][" Title"],
@@ -74,6 +74,7 @@ public class LessonLib
             n.Articleid = (int)dt.Rows[0]["Articleid"];
             n.Ord_code = (string)dt.Rows[0]["ord_code"];
             n.OrderData = o;
+            n.LessonData = DbHandle.Get_Lesson(n.Articleid.ToString ());
             strsql = @"select *  FROM  tbl_joindetail where joinid=@joinid";
             nvc.Clear();
             dt.Dispose();
@@ -114,7 +115,7 @@ public class LessonLib
                 NameValueCollection nvc = new NameValueCollection            {
                
                
-                { "status","Y" },         
+                { "status","1" },         
                 { "ticketkind",item.TicketKind  },
                 { "Articleid",item.Articleid .ToString ()   },              
                 {"ord_code",item.Ord_code  }
@@ -147,38 +148,53 @@ public class LessonLib
 
 
 
-        public static object Get_Lesson(string id = "")
+        public static LessonData Get_Lesson(string id)
         {
             NameValueCollection nvc = new NameValueCollection();
-            string strsql = "select * from    tbl_Lesson  ";
-            if (id != "")
-            {
-                strsql += "where lessonId =@id";
-                nvc.Add("id", id);
-            }
-            DataTable dt = DbControl.Data_Get(strsql, nvc);
-        
-                LessonLib.MainData MainData = new LessonLib.MainData();
+            string strsql = "select * from    tbl_Lesson  ";        
+                strsql += "where articleId =@id";
+                nvc.Add("id", id);           
+                DataTable dt = DbControl.Data_Get(strsql, nvc);        
+                LessonLib.LessonData MainData = new LessonLib.LessonData();
+                List<article.LessonDetail> detail = new List<article.LessonDetail>();
                 int i = 0;
                 for (i = 0; i < dt.Rows.Count; i++)
                 {
 
-                    MainData.Id = (int)dt.Rows[i]["lessonId"];
-                    MainData.Startday = dt.Rows[i]["startday"].ToString();
-                    MainData.Endday = dt.Rows[i]["Endday"].ToString();
-                    MainData.Subject = (string)dt.Rows[i]["subject"];
-                    MainData.Contents = (string)dt.Rows[i]["Contents"];
+                    MainData.Id = (int)dt.Rows[i]["articleId"];
+                    MainData.StartDay =  (DateTime ) dt.Rows[i]["startday"];
+                    MainData.EndDay  = (DateTime)dt.Rows[i]["Endday"];                   
                     MainData.Address = (string)dt.Rows[i]["Address"];
                     MainData.Lessontime = (string)dt.Rows[i]["Lessontime"];
-                    MainData.Status = (string)dt.Rows[i]["Status"];
-
-
+                    MainData.MainData= article.DbHandle.Get_article(MainData.Id);
+                    MainData.LecturerData = article.DbHandle.Get_Lecturer_list(MainData.MainData.Lesson[0].Lecturer); ;
+                  
                 }
-                dt.Dispose();
-                return MainData;
+                strsql = "select * from   tbl_lesson_class  where articleId =@id";
+                dt = DbControl.Data_Get(strsql, nvc);
+            foreach (DataRow d in dt.Rows)
+            {
+                article.LessonDetail Deta = new article.LessonDetail();
+                Deta.LessonId = (int)d["lessonId"];
+                Deta.Price = (int)d["price"];
+                Deta.Sellprice = (int)d["sellprice"];
+                Deta.Limitnum = (int)d["limitnum"];
+                Deta.Description = (string )d["description"];
+                Deta.Id = MainData.Id;
+                detail.Add(Deta);
+
+
+            }
+            MainData.LessonDetail = detail;
+            dt.Dispose();
+               
+               
+
+
+            return MainData;
             
         }
-        public static object Get_LessonClass(int id)
+        public static article.LessonDetail Get_LessonClass(int id)
         {
             NameValueCollection nvc = new NameValueCollection();
             string strsql = "select * from   tbl_lesson_class  ";
@@ -187,18 +203,17 @@ public class LessonLib
                 nvc.Add("id", id.ToString ());
          
             DataTable dt = DbControl.Data_Get(strsql, nvc);
-
-            LessonLib.ItemData   MainData = new LessonLib.ItemData();
+            article.LessonDetail   MainData = new article.LessonDetail();
             int i = 0;
             for (i = 0; i < dt.Rows.Count; i++)
             {
 
-                MainData.Id = (int)dt.Rows[i]["lessonId"];            
+                MainData.Id = (int)dt.Rows[i]["articleId"];            
                 MainData.Price = (int)dt.Rows[i]["Price"];
                 MainData.Description = (string)dt.Rows[i]["description"];
                 MainData.Sellprice  = (int)dt.Rows[i]["Sellprice"];
-                MainData.Num  = (int)dt.Rows[i]["limitnum"];
-
+                MainData.Limitnum= (int)dt.Rows[i]["limitnum"];
+                MainData.LessonId = (int)dt.Rows[i]["lessonId"];
 
             }
             dt.Dispose();
@@ -217,14 +232,13 @@ public class LessonLib
             }
             else
             {
-                List<Lecture> Lecture = new List<Lecture>();
+                List<article.Lecturer> Lecture = new List<article.Lecturer>();
                 int i = 0;
                 for (i = 0; i < dt.Rows.Count; i++)
                 {
-                    Lecture.Add(new Lecture
+                    Lecture.Add(new article.Lecturer
                     {
                         Id = (int)dt.Rows[i]["tagid"],
-
                         Subject = (string)dt.Rows[i]["tagname"],
                         Contents = (string)dt.Rows[i]["Contents"],
                         Pic = (string)dt.Rows[i]["Contents"]
@@ -239,13 +253,14 @@ public class LessonLib
     }
     public class JoinData {
         public int Id { get; set; }
-        public int Articleid { get; set; }
-        public OrderLib.OrderData OrderData { get; set; }
-        public string TicketKind { get; set; }
-        public List<JoinDetail> JoinDetail { get; set; }
+        public int Articleid { get; set; }      
+        public string TicketKind { get; set; }      
         public string Ord_code { get; set; }
-        public string Status { get; set; }
-    }
+        public string Status { get; set; }    
+        public OrderLib.OrderData OrderData { get; set; }
+        public List<JoinDetail> JoinDetail { get; set; }
+        public LessonData LessonData { get; set; }
+}
     public class JoinDetail
     {
         public int Secno { get; set; }
@@ -258,37 +273,18 @@ public class LessonLib
         public string Status { get; set; }
     }
 
-    public class MainData
-    {
-        public int Id { get; set; }
-        public string Subject { get; set; }
-        public string Pic { get; set; }
-        public string Contents { get; set; }
-        public int Price { get; set; }
-        public int Sellprice { get; set; }
-        public string Status { get; set; }
-        public string Address { get; set; }
-        public string Lessontime { get; set; }
-        public string Startday { get; set; }
-        public string Endday { get; set; }
-        public int Num { get; set; }
-    }
-    public class ItemData
-    {
-        public int Id { get; set; }
-        public string Description { get; set; }      
-        public int Price { get; set; }
-        public int Sellprice { get; set; }   
-        public int Num { get; set; }
 
-    }
-    public class Lecture
+
+    public class LessonData
     {
         public int Id { get; set; }
-        public int Tagid { get; set; }
-        public string Subject { get; set; }
-        public string Title { get; set; }
-        public string Pic { get; set; }
-        public string Contents { get; set; }
+        public article.MainData MainData {get;set;}
+        public DateTime StartDay { get; set; }
+        public DateTime EndDay { get; set; }
+        public string Lessontime { get; set; }
+        public string Address { get; set; }
+        public List<article.LessonDetail>LessonDetail { get; set; }
+        public List< article.Lecturer> LecturerData { get; set; }
     }
+
 }

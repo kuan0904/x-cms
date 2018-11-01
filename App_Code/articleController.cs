@@ -25,7 +25,22 @@ public class articleController : ApiController
     {
         //   return obj.cid;
         int Totalrow = 0;
-        string cid = Convert.ToString(obj.cid);
+        string cid = "";
+      
+        if (obj.cids != null)
+        {
+   
+            cid = obj.cids;
+        }
+        else if ( obj.cid != null)
+        {
+            cid = Convert.ToString(obj.cid);
+
+        }
+     
+      
+       
+        
         string keyword = Convert.ToString(obj.keyword)  ?? "" ;
         int PageSize = obj.pagesize == null ? 5 : Convert.ToInt16(obj.pagesize);
         int PageIdx = obj.idx == null ? 1 : Convert.ToInt16(obj.idx);

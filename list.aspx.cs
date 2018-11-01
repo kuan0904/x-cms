@@ -62,7 +62,7 @@ public partial class list : System.Web.UI.Page
         hot_list_detail.DataSource = hotlist;
         hot_list_detail.DataBind();
         hotlist.Clear();
-
+       // hotlist = article.DbHandle.Get_article_list("1,2,3,4,5,6", "",5,1);
         pagetitle = Unitlib.Get_title((List<Unitlib.MenuModel>)Session["webmenu"], int.Parse(cid));
         Session["active"] = Unitlib.Set_activeId((List<Unitlib.MenuModel>)Session["webmenu"] , int.Parse(cid));  
         Session["title"] = pagetitle + "│" + Application["site_name"];

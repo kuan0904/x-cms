@@ -8,8 +8,7 @@
             dataValue = {"classid":"2"};             
             $.post('/AdBanner', dataValue, function (result) { $("#ad_banner").html(result); });
               dataValue = {"classid":"1"};             
-            $.post('/topBanner', dataValue, function (result) { $("#top_banner").html(result); });
-              document.body.classList.add("hp");
+    
         });
     
     </script>
@@ -58,11 +57,11 @@
                                         <div class="thumbnail">
                                             <div class="pic effect col-xs-4">
                                                 <img src="<%#Eval("pic") %>" alt="" title="<%#Eval("subject") %>">
-                                                <a class="view-more" href="/Article/<%#Eval("id") %>" title="了解更多"><span>more</span></a>
+                                                <a class="view-more" href="/Article/<%#Eval("id") %>#<%#Eval("subject") %>" title="了解更多"><span>more</span></a>
                                             </div>
 
                                             <div class="caption col-xs-8">
-                                                <h3 class="title"><a href="/Article/<%#Eval("id") %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
+                                                <h3 class="title"><a href="/Article/<%#Eval("id") %>#<%#Eval("subject") %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
                                                 <div class=meta-info>
                                                     <%# article.Web.Get_category_link  ((int) Eval("id"))%>
                                                     <div class=post-author>
@@ -85,7 +84,7 @@
                                                  <a  href="/Article/<%#Eval("id") %>"> <p class="description">
                                                    <%# unity.classlib.SubString ( Eval("contents").ToString (),100,"notag") %>
                                                 </p></a> 
-                                                <a  href="/Article/<%#Eval("id") %>" class="btn-read-more">繼續閱讀</a>
+                                                <a  href="/Article/<%#Eval("id") %>#<%#Eval("subject") %>" class="btn-read-more">繼續閱讀</a>
                                             </div>
                                         </div>
                                     </div><!-- col-md-12 END -->

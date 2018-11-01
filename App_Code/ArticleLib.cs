@@ -446,17 +446,27 @@ namespace article
    
         public static List<article.MainData> Get_article_list(string cid, string KeyWords="", int rows = 10, int page = 0,string sort ="")
         {
+        string[] cids = cid.Split(',');
+        string cidp = "";
+           for (int i=0;i<cids.Length;i++)
+            {
+                if(i ==0 )
+                    cidp  = "@cid" + cids[i];
+                else
 
+                    cidp +=  ",@cid" + cids[i] ;
+            }
             List<article.MainData> MainData = new List<article.MainData>();
             DataTable dt;
             string strsql = @"select  * from  tbl_article  where tbl_article.status='Y'  ";
             if (cid != "")
             {
                 strsql += @" and articleId  in (select articleId FROM Tbl_article_category
-                          WHERE categoryid IN(SELECT categoryid  FROM   tbl_category  WHERE parentid = @cid  
-                    or   categoryid = @cid ))";
+                          WHERE categoryid IN(SELECT categoryid  FROM   tbl_category  WHERE parentid in (@cid)  
+                    or   categoryid in (@cid) ))";
 
             }
+            strsql = strsql.Replace("@cid", cidp);
             if (KeyWords != "")
             {
                 strsql += @" and ( subject like @s   or Contents like @s
@@ -486,11 +496,15 @@ namespace article
             }
            
             NameValueCollection nvc = new NameValueCollection
-            {
-                { "cid", cid },
+            {              
+              
                 { "s", "%" + KeyWords  + "%" }
-
             };
+            foreach (string s in cids)
+            {
+                nvc.Add("cid" + s, s);
+            }
+
             dt = DbControl.Data_Get(strsql, nvc);
 
             string[] tags;
@@ -817,5 +831,5 @@ namespace article
         public string Contents { get; set; }
      
     }
-
+  
 }

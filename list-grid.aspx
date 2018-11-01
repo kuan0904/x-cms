@@ -71,7 +71,7 @@
                                         <div class="thumbnail">
                                             <div class="pic effect">
                                                 <img src="<%#Eval("pic") %>" alt="" title="<%#Eval("subject") %>">
-                                                <a class="view-more" href="/Article/<%#Eval("id") %>" title="了解更多"><span>more</span></a>
+                                                <a class="view-more" href="/Article/<%#Eval("id") %>#<%#Eval("subject") %>" title="了解更多"><span>more</span></a>
                                             </div>
 
                                             <div class="caption">
@@ -81,7 +81,7 @@
                                                 </div><!-- meta-info END -->
 
                                                 <h3 class="title">
-                                                    <a href="/Article/<%#Eval("id") %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
+                                                    <a href="/Article/<%#Eval("id") %>#<%#Eval("subject") %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
                                             </div>
                                         </div>
                                     </div><!-- col-md-4 col-sm-6 col-xs-6 END -->

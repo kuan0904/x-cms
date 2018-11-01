@@ -136,8 +136,8 @@ $(document).ready(function() {
                                 <ItemTemplate>
                                 <tr>
                                     <td><%#Eval("Description") %></td>
-                                    <td class="text-right">NT$<%#Eval("sellprice") %> x <%# Eval("num") %></td>
-                                    <td class="text-right">NT$<%#(int)Eval("sellprice")*(int)Eval("num") %></td>
+                                    <td class="text-right">NT$<%#Eval("sellprice") %> x <%# Eval("Limitnum") %></td>
+                                    <td class="text-right">NT$<%#(int)Eval("sellprice")*(int)Eval("Limitnum") %></td>
                                 </tr>
                                 </ItemTemplate>
                             </asp:Repeater>

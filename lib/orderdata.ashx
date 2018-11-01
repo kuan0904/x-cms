@@ -102,7 +102,7 @@ public class orderdata : IHttpHandler,IRequiresSessionState {
             cmd.Parameters.Add("@DeliveryPrice", SqlDbType.VarChar).Value = DeliveryPrice;
             cmd.Parameters.Add("@DiscountPrice", SqlDbType.VarChar).Value = discountprice ;
             cmd.Parameters.Add("@TotalPrice", SqlDbType.VarChar).Value = totalprice;
-            cmd.Parameters.Add("@status", SqlDbType.NVarChar).Value = "N";
+            cmd.Parameters.Add("@status", SqlDbType.NVarChar).Value = "1";
             cmd.Parameters.Add("@paymode", SqlDbType.VarChar).Value = paymode;
             cmd.Parameters.Add("@invoice", SqlDbType.VarChar).Value = invoice;
             cmd.Parameters.Add("@ordname", SqlDbType.VarChar).Value = username ;
@@ -190,6 +190,30 @@ public class orderdata : IHttpHandler,IRequiresSessionState {
             context.Response.Write(status );
             context.Session["ord_code"] =  ord_code  ;
             conn.Close();
+            OrderLib.OrderData o = OrderLib.Get_ordData(ord_code);
+            string   htmlstr = unity.classlib.GetTextString(System.Web.HttpContext.Current.Server.MapPath("/templates/orderdata.html"));
+            htmlstr = htmlstr.Replace("@ord_code@", o.Ord_code);
+            htmlstr = htmlstr.Replace("@ordername@", o.Ordname);
+            htmlstr = htmlstr.Replace("@ordermail@", o.Ordemail);
+            htmlstr = htmlstr.Replace("@orderphone@", o.Ordphone);
+            htmlstr = htmlstr.Replace("@shipname@", o.Ordname);
+            htmlstr = htmlstr.Replace("@shipphone@", o.Ordphone );
+            htmlstr = htmlstr.Replace("@shipaddress@", o.Ordaddress);
+            htmlstr = htmlstr.Replace("@TotalPrice@", "NT$:" + o.TotalPrice.ToString ());
+            htmlstr = htmlstr.Replace("@paymode@", OrderLib.getPaymode ( o.Paymode) );
+            htmlstr = htmlstr.Replace("@ShipPrice@", o.ShipPrice.ToString ());
+            htmlstr = htmlstr.Replace("@delivery_kind@", OrderLib.getdelivery_kind (o.Delivery_kind));
+            string detailstr = "";
+            foreach (var d in o.OrderDetail)
+            {
+                detailstr += "<tr><td>"+ d.P_name  + "</td><td>" + d.Price.ToString () + "</td><td>" + d.Num .ToString () + "</td><td>"+ d.Amount .ToString () +"</td></tr>";
+            }
+            htmlstr = htmlstr.Replace("@detail@", detailstr);
+            string filename = HttpContext.Current.Server.MapPath("/templates/letter.html");
+            string mailbody = unity.classlib.GetTextString(filename);
+            mailbody = mailbody.Replace("@title@", "訂單完成通知信");
+            mailbody = mailbody.Replace("@mailbody@", htmlstr );
+            unity.classlib.SendsmtpMail(email, "訂單完成通知信",  mailbody , "gmail");
         }
     }
     public bool IsReusable {

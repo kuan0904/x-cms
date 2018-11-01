@@ -123,27 +123,42 @@
                        
                      <tr>
                          <td>影片url</td>
-                         <td colspan="3">
-                             <asp:TextBox ID="videourl" runat="server" Width ="500"></asp:TextBox></td>
+                         <td>
+                             <asp:TextBox ID="videourl" runat="server" ></asp:TextBox></td>
+                           <td>供應商</td>
+                                <td >
+                                    <asp:DropDownList ID="supplierid" runat="server" AutoPostBack="true" OnSelectedIndexChanged="supplierid_SelectedIndexChanged">
+                                    </asp:DropDownList>                             
+                                </td>     
                          </tr>
                            
                         <tr>
-                                <td>圖片1</td>
+                                <td>圖片</td>
                                     <td colspan="3"> 
                                     <asp:FileUpload ID="FileUpload1" runat="server" />
-                                    <asp:Image ID="Image1" runat="server" />W360*H360
+                                    <asp:Image ID="Image1" runat="server" />
                                     </td> 
                             </tr>
-                               
+                            <tr>
+                                 <td>設為群組</td>
+                                 <td><asp:DropDownList ID="isgroup" runat="server">
+                                        <asp:ListItem>N</asp:ListItem>
+                                        <asp:ListItem>Y</asp:ListItem>
+                                    </asp:DropDownList></td>
+                                    <td>群組產品</td>
+                                   <td>
+                                       <asp:CheckBoxList ID="groupproduct" runat="server" ></asp:CheckBoxList></td>
+                             </tr>
+                          
                          
                             <tr>
                                 <td >價格</td>
-                            <td>
+                                <td>
                                     <asp:TextBox ID="price" runat="server"></asp:TextBox>
                             
                                </td> 
                                 <td >可售數量</td>
-                            <td>
+                                <td>
                                     <asp:TextBox ID="storage" runat="server"  TextMode="Number"></asp:TextBox>                               
                                </td> 
                             </tr>   
@@ -176,11 +191,21 @@
 
                                 </td>
                             </tr>
-                                   <tr>
+                            <tr>
                                 <td>商品文字簡述</td>
                                 <td colspan="3">
-                                    <asp:TextBox ID="memo" runat="server"  Width ="500"   TextMode="MultiLine"></asp:TextBox></td>
+                                    <asp:TextBox ID="memo" runat="server"   TextMode="MultiLine"></asp:TextBox></td>
                             </tr>
+                             <tr>
+                                    <td>關鍵字</td>
+                                    <td>  <input type="text" name="keywords" id="keywords" value="<%=keywords %>"   placeholder="請輸入關鍵字 ..." />
+
+                                    </td>     
+                                     <td>規格</td>
+                                    <td> <asp:TextBox ID="spec" runat="server"></asp:TextBox>
+
+                                    </td> 
+                                </tr>
                   
                             <tr>
                                   <td>狀態</td>
@@ -228,6 +253,71 @@
 
         </script>
 
+     <script type="text/javascript">
+        jQuery(function ($) {
+            //we could just set the data-provide="tag" of the element inside HTML, but IE8 fails!
+            var tag_input = $('#keywords');
+            if (!(/msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase()))) {
+                tag_input.tag(
+                    {
+                        placeholder: tag_input.attr('placeholder'),
+                        //enable typeahead by specifying the source array
+                        source: ace.variable_US_STATES,//defined in ace.js >> ace.enable_search_ahead
+                    }
+                );
+            }
+            else {
+                //display a textarea for old IE, because it doesn't support this plugin or another one I tried!
+                tag_input.after('<textarea id="' + tag_input.attr('id') + '" name="' + tag_input.attr('name') + '" rows="3">' + tag_input.val() + '</textarea>').remove();
+                //$('#form-field-tags').autosize({append: "\n"});
+            }
+     
+
+        });
+         
+
+    $(function () {
+        var availableTags = [''];
+        function split(val) {
+            return val.split(/,\s*/);
+        }
+        function extractLast(term) {
+            return split(term).pop();
+        }
+         //與TAG 結合下拉
+        $(".tags input[type='text']")            
+            .on("keydown", function (event) {
+                if (event.keyCode === $.ui.keyCode.TAB &&
+                    $(this).autocomplete("instance").menu.active) {
+                    event.preventDefault();
+                }
+            })
+            .autocomplete({
+                minLength: 0,
+                source: function (request, response) {
+                    // delegate back to autocomplete, but extract the last term
+                    response($.ui.autocomplete.filter(
+                        availableTags, extractLast(request.term)));
+                },
+                focus: function () {
+                    // prevent value inserted on focus
+                    return false;
+                },
+                select: function (event, ui) {
+                    var terms = split(this.value);
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+                    terms.push(ui.item.value);
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push("");
+
+                    this.value = terms.join(", ");
+                    return false;
+                }
+            });
+    });
+</script>
                         <table class="table table-striped table-bordered bootstrap-datatable datatable">
                             <tr>
                                 <td colspan="2">

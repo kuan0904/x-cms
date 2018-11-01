@@ -35,7 +35,7 @@ public partial class process_step3 : System.Web.UI.Page
         article.MainData MainData = new article.MainData();
         MainData = HttpContext.Current.Session["MainData"] as article.MainData;
         List<article.Lecturer> Lecturer = new List<article.Lecturer>();
-        List<LessonLib.ItemData> classdata = new List<LessonLib.ItemData>();
+        List<article.LessonDetail> classdata = new List<article.LessonDetail>();
         List<LessonLib.JoinData> joindata = new List<LessonLib.JoinData>();
         if (MainData != null)
         {
@@ -66,8 +66,7 @@ public partial class process_step3 : System.Web.UI.Page
 
             Session["description"] = unity.classlib.noHTML(contents);
             Session["keywords"] = MainData.Keywords;
-            article.DbHandle.Add_views(MainData.Id);
-
+         
             List<article.Category> cate = new List<article.Category>();
             cate = (List<article.Category>)article.DbHandle.Get_article_category(MainData.Id);
             foreach (var a in cate)
@@ -88,14 +87,14 @@ public partial class process_step3 : System.Web.UI.Page
             {
                 if (joinnum[i] != "0")
                 {
-                    LessonLib.ItemData ItemData = (LessonLib.ItemData)LessonLib.DbHandle.Get_LessonClass(int.Parse(lessonid[i]));
-                    classdata.Add(new LessonLib.ItemData
+                    article.LessonDetail ItemData = (article.LessonDetail)LessonLib.DbHandle.Get_LessonClass(int.Parse(lessonid[i]));
+                    classdata.Add(new article.LessonDetail
                     {
                         Id = (int)ItemData.Id,
                         Description = (string)ItemData.Description,
                         Price = (int)ItemData.Price,
                         Sellprice = (int)ItemData.Sellprice,
-                        Num = int.Parse(joinnum[i])
+                        Limitnum= int.Parse(joinnum[i])
                     });
                     int j = 0;
                     for (j = 1; j <= int.Parse(joinnum[i]); j++)

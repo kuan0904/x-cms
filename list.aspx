@@ -52,11 +52,11 @@
                                     <div class="image" style="background-image: url('/webimages/article/<%#Eval("pic") %>');">
                                         <div class="carousel-caption">
                                             <div class="container">
-                                                <h3><a href="/Article/<%#Eval("id") %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
+                                                <h3><a href="/Article/<%#Eval("id") %>#<%#Eval("subject") %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
                                                 <p><%#Eval("subject") %></p>
                                             </div>
                                         </div>
-                                        <a href="/Article/<%#Eval("id") %>" class="view-more" title="了解更多">我想了解</a>
+                                        <a href="/Article/<%#Eval("id") %>#<%#Eval("subject") %>" class="view-more" title="了解更多">我想了解</a>
                                     </div>
                                 </div>
                                     </ItemTemplate>
@@ -75,14 +75,14 @@
                                 <div class="thumbnail">
                                     <div class="pic effect col-md-4 col-sm-4 col-xs-12">
                                         <img src="<%#Eval("pic") %>" alt="" title="<%#Eval("subject") %>">
-                                        <a class="view-more" href="/Article/<%#Eval("id") %>" title="了解更多"><span>more</span></a>
+                                        <a class="view-more" href="/Article/<%#Eval("id") %>#<%#Eval("subject") %>" title="了解更多"><span>more</span></a>
                                     </div>
                                     <div class="caption col-md-8 col-sm-8 col-xs-12">
                                         <div class="category">
                                             <%# article.Web.Get_category_link ((int) Eval("id"))%>
                                         </div>
                                         <h3 class="new-index-list-title">
-                                            <a href="/Article/<%#Eval("id") %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a>
+                                            <a href="/Article/<%#Eval("id") %>#<%#Eval("subject") %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a>
                                         </h3>
                                         <p class="description">
                                                 <%# unity.classlib.SubString ( Eval("contents").ToString (),100,"notag") %>             </p>

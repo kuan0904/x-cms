@@ -20,7 +20,7 @@
             return (v.match(r) == null) ? false : true;
         }
 
-        $(document).ready(function () {    
+        $(document).ready(function () {
             getCounty();
             $("#p_COUNTYID").change(function () {
                 if ($(this).val() != "") {
@@ -49,41 +49,52 @@
 
             });
 
-            $('.kindid input[type=checkbox]').click(function () {
-                // code goes here 
-                alert('123');
-            });
+            function getCity(COUNTYID, obj) {
+                if (COUNTYID != null) {
+                    $.post('/lib/city.ashx', { "p_COUNTYID": COUNTYID, "_": new Date().getTime() }, function (data) {
+                        if (data != "") {
+                            $(obj).find("option").remove();
+                            $(obj).html(data);
+                        }
+                    });
+                }
+            }
+            function getCounty() {
+                $.post('/lib/county.ashx', { "_": new Date().getTime() }, function (data) {
+                    if (data != "") {
+                        $("#p_COUNTYID").find("option").remove();
+                        $("#p_COUNTYID").html(data);
+                    }
+                });
+            }
+            function padLeft(str, lenght) {
+                if (str.length >= lenght)
+                    return str;
+                else
+                    return padLeft("0" + str, lenght);
+            }
 
-            $("#num").change(function () {
-                num = $("#num").val();
+
+            $("select[name='num']").on("change", function () {
+                console.log(this + "->change");               
+                num = this.value;
                 amount = price * num;
                 recalculate();
-                var j = $('ul#loc li').size();
+                //var j = $('ul#loc li').size();
 
-            });
-            $("#num").trigger("change");
-            $(".sel_ProNum").each(function (index) {
-                $("#nogroup").hide();
-                amount = 0;
-                ship_price = 0;
-                recalculate();
             });
         });
-        function num_change(obj, p_id) {
-            num = obj.value;
-            amount = 0;
-            $(".sel_ProNum").each(function (index) {
-                var num = $(this).find('select[name="p_num"]').val();
-                var price = $(this).find('#price').html();
-
-                $(this).find('#subtotal').html(num * price);
-                amount += num * price;
-            });
-            recalculate();
-        }
-
         function recalculate() {
-            var ship_price ='<%= ship_price%>';
+            var ship_price = '<%= ship_price%>';
+             amount = 0;              
+             $(".sel_ProNum").each(function (index) {               
+                var num = $(this).find('select[name="num"]').val();
+                var price = $(this).find('.price').html();                
+               // $(this).find('#subtotal').html(num * price);                 
+                 amount += num * price;
+                
+            });
+          
             if (amount >= <%= freeship%>) ship_price = 0;
             if (amount == 0) ship_price = 0;
             var totalprice = amount + parseInt(ship_price);
@@ -91,38 +102,6 @@
             $("#ship_price").html(ship_price);
             $("#totalprice").html(totalprice);
         }
-
-
-        function getCity(COUNTYID, obj) {
-            if (COUNTYID != null) {
-                $.post('/lib/city.ashx', { "p_COUNTYID": COUNTYID, "_": new Date().getTime() }, function (data) {
-                    if (data != "") {
-                        $(obj).find("option").remove();
-                        $(obj).html(data);
-                    }
-                });
-            }
-        }
-
-        function getCounty() {
-            $.post('/lib/county.ashx', { "_": new Date().getTime() }, function (data) {
-                if (data != "") {
-                    $("#p_COUNTYID").find("option").remove();
-                    $("#p_COUNTYID").html(data);
-                }
-            });
-        }
-
-
-
-
-        function padLeft(str, lenght) {
-            if (str.length >= lenght)
-                return str;
-            else
-                return padLeft("0" + str, lenght);
-        }
-
 
         function chkform() {
             var x1 = $("#ord_name").val();
@@ -136,8 +115,9 @@
             var email = $("#email").val();
             var ord_sex = $('input[name="ord_sex"]:checked').val();
             var ord_pay = $('input[name=ord_pay]:checked').val();
-            var num = $("#num").val();
-
+            var num ="";
+            var price = "";
+            var p_id = "";
             if (typeof (ord_pay) == "undefined") {
                 alert('請選擇送貨方式方式');
                 flag = false;
@@ -149,7 +129,7 @@
                 return false;
             }
 
-            var price = $("#price").html();
+           
             var flag = true;
             if (x1 == "") { alert('請輸入訂購人姓名'); $("#ord_name").focus(); flag = false; return false; }
             if (x2 == "") { alert('請輸入訂購人電話'); $("#ord_tel").focus(); flag = false; return false; }
@@ -158,23 +138,19 @@
             if (x32 == "") { alert('請輸入訂購人地區'); $("#p_CITYID").focus(); flag = false; return false; }
             if (x33 == "") { alert('請輸入訂購人地址'); $("#p_ADDRESS").focus(); flag = false; return false; }
             x33 = $("#ord_address").val() + x33;
-
             if (email == "") { alert('請輸入訂購人email'); $("#email").focus(); flag = false; return false; }
-
-            if ($(".sel_ProNum").length != 0) {
-                p_id = "";
-                num = "";
-                price = "";
-            }
+      
 
             $(".sel_ProNum").each(function (index) {
-                if ($(this).find('select[name="p_num"]').val() != '0') {
-                    p_id += $(this).find('#p_id').val() + ";";
-                    num += $(this).find('select[name="p_num"]').val() + ";";
-                    price += $(this).find('#price').html(); + ";";
+                obj = $(this).find('select[name="num"]').val();                
+                if (obj != '0' && obj != undefined) {
+                    p_id += $(this).find('.p_id').val() + ";";
+                    num += $(this).find('select[name="num"]').val() + ";";
+                    price += $(this).find('.price').html(); + ";";
                 }
             });
-            if ($("#totalprice").html() == '0' || $("#totalprice").html() == '') {
+
+            if ($("#totalprice").html() == '0' || num == '') {
                 alert('請選擇數量');
                 flag = false;
                 return false;
@@ -268,21 +244,22 @@
                                                     <th width="15%">價格</th>
                                                     <th width="18%">數量</th>
                                                 </tr>
-                                                <tr class="has-error">
-                                                    <td>
-                                                        <img src="<%=pic1 %>" />
+                                                <asp:Repeater ID="Repeater1" runat="server">
+                                                <ItemTemplate>
+                                                <tr class="sel_ProNum has-error">
+                                                    <td><input type="hidden" name="p_id" class="p_id" value ="<%#Eval("p_id") %>" />
+                                                        <img src="<%#Eval("pic") %>" />
                                                     </td>
                                                     <td>
-                                                        <p><%=productname %></p>
-                                                        <small>119 x 101 x 120 mm</small>
+                                                        <p><%#Eval("productname")%></p>
+                                                        <small><%#Eval("spec")%></small>
                                                     </td>
-                                                    <td class="price">NT$<%=price %>
-                                                        <!--small>NT$<%=price %></small-->
+                                                    <td >NT$<span class="price"><%#Eval("price") %></span>
+                                                        <!--small>NT$原價/small-->
                                                     </td>
-                                                    <td class="text-center">
-                                                        <!--清單最大值為剛票券數量上限-->
-                                                        <select class="form-control" id="num">
-                                                            <option>選擇數量</option>
+                                                    <td class="text-center">                                                        
+                                                        <select class="form-control" name="num" >
+                                                            <option value ="0">選擇數量</option>
                                                             <%for (int i = 1; i < 9; i++)
                                                                 { %>
                                                             <option><%=i %></option>
@@ -291,6 +268,9 @@
 
                                                     </td>
                                                 </tr>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
+                                              
 
                                             </tbody>
                                         </table>
@@ -412,7 +392,7 @@
                                         </div>
                                         <div class="form-group">
                                             送貨方式 
-					  <input type="radio" name="ord_pay" value="<%=shippingKind  %>" checked  />
+					                        <input type="radio" name="ord_pay" value="<%=shippingKind  %>" checked  />
                                             <%=OrderLib.getdelivery_kind (shippingKind)  %>
                                         </div>
 

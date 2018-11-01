@@ -39,7 +39,7 @@ public partial class process_step4 : System.Web.UI.Page
         string paymode = Request["paymode"];
         MainData = HttpContext.Current.Session["MainData"] as article.MainData;
         List<article.Lecturer> Lecturer = new List<article.Lecturer>();
-        List<LessonLib.ItemData> classdata = new List<LessonLib.ItemData>();
+        List<article.LessonDetail> classdata = new List<article.LessonDetail>();
         List<LessonLib.JoinData> joindata = new List<LessonLib.JoinData>();
         if (MainData != null)
         {
@@ -68,7 +68,7 @@ public partial class process_step4 : System.Web.UI.Page
 
             Session["description"] = unity.classlib.noHTML(contents);
             Session["keywords"] = MainData.Keywords;
-            article.DbHandle.Add_views(MainData.Id);
+          
 
             List<article.Category> cate = new List<article.Category>();
             cate = (List<article.Category>)article.DbHandle.Get_article_category(MainData.Id);
@@ -84,50 +84,52 @@ public partial class process_step4 : System.Web.UI.Page
             }
             string[] joinnum = Request.Form["joinnum"].Split(',');
             string[] lessonid = Request.Form["lessonid"].Split(',');
-            List<LessonLib.JoinList> item = new List<LessonLib.JoinList>();
+            List<LessonLib.JoinDetail> item = new List<LessonLib.JoinDetail>();
             string[] cname = Request.Form["name"].Split(',');
             string[] cphone = Request.Form["phone"].Split(',');
             string[] cemail = Request.Form["email"].Split(',');
             string[] sellprice = Request.Form["sellprice"].Split(',');
             int i = 0;
+            int j = 0;
             foreach (string s in joinnum)
             {
-                if (joinnum[i] != "0")
+                if (s != "0")
                 {
-                    LessonLib.ItemData ItemData = (LessonLib.ItemData)LessonLib.DbHandle.Get_LessonClass(int.Parse(lessonid[i]));
-                    classdata.Add(new LessonLib.ItemData
-                    {
-                        Id = (int)ItemData.Id,
-                        Description = (string)ItemData.Description,
-                        Price = (int)ItemData.Price,
-                        Sellprice = (int)ItemData.Sellprice,
-                        Num = int.Parse(joinnum[i])
-                    });                  
-                    totalnum += int.Parse(joinnum[i]);
-                    totalprice += (int)ItemData.Sellprice * int.Parse(joinnum[i]);
-                }
-                int j = 0;
-                for (j = 0; j <int.Parse ( joinnum[i]); j++)
-                {
+                 
+                    int num = int.Parse(s);
+                    for (int idx = 0; idx < num; idx++) { 
+                        article.LessonDetail ItemData = LessonLib.DbHandle.Get_LessonClass(int.Parse(lessonid[i]));
+                        //classdata.Add(new article.LessonDetail
+                        //{
+                        //    LessonId = int.Parse(lessonid[i]),
+                        //    Description = (string)ItemData.Description,
+                        //    Price = (int)ItemData.Price,
+                        //    Sellprice = (int)ItemData.Sellprice,
+                        //    Limitnum = int.Parse(joinnum[i])
+                        //});
+                        totalnum += int.Parse(joinnum[i]);
+                        totalprice += (int)ItemData.Sellprice * 1;
+                        item.Add(new LessonLib.JoinDetail
+                        {
+                            LessonId = ItemData.LessonId ,
+                            Name = cname[j],
+                            Phone = cphone[j],
+                            Email = cemail[j],
+                            Amount = ItemData.Sellprice 
 
-                   
-                    item.Add(new LessonLib.JoinList
-                    {
-                        LessonId = int.Parse(lessonid[j]),
-                        Name = cname[j],
-                        Phone = cphone[j],
-                        Email = cemail[j],
-                        Amount = int.Parse(sellprice[j]),
-
-                    });
-                   
+                        });
+                        j++;
+                    }
+                    i++;
                 }
-                i++;
+          
+              
             }
-            num = classdata.Count;
+         
+            num = item.Count;
             //Repeater1.DataSource = classdata;
             //Repeater1.DataBind();
-           
+          
           
             int ship_free = 0;
             string memberid = "0";
@@ -178,8 +180,8 @@ public partial class process_step4 : System.Web.UI.Page
             {
                 Ord_code =ord_code ,
                 Articleid = MainData.Id,              
-                TicketKind = Request.Form["kind"],           
-                JoinLists = item
+                TicketKind = Request.Form["kind"],
+                JoinDetail = item
             };
 
 

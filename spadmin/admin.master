@@ -211,7 +211,7 @@ input.Big{
 						<li class="light-blue">
 							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
 									<span class="user-info">
-									<%=  Session["username"].ToString () %>
+									<%=Session["username"] ==null ? "" :Session["username"].ToString () %>
 								</span>
 
 								<i class="icon-caret-down"></i>

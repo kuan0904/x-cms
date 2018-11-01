@@ -70,7 +70,7 @@ public class MemberLib
 
         }
         public static Mmemberdata Add(string email, string password, string fbid = ""
-                , string googleid = "", string username = "", string phone = "")
+                ,  string username = "", string phone = "")
         {
             Mmemberdata result = new Mmemberdata();
             result = Check_exist(email);
@@ -83,7 +83,7 @@ public class MemberLib
                     { "email", email  },
                     { "password", password  },
                     { "fbid", fbid  },
-                    { "googleid", googleid  },
+                 
                     { "phone", phone  }
                 };
                 DbControl.Data_add(strsql, nvc);
@@ -91,10 +91,6 @@ public class MemberLib
                 Mail.Join_member(result.Memberid);
             }
 
-            if (googleid != "") { 
-                result = GoogleLogin(googleid, email, username);
-          
-            }
             return result  ;
 
         }
@@ -117,27 +113,7 @@ public class MemberLib
             return result;
 
         }
-        public static Mmemberdata GoogleLogin(string googleid,string email, string displayName)
-        {
-            Mmemberdata result = new Mmemberdata();
-            string strsql = @"select memberid from tbl_MemberData  where  (googleid=@googleid ) "; 
-            NameValueCollection nvc = new NameValueCollection
-            {       
-                {"googleid",googleid }
-            };
-            DataTable dt = DbControl.Data_Get(strsql, nvc);
-            if (dt.Rows.Count > 0) result = GetData(dt.Rows[0]["memberid"].ToString());
-            else
-            {
-                MemberLib.Member.Add(email, email, "", googleid, displayName, "");
-                dt = DbControl.Data_Get(strsql, nvc);
-                if (dt.Rows.Count > 0) result = GetData(dt.Rows[0]["memberid"].ToString());
-            }
-            dt.Dispose();
-        
-            return result;
-
-        }
+    
         public static Mmemberdata GetData(string memberid)
         {
            
@@ -191,7 +167,8 @@ public class MemberLib
         public static dynamic MyOrderData(string memberid)
         {
 
-            string strsql = @" select  * FROM  tbl_OrderData         
+            string strsql = @" select  * FROM  tbl_OrderData INNER JOIN
+                            tbl_OrderDetail ON tbl_OrderData.ord_id = tbl_OrderDetail.ord_id    
              where memberid =@memberid";
 
             NameValueCollection nvc = new NameValueCollection
@@ -210,11 +187,16 @@ public class MemberLib
         public static dynamic MyJoinLesson(string memberid)
         {
 
-            string strsql = @" SELECT          *
-                    FROM              tbl_OrderData INNER JOIN
+            string strsql = @"SELECT      tbl_lesson.startday,  tbl_lesson.address, tbl_lesson.lessontime, tbl_OrderData.ord_code, tbl_OrderData.memberid, tbl_Joindata.joinid, 
+                            tbl_OrderData.paymode, tbl_OrderData.TotalPrice, tbl_OrderData.ordname, tbl_OrderData.ordphone, 
+                            tbl_OrderData.ord_date, tbl_article.articleId, tbl_article.subject, tbl_article.pic, tbl_lesson.endday
+
+FROM              tbl_OrderData INNER JOIN
                             tbl_Joindata ON tbl_OrderData.ord_code = tbl_Joindata.ord_code INNER JOIN
-                            tbl_article ON tbl_Joindata.Articleid = tbl_article.articleId  
-             where memberid =@memberid";
+                            tbl_article ON tbl_Joindata.Articleid = tbl_article.articleId INNER JOIN
+                            tbl_lesson ON tbl_Joindata.Articleid = tbl_lesson.articleId
+WHERE          (tbl_OrderData.memberid = @memberid)
+ORDER BY   tbl_OrderData.ord_code DESC ";
 
             NameValueCollection nvc = new NameValueCollection
             {

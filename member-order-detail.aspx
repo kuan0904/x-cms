@@ -9,7 +9,7 @@
                 <div class="container">
                     <ol class="breadcrumb">
                         <li>
-                            <a href="hp.html">HOME</a>
+                            <a href="/">HOME</a>
                         </li>
                         <li class="active">會員中心</li>
                         <li class="active">變更密碼</li>

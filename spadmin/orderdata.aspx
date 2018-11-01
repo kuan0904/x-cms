@@ -64,7 +64,7 @@
                                     <td><%# get_pd(Eval ("ord_code").ToString () ).Replace (",","<BR>")   %></td>
                                     <td><%# Eval("TotalPrice") %></td>
                                      <td><%#   Eval ("paymode").ToString () %> </td>
-                                      <td><%# unity.classlib.get_ord_status  ( Eval ("status").ToString ())%>  </td>
+                                      <td><%# OrderLib.get_ord_status   ( Eval ("status").ToString ())%>  </td>
                                     <td><%# Eval ("paid").ToString ()=="Y" ? "Y":"N"%>  </td>
                                                               
                                        </tr>

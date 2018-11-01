@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="admin.master" AutoEventWireup="true" CodeFile="Edit_Class.aspx.cs" Inherits="admin_EditClass" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/spadmin/admin.master" AutoEventWireup="true" CodeFile="edit_tabstate.aspx.cs" Inherits="spadmin_edit_tabstate" %>
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
@@ -10,15 +10,13 @@
     <asp:MultiView ID="MultiView1" runat="server">
 
         <asp:View ID="View1" runat="server">    
-            <div class="box-header well" data-original-title>
-                <asp:DropDownList ID="DropDownList1" runat="server" AutoPostBack="True" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged">
-                </asp:DropDownList>
+            <div class="box-header well" data-original-title> 
                 <asp:LinkButton ID="Btn_add" runat="server" class="btn btn-large" OnClick="Btn_add_Click" Text=""><i class="icon-plus"></i>新增資料</asp:LinkButton>
                
-                <asp:HiddenField ID="parentid" runat="server" />
+             
             </div>
             <div class="box-content">
-                <asp:ListView ID="ListView1" runat="server" DataKeyNames="categoryid"  OnPagePropertiesChanging="ContactsListView_PagePropertiesChanging">
+                <asp:ListView ID="ListView1" runat="server" DataKeyNames="id"  OnPagePropertiesChanging="ContactsListView_PagePropertiesChanging">
                     <EmptyDataTemplate>
                         <table runat="server" style="background-color: #FFFFFF; border-collapse: collapse; border-color: #999999; border-style: none; border-width: 1px;">
                             <tr>
@@ -29,13 +27,10 @@
                     <ItemTemplate>
                         <tr>
                             <td style="text-align: center">
-                                <asp:LinkButton ID="LinkButton1" runat="server" class="btn btn-info" CommandArgument='<%# Eval("categoryid")%>' OnClick="link_edit" Text=""><i class="icon-edit icon-white"></i>編輯</asp:LinkButton>
-                                <asp:LinkButton ID="LinkButton2" runat="server" class="btn btn-danger" CommandArgument='<%# Eval("categoryid").ToString()%>' OnClick="link_delete" OnClientClick="return confirm('你確定要刪除嗎?')" Text="" Visible="False"><i class="icon-trash icon-white"></i>刪除</asp:LinkButton>
-                            </td>
-                            <td><%#Eval("categoryid")%></td>
-                            <td><%#Eval("upname")%></td>
-                            <td><%#Eval("title")%></td>
-                            <td><%#Eval("sort")%></td>
+                                <asp:LinkButton ID="LinkButton1" runat="server" class="btn btn-info" CommandArgument='<%# Eval("id")%>' OnClick="link_edit" Text=""><i class="icon-edit icon-white"></i>編輯</asp:LinkButton>
+                                <asp:LinkButton ID="LinkButton2" runat="server" class="btn btn-danger" CommandArgument='<%# Eval("id").ToString()%>' OnClick="link_delete" OnClientClick="return confirm('你確定要刪除嗎?')" Text="" Visible="False"><i class="icon-trash icon-white"></i>刪除</asp:LinkButton>
+                            </td>                          
+                            <td><%#Eval("name")%></td>                         
                             <td style="text-align: center"><%#( Eval("status").ToString() == "Y") ? "啟用": "停用"%></td>
                               <td style="text-align: center"></td>
                         </tr>
@@ -48,10 +43,8 @@
                                         <thead>
                                             <tr runat="server">
                                                 <th runat="server"></th>
-                                                <th runat="server">代號</th>
-                                                <th runat="server">上層名稱</th>
-                                                <th runat="server">名稱</th>
-                                                <th runat="server">排序 </th>
+                                                                                      
+                                                <th runat="server">名稱</th>                                   
                                                 <th runat="server">狀態</th>
                                                 <th runat="server">刪除</th>
                                             </tr>
@@ -83,21 +76,15 @@
         <asp:View ID="View2" runat="server">
             <asp:HiddenField ID="Selected_id" runat="server" />
          
+                    <div class="box-header well" data-original-title>
+                        <h2>網站版位設定</h2>
+                    </div>  
 
                     <div class="box-content">
                        
                             <table  class="table table-striped table-bordered bootstrap-datatable datatable">
                              
-                                <tr>
-                                    <td>
-                                        上層選單
-                                    </td>
-                                    <td>
-                                        <asp:DropDownList ID="DropDownList2" runat="server"  >
-                                        </asp:DropDownList>
-
-                                    </td>
-                                </tr>
+                            
 
                                 <tr>
                                     <td>
@@ -106,33 +93,7 @@
                                         <asp:TextBox ID="class_name" runat="server"></asp:TextBox>
                                     </td>
                                 </tr>
-
-                                   <tr>
-                                    <td>
-                                        連結</td>
-                                    <td>
-                                        <asp:TextBox ID="pagename" runat="server"></asp:TextBox>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>型態</td>
-                                    <td>
-                                        <asp:DropDownList ID="kind" runat="server">
-                                            <asp:ListItem Value ="1">LIST</asp:ListItem>
-                                            <asp:ListItem Value ="2">GRID</asp:ListItem>
-                                             <asp:ListItem Value ="3">LINK</asp:ListItem>
-                                        </asp:DropDownList></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        優先順序</td>
-                                    <td>
-                                        <asp:TextBox ID="sort" runat="server" TextMode="Number"></asp:TextBox>
-                                    </td>
-                                </tr>
-
-                           
-                        
+                                                    
                                 <tr>
                                     <td>
                                         狀態</td>

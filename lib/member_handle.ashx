@@ -65,24 +65,7 @@ public class member_handle : IHttpHandler,IRequiresSessionState {
             context.Response.Write(status);
             context.Response.End();
         }
-        if (p_ACTION == "googleLogin")
-        {
-
-            result = MemberLib.Member.GoogleLogin (p_ACCOUNT, p_PASSWD,p_username);
-
-            if (result.Memberid  !=0)            {
-                context.Session["memberdata"] = result;
-
-                status  = "Y";
-            }
-            else
-            {
-                status = "-1";
-            }
-
-            context.Response.Write(status );
-            context.Response.End();
-        }
+     
         if (p_ACTION == "Register")
         {
             result = MemberLib.Member.Check_exist(p_ACCOUNT);

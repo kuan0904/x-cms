@@ -74,11 +74,11 @@ $(document).ready(function() {
                                 <tr>
                                     <%# Container.ItemIndex  ==0  ?     "<td  rowspan=\""+ num  +"\">票券</td>" :""%>
                                     <td><%#Eval("Description") %></td>
-                                    <td class="text-right">NT$<%#Eval("sellprice") %> x <%# Eval("num") %></td>
-                                    <td class="text-right">NT$<%#(int)Eval("sellprice")*(int)Eval("num") %></td>
+                                    <td class="text-right">NT$<%#Eval("sellprice") %> x <%# Eval("Limitnum") %></td>
+                                    <td class="text-right">NT$<%#(int)Eval("sellprice")*(int)Eval("Limitnum") %></td>
                                 </tr>
                                 </ItemTemplate>
-                            </asp:Repeater>
+                            </asp:Repeater>`
                                     <tr class="underline">
                                         <td>取票方式</td>
                                         <td colspan="3">

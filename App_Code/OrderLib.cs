@@ -167,10 +167,12 @@ public class OrderLib
         o.Companyno  = dt.Rows[0]["companyno"].ToString();
         o.Shipzip = dt.Rows[0]["zip"].ToString();
         o.Ordaddress = dt.Rows[0]["ordaddress"].ToString();
+        string countyid = dt.Rows[0]["countryid"].ToString();
         strsql = @"select *  FROM    tbl_city  where cityid=@id";
         nvc.Clear();
         nvc.Add("id", dt.Rows[0]["cityid"].ToString ());
         dt = DbControl.Data_Get(strsql, nvc);
+        //county縣
         ItemData item = new ItemData();     
         if (dt.Rows.Count >0)
         {
@@ -180,20 +182,21 @@ public class OrderLib
         }
         o.Shipcity = item;
         dt.Dispose();
-
-        strsql = @"select *  FROM   tbl_county where  countyid=@id";
         nvc.Clear();
-        nvc.Add("id", dt.Rows[0]["countyid"].ToString());
-        dt = DbControl.Data_Get(strsql, nvc);
-        item = new ItemData();
-        if (dt.Rows.Count > 0)
-        {
-            item.Id = (int)dt.Rows[0]["countyid"];
-            item.Name = dt.Rows[0]["countyname"].ToString();
+        if (countyid != "") { 
+            strsql = @"select *  FROM   tbl_county where  countyid=@id";      
+            nvc.Add("id", countyid);
+            dt = DbControl.Data_Get(strsql, nvc);
+            item = new ItemData();
+            if (dt.Rows.Count > 0)
+            {
+                item.Id = (int)dt.Rows[0]["countyid"];
+                item.Name = dt.Rows[0]["countyname"].ToString();
 
+            }
+            o.Shipcounty = item;
+            dt.Dispose();
         }
-        o.Shipcounty = item;
-        dt.Dispose();
         strsql = @"select *  FROM    tbl_OrderDetail INNER JOIN
                             tbl_productData ON tbl_OrderDetail.p_id = tbl_productData.p_id where ord_id=@ord_id";
         nvc.Clear();
@@ -223,10 +226,10 @@ public class OrderLib
         string strsql = @"insert into tbl_OrderData
             (ord_code, memberid, paymode, invoice,  receivetime, contents,  SubPrice, DeliveryPrice, DiscountPrice, 
                 TotalPrice, status,ordname,ordphone,ordaddress,shipname,shipphone,shipaddress,companyno,title
-            ,ordgender,shipgender,coupon_no,email,zip,cityid,countryid,delivery_kind) values 
+            ,ordgender,shipgender,coupon_no,email,zip,cityid,countryid,delivery_kind,ord_date) values 
                 (@ord_code,@memberid, @paymode, @invoice, @receivetime, @contents,@SubPrice, @DeliveryPrice, 
                 @DiscountPrice,@TotalPrice, @status,@ordname,@ordphone,@ordaddress,@shipname,@shipphone,@shipaddress
-                ,@companyno,@title,@ordgender,@shipgender,@coupon_no,@email,@zip,@cityid,@countryid,@delivery_kind)";
+                ,@companyno,@title,@ordgender,@shipgender,@coupon_no,@email,@zip,@cityid,@countryid,@delivery_kind,@ord_date)";
 
         NameValueCollection nvc = new NameValueCollection
         {
@@ -257,6 +260,7 @@ public class OrderLib
             { "delivery_kind", o.Delivery_kind },
             { "cityid",o. Ordcityid.Id .ToString ()    },
             { "countryid", o.Ordcountyid.Id  .ToString ()    },
+            { "ord_date", DateTime.Today.ToShortDateString () }
 
         };
         int i = DbControl.Data_add(strsql, nvc);

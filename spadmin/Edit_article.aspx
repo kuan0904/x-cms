@@ -89,6 +89,7 @@
                                             <tr runat="server">
                                                 <th runat="server"></th>
                                                 <th runat="server">id</th>
+                                                             <th runat="server">分類</th>
                                                 <th runat="server">標題</th>
                                                 <th runat="server">圖示</th>
                                                 <th runat="server">狀態</th>
@@ -128,10 +129,14 @@
                     
                 <button type="button" class="btn btn-primary" name="preview" onclick ="p('<%# Eval("articleid") %>');"><i class="icon-external-link icon-white"></i>預覽</button>  <br />
                        
-                                    </td>
+                                    </td> 
                                 <td>
                                     <%# Eval("articleid") %>
                                 </td>
+                                 <td>
+                                   <%# article.Web.Get_category_link ((int)Eval ("articleid")).Replace ("</a>","</a><br>") %>
+                                </td>
+                               
                                 <td>
                                     <%# Eval("subject") %>
                                 </td>
@@ -181,7 +186,7 @@
                     document.getElementById('console').innerHTML = ("<img src=\"" + result.Pic + "\" width=300>");
                   
                     $('#logoPic').val(result.Pic); 
-                     $("#youtubeurl").trigger("blur");
+                    $("#youtubeurl").trigger("blur");
                 });
             }
         }
@@ -318,7 +323,8 @@
                                 <tr>
                                     <td>副標題</td>
                                     <td>
-                                        <input id="SubTitle" type="text" style="width: 500px" placeholder=""  /></td>
+                                        <textarea id="SubTitle" name="SubTitle" cols="80" rows="3"></textarea>
+                                   </td>
                                 </tr>
                                 <tr>
                                     <td>youtube連結</td>

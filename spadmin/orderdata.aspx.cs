@@ -86,7 +86,9 @@ public partial class spadmin_orderdata : System.Web.UI.Page
         ord_code = dt.Rows[0]["ord_code"].ToString();
         ord_date = DateTime.Parse(dt.Rows[0]["crtdat"].ToString()).ToString("yyyy/MM/dd hh:mm");
         paymode.Text =dt.Rows[0]["paymode"].ToString();
-        invoice .SelectedValue = dt.Rows[0]["invoice"].ToString();
+     
+        invoice.SelectedIndex = invoice.Items.IndexOf(invoice.Items.FindByValue(dt.Rows[0]["invoice"].ToString()));
+
         contents.Text  = dt.Rows[0]["contents"].ToString();
         ordname = dt.Rows[0]["ordname"].ToString();
         ordphone = dt.Rows[0]["ordphone"].ToString();
@@ -117,16 +119,16 @@ public partial class spadmin_orderdata : System.Web.UI.Page
         Repeater1.DataSource = dt;
         Repeater1.DataBind();
 
-        strsql = "select * from CardAUTHINFO where ord_code=@ord_code";
-        nvc.Clear();
-        nvc.Add("ord_code", ord_code);
-        dt = DbControl.Data_Get(strsql, nvc);
-        if (dt.Rows.Count > 0)
-        {
-            CardAUTHINFO = "授權碼:" + dt.Rows[0]["AUTHCODE"].ToString() + "授權結果:" + dt.Rows[0]["AUTHMSG"].ToString();
+        //strsql = "select * from CardAUTHINFO where ord_code=@ord_code";
+        //nvc.Clear();
+        //nvc.Add("ord_code", ord_code);
+        //dt = DbControl.Data_Get(strsql, nvc);
+        //if (dt.Rows.Count > 0)
+        //{
+        //    CardAUTHINFO = "授權碼:" + dt.Rows[0]["AUTHCODE"].ToString() + "授權結果:" + dt.Rows[0]["AUTHMSG"].ToString();
 
-        }
-        dt.Dispose();
+        //}
+        //dt.Dispose();
 
         MultiView1.ActiveViewIndex = 1;
         Btn_save.CommandArgument = "edit";
@@ -198,7 +200,7 @@ public partial class spadmin_orderdata : System.Web.UI.Page
 
         NameValueCollection nvc = new NameValueCollection();
         string strsql = @" SELECT  *  FROM   tbl_OrderData INNER JOIN
-                      tbl_payStatus ON tbl_OrderData.status =payStatus.id            where ord_id > 0 ";
+                      tbl_payStatus ON tbl_OrderData.status =tbl_payStatus.id            where ord_id > 0 ";
         if ( qpaykind.SelectedIndex > 0)
         {
             strsql += " and paymode= '" + qpaykind.SelectedValue + "' ";
@@ -247,9 +249,9 @@ public partial class spadmin_orderdata : System.Web.UI.Page
     public string get_pd(string ord_code)
     {
         string msg = "";
-        string strsql = @"SELECT cast(productdata.productname AS NVARCHAR) + ','
-        FROM productdata INNER JOIN orderdetail ON  productdata.p_id = orderdetail.p_id
-        WHERE orderdetail.ord_code = @ord_code
+        string strsql = @"SELECT cast(tbl_productdata.productname AS NVARCHAR) + ','
+        FROM tbl_productdata INNER JOIN tbl_orderdetail ON  tbl_productdata.p_id = tbl_orderdetail.p_id
+        WHERE tbl_orderdetail.ord_code = @ord_code
         FOR XML PATH('') ";
         NameValueCollection nvc = new NameValueCollection();
         nvc.Add("ord_code", ord_code);

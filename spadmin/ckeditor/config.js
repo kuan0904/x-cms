@@ -26,6 +26,12 @@ CKEDITOR.editorConfig = function (config) {
     config.extraAllowedContent = 'style script';
     config.height = '700px'; //可以這樣寫
     config.width = 1000; //也可以這樣寫
-
+   // config.removePlugins = 'image,table,tabletools,horizontalrule';
+   // config.removeButtons = 'Anchor,Underline,Strike,Subscript,Superscript';
+    config.format_tags = 'p;h1;h2;pre';
+    config.allowedContent =
+        'h1 h2 h3 p blockquote strong em;' +
+        'a[!href];' +
+        'img(left,right)[!src,alt,width,height];';
 
 };

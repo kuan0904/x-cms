@@ -25,7 +25,8 @@
                 //unfixed: function() { console.log( "unfixed" ) }, // 物件不是fixed時，會呼叫此函式
             });
 
-
+              $(window).on('resize', function () {
+              });
             var searchtext = "";
             $(".post-tags a").each(function () {
                 if (searchtext != "") searchtext += ","

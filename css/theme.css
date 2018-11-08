@@ -7796,7 +7796,7 @@ textarea {
 
 
 .new-index-main-title {
-    margin: 40px 15px 30px;
+    /* margin: 40px 15px 30px; */
     border-bottom: 1px solid #333;
     font-family: 'Playfair Display', serif;
     color: #333;
@@ -7812,8 +7812,7 @@ h1.new-index-main-title {
     font-size: 50px;
 }
 h2.new-index-main-title {
-    padding: 10px 0;
-    font-size: 36px;
+    padding-bottom: 6px;
 }
 
 h3.new-index-main-title {

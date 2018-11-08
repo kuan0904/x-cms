@@ -19,7 +19,7 @@ public class fb_login : IHttpHandler ,IRequiresSessionState {
         string name="";
         string login_type = context.Request.QueryString["login_type"] != null ? context.Request.QueryString["login_type"] : "";
         string returnurl = context.Request.QueryString["page"] != null ? context.Request.QueryString["page"] : "";
-        string server_name = "https://www.culturelaunch.net"  ;
+        string server_name = "https://" + HttpContext.Current.Request.Url.Host   ;
         if (login_type == "cookie") {
 
             email =context.Request.Cookies  ["u_fb_email"].Value ;
@@ -93,9 +93,9 @@ public class fb_login : IHttpHandler ,IRequiresSessionState {
             }
             context.Session["memberdata"] = result;
         }
-        string msg = "";
+        string msg = "<script>alert('登入成功');";
 
-        if (returnurl != "" && returnurl != "undefined" && returnurl != "1")
+        if (returnurl != "" && returnurl != "undefined" && returnurl != null)
         {
             returnurl = Base64Decode(returnurl);
             if (returnurl.IndexOf("http") == -1)
@@ -106,9 +106,14 @@ public class fb_login : IHttpHandler ,IRequiresSessionState {
                     returnurl = server_name + "/" + returnurl;
             }
 
-            msg = "<script>alert('登入成功');location.href='" + returnurl + "';</script>";
+            msg += "location.href='" + returnurl + "';</script>";
         }
-
+        else
+        {
+            returnurl = "/";
+        }
+        msg += "location.href='" + returnurl + "';</script>";
+        msg +=  "</script>";
         context.Response.Write(msg);
 
 

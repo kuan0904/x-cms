@@ -273,6 +273,12 @@ namespace article
                 MainData.kind = dt.Rows[0]["kind"].ToString();
                 MainData.Recommend = dt.Rows[0]["Recommend"].ToString();
                 MainData.YoutubeUrl  = dt.Rows[0]["YoutubeUrl"].ToString();
+                MainData.NextRead = dt.Rows[0]["NextRead"].ToString();
+                //if (MainData.YoutubeUrl != "")
+                //{
+                //    string v = MainData.YoutubeUrl.Substring(MainData.YoutubeUrl.IndexOf("?v=") +3, MainData.YoutubeUrl.Length  - MainData.YoutubeUrl.IndexOf("?v=")-3);
+                //    MainData.Pic = "http://img.youtube.com/vi/" + v + "/maxresdefault.jpg";
+                //}
             }
             dt.Dispose();
             nvc.Clear();
@@ -469,8 +475,9 @@ namespace article
             strsql = strsql.Replace("@cid", cidp);
             if (KeyWords != "")
             {
+              
                 strsql += @" and ( subject like @s   or Contents like @s
-            or subtitle like @s or author like @s
+                or subtitle like @s or author like @s
                     or keywords like @s 
                         or  articleId in (
                         SELECT    tbl_article_tag.articleId
@@ -530,7 +537,8 @@ namespace article
                     Keywords = dt.Rows[idx]["Keywords"].ToString(),
                     Viewcount = (int)dt.Rows[idx]["viewcount"],
                     Author = dt.Rows[idx]["Author"].ToString(),
-                    YoutubeUrl= dt.Rows[idx]["YoutubeUrl"].ToString(),
+                    YoutubeUrl = dt.Rows[idx]["YoutubeUrl"].ToString(),
+                    NextRead = dt.Rows[idx]["NextRead"].ToString()
                 });
                 nvc.Clear();
                 nvc = new NameValueCollection
@@ -607,7 +615,7 @@ namespace article
             string strsql = @"update  tbl_article set 
                     subject =@subject,pic=@pic,subtitle=@subtitle,postday=@postday,contents=@contents ,
                     keywords=@keywords,status=@status,author=@author,recommend=@recommend
-                    ,kind=@kind,YoutubeUrl=@YoutubeUrl
+                    ,kind=@kind,YoutubeUrl=@YoutubeUrl,NextRead=@NextRead
                     where articleId =@id ";
             NameValueCollection nvc = new NameValueCollection
             {
@@ -621,7 +629,8 @@ namespace article
                 { "status", ad.Status },
                 {"recommend",ad.Recommend  },
                 { "kind", ad.kind =="L" ? "Y":"N" },
-                {"YoutubeUrl",ad.YoutubeUrl  }
+                {"YoutubeUrl",ad.YoutubeUrl  },
+                {"NextRead",ad.NextRead  }
                 //{ "startday",ad.StartDay.ToString("yyyy/MM/dd")  },
                 //{ "endday",ad.EndDay.ToString("yyyy/MM/dd") },
               
@@ -768,6 +777,7 @@ namespace article
         public List<Lesson> Lesson { get; set; }
         public string Tempid { get; set; }
         public string YoutubeUrl { get; set; }
+        public string NextRead { get; set; }
      
     }
     public class ItemData

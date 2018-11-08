@@ -184,7 +184,7 @@ public partial class spadmin_article : System.Web.UI.Page
     public static dynamic Set_data(string kind, string Id, string[] Category
         , string Subject, string SubTitle, string Contents, string Pic, string PostDay, string Recommend
         , string[] Tags, string Author, string Keywords, string Status, List<article.Lesson> Lesson
-        ,string  YoutubeUrl)
+        ,string  YoutubeUrl,string NextRead)
     {
         //如果用dynamic 傳,就會有LIST        postdata = postdata[0];
         string result = "";
@@ -236,6 +236,7 @@ public partial class spadmin_article : System.Web.UI.Page
             kind = kind,
             Tempid = HttpContext.Current.Session["uploadid"].ToString(),
             YoutubeUrl =YoutubeUrl  ,
+            NextRead =NextRead 
           //  Category =  postdata["Category"]  ,
           //  Lesson = postdata.Lesson  ,
         };

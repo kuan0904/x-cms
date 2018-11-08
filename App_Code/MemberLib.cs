@@ -76,8 +76,8 @@ public class MemberLib
             result = Check_exist(email);
             if (result.Memberid == 0)
             {
-                string strsql = @"insert  into tbl_MemberData ( email,password ,fbid,googleid,phone)
-                values  ( @email,@password,@fbid,@googleid,@phone ) ";
+                string strsql = @"insert  into tbl_MemberData ( email,password ,fbid,phone)
+                values  ( @email,@password,@fbid,@phone ) ";
                 NameValueCollection nvc = new NameValueCollection
                 {
                     { "email", email  },
@@ -312,7 +312,7 @@ FROM              tbl_article INNER JOIN
         public string Username { get; set; }
         public string Password { get; set; }
         public string FBid { get; set; }
-        public string Googleid { get; set; }
+      
         public DateTime Birthday { get; set; }
         public int Countyid { get; set; }
         public int Cityid { get; set; }

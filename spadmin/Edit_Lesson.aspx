@@ -124,7 +124,7 @@
                     CKEDITOR.instances['contents'].setData(result.Contents);                           
                     document.getElementById('console').innerHTML = ("<img src=\""+ result.Pic + "\" width=300>");
                     $('#logoPic').val(result.Pic); 
-                   
+                   $('#NextRead').val(result.NextRead);
                     if (result.Lesson[0] != undefined) {
                         $('#address').val(result.Lesson[0].Address);  
                         $('#lessontime').val(result.Lesson[0].Lessontime);
@@ -348,7 +348,8 @@
                     Id: articleId, StartDay: $("#startday").val(), EndDay: $("#endday").val(), Lecturer: lecturerid,
                     Lessontime: $("#lessontime").val(), Address: $("#address").val(),
                     LessonDetail: Detail
-                }]
+                }],
+                NextRead:$("#NextRead").val()
             };
 
             if (errmsg == '') {
@@ -521,6 +522,12 @@
                                     <td>
                                         <input id="recommend" name="recommend" type="checkbox" class="ace ace-switch ace-switch-6" />
                                         <span class="lbl"></span>
+                                    </td>
+                                </tr>    <tr>
+                                    <td>延伸閱讀</td>
+                                    <td>
+                                        <input type="text" name="NextRead" id="NextRead" value=""   placeholder="請輸入文章標題 ..." />
+
                                     </td>
                                 </tr>
                                 <tr>

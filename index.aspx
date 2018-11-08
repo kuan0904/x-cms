@@ -4,8 +4,7 @@
            
         $(document).ready(function () {     
             var dataValue = {"kind":"list"};             
-            $.post('/hot_list', dataValue, function (result) { $("#hot_list").html(result); });
-            dataValue = {"classid":"2"};             
+             
             $.post('/AdBanner', dataValue, function (result) { $("#ad_banner").html(result); });
               dataValue = {"classid":"1"};             
     
@@ -49,7 +48,7 @@
                     <div class="row">
                         <div class="col-md-8 col-sm-8 main-content">
                             <div class=main-content-inner>
-                                <h2 class="main-title">熱門文章</h2>
+                                <h2 class="main-title">最新文章</h2>
                                 <div class="news-wrap news-list">
                                     <asp:Repeater ID="hot_list_detail" runat="server" EnableViewState ="false" >
                                         <ItemTemplate>
@@ -94,11 +93,30 @@
                                 <div class=clearfix></div>
                             </div><!-- main-content-inner END -->
                         </div>
-                        <div class="col-md-4 col-sm-4 main-sidebar">
-                            <!-- <div class=main-sidebar-inner> -->
-                                 <div class="block-wrap" id="ad_banner"></div>   
-                                 <div class="block-wrap"  id="hot_list"></div>
-                            <!--</div> main-sidebar-inner END -->
+                        <div class="col-md-4 col-sm-4 main-sidebar">                         
+                                
+                                 <div class="block-wrap">
+                                <h2 class="new-index-main-title text-center">熱門文章</h2>
+                                <div class="news-wrap news-list">                              
+                                        <asp:Repeater ID="news_hotlist" runat="server" EnableViewState ="false" >
+                                            <ItemTemplate>
+                                             <div class="thumbnail">
+                                                <div class="pic effect">
+                                                    <img src="<%#Eval("pic") %>" alt="" title="<%#Eval("subject") %>">
+                                                    <a class="view-more" href="/Article/<%#Eval("id") %>#<%#Eval("subject") %>" title="了解更多"><span>more</span></a>
+                                                </div>
+
+                                                <div class="caption">
+                                                    <h3 class="new-index-list-title"><a href="/Article/<%#Eval("id") %>#<%#Eval("subject") %>" title="<%#Eval("subject") %>"><%#Eval("subject") %></a></h3>
+                                                </div>
+                                            </div>
+                                            </ItemTemplate>
+                                        </asp:Repeater>
+                                    </div>
+
+                                 </div>
+                            <div class="block-wrap" id="ad_banner"></div>   
+                                     
                         </div><!-- col-md-4 END -->
                     </div><!-- row END -->
                   </div><!-- container END -->

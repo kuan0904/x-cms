@@ -21,9 +21,9 @@
         vid = ( results === null ) ? url : results[1];
 
         if(size == "small"){
-          return "http://img.youtube.com/vi/"+vid+"/2.jpg";
+          return "http://img.youtube.com/vi/"+vid+"/sddefault.jpg";
         }else {
-          return "http://img.youtube.com/vi/"+vid+"/0.jpg";
+          return "http://img.youtube.com/vi/"+vid+"/maxresdefault.jpg";
         }
       }
     });
@@ -44,7 +44,7 @@
                 url = $.jYoutube($('#youtubeurl').val());
             
                 // Now append this image to <div id="thumbs">
-                $('#thumbs').append($('<img src="'+url+'" />'));
+                $('#thumbs').html($('<img src="'+url+'" />'));
             }
         });
     });
@@ -184,7 +184,7 @@
                     $('#postDay').val(result.PostDay);   
                     CKEDITOR.instances['contents'].setData(result.Contents);                           
                     document.getElementById('console').innerHTML = ("<img src=\"" + result.Pic + "\" width=300>");
-                  
+                   $('#NextRead').val(result.NextRead);   
                     $('#logoPic').val(result.Pic); 
                     $("#youtubeurl").trigger("blur");
                 });
@@ -258,7 +258,8 @@
                     Lesson: [{
                         Id: 0, StartDay:"", EndDay: "", Lecturer: [], Lessontime: "", Address:"" ,
                         LessonDetail: { Id: 0, LessonId: 0, Price: 0, Sellprice:0, Limitnum:0, Description: "" }
-                    }]
+                }],
+                NextRead:$("#NextRead").val()
              
             };
           //   var result = dataValue.postdata[0];         
@@ -405,6 +406,13 @@
                                     <td>
                                         <input id="recommend" name="recommend" type="checkbox" class="ace ace-switch ace-switch-6" />
                                         <span class="lbl"></span>
+                                    </td>
+                                </tr>
+                                  <tr>
+                                    <td>延伸閱讀</td>
+                                    <td>
+                                        <input type="text" name="NextRead" id="NextRead" value=""   placeholder="請輸入文章標題 ..." />
+
                                     </td>
                                 </tr>
                                 <tr>

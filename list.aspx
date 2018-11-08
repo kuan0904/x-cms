@@ -125,7 +125,7 @@
                 <div class="block-wrap" id="ad_banner"></div>   
 
                 <div class="block-wrap">
-                            <h2 class="new-index-main-title text-center">Newsletter</h2>
+                            <h2 class="new-index-main-title text-center">訂閱電子報</h2>
                             <div class="epaper-box">
                                 <p>精選國內外設計與藝文大事、設計大師最新訪談，每週最新資訊定期遞送給您。</p>
                                 <div class="form">

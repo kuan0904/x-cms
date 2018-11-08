@@ -32,7 +32,12 @@ public partial class index : System.Web.UI.Page
         hot_list_detail.DataBind();
         hotlist.Clear();
 
-     
+        
+        hotlist = article.DbHandle.Get_article_list("", "", 5, 1, "views");
+
+        news_hotlist.DataSource = hotlist;
+        news_hotlist.DataBind();
+        hotlist.Clear();
 
     }
 

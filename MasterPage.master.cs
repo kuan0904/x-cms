@@ -16,8 +16,8 @@ public partial class MasterPage : System.Web.UI.MasterPage
     public string active ;
     public string FacebookAppId = "164103481107660";
     public string cid = "";
-    //public string _status = "";
-    //public string _link = "";
+    public string _status = "";
+    public string _link = "";
     public string Articleid = "";
     protected void Page_Init(object sender, EventArgs e)
     {

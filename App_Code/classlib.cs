@@ -239,7 +239,7 @@ namespace unity {
     public static class classlib
     {
         public static string dbConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["dbconnConnection"].ConnectionString;
-       private static string delivername = "藝時代";
+       private static string delivername = "創藝時代";
         private static string servicemail = "event@xnet.world";
         private static string smtpuid = "event@xnet.world";
         private static string smtppwd = "5505361323222635";
@@ -848,7 +848,68 @@ namespace unity {
         }
       
     }
-  
-  
+
+
+    public class FatchU2BUtility
+    {
+
+        public string YoutubeURL { get; private set; }
+        public string Id { get; private set; }
+        public string Title { get; private set; }
+        public string Intro { get; private set; }
+        public string ImageLarge { get; private set; }
+        public string ImageSmall { get; private set; }
+
+        public FatchU2BUtility(string youtubeURL)
+        {
+            // <p id="eow-description" >
+
+            var src = youtubeURL;
+            var regexIntro = new Regex(
+               @"(p id=""eow-description"" >)(?<INTRO>.*?)(</p>)",
+                RegexOptions.IgnoreCase);
+            MatchCollection mcIntro = regexIntro.Matches(src);
+
+            //<meta name="title" content="
+            var regexTitle = new Regex(
+              @"(<meta name=""title"" content="")(?<TITLE>.*?)("">)",
+               RegexOptions.IgnoreCase);
+            MatchCollection mcTitle = regexTitle.Matches(src);
+
+
+
+            var regexId = new Regex(
+             @"(data-button-menu-id=""some-nonexistent-menu"" data-video-id="")(?<ID>.*?)("")",
+              RegexOptions.IgnoreCase);
+            MatchCollection mcId = regexId.Matches(src);
+
+
+            if (mcIntro.Count != 0)
+                Intro = mcIntro[0].Groups["INTRO"].Value;
+            else
+                throw new Exception("Can't find Intro");
+
+            if (mcTitle.Count != 0)
+
+                Title = mcTitle[0].Groups["TITLE"].Value;
+            else
+                throw new Exception("Can't find Title");
+
+            if (mcId.Count != 0)
+                Id = mcId[0].Groups["ID"].Value;
+            else
+                throw new Exception("Can't find Id");
+
+
+            ImageSmall = "http://img.youtube.com/vi/" + Id + "/2.jpg";
+            ImageLarge = "http://img.youtube.com/vi/" + Id + "/0.jpg";
+
+            YoutubeURL = "http://www.youtube.com/watch?v=" + Id;
+
+
+        }
+
+
+    }
 
 }

@@ -464,7 +464,9 @@ namespace article
             }
             List<article.MainData> MainData = new List<article.MainData>();
             DataTable dt;
-            string strsql = @"select  * from  tbl_article  where tbl_article.status='Y'  ";
+            string strsql = @"select  * from  tbl_article  where tbl_article.status='Y' 
+            and  postday <= CONVERT(VARCHAR(10), GETDATE(), 111) ";
+          
             if (cid != "")
             {
                 strsql += @" and articleId  in (select articleId FROM Tbl_article_category

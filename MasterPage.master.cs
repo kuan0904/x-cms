@@ -52,7 +52,7 @@ public partial class MasterPage : System.Web.UI.MasterPage
         mrptmenu.DataSource = Session["webmenu"];//  JsonConvert.SerializeObject(aa);
         mrptmenu.DataBind();      
         if (Session["active"].ToString() == "3") logo = " emba";
-        if (Application["site_name"].ToString ().IndexOf ( "藝時代")==-1) logo = "";
+        if (Application["site_name"].ToString ().IndexOf ( "幸福台灣")==-1) logo = "";
      
     }
     public string checkitem(object sender, int id)

@@ -33,18 +33,18 @@
                 searchtext += $(this).html();
             });
 
-            $.post("http://210.61.119.142:2322/tagrec", { "search_string": searchtext, "fullmatch": "1", "search_type": "tag", "limit": "10" },
-                function (data) {
-                    var html = "";
-                    data = JSON.parse(data);
-                    $.each(data, function (key, val) {
+            //$.post("http://210.61.119.142:2322/tagrec", { "search_string": searchtext, "fullmatch": "1", "search_type": "tag", "limit": "10" },
+            //    function (data) {
+            //        var html = "";
+            //        data = JSON.parse(data);
+            //        $.each(data, function (key, val) {
 
-                        html += "<li> <i class=\"fa-li fa fa-angle-right\"></i><a href=\"http://www.businesstoday.com.tw/" + val["transaction"] + "\" target=_blank>" + val["title"] + "</a></li>";
+            //            html += "<li> <i class=\"fa-li fa fa-angle-right\"></i><a href=\"http://www.businesstoday.com.tw/" + val["transaction"] + "\" target=_blank>" + val["title"] + "</a></li>";
 
-                    });
-                    $("#pushread").html(html);
+            //        });
+            //        $("#pushread").html(html);
 
-                }, "json");
+            //    }, "json");
 
         });
 

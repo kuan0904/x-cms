@@ -78,7 +78,7 @@ public class member_handle : IHttpHandler,IRequiresSessionState {
             {
 
 
-                context.Session["memberdata"] = MemberLib.Member.Add (p_ACCOUNT, p_PASSWD);
+                context.Session["memberdata"] = MemberLib.Member.Add (p_ACCOUNT, p_PASSWD,"");
                 status = "Y";
             }
 
@@ -101,7 +101,7 @@ public class member_handle : IHttpHandler,IRequiresSessionState {
                 m.Countyid = int.Parse(context.Request["countyid"]);
                 m.Zip = context.Request["zip"];
                 m.Password  = context.Request["Password"];
-                m.Email = o.Email;
+                m.Email = context.Request["Email"];
 
                 m= MemberLib.Member.Update(m);
                 context.Session["memberdata"] = m;

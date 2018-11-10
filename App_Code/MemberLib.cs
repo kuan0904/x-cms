@@ -51,12 +51,14 @@ public class MemberLib
             return m;
 
         }
-        public static Mmemberdata Check_exist(string id,string fbid ="")
+        public static Mmemberdata Check_exist(string id)
         {
-           
-            Mmemberdata result = new Mmemberdata ();
-            result.Memberid = 0;
-            string strsql = "select memberid from  tbl_MemberData where  email =@id or fbid=@id ";
+
+            Mmemberdata result = new Mmemberdata
+            {
+                Memberid = 0
+            };
+            string strsql =  " select memberid from  tbl_MemberData where  fbid =@id "; 
 
             NameValueCollection nvc = new NameValueCollection
             {
@@ -64,45 +66,45 @@ public class MemberLib
             };
             DataTable dt = DbControl.Data_Get(strsql, nvc);
             if (dt.Rows.Count != 0)
-                result = GetData(dt.Rows[0]["memberid"].ToString()) ;
+                result = GetData(dt.Rows[0]["memberid"].ToString());
             dt.Dispose();
+          
             return result;        
 
         }
-        public static Mmemberdata Add(string email, string password, string fbid = ""
-                ,  string username = "", string phone = "")
+        public static Mmemberdata Add(string email, string password, string fbid  ,  string username = "", string phone = "")
         {
             Mmemberdata result = new Mmemberdata();
-            result = Check_exist(email);
-            if (result.Memberid == 0)
-            {
-                string strsql = @"insert  into tbl_MemberData ( email,password ,fbid,phone)
-                values  ( @email,@password,@fbid,@phone ) ";
+            if (fbid == "") fbid = email;
+            //result = Check_exist(email);
+            //if (result.Memberid == 0)
+            //{
+                string strsql = @"insert  into tbl_MemberData ( email,password ,fbid,phone,username)
+                values  ( @email,@password,@fbid,@phone ,@username) ";
                 NameValueCollection nvc = new NameValueCollection
                 {
                     { "email", email  },
                     { "password", password  },
                     { "fbid", fbid  },
-                 
+                    { "username", username  },
                     { "phone", phone  }
                 };
                 DbControl.Data_add(strsql, nvc);
-                result = Login(email, password, "");
-                Mail.Join_member(result.Memberid);
-            }
+                result = Login(fbid, password);
+               // Mail.Join_member(result.Memberid);
+           // }
 
             return result  ;
 
         }
-        public static Mmemberdata Login(string email, string password,string fbid="")
+        public static Mmemberdata Login(string email, string password )
         {
             Mmemberdata result = new Mmemberdata();
-            string strsql = @"select memberid from tbl_MemberData  where  (email=@email and password=@password ) ";
-            if (fbid != "") {strsql = @"select memberid from tbl_MemberData  where  (fbid=@fbid ) "; }
-         
+            string strsql = @"select memberid from tbl_MemberData  where  (fbid=@email  and password=@password ) ";
+             
             NameValueCollection nvc = new NameValueCollection
             {
-                { "fbid", fbid  },
+             
                 { "email", email  },
                 { "password", password  },
               

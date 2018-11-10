@@ -45,11 +45,12 @@
             var date =year + "-" + month + "-" + day ;
             return date;
         };
-      
+       
         var birthday = m.Birthday;
         if (birthday != null ) birthday = $.date(birthday )
         $("#username").val(m.Username);
-        $("label[for='email']").text(m.Email);
+        $("#email").val(m.Email);
+         $("label[for='memberid']").text(m.Memberid);
         $("#phone").val(m.Phone);
         $("#mobile").val(m.Mobile);
         $("#address").val(m.Address);
@@ -57,6 +58,7 @@
         $("#password").val(m.Password);
         $("#passconfirm").val(m.Password);
         $("#zip").val(m.Zip);
+        if (m.Email != '' &&  m.Email != null ) { $('#email').attr("readonly", "readonly");}
         if (m.Cityid != "") {
          
             $("#cityid").find("option[value='" +  m.Cityid + '-' +m.Zip + "']").prop("selected", true);
@@ -68,6 +70,7 @@
             countyid = $("#countyid").val();
             var phone = $("#phone").val();
             var mobile = $("#mobile").val();
+            var email = $("#email").val();
             cityid = $("#cityid").val();
             var password = $("#password").val();
             var passconfirm = $("#passconfirm").val();
@@ -76,14 +79,18 @@
             if (cityid != "" && cityid != null) {
                 zip = cityid.split('-')[1];
                 cityid = cityid.split('-')[0];
-            }                       
+            }
+            if (email == "") {
+                alert("請輸入email");
+                $("#email").focus();
+            }                   
             if (username == "") {
                 alert("請輸入姓名");
                 $("#username").focus();
             } else if (password == "") {
                 alert("請輸入密碼");
                 $("#password").focus();
-            } else if (password.length < 6 || password.length > 16) {
+            } else if (password.length < 6 || password.length > 20) {
                 alert("請輸入英數6-16字元");
                 $("#password").focus();
             }
@@ -104,6 +111,7 @@
                 $.post('/lib/member_handle.ashx', {
                     "p_ACTION": "Update",
                     "username": username,
+                    "email": email,
                     "mobile": mobile,                 
                     "phone": phone,
                     "cityid": cityid,
@@ -222,6 +230,10 @@
                         </article>
                         <form class="form-member">
                             <!--Default-->
+                              <div class="form-group">
+                                 會員編號:
+                                    <label for="memberid">  </label>
+                            </div>
                             <div class="form-group">
                                 <label for="">姓名
                                     <span class="text-danger">*</span>
@@ -230,8 +242,8 @@
                             </div>
                              <div class="form-group">
                                     <label for="">電子信箱</label>
-                                    <br />  
-                                    <label for="email">  </label>
+                                 
+                                    <input name="email" type="text" id="email" placeholder="輸入email"  value =""  class="form-control"/> 
                                 </div>        
                                            <div class="form-group">
                                     <label for="exampleInputPassword1">行動電話</label>                               

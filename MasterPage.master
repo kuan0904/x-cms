@@ -393,7 +393,7 @@
                 //分享至臉書
                 $(".share-fb").click(function () {                       
                     dataValue = { "id": $(this).data('item'), "kind": $(this).attr('title'), "url": encodeURIComponent(location.href) };
-                    $.postJSON('/api/article/SocialShare',JSON.stringify( dataValue), 'application/json; charset=utf-8',function (result) {});
+                    $.postJSON('/api/article/SocialShare', JSON.stringify(dataValue), 'application/json; charset=utf-8', function (result) { });
                     window.open('https://www.facebook.com/share.php?u='.concat(encodeURIComponent(location.href)), "_blank", "toolbar=yes,location=yes, directories=no, status=no,menubar=yes,scrollbars=yes,esizable=no, copyhistory=yes, width=600,  height=400")
                  })
                 $(".share-twitter").click(function () {                 
@@ -554,7 +554,7 @@
 </div>
        -->
 
-<script src="http://xa.xnet.world/track/ua.js?var=4"></script>
-<script>//ua("culturelaunch", "culturelaunch", '', '', '');</script>
+<script src="https://xa.xnet.world/track/ua.js?var=4"></script>
+<script>ua("culturelaunch", "culturelaunch", '', '', '');</script>
 </body>
 </html>

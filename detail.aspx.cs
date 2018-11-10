@@ -81,11 +81,8 @@ public partial class detail : System.Web.UI.Page
             if (MainData.YoutubeUrl != "")
             {
                 Match regexMatch = Regex.Match(MainData.YoutubeUrl, "^[^v]+v=(.{11}).*",
-                        RegexOptions.IgnoreCase);
-                string v = regexMatch.Groups[1].Value;
-                FatchU2BUtility util = new FatchU2BUtility(MainData.YoutubeUrl);
-                pic = " <iframe width = \"853\" height = \"480\" src = \"https://www.youtube.com/embed/"+ v +"\" frameborder = \"0\" allow = \"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen ></iframe >";
-
+                                   RegexOptions.IgnoreCase);
+                string v = regexMatch.Groups[1].Value; pic = " <iframe width = \"853\" height = \"480\" src = \"https://www.youtube.com/embed/" + v + "\" frameborder = \"0\"  allowfullscreen ></iframe >";
             }
             viewcount = MainData.Viewcount.ToString();
             tags = article.Web.Get_category_link(MainData.Id);
@@ -100,21 +97,26 @@ public partial class detail : System.Web.UI.Page
 
             List<article.MainData> hotlist = new List<article.MainData>();
             hotlist = article.DbHandle.Get_article_list("", "", 5, 1);
-           
-            if (MainData.NextRead !="" && MainData.NextRead !=null)
+
+            if (MainData.NextRead != "" && MainData.NextRead != null)
             {
                 List<article.MainData> nextlist = new List<article.MainData>();
                 string[] nextread = MainData.NextRead.Split(',');
 
-             
-                foreach (string  n in nextread)
+                int i = 0;
+                foreach (string n in nextread)
                 {
-                    nextlist = article.DbHandle.Get_article_list("", MainData.NextRead , 1, 1);
-                    if (nextlist.Count != 0 ){
-                        var itemToRemove = hotlist.Single(r => r.Id == nextlist.FirstOrDefault().Id);
-                        if (itemToRemove !=null) hotlist.Remove(itemToRemove);
-                        hotlist.Insert(0, nextlist.FirstOrDefault());
+
+                    nextlist = article.DbHandle.Get_article_list("", n.Trim(), 1, 1);
+                    if (nextlist.Count != 0)
+                    {
+
+                        var itemToRemove = hotlist.Find(r => r.Id == nextlist[0].Id);
+                        if (itemToRemove != null) hotlist.Remove(itemToRemove);
+                        hotlist.Insert(i, nextlist.FirstOrDefault());
+                        i++;
                     }
+                    nextlist.Clear();
                 }
 
             }
@@ -157,66 +159,4 @@ public partial class detail : System.Web.UI.Page
             }
         }
     }
-}
-
-public class FatchU2BUtility
-{
-
-    public string YoutubeURL { get; private set; }
-    public string Id { get; private set; }
-    public string Title { get; private set; }
-    public string Intro { get; private set; }
-    public string ImageLarge { get; private set; }
-    public string ImageSmall { get; private set; }
-
-    public FatchU2BUtility(string youtubeURL)
-    {
-        // <p id="eow-description" >
-
-        var src =youtubeURL;
-        var regexIntro = new Regex(
-           @"(p id=""eow-description"" >)(?<INTRO>.*?)(</p>)",
-            RegexOptions.IgnoreCase);
-        MatchCollection mcIntro = regexIntro.Matches(src);
-
-        //<meta name="title" content="
-        var regexTitle = new Regex(
-          @"(<meta name=""title"" content="")(?<TITLE>.*?)("">)",
-           RegexOptions.IgnoreCase);
-        MatchCollection mcTitle = regexTitle.Matches(src);
-
-
-
-        var regexId = new Regex(
-         @"(data-button-menu-id=""some-nonexistent-menu"" data-video-id="")(?<ID>.*?)("")",
-          RegexOptions.IgnoreCase);
-        MatchCollection mcId = regexId.Matches(src);
-
-
-        if (mcIntro.Count != 0)
-            Intro = mcIntro[0].Groups["INTRO"].Value;
-        else
-            throw new Exception("Can't find Intro");
-
-        if (mcTitle.Count != 0)
-
-            Title = mcTitle[0].Groups["TITLE"].Value;
-        else
-            throw new Exception("Can't find Title");
-
-        if (mcId.Count != 0)
-            Id = mcId[0].Groups["ID"].Value;
-        else
-            throw new Exception("Can't find Id");
-
-
-        ImageSmall = "http://img.youtube.com/vi/" + Id + "/2.jpg";
-        ImageLarge = "http://img.youtube.com/vi/" + Id + "/0.jpg";
-
-        YoutubeURL = "http://www.youtube.com/watch?v=" + Id;
-
-
-    }
-
-
 }

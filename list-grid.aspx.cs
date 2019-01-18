@@ -19,6 +19,7 @@ public partial class list_grid : System.Web.UI.Page
     public static string unitname = "";
     public string pagetitle = "";
     public string Breadcrumb = "";
+    public string cid = "";
     protected void Page_Init(object sender, EventArgs e)
     {
         Session["description"] = Application["description"];
@@ -28,7 +29,7 @@ public partial class list_grid : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
 
-        string cid = "";
+       
         Route myRoute = RouteData.Route as Route;
         if (myRoute != null)
         {
@@ -52,8 +53,8 @@ public partial class list_grid : System.Web.UI.Page
         Repeater1.DataBind();
         banner1.Clear();
         List<article.MainData> hotlist = new List<article.MainData>();
-        hotlist = article.DbHandle.Get_article_list(cid, "", PageSize, PageIdx);
-
+       
+        hotlist =   article.DbHandle.Get_article_list(cid,"", PageSize, PageIdx, "postday", "Y",DateTime.Today.ToString ("yyyy-MM-dd"), "all");
         foreach (var p in hotlist)
         {
 

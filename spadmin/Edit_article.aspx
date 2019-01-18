@@ -72,7 +72,7 @@
                                          <asp:LinkButton ID="btn_add" runat="server" Text=""  OnClick ="btn_add_Click"  class="btn btn-app btn-primary btn-xs"><i class="icon-edit bigger-230"></i>新增資料</asp:LinkButton> 
                         
                 </div>
-                    <asp:ListView ID="ListView1" runat="server" DataKeyNames="articleId" OnPagePropertiesChanging="ContactsListView_PagePropertiesChanging">
+                    <asp:ListView ID="ListView1" runat="server" DataKeyNames="id" OnPagePropertiesChanging="ContactsListView_PagePropertiesChanging">
                         <EmptyDataTemplate>
                             <table runat="server" style="background-color: #FFFFFF; border-collapse: collapse; border-color: #999999; border-style: none; border-width: 1px;">
                                 <tr>
@@ -122,26 +122,26 @@
                                 <td>
                          
                                        <asp:LinkButton ID="LinkButton1" runat="server" Text=""  OnClick="LinkButton1_Click"
-                    CommandArgument='<%# Eval("articleId").ToString()%>' class="btn btn-info"><i class="icon-edit icon-white"></i>編輯</asp:LinkButton>                                                    
+                    CommandArgument='<%# Eval("Id").ToString()%>' class="btn btn-info"><i class="icon-edit icon-white"></i>編輯</asp:LinkButton>                                                    
             
                                     <asp:LinkButton ID="LinkButton2" runat="server" Text="" OnClick="link_delete" OnClientClick="return confirm('你確定要刪除嗎?')"
-                    CommandArgument='<%# Eval("articleId").ToString()%>' class="btn btn-danger"><i class="icon-trash icon-white"></i>刪除</asp:LinkButton> 
+                    CommandArgument='<%# Eval("Id").ToString()%>' class="btn btn-danger"><i class="icon-trash icon-white"></i>刪除</asp:LinkButton> 
                     
-                <button type="button" class="btn btn-primary" name="preview" onclick ="p('<%# Eval("articleid") %>');"><i class="icon-external-link icon-white"></i>預覽</button>  <br />
+                <button type="button" class="btn btn-primary" name="preview" onclick ="p('<%# Eval("id") %>');"><i class="icon-external-link icon-white"></i>預覽</button>  <br />
                        
                                     </td> 
                                 <td>
-                                    <%# Eval("articleid") %>
+                                    <%# Eval("id") %>
                                 </td>
                                  <td>
-                                   <%# article.Web.Get_category_link ((int)Eval ("articleid")).Replace ("</a>","</a><br>") %>
+                                <%# Category_result ((List <article.Category>) Eval("Category")) %>
                                 </td>
                                
                                 <td>
                                     <%# Eval("subject") %>
                                 </td>
                                 <td>
-                                   <img src="/webimages/article/<%# Eval("pic") %>" width ="300" />
+                                   <img src="<%# Eval("pic") %>" width ="300" />
                                 </td>
                                 <td>
                                     <%# Eval("status").ToString () =="Y" ? "上架":"下架" %>
@@ -182,11 +182,14 @@
                     $('#youtubeurl').val(result.YoutubeUrl);     
                     $("#recommend").prop("checked", result.Recommend  == "Y" ? true : false);
                     $('#postDay').val(result.PostDay);   
+                    $("#ViewCount").val(result.Viewcount);
                     CKEDITOR.instances['contents'].setData(result.Contents);                           
                     document.getElementById('console').innerHTML = ("<img src=\"" + result.Pic + "\" width=300>");
-                   $('#NextRead').val(result.NextRead);   
+                    $('#NextRead').val(result.NextRead);   
                     $('#logoPic').val(result.Pic); 
                     $("#youtubeurl").trigger("blur");
+                 
+                    $("#flag").prop("checked", result.Flag  == "Y" ? true : false);
                 });
             }
         }
@@ -234,10 +237,14 @@
             } else {
                 
             }
-            if (postday =="")  postday = "2018/1/1";
+            var Today = new Date();
+         
+            if (postday =="")  postday = Today.getFullYear() + "/" + (Today.getMonth() + 1) +"/" +  Today.getDate() ;
             var categoryid = $('input:checkbox:checked[name="categoryid"]').map(function () { return $(this).val(); }).get();
             var tags = $('input:checkbox:checked[name="tags"]').map(function () { return $(this).val(); }).get();              
-            var recommend = $("#recommend").prop("checked") == true ? "Y" : "N";     
+            var recommend = $("#recommend").prop("checked") == true ? "Y" : "N";  
+            $("#ViewCount").val() == '' ? $("#ViewCount").val('0') : $("#ViewCount").val();
+            var flag = $("#flag").prop("checked") == true ? "Y" : "N";  
             var dataValue = {
                 Id: articleId,
                 Subject: $("#subject").val(),
@@ -246,7 +253,7 @@
                 Pic: $("#logoPic").val(),
                 PostDay: postday,
                 Status: status,
-                Viewcount: "0",
+                Viewcount: $("#ViewCount").val(),
                 Keywords: $("#keywords").val(),               
                 Category: categoryid,
                 Recommend: recommend,
@@ -255,11 +262,12 @@
                 kind: "A",                
                 Tempid :"",
                 YoutubeUrl:$("#youtubeurl").val(),
-                    Lesson: [{
+                    Lesson: {
                         Id: 0, StartDay:"", EndDay: "", Lecturer: [], Lessontime: "", Address:"" ,
                         LessonDetail: { Id: 0, LessonId: 0, Price: 0, Sellprice:0, Limitnum:0, Description: "" }
-                }],
-                NextRead:$("#NextRead").val()
+                },
+                NextRead: $("#NextRead").val(),
+                flag:flag 
              
             };
           //   var result = dataValue.postdata[0];         
@@ -291,7 +299,7 @@
                     if (result == '')
                     {
                        alert('已存檔');
-                        history.back();
+                       location.href = 'Edit_article.aspx';
                     }
                     else
                     {
@@ -305,6 +313,7 @@
     </script>
 
     
+
             <div class="widget-body">
                 <div class="widget-main padding-4">
                     <div class="tab-content padding-8 overflow-visible">
@@ -335,7 +344,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>主圖示(750x500)(*)</td>
+                                    <td>主圖示(*)</td>
                                     <td>
                                         <script type="text/javascript" src="js/plupload.full.min.js"></script>
                                         <div id="filelist" class="col-sm-9">
@@ -411,7 +420,14 @@
                                   <tr>
                                     <td>延伸閱讀</td>
                                     <td>
-                                        <input type="text" name="NextRead" id="NextRead" value=""   placeholder="請輸入文章標題 ..." />
+                                        <input type="text" name="NextRead" id="NextRead" value=""   placeholder="請輸入文章標題 ..."  size="100"/>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ViewCount</td>
+                                    <td>
+                                        <input type="text" name="ViewCount" id="ViewCount" value=""    />
 
                                     </td>
                                 </tr>
@@ -419,6 +435,13 @@
                                     <td>狀態</td>
                                     <td>
                                         <input id="status" name="status" type="checkbox" class="ace ace-switch ace-switch-6" />
+                                        <span class="lbl"></span>
+                                    </td>
+                                </tr>
+                             <tr>
+                                    <td>限定會員閱讀</td>
+                                    <td>
+                                        <input id="flag" name="status" type="checkbox" class="ace ace-switch ace-switch-6" />
                                         <span class="lbl"></span>
                                     </td>
                                 </tr>
@@ -501,7 +524,7 @@
                     filters: {
                         max_file_size: '10mb',
                         mime_types: [
-                            { title: "Image files", extensions: "jpg,gif,png" },
+                            { title: "Image files", extensions: "jpge,jpg,gif,png" },
                             { title: "Zip files", extensions: "zip" }
                         ]
                     },

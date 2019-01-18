@@ -1,9 +1,46 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/spadmin/admin.master" AutoEventWireup="true" CodeFile="Edit_Lesson.aspx.cs" Inherits="spadmin_Edit_Lesson" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">    
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder_title" runat="Server">
-    <script>
+<script type="text/javascript"  >
+    $.extend({
+      jYoutube: function( url, size ){
+        if(url === null){ return ""; }
+        size = (size === null) ? "big" : size;
+        var vid;
+        var results;
+        results = url.match("[\?&]v=([^&#]*)");
+        vid = ( results === null ) ? url : results[1];
+        if(size == "small"){
+          return "http://img.youtube.com/vi/"+vid+"/sddefault.jpg";
+        }else {
+          return "http://img.youtube.com/vi/"+vid+"/maxresdefault.jpg";
+        }
+      }
+    });
+    $(document).ready(function () {    
+        $('img:first').click(function() {
+            $('iframe:first').fadeToggle('400');
+        });
+  
+    // Get youtube video thumbnail on user click
+    var url = '';
+    $('#youtubeurl').blur(function(){
+            // Check for empty input field
+            if($('#youtubeurl').val() != ''){
+                // Get youtube video's thumbnail url
+                // using jYoutube jQuery plugin
+                url = $.jYoutube($('#youtubeurl').val());
+            
+                // Now append this image to <div id="thumbs">
+                $('#thumbs').html($('<img src="'+url+'" />'));
+            }
+        });
+    });
+
      $(function () {
         $("#postday").datepicker();
         $("#postday").datepicker("option", "dateFormat", "yy/mm/dd");
@@ -12,7 +49,7 @@
         $("#endday").datepicker();
         $("#endday").datepicker("option", "dateFormat", "yy/mm/dd");
         });
-           function p(id) {
+        function p(id) {
             window.open("/Article/" + id);
         }
     </script>
@@ -48,7 +85,8 @@
                                                     <th runat="server">標題</th>
                                                     <th runat="server">圖示</th>
                                                     <th runat="server">狀態</th>
-                                                    <th runat="server">上稿日</th>                                                       
+                                                    <th runat="server">上稿日</th>   
+                                                    <th runat ="server" >參加名單</th>
                                                 </tr>
                                             </thead>
                                             <tr id="itemPlaceholder" runat="server">
@@ -74,10 +112,9 @@
                         <ItemTemplate>
                             <tr>
                                 <td>                         
-                                       <asp:LinkButton ID="LinkButton1" runat="server" Text=""  OnClick="LinkButton1_Click"
+                                    <asp:LinkButton ID="LinkButton1" runat="server" Text=""  OnClick="LinkButton1_Click"
                     CommandArgument='<%# Eval("articleId").ToString()%>' class="btn btn-info"><i class="icon-trash icon-white"></i>編輯</asp:LinkButton>                                                    
-            
-                                    <asp:LinkButton ID="LinkButton2" runat="server" Text="" OnClick="link_delete" OnClientClick="return confirm('你確定要刪除嗎?')"
+                                         <asp:LinkButton ID="LinkButton2" runat="server" Text="" OnClick="link_delete" OnClientClick="return confirm('你確定要刪除嗎?')"
                     CommandArgument='<%# Eval("articleId").ToString()%>' class="btn btn-danger"><i class="icon-trash icon-white"></i>刪除</asp:LinkButton>                                                    
               <button type="button" class="btn btn-primary" name="preview" onclick ="p('<%# Eval("articleid") %>');"><i class="icon-external-link icon-white"></i>預覽</button>  <br />
                        
@@ -97,6 +134,7 @@
                                 <td>
                                     <%# DateTime .Parse(Eval("postday").ToString()).ToString("yyyy/MM/dd") %>
                                 </td>
+                                <td><a href="LessonList.aspx?articleid=<%#Eval("articleid") %>" target="_blank" >看名單</a></td>
                             </tr>
                         </ItemTemplate>
                     </asp:ListView>
@@ -114,7 +152,7 @@
                     var result = result.d;
                     result = JSON.parse(result);
                     maindata = result;     
-                   
+                    $("#ViewCount").val(result.Viewcount);
                     $('#postday').datepicker("setDate", new Date(result.PostDay));
                     $('#subject').val(result.Subject);                                           
                     $('#keywords').val(result.Keywords);    
@@ -124,21 +162,30 @@
                     CKEDITOR.instances['contents'].setData(result.Contents);                           
                     document.getElementById('console').innerHTML = ("<img src=\""+ result.Pic + "\" width=300>");
                     $('#logoPic').val(result.Pic); 
-                   $('#NextRead').val(result.NextRead);
-                    if (result.Lesson[0] != undefined) {
-                        $('#address').val(result.Lesson[0].Address);  
-                        $('#lessontime').val(result.Lesson[0].Lessontime);
-                        $('#startday').datepicker("setDate", new Date(result.Lesson[0].StartDay));
-                        $('#endday').datepicker("setDate", new Date(result.Lesson[0].EndDay));
-                        var detail = result.Lesson[0].LessonDetail;                  
+                    $("#youtubeurl").trigger("blur");                 
+                    $("#flag").prop("checked", result.Flag  == "Y" ? true : false);
+                    $('#NextRead').val(result.NextRead);
+                    if (result.Lesson != undefined) {
+                        $('#address').val(result.Lesson.Address);  
+                        $('#lessontime').val(result.Lesson.Lessontime);
+                        $('#startday').datepicker("setDate", new Date(result.Lesson.StartDay));
+                        $('#endday').datepicker("setDate", new Date(result.Lesson.EndDay));
+                        var detail = result.Lesson.LessonDetail; 
+                        var i = 0;
                         $.each(detail, function (key, val) {                      
-                            var v = ' <div class="row-fluid"> <div class="box-content"><input type="button" class="mod" value="修改">';
-                            v += '<input type="button" class="delete" value="刪除"><br>';
-                            v += '序號:<span class = "lessonid">' + val.LessonId + '</span><br>';
-                            v += '說明:<span class="description">' + val.Description + '</span> <BR>';
-                            v += '課程費用(原價):<span class="sellprice">' + val.Sellprice + '</span><br>';
-                            v += '課程費用(特價):<span class="price">' + val.Price + '</span><br>';
-                            v += '可報名人數:<span class="limitnum">' + val.Limitnum + '</span><b ></div></div> ';
+                            var v = '<table style="background-color: #FFFFFF" border="1" width="100%">';
+                            v += '<tr ><td><input type="button" class="mod" value="修改"></td><td class="idx">'+ i +'</td></tr>';
+                            i ++;
+                           // v += '<input type="button" class="delete" value="刪除"><br>';
+                            v += '<td width= 200px>課程代碼</td><td><span class = "lessonid">' + val.LessonId + '</span></td></tr>';
+                            v += '<tr><td >說明</td><td><span class="description">' + val.Description + '</span> </td></tr>';
+                            v += '<tr><td >課程費用(原價)</td><td><span class="sellprice">' + val.Sellprice + '</span></td></tr>';
+                            v += '<tr><td >課程費用(特價)</td><td><span class="price">' + val.Price + '</span></td></tr>';
+                            v += '<tr><td >可報名人數</td><td><span class="limitnum">' + val.Limitnum + '</span><b ></td></tr> ';
+                            v += '<tr><td >開始報名日</td><td><span class="strdat">' +  val.Strdat.replace('T00:00:00',"") + '</span><b ></td></tr> ';
+                            v += '<tr><td >結束報名日</td><td><span class="enddat">' +   val.Enddat.replace('T00:00:00',"") + '</span><b ></td></tr> ';
+                            v += '<tr><td >狀態</td><td><span class="flag">' +   val.Flag + '</span><b ></td></tr> ';
+
                             $('#detailitem').append('<li style="background-color: #C0C0C0">' + v + '</li>');
                          });   
                     }
@@ -167,57 +214,78 @@
                 var sellprice = $("#sellprice").val();
                 var limitnum = $("#limitnum").val();
                 var lessonid = $("#lessonid").val();
-                if (description == '') {
-                    errmsg += ('請輸入課程說明\r\n');
-                  }
-                if (sellprice == '') {
-                    errmsg += ('請輸原價\r\n');
-                }
-                if (price == '') {
-                    errmsg += ('請輸入特價\r\n');
-                  }
-                if (limitnum == '') {
-                    errmsg += ('請輸入可報名人數\r\n');
-                }
-                if (errmsg == '') {
+                var strdat = $("#strdat").val();
+                var enddat =  $("#enddat").val();
+                var idx = $("#idx").val();
+                var flag = $('input[name="flag"]:checked').val();
+                    if (description == '') {
+                        errmsg += ('請輸入課程說明\r\n');
+                      }
+                    if (sellprice == '') {
+                        errmsg += ('請輸原價\r\n');
+                    }
+                    if (price == '') {
+                        errmsg += ('請輸入特價\r\n');
+                      }
+                    if (limitnum == '') {
+                        errmsg += ('請輸入可報名人數\r\n');
+                    }
+                   if (strdat == '') {
+                        errmsg += ('請輸入開始報名日\r\n');
+                    }
+                    if (enddat == '') {
+                        errmsg += ('請輸入結束報名日\r\n');
+                    }
+                    if (flag == undefined) {
+                        errmsg += ('請輸入狀態\r\n');
+                    }
+                    if (errmsg == '') {
+                        var v = '<table style="background-color: #FFFFFF"  border="1" width="100%">';
+                        v += '<tr><td width=250><input type="button" css =\"btn btn-danger\" class="mod" value="修改"></td><td class="idx">'+ idx +'</td></tr>';
+                        v += '<td>課程代碼</td><td><span class = "lessonid">' + lessonid + '</span></td></tr>';
+                        v += '<tr><td>說明</td><td><span class="description">' + description + '</span> </td></tr>';
+                        v += '<tr><td>課程費用(原價)</td><td><span class="sellprice">' + sellprice + '</span></td></tr>';
+                        v += '<tr><td>課程費用(特價)</td><td><span class="price">' + price  + '</span></td></tr>';
+                        v += '<tr><td>可報名人數</td><td><span class="limitnum">' + limitnum + '</span><b ></td></tr> ';
+                        v += '<tr><td>報名開始日期</td><td><span class="strdat">' + strdat+ '</span><b ></td></tr> ';
+                        v += '<tr><td>報名結束日期</td><td><span class="enddat">' + enddat+ '</span><b ></td></tr> ';
+                        v += '<tr><td>生效</td><td><span class="flag">' + flag + '</span><b ></td></tr> ';
                    
-                    var v = ' <div class="row-fluid"> <div class="box-content"><input type="button" class="mod" value="修改">';
-                    v += '<input type="button" class="delete" value="刪除"><br>';
-                    v += '序號:<span class = "lessonid">' + lessonid + '</span><br>';
-                    v += '說明:<span class="description">' + description + '</span> <BR>';
-                    v += '課程費用(原價):<span class="sellprice">' + sellprice + '</span><br>';
-                    v += '課程費用(特價):<span class="price">' + price + '</span><br>';
-                    v += '可報名人數:<span class="limitnum">' + limitnum + '</span><b ></div></div> ';
-                 
-                    if ($("#lessonid").val() == "") {
-                        $('#detailitem').append('<li style="background-color: #C0C0C0">' + v + '</li>');//新增LI
+                        if ($("#lessonid").val() == "") {
+                            $('#detailitem').append('<li style="background-color: #C0C0C0">' + v + '</li>');//新增LI
+                        }
+                        else {
+                            $("ul#detailitem li").eq(idx).html(v); //修改明細LI
+                        }
+                        $("#description").val('');
+                        $("#price").val('');
+                        $("#sellprice").val('');
+                        $("#limitnum").val('');
+                        $("#lessonid").val('');
+                       // $('#recent-tab a[href="#item1"]').tab('show')
+                        $("#btl_add").html("新增資料");
+                    } else {
+                        alert(errmsg);
                     }
-                    else {
-                        $("ul#detailitem li").eq($("#lessonid").val()).html(v); //修改明細LI
-                    }
-                    $("#description").val('');
-                    $("#price").val('');
-                    $("#sellprice").val('');
-                    $("#limitnum").val('');
-                    $("#lessonid").val('');
-                   // $('#recent-tab a[href="#item1"]').tab('show')
-                    $("#btl_add").html("新增資料");
-                } else {
-                    alert(errmsg);
-                }
             });
             $("#btl_cel").click(function () {
                 $('#recent-tab a[href="#item1"]').tab('show') //返回主內容
             });
             $("ul#detailitem").on("click", "li", function () { //取得修改的明細
                 var num = $(this).index();             
-                $("#lessonid").val(num);
+                $("#lessonid").val($(this).find('.lessonid').text());
                 $("#price").val($(this).find('.price').text());
                 $("#description").val($(this).find('.description').text());
                 $("#limitnum").val($(this).find('.limitnum').text());
                 $("#sellprice").val($(this).find('.sellprice').text());
+                $("#strdat").val($(this).find('.strdat').text());
+                $("#enddat").val($(this).find('.enddat').text());
+                var flag = $(this).find('.flag').text();    
+                if (flag == 'Y') $("#flag1").attr("checked", '');
+                else if (flag == 'N') $("#flag2").attr("checked", '');
+                $("#idx").val($(this).find('.idx').text());
                 $("#btl_add").html("更新資料");
-                // $('#recent-tab a[href="#item3"]').tab('show')
+                $(this).css("background", "#FFFFFF");
             })
             $(document).on('click', '.delete', function (event) { //刪掉明細li
                 if (confirm('你確定嗎?')) { $(this).parent().remove(); }
@@ -253,10 +321,16 @@
                     var cb = "";
                     var s = "";
   
-                    $.each(result, function (key, val) {     
-                      
-                        s = maindata.Lesson[0].Lecturer == undefined ? "" : check_cbx(maindata.Lesson[0].Lecturer, val.id);
-                        cb += "<input name='lecturerid' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl>" + val.name + "</span>";
+                    $.each(result, function (key, val) {
+                     
+                   try{
+                        x = maindata.Lesson;
+                        s = maindata.Lesson.Lecturer == undefined ? "" : check_cbx(maindata.Lesson.Lecturer, val.id);
+                    }catch(e){
+                     //  alert(e);
+                    }                        
+                     
+                    cb += "<input name='lecturerid' class='ace ace-checkbox-2' type='checkbox' value='" + val.id + "'" + s + "><span class=lbl>" + val.name + "</span>";
                 });       
                  
                    $("#lecturer").html(cb);                    
@@ -300,28 +374,33 @@
             if ($("#address").val() == '') {
                 errmsg += ('請輸入上課地點\r\n');
             }
-           var postday = $("#postday").val();
+            var postday = $("#postday").val();
             if (postday =="")  postday = "2018/1/1";
             var categoryid = $('input:checkbox:checked[name="categoryid"]').map(function () { return $(this).val(); }).get();
             var tags = $('input:checkbox:checked[name="tags"]').map(function () { return $(this).val(); }).get();              
             var recommend = $("#recommend").prop("checked") == true ? "Y" : "N";       var categoryid = $('input:checkbox:checked[name="categoryid"]').map(function () { return $(this).val(); }).get();
             var lecturerid = $('input:checkbox:checked[name="lecturerid"]').map(function () { return $(this).val(); }).get();
             var status = $("#status").prop("checked") == true ? "Y" : "N";   
-         
-         var Detail = "[";
+            var startday = $("#startday").val();
+            var endday = $("#endday").val();
+            $("#ViewCount").val() == '' ? $("#ViewCount").val('0') : $("#ViewCount").val();
+            var flag = $("#flag").prop("checked") == true ? "Y" : "N";
+            var Detail = "[";
             var i = 0;
             $("ul#detailitem li").each(function () {
                 i++;              
                 if (i != 1) { Detail += ","; }
-                var lid = $(this).find('.lessonId').text();
-                if (lid == "") lid = 1;
-      
-
+                var lid = $(this).find('.lessonid').text();             
+                if (lid == "") lid = 0;    
                     Detail += "{\"Id\":\"" + articleId + "\"";
                     Detail += ",\"LessonId\":\"" + lid + "\"";
                     Detail += ",\"Description\":\"" +  $(this).find('.description').text()  + "\"";
                     Detail += ",\"Price\":\"" + $(this).find('.price').text() + "\"";
                     Detail += ",\"Sellprice\":\"" + $(this).find('.sellprice').text() + "\"";
+                    Detail += ",\"Strdat\":\"" + $(this).find('.strdat').text() + "\"";
+                    Detail += ",\"Enddat\":\"" + $(this).find('.enddat').text() + "\"";
+                    Detail += ",\"Flag\":\"" + $(this).find('.flag').text() + "\"";
+
                     Detail += ",\"Limitnum\":\"" + $(this).find('.limitnum').text() + "\"}";
             });    
             Detail += "]";
@@ -335,21 +414,23 @@
                 Pic: $("#logoPic").val(),
                 PostDay: postday,
                 Status: status,
-                Viewcount: "0",
+                Viewcount: $("#ViewCount").val(),
                 Keywords: $("#keywords").val(),               
                 Category: categoryid,
                 Recommend: recommend,
                 Tags: tags,
                 Author: "",               
                 kind: "L",
-                Tempid: "",
-                YoutubeUrl:$("#youtubeurl").val(),
-                Lesson: [{
+                Tempid: "",  flag:flag ,
+                YoutubeUrl: $("#youtubeurl").val(),
+              
+                Lesson: {
                     Id: articleId, StartDay: $("#startday").val(), EndDay: $("#endday").val(), Lecturer: lecturerid,
                     Lessontime: $("#lessontime").val(), Address: $("#address").val(),
                     LessonDetail: Detail
-                }],
-                NextRead:$("#NextRead").val()
+                },
+                NextRead: $("#NextRead").val(),
+               
             };
 
             if (errmsg == '') {
@@ -379,7 +460,7 @@
                     if (result == '')
                     {
                         alert('已存檔');
-                         location.href = location.href;
+                       location.href = location.href;
                     }
                     else
                     { alert(result); }
@@ -400,9 +481,7 @@
                            <li>
                             <a data-toggle="tab" href="#item2">開課設定</a>
                         </li>
-                        <li>
-                      <!--      <a data-toggle="tab" href="#item3">段落內容</a>-->
-                        </li>
+              
                     </ul>
                 </div>
             </div>
@@ -424,11 +503,11 @@
                                 </tr>
                                 <tr>
                                     <td>課程說明</td>
-                                    <td>
-                                        <input id="subtitle" type="text" style="width: 500px;height:100px;" /></td>
+                                    <td>/
+                                        <input id="subtitle" type="text" cols="100"   rows="5"  /></td>
                                 </tr>
                                 <tr>
-                                    <td>主圖示(750x500)(*)</td>
+                                    <td>主圖示(*)</td>
                                     <td>
                                         <script type="text/javascript" src="js/plupload.full.min.js"></script>
                                         <div id="filelist" class="col-sm-9">
@@ -530,37 +609,47 @@
 
                                     </td>
                                 </tr>
+                                   <tr>
+                                    <td>ViewCount</td>
+                                    <td>
+                                        <input type="text" name="ViewCount" id="ViewCount" value=""    />
+
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td>狀態</td>
                                     <td>
                                         <input id="status" name="status" type="checkbox" class="ace ace-switch ace-switch-6" />
                                         <span class="lbl"></span>
                                     </td>
+                                </tr>    
+                                <tr>
+                                    <td>限定會員閱讀</td>
+                                    <td>
+                                        <input id="flag" name="status" type="checkbox" class="ace ace-switch ace-switch-6" />
+                                        <span class="lbl"></span>
+                                    </td>
                                 </tr>
-                                      <tr><td></td>
+                                      <tr>
+                                          <td></td>
                                     <td>
                                     <a  class="iframe cboxElement"   href='editImages.aspx?type=image&kind=photoQuickUpload"';"><i  class="btn btn-greyicon icon-camera" >相簿管理</i></a>   
                                    <a class="iframe cboxElement"  href='editImages.aspx?type=file&kind=photoQuickUpload';"><i class="btn btn-grey icon-book">檔案管理</i></a>   
                       
                                     </td>
                                 </tr>
-                                <tr>
-                                   <td colspan="2"  align ="center">
-                                        
-                                       <button type="button" class="btn btn-danger icon-save" id="btn_save">存 檔</button>
-                                        <button type="button" class="btn btn-success icon-eye-open" id="preview">預 覽</button>
-                                          <asp:Button ID="Btn_cancel" runat="server" class="btn icon-undo" Text="取 消" OnClick ="Btn_cancel_Click" />
-                                         </td>
-                                </tr>
+                             
                             </table>
                         </div>
           
-                        <div id="item2" class="tab-pane">
-
-                   
+                        <div id="item2" class="tab-pane">                   
                             <table >
                                 <tr>
-                                    <td>說明</td>
+                                    <td>課程代碼 </td>
+                                    <td  ><input id="lessonid" type="hidden"    /></td>
+                                </tr>
+                                <tr>
+                                    <td>說明 </td>
                                     <td><input id="description" type="text"    /></td>
                                 </tr>
                                <tr>
@@ -571,13 +660,28 @@
                                    <td>課程費用(特價)</td>
                                    <td>  <input id="price" type="number"    /> </td>
                                </tr>   
-                                      <tr>
+                                <tr>
                                     <td>可報名人數</td>
                                     <td> <input id="limitnum" type="number"     /> </td>
                                   </tr>
                                 <tr>
-
-                                    <td colspan="2"> <input id="lessonid" type="hidden" value=""   /> <button type="button" class="btn btn-primary" id="btl_add">新增資料</button></td>
+                                    <td>報名開始日期</td>
+                                      <td> <input id="strdat" type="date"     /> </td>
+                                </tr>
+                                <tr>
+                                    <td>報名結束日期</td>
+                                      <td> <input id="enddat" type="date"     /> </td>
+                                </tr>
+                                <tr>
+                                    <td>啟用</td>
+                                    <td>
+                                        <input name="flag" id="flag1" type="radio" value="Y" />開啟
+                                        <input name="flag" id="flag2" type="radio" value="N" />關閉</td>
+                                </tr>
+                                <tr>
+                                 
+                                    <td colspan="2">   <input id="idx"  type="hidden"  />  
+                                        <button type="button" class="btn btn-primary" id="btl_add">新增資料</button></td>
                                 </tr>
               
                                 <tr>
@@ -590,7 +694,13 @@
                          </table>
                         </div>
                        
-                                    
+                              
+                           <div class="widget-main padding-4">
+                               <br />                               
+                                       <button type="button" class="btn btn-danger icon-save" id="btn_save">存 檔</button>
+                                        <button type="button" class="btn btn-success icon-eye-open" id="preview">預 覽</button>
+                                          <asp:Button ID="Btn_cancel" runat="server" class="btn icon-undo" Text="取 消" OnClick ="Btn_cancel_Click" />
+                                       </div>         
 
                                    
                     </div>
@@ -631,7 +741,7 @@
                     filters: {
                         max_file_size: '10mb',
                         mime_types: [
-                            { title: "Image files", extensions: "jpg,gif,png" },
+                          { title: "Image files", extensions: "jpge,jpg,gif,png" },
                             { title: "Zip files", extensions: "zip" }
                         ]
                     },

@@ -33,6 +33,18 @@ public partial class spadmin_memberList : System.Web.UI.Page
     }
     protected void Page_Load(object sender, EventArgs e)
     {
+        string msg = @"[1]
+    msgid=1425110941
+statuscode=1
+AccountPoint=298";
+        string[] stringSeparators = new string[] { "\r\n" };
+      
+        string[] msgv = msg.Split(stringSeparators, StringSplitOptions.None);
+        Response.Write(msgv[0]);
+        Response.Write(msgv[1]);
+
+        Response.Write(msgv[2]);
+
         if (!IsPostBack)
         {
             MultiView1.ActiveViewIndex = 0;
@@ -232,5 +244,13 @@ public partial class spadmin_memberList : System.Web.UI.Page
         //  zip.Text = zipcode[cityid.SelectedIndex].ToString ();
     }
 
-   
+
+
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+        MemberLib.Mmemberdata m = MemberLib.Member.GetData(Selected_id.Value);
+        string dstanumber = m.Phone;
+        string smsbody = "親愛的會員您好:你的密碼為:\"" + m.Password + "\",請善保管.創藝時代敬上:)";
+       Response.Write ( classlib.Sendsms(dstanumber, smsbody));
+    }
 }

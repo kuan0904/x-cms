@@ -89,16 +89,7 @@ public class fb_login : IHttpHandler ,IRequiresSessionState {
                 string last_name = (fbuser["last_name"] != null) ? fbuser["last_name"].ToString() : "";
                 name = last_name + first_name;
             }
-            //            {
-            //   "email": "kuan0904\u0040ms16.hinet.net",
-            //   "name": "\u788e\u788e\u5538",
-            //   "first_name": "\u788e\u5538",
-            //   "last_name": "\u788e",
-            //   "gender": "male",
-            //   "locale": "zh_TW",
-            //   "id": "633770299"
-            //}
-            ////處理 
+
 
             string msg = "<script>";
 

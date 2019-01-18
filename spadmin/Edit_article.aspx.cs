@@ -31,21 +31,22 @@ public partial class spadmin_Edit_article : System.Web.UI.Page
     }
     public void selectSQL()   {
 
-        string strsql = @"SELECT *  FROM tbl_article where status <> 'D' and kind='N' ";
-        if (searchtxt.Text != "")
-        {
-            strsql += " and ( subject like @s or keywords like @s or contents like @s or author like @s ) ";
-        }
-        strsql += " order by  articleid desc";
+        //string strsql = @"SELECT *  FROM tbl_article where status <> 'D' and kind='N' ";
+        //if (searchtxt.Text != "")
+        //{
+        //    strsql += " and ( subject like @s or keywords like @s or contents like @s or author like @s ) ";
+        //}
+        //strsql += " order by  articleid desc";
        
-        NameValueCollection nvc = new NameValueCollection();
-        nvc.Add("s", "%" + searchtxt.Text + "%");
-        DataTable dt = DbControl.Data_Get(strsql, nvc);
-     
-        ListView1.DataSource = dt;
+        //NameValueCollection nvc = new NameValueCollection();
+        //nvc.Add("s", "%" + searchtxt.Text + "%");
+        //  DataTable dt = DbControl.Data_Get(strsql, nvc);
+        string cid = Request.QueryString["cid"]?? "0";
+
+        ListView1.DataSource = article.DbHandle.Get_article_list(cid, searchtxt.Text,1000,0,"id","all","2099/01/01","N");
         ListView1.DataBind();
-        dt.Dispose();
-        nvc.Clear();
+      //  dt.Dispose();
+        //nvc.Clear();
 
     }
 
@@ -138,7 +139,16 @@ public partial class spadmin_Edit_article : System.Web.UI.Page
     {
         MultiView1.ActiveViewIndex = 2;
     }
-
+    public static string Category_result(List< article .Category> Category)
+    {
+        string result = "";
+        foreach (var item in Category)
+        {
+            result += "<a href=\"Edit_article.aspx?cid="+ item.CategoryId   +"\">" +   item.Name + "</a><BR>";
+        }
+        return result;
+    }
+  
     public static string   getword()
     {
         string result = "";

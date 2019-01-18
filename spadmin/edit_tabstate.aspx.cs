@@ -16,7 +16,7 @@ public partial class spadmin_edit_tabstate : System.Web.UI.Page
 {
     static string strsql = "";
     string table_name = "";
-
+    public string unitname = "";
     protected void Page_Load(object sender, EventArgs e)
     {
         string unitid = Request.QueryString["unitid"];
@@ -28,6 +28,7 @@ public partial class spadmin_edit_tabstate : System.Web.UI.Page
 
         DataTable dt = DbControl.Data_Get(strsql, nvc);
         table_name = dt.Rows[0]["subject"].ToString();
+        unitname = dt.Rows[0]["unitname"].ToString();
         dt.Dispose();
         if (!IsPostBack)
         {

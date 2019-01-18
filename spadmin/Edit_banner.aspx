@@ -48,7 +48,7 @@
             </td>
             <td> <%#Eval("bannerid")%></td>                                            
             <td><a href='../webimages/banner/<%#Eval("filename")%>' target="_blank" ><img src='../webimages/banner/<%#Eval("filename")%>' height ="100" /></a> </td>
-             <td><%#Eval("title")%></td>    <td><%#Eval("url")%></td>
+             <td><%#Eval("title")%></td>    <td ><%# unity.classlib.SubString ( Eval("url").ToString (),50,"")%></td>
                
                 <td><%#Eval("sort")%></td>
                 <td><%# Eval("enabledate").ToString ()%></td>
@@ -68,7 +68,7 @@
                                       <th runat="server" ><asp:LinkButton ID="sort1" runat="server" CommandArgument="desc" CommandName="bannerid" onclick ="sortdata">ID</asp:LinkButton></th>
                                     
                                     <th runat="server">圖檔</th>  <th runat="server">標題</th>
-                                    <th runat="server">連結網址
+                                    <th runat="server" width="500">連結網址
                                     </th>                                   
                                        <th runat="server">優先<br/>順序
                                     </th>

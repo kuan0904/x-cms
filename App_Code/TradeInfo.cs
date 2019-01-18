@@ -182,7 +182,93 @@ namespace SpGatewayHelper.Models
         /// 
         /// </value>
         public string InstFlag { get; set; }
-       
+
+        public int? WEBATM { get; set; }
+        /// <summary>
+        /// WEBATM 啟用
+        /// <para>1=啟用</para> 
+        /// </summary>
+        /// <value>
+        /// The credit red.
+        /// </value>
+        public int? UNIONPAY { get; set; }
+        /// <summary>
+        /// 信用卡 銀聯卡啟用
+        /// <para>1=啟用</para> 
+        /// </summary>
+        /// <value>
+        /// The credit red.
+        /// </value>
+        public int? ANDROIDPAY { get; set; }
+        /// <summary>
+        /// Google Pay啟用
+        /// <para>1=啟用</para> 
+        /// </summary>
+        /// <value>
+        /// The credit red.
+        /// </value>
+        ///     public int? ANDROIDPAY { get; set; }
+        /// <summary>
+        public int? SAMSUNGPAY { get; set; }
+        /// SAMSUNGPAY啟用
+        /// <para>1=啟用</para> 
+        /// </summary>
+        /// <value>
+        /// The credit red.
+        /// </value>
+      
+    }
+    public class TradeInfoLog
+    {
+        public string Status { get; set; }
+        public string Message { get; set; }
+        public TradeInfoResult Result { get; set; }
+
+    }
+    public class TradeInfoResult
+    {
+        //所有支付方式共同回傳參數
+        public string MerchantID { get; set; }
+        public string Amt { get; set; }
+        public string TradeNo { get; set; }
+        public string MerchantOrderNo { get; set; }
+        public string RespondType { get; set; }
+        public string IP { get; set; }
+        public string EscrowBank { get; set; }
+        //信用卡支付回傳參數（包含：Google Pay、Samaung Pay）
+        public string PaymentType { get; set; }
+        public string RespondCode { get; set; }
+        public string Auth { get; set; }
+        public string Card6No { get; set; }
+        public string Card4No { get; set; }
+        public string Exp { get; set; }
+        public string TokenUseStatus { get; set; }
+        public string InstFirst { get; set; }
+        public string InstEach { get; set; }
+        public string Inst { get; set; }
+        public string ECI { get; set; }
+        public string PayTime { get; set; }
+        public string PaymentMethod { get; set; }
+        public string RedAmt { get; set; }
+        public string CardType { get; set; }
+        //WEBATM、ATM 繳費回傳參數      
+        public string ExpireDate { get; set; }
+        public string ExpireTime { get; set; }
+        public string BankCode { get; set; }
+        public string CodeNo { get; set; }
+        //超商條碼繳費回傳參數
+        public string Barcode_1 { get; set; }
+        public string Barcode_2 { get; set; }
+        public string Barcode_3 { get; set; }
+        public string PayStore { get; set; }
+        //超商物流回傳參數
+        public string StoreCode { get; set; }
+        public string StoreName { get; set; }
+        public string StoreType { get; set; }
+        public string StoreAddr { get; set; }
+        public string TradeType { get; set; }
+        public string CVSCOMName { get; set; }
+        public string CVSCOMPhone { get; set; }
 
     }
 }

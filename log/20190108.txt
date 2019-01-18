@@ -1,0 +1,62 @@
+
+[2019/01/08 11:34:18]
+Status:SUCCESS
+MerchantID:MS357549208
+TradeInfo:3863c870f2095f4bbb1ec13efa1fd1821cd4a207a4e939feaedaf01d6bad41891bbe0756083848623f1f61785b1ca204402900650bffdc9e1e72ebe7a4cea4cdf6c7515acc899a0f93b49135c0e433541bcfd646cf0d287382af50eb8ef475ddd111755a3d28452ddad27a09148bb67b4f10fd693fb2a251e0e094402a36f5c0afd1368a356091aae8804623bec38bacbe5164bff487d7d3fb74f14605b4fc9dfacf3901b2046c6e6e2bdcdb721e6469bf9a5bf01cc11834a982ebc6dca433aaed153bd4b28ad22760b376e091cc385c6c7e5652b8579cced737c6e51b8ebe451af79df43acef07acc7e5ed50107a0577ceb87774bd7012e839e9928c923edb804032ade40e737675c19ad02c6101619360b7aa2775726c86a72db016d3524059d5a16cd28fc485e274350f7f27890d0135d76cad2ba808479db6d70eba6d5d398a71e51c7c360ad00407194061734a5446ce572265f41e43570c4dac447a9261bcb18b4566a7ca87df9293e81ebf60802f3e98b8c00b7fc40c161eccd6c71eb5353e8866e3ed24d31b134f0ef3f15d49601b94ade65758ca0250dd7cc0c668e5cbe71a05452ec25bc6ece1197ac16a30971358ad8dab0ff05f89acca15c9d6a333033ef00b78d4587eb1b68465cb8e5a2abca99fe5f71cc87be6605a31f5b56
+{
+  "Status": "SUCCESS",
+  "Message": "授權成功",
+  "Result": {
+    "MerchantID": "MS357549208",
+    "Amt": 1,
+    "TradeNo": "19010811331829284",
+    "MerchantOrderNo": "2019010800009",
+    "RespondType": "JSON",
+    "IP": "1.34.186.155",
+    "EscrowBank": "HNCB",
+    "PaymentType": "CREDIT",
+    "RespondCode": "00",
+    "Auth": "057751",
+    "Card6No": "523953",
+    "Card4No": "4521",
+    "Exp": "2412",
+    "TokenUseStatus": "9",
+    "InstFirst": 0,
+    "InstEach": 0,
+    "Inst": 0,
+    "ECI": "2",
+    "PayTime": "2019-01-08 11:34:16",
+    "PaymentMethod": "CREDIT"
+  }
+}
+
+[2019/01/08 12:12:46]
+Status:MPG03009
+MerchantID:MS357549208
+TradeInfo:900d08f55a1e05d75abf2d9a8c9e5dd2e484a0d0bc77f422e1cda77b7d90e4d9f5fbdea60edf6d1f189fffff2b1d3770e1a5efa282afe731e2a8a23a306d5e1abb88d5be6a10b536cf17bd123e295fa538dc13556f0e654af9be08ddae502099f13fc1cfb845b2693f9544e5a49a968a1a7704773a811b901debc10507be5ef0a3ed41645ca426a5034fa42192f67101b4366a2a69a7bdfba79c29c7028a4117759f934004ff2b47548093d75d861473be206039a363b171d8413307b6aa6157b3ba1663f6a79038466d6e292d872691da9b8c3d90f54f1cbb1b34bade46b1f2191e183d18e46a6eb8c3ec1e50d61350fd07fa42a49d3a2a5a1b2949da93412ac411015a0d016a7b5944d532b693df47bc688e2727a166563126a0400980a513b35ed97672b97963855d53b03383c5c29acfb8d0fb2425088bb97697e960401fbd871e76f415b90a0f3b46559c8226f33ab7162f800e64a14d117a291928699cecf93062df2494360a9179c7622df8e2608d94e46887598d4c9a0459d3e38a248abb028d69e80ded2d97819752c11fb9b98bf5307f2d0cfbfee91e5f0979f3d3dc57188d453aa6e42c620330463abf3bc3ec0d958f4565484b1353b8adf6a3920cdfadcc5d7e87910c21b4d59f2c4629c3b430875e537fa3a47bb0e818b8becc17a8886f65409c9e3d5f58a2635df5595f39c329a9dfc4d258364af8058e03125a24e4cd075f8133683fdcf57b0c07c824235794d9433dddaa9aaee174f06424
+{
+  "Status": "MPG03009",
+  "Message": "信用卡授權失敗交易未經由銀行3D驗證",
+  "Result": {
+    "MerchantID": "MS357549208",
+    "Amt": 1,
+    "TradeNo": "19010812123666171",
+    "MerchantOrderNo": "2019010800012",
+    "RespondType": "JSON",
+    "IP": "1.34.186.155",
+    "EscrowBank": "-",
+    "PaymentType": "CREDIT",
+    "RespondCode": "-",
+    "Auth": null,
+    "Card6No": "523953",
+    "Card4No": "4521",
+    "Exp": "2201",
+    "TokenUseStatus": "9",
+    "InstFirst": 0,
+    "InstEach": 0,
+    "Inst": 0,
+    "ECI": "",
+    "PayTime": "2019-01-08 12:12:46",
+    "PaymentMethod": "CREDIT"
+  }
+}

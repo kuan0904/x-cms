@@ -50,7 +50,7 @@ namespace Banner {
                     Pic = "/webimages/banner/" + dt.Rows[i]["filename"].ToString(),
                     Path = dt.Rows[i]["path"].ToString(),
                     Url = Web.Get_url(dt.Rows[i]["url"].ToString(), dt.Rows[i]["categoryid"].ToString(), dt.Rows[i]["articleId"].ToString()),
-                
+                    targetblank= dt.Rows[i]["targetblank"].ToString (),
                     Categoryid = dt.Rows[i]["Categoryid"].ToString(),
                     ArticleId = dt.Rows[i]["ArticleId"].ToString(),
                     Strdat = (DateTime)dt.Rows[i]["enabledate"],
@@ -122,5 +122,6 @@ namespace Banner {
             public string ArticleId { get; set; }
             public DateTime Strdat { get; set; }
             public DateTime Enddat { get; set; }
+            public string targetblank { get; set; }
     }
 }

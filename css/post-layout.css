@@ -266,6 +266,21 @@
   padding: 2px 0 0;
   margin-bottom: 10px;
 }
+
+/*for ie9*/
+:root .news-grid .thumbnail .caption .title a {
+    max-height:46px;
+    display: block;
+}
+
+/*for ie10 、 ie11*/
+@media screen and (-ms-high-contrast: active),(-ms-high-contrast: none) {
+    .news-grid .thumbnail .caption .title a {
+        max-height: 46px;
+        display: block;
+    }
+}
+
 .news-grid .thumbnail .caption .title a {
   color: #000;
   display: inline-block;
@@ -275,6 +290,9 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
+
+
+
 .news-grid .thumbnail .caption .title a:hover {
   color: #91aac3;/*#fbc469*/
 }
@@ -956,7 +974,7 @@
     display: block;
   }
   .thumbnail .pic img {
-    display: none;
+    /*display: none;*/
   }
 }
 @media screen\0 {

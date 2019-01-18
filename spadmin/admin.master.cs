@@ -13,7 +13,7 @@ public partial class spadmin_admin : System.Web.UI.MasterPage
 {
     protected void Page_Load(object sender, System.EventArgs e)
     {
-        if (Session["userid"] == null)
+        if (Session["userid"] == null || Session["Backmenu"] ==null || Session["Backmenu"].ToString () =="")
             {
                 Response.Redirect("~/account/login.aspx?ReturnUrl=" + Request.RawUrl.ToString());
                 Response.End();

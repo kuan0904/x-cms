@@ -84,7 +84,7 @@ $(document).ready(function() {
                                         <td colspan="3">
                                                 <div class="radio">
                                                     <label>
-                                                        <input type="radio" name="kind"  value="1" class="chk">
+                                                        <input type="radio" name="kind"  checked value="1" class="chk">
                                                         <span class="cr">
                                                             <i class="cr-icon fa fa-circle"></i>
                                                         </span>
@@ -157,7 +157,7 @@ $(document).ready(function() {
                                              
                                         </td>
                                     </tr>
-                                    <tr class="underline">
+                                    <tr class="underline" id="paytype">
                                         <td>付款方式</td>
                                         <td colspan="3">
                                            
@@ -182,7 +182,7 @@ $(document).ready(function() {
                                                 </div>
                                                 <div class="radio">
                                                     <label>
-                                                        <input type="radio" name="paymode" id="optionsRadios3" value="3"> 
+                                                        <input type="radio" name="paymode" id="optionsRadios3" value="3" checked > 
                                                         <span class="cr">
                                                                 <i class="cr-icon fa fa-circle"></i>
                                                             </span>

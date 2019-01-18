@@ -167,6 +167,10 @@ public partial class spadmin_article : System.Web.UI.Page
         if (MainData.Id == 0)
         {
           MainData.Id =  article.DbHandle .Article_Add();
+            // List<article.Lesson> Lesson = MainData.Lesson;
+            //var L = Lesson.Find(p => p.Id == 0);
+            //L.Id = MainData.Id ;
+            MainData.Lesson.Id = MainData.Id;
         }
         int i = 0;
        
@@ -183,8 +187,8 @@ public partial class spadmin_article : System.Web.UI.Page
     [WebMethod(EnableSession = true)]
     public static dynamic Set_data(string kind, string Id, string[] Category
         , string Subject, string SubTitle, string Contents, string Pic, string PostDay, string Recommend
-        , string[] Tags, string Author, string Keywords, string Status, List<article.Lesson> Lesson
-        ,string  YoutubeUrl,string NextRead)
+        , string[] Tags, string Author, string Keywords, string Status, article.Lesson Lesson
+        ,string  YoutubeUrl,string NextRead,string Viewcount ,string flag )
     {
         //如果用dynamic 傳,就會有LIST        postdata = postdata[0];
         string result = "";
@@ -226,7 +230,7 @@ public partial class spadmin_article : System.Web.UI.Page
             Pic = classlib.GetImgNmae(Pic),
             PostDay = DateTime.Parse(PostDay),
             Status = Status,
-            Viewcount = 0,
+            Viewcount = int.Parse (Viewcount),
             Keywords = Keywords,
             Tags = Tags,
             Category = ItemData,
@@ -236,7 +240,10 @@ public partial class spadmin_article : System.Web.UI.Page
             kind = kind,
             Tempid = HttpContext.Current.Session["uploadid"].ToString(),
             YoutubeUrl =YoutubeUrl  ,
-            NextRead =NextRead 
+            NextRead =NextRead ,
+            Flag =flag 
+
+           
           //  Category =  postdata["Category"]  ,
           //  Lesson = postdata.Lesson  ,
         };
@@ -247,16 +254,11 @@ public partial class spadmin_article : System.Web.UI.Page
 
     }
     [WebMethod(EnableSession = true)]
-    public static string Set_LessonData( string id, List<article.Lesson> item)
+    public static string Set_LessonData( string id, article.Lesson item)
     {
-        List<Lesson> ItemData = new List<Lesson>();
-        ItemData = item;
-        //ItemData.Add(new ItemData
-        //{
-
-        //});
-        HttpContext.Current.Session["LessonData"] = ItemData;
-        //  var json = new JavaScriptSerializer().Serialize(ItemData);
+        Lesson ItemData = new Lesson();
+        ItemData = item;  
+        HttpContext.Current.Session["LessonData"] = ItemData;      
         string result = "";
         return (result); ;
 
@@ -266,13 +268,8 @@ public partial class spadmin_article : System.Web.UI.Page
     {
         List<ItemData> ItemData = new List<ItemData>();
         ItemData = item;
-        //ItemData.Add(new ItemData
-        //{
-            
-        //});
         HttpContext.Current.Session["ItemData"] = ItemData;
-        //  var json = new JavaScriptSerializer().Serialize(ItemData);
-        string result = "";
+          string result = "";
         return (result); ;
 
     }

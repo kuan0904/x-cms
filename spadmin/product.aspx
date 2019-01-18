@@ -42,7 +42,7 @@
                                         <asp:LinkButton ID="LinkButton2" runat="server" class="btn btn-danger" CommandArgument='<%# Eval("p_id").ToString()%>' OnClick="link_delete" OnClientClick="return confirm('你確定要刪除嗎?')" Text=""  ><i class="icon-trash icon-white"></i>刪除</asp:LinkButton>
                                     </td>
                                     <td><%# Eval("p_id") %></td>
-                                    <td><img src='../upload/<%#  Eval("pic1")  %>?<%=DateTime.Now.ToString ("yyyyMMddhhmmss") %>' width ="100" /></td>
+                                    <td><img src='../upload/<%#  Eval("logo")  %>?<%=DateTime.Now.ToString ("yyyyMMddhhmmss") %>' width ="100" /></td>
                                       <td><%# Eval("title") %></td>
                                     <td><%# Eval("productname")  %></td>                                
                                     <td><%# Eval("price") %></td>                             
@@ -51,9 +51,7 @@
                                     </td>
                                     <td><%#Eval("viewcount") %></td>
                                     <td><%#Eval("sort") %></td>
-                                    <td>
-                                        <a href="/market?p_ID=<%#Eval("p_id") %>" target="_blank">預覽</a>
-                                    </td>
+                                 
 
 
                                 </tr>
@@ -74,7 +72,7 @@
                                                         <th runat="server"><asp:LinkButton ID="LinkButton9" runat="server" CommandArgument="desc" CommandName="status" onclick ="sortdata">狀態</asp:LinkButton></th>
                                                      <th runat ="server" >瀏覽數</th>
                                                        <th runat ="server" >排序</th>
-                                                           <th runat="server"></th>
+                                                        
                                                     </tr>
                                                 </thead>
                                                 <tr id="itemPlaceholder" runat="server">
@@ -127,30 +125,41 @@
                              <asp:TextBox ID="videourl" runat="server" ></asp:TextBox></td>
                            <td>供應商</td>
                                 <td >
-                                    <asp:DropDownList ID="supplierid" runat="server" AutoPostBack="true" OnSelectedIndexChanged="supplierid_SelectedIndexChanged">
+                                    <asp:DropDownList ID="supplierid" runat="server" >
                                     </asp:DropDownList>                             
                                 </td>     
                          </tr>
                            
                         <tr>
-                                <td>圖片</td>
+                                <td>主圖片</td>
+                                    <td colspan="3"> 
+                                    <asp:FileUpload ID="FileUploadlogo" runat="server" />
+                                    <asp:Image ID="Imagelogo" runat="server"  Width ="200"/>
+                                    </td> 
+                            </tr>
+                         <tr>
+                                <td>圖片2</td>
                                     <td colspan="3"> 
                                     <asp:FileUpload ID="FileUpload1" runat="server" />
-                                    <asp:Image ID="Image1" runat="server" />
+                                    <asp:Image ID="Image1" runat="server" Width ="200" />
                                     </td> 
                             </tr>
                             <tr>
-                                 <td>設為群組</td>
-                                 <td><asp:DropDownList ID="isgroup" runat="server">
-                                        <asp:ListItem>N</asp:ListItem>
-                                        <asp:ListItem>Y</asp:ListItem>
-                                    </asp:DropDownList></td>
-                                    <td>群組產品</td>
-                                   <td>
-                                       <asp:CheckBoxList ID="groupproduct" runat="server" ></asp:CheckBoxList></td>
-                             </tr>
+                                <td>圖片3</td>
+                                    <td colspan="3"> 
+                                    <asp:FileUpload ID="FileUpload2" runat="server" />
+                                    <asp:Image ID="Image2" runat="server" Width ="200"/>
+                                    </td> 
+                            </tr>
                           
-                         
+                           <tr>
+                                <td>圖片4</td>
+                                    <td colspan="3"> 
+                                    <asp:FileUpload ID="FileUpload3" runat="server" />
+                                    <asp:Image ID="Image3" runat="server" Width ="200"/>
+                                    </td> 
+                            </tr>
+                          
                             <tr>
                                 <td >價格</td>
                                 <td>
@@ -163,24 +172,7 @@
                                </td> 
                             </tr>   
                   
-                            <tr>
-                                <td>運費</td>
-                                <td>    
-                                    <asp:TextBox ID="shippingfee" runat="server" TextMode="Number"></asp:TextBox>
-                                    
-                                    </td> 
-                                <td>運送方式</td>
-                                <td> <asp:DropDownList ID="shippingKind" runat="server">
-                                    </asp:DropDownList>        
-                                  </td> 
-                            </tr>      
-                            <tr>
-                                <td>免運費金額</td>
-                                <td> <asp:TextBox ID="freeship" runat="server" TextMode="Number"></asp:TextBox></td>
-                                 <td>排序</td>
-                                <td>
-                                    <asp:TextBox ID="sort" runat="server"></asp:TextBox></td>
-                            </tr>                   
+                                       
                             <tr>
                                 <td>商品介紹</td>
                                 <td  colspan="3">                                   
@@ -191,9 +183,13 @@
 
                                 </td>
                             </tr>
-                            <tr>
+                                <tr>
+                                 <td>排序</td>
+                                <td>
+                                    <asp:TextBox ID="sort" runat="server"></asp:TextBox></td>
+                               
                                 <td>商品文字簡述</td>
-                                <td colspan="3">
+                                <td >
                                     <asp:TextBox ID="memo" runat="server"   TextMode="MultiLine"></asp:TextBox></td>
                             </tr>
                              <tr>
@@ -213,7 +209,7 @@
                                     <asp:DropDownList ID="status" runat="server">
                                         <asp:ListItem Value="Y">上架</asp:ListItem>
                                         <asp:ListItem Value="N">下架</asp:ListItem>
-                                        <asp:ListItem Value="D">刪減</asp:ListItem>
+                                        <asp:ListItem Value="D">刪除</asp:ListItem>
                                     </asp:DropDownList></td>
                                    <td>流覽數</td>
                                 <td>

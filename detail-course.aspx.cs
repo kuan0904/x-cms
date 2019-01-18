@@ -10,8 +10,7 @@ using System.Data.SqlClient;
 using System.Collections.Specialized;
 public partial class detail_course_ : System.Web.UI.Page
 {
-    public string subject = "";
-    public string contents = "";
+    public Unitlib.MainData s = new Unitlib.MainData();
     public string pic = "";
     public string postday = "";
     public string keywords = "";
@@ -21,33 +20,23 @@ public partial class detail_course_ : System.Web.UI.Page
     public string pageunit = "";
     public string author = "";
     public string lessonid = "";
-    public string startday = "";
-    public string endday = "";
-    public string lessontime = "";
-    public string price = "";
-    public string sellprice = "";
     public string title = "";
-    public string address = "";
+    public article.MainData MainData = new article.MainData();
     public string Articleid = "";
+    public string status = "";
+    public List<article.Lesson> lesson = new List<article.Lesson>();
+  
     protected void Page_Load(object sender, EventArgs e)
-    {
-
+    {      
       
         Articleid = Request.QueryString["Articleid"];
         Route myRoute = RouteData.Route as Route;
-        if (myRoute != null)
-        {
-
-            Articleid = RouteData.Values["Articleid"].ToString();
-            // string verder = (string)Page.RouteData.Values["verder"];
-        }
-
-        article.MainData MainData = new article.MainData();
+        if (myRoute != null) Articleid = RouteData.Values["Articleid"].ToString();  
         List<article.Lecturer> Lecturer = new List<article.Lecturer>();
-
         if (Articleid != null && Articleid !="0")
         {
             MainData = article.DbHandle.Get_article(int.Parse(Articleid));
+          
         }
         else if (Session["MainData"] != null)
         {
@@ -56,25 +45,28 @@ public partial class detail_course_ : System.Web.UI.Page
         }
         if (MainData != null)
         {
-
-            subject = MainData.Subject;
-            Session["title"] = subject + "│" + Application["site_name"];
+            status = MainData.Status;        
+            Session["title"] = MainData.Subject + "│" + Application["site_name"];
             pic =   MainData.Pic;
             Session["image"] = Session["websiteurl"] + pic;
             pic = "<a href=\"" + pic + "\">" + "<img class=\"image-full modal-image size-full\" src=\"" + pic + "\" width=\"1350\" height=\"900\" /></a>";
-            List<article.Lesson> lesson = new List<article.Lesson>();
-            List<article.LessonDetail> lessondetail = new List<article.LessonDetail>();
-            if (MainData.Lesson.Count > 0)
+            if (MainData.Lesson.Id  > 0)
             {
-                startday = MainData.Lesson[0].StartDay == null ? "" : MainData.Lesson[0].StartDay.ToString("yyyy/MM/dd");
-                endday = MainData.Lesson[0].EndDay.ToString("yyyy/MM/dd");
-                address = MainData.Lesson[0].Address;
-                contents = MainData.Contents;
-                lessondetail = MainData.Lesson[0].LessonDetail;
-                Repeater2.DataSource = lessondetail;
+                //lessondetail = MainData.Lesson.LessonDetail;
+                //if ( DateTime.Compare(DateTime.Today, MainData.Lesson.EndDay) <= 0)
+                // lessondetail = MainData.Lesson.LessonDetail.Find(x => x.Flag == "Y");
+
+                Repeater2.DataSource = MainData.Lesson.LessonDetail.FindAll(x => x.Flag == "Y");
                 Repeater2.DataBind();
-                lessontime = article.Web.Get_author_link(MainData.Lesson[0].Lessontime);
-                Lecturer = article.DbHandle.Get_Lecturer_list(MainData.Lesson[0].Lecturer);
+                //}
+                //else
+                //{
+                //    Repeater3.DataSource = MainData.Lesson.LessonDetail;
+                //    Repeater3.DataBind();
+                //}
+
+              
+                Lecturer = article.DbHandle.Get_Lecturer_list(MainData.Lesson.Lecturer);
                 Repeater1.DataSource = Lecturer;
                 Repeater1.DataBind();
             }  
@@ -82,8 +74,7 @@ public partial class detail_course_ : System.Web.UI.Page
             keywords = article.Web.Get_Keyword_link(MainData.Keywords);
             viewcount = MainData.Viewcount.ToString();
             tags = article.Web.Get_category_link(MainData.Id);
-
-            Session["description"] = unity.classlib.noHTML(contents);
+            Session["description"] = unity.classlib.noHTML(MainData.Contents);
             Session["keywords"] = MainData.Keywords;
             article.DbHandle.Add_views(MainData.Id);
             List<article.Category> cate = new List<article.Category>();
@@ -108,5 +99,41 @@ public partial class detail_course_ : System.Web.UI.Page
       
 
         }
+
+
+        s = Unitlib.Get_UnitData(37, "");
+
+
+
+    }
+    public static string  Get_joinnum(article.MainData MainData, string lessonId)
+    {
+        string result = "";
+        var lessondetail = MainData.Lesson.LessonDetail.Find(c => c.LessonId == int.Parse(lessonId));
+        int num = lessondetail.Limitnum - LessonLib.Web.Get_JoinNum(MainData.Id.ToString () , lessonId);
+        if (DateTime.Compare(DateTime.Today, MainData.Lesson.EndDay) > 0)
+        {
+            result = "<a href = \"#\" class=\"btn btn-danger btn-block\"  >活動已結束</a>";
+        }
+        else if (DateTime.Compare(DateTime.Today, lessondetail.Strdat  ) < 0)
+        {
+            result = "<a href =\"#\" class=\"btn btn-danger btn-block\"  >報名未開始</a>";
+
+        }
+        else if (DateTime.Compare(DateTime.Today, lessondetail.Enddat ) > 0)
+        {
+            result = "<a href =\"#\" class=\"btn btn-danger btn-block\"  >報名己截止</a>";
+
+        }
+        else if (  num >0)
+        {
+            result = "<a href =\"/class/Article/" + MainData.Id.ToString() + "/lesson/" + lessonId + "\" class=\"btn btn-danger btn-block\"  >立即報名</a>";
+
+        }
+        else
+        {
+            result = "<a href =\"#\" class=\"btn btn-danger btn-block\"  >額滿</a>";
+        }
+        return result;
     }
 }

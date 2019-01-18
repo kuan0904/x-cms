@@ -41,6 +41,9 @@ public partial class spadmin_edit_message : System.Web.UI.Page
 
     protected void ContactsListView_PagePropertiesChanging(object sender, PagePropertiesChangingEventArgs e)
     {
+
+        var pager = (DataPager)ListView1.FindControl("DataPager1");
+        pager.SetPageProperties(e.StartRowIndex, e.MaximumRows, false);
         selectSQL();
     }
 
@@ -98,7 +101,7 @@ public partial class spadmin_edit_message : System.Web.UI.Page
         cmd.Parameters.Add("condition", SqlDbType.NVarChar).Value = condition.Text;
         cmd.Parameters.Add("status", SqlDbType.NVarChar).Value = status.SelectedValue;
         cmd.Parameters.Add("title", SqlDbType.NVarChar).Value = title.Text;
-        cmd.Parameters.Add("contents", SqlDbType.NVarChar).Value = contents.Text;
+        cmd.Parameters.Add("contents", SqlDbType.NVarChar).Value =Server.HtmlDecode ( contents.Text);
         if (Btn_save.CommandArgument == "add")
         {
 

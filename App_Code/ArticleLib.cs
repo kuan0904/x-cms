@@ -117,8 +117,10 @@ namespace article
         public static List<MainData> Recommend_list(int ClassId)
         {
             List<MainData> MainData = new List<MainData>();
-            string strsql = @"SELECT  * FROM      tbl_article
-                    WHERE  recommend ='Y' and status='Y' and 
+            string strsql = @"SELECT  top 5 * FROM      tbl_article
+                    WHERE  recommend ='Y'
+                    and convert(varchar, getdate(), 110) >=postday
+                    and status='Y' and 
                     (articleId IN  (SELECT          articleId
                     FROM               tbl_article_category
                     WHERE           (categoryid = @classid) OR
@@ -127,7 +129,7 @@ namespace article
                                                     FROM               tbl_category
                                                     WHERE           (parentid = @classid)))))";
            
-            strsql += "order by articleId desc ";
+            strsql += " Order By NEWID() DESC ";
             NameValueCollection nvc = new NameValueCollection
             {
                 { "ClassId", ClassId.ToString() }
@@ -193,17 +195,46 @@ namespace article
             }
             return result;
         }
-        public static string Get_category_link(int id)
+        public static string Get_category_link(int id,int num=0,string cid="")
         {
             List<Category > ItemData = new List<Category>();
             ItemData = (List <Category>)  DbHandle.Get_article_category(id);
             string result = "";
+            int i = 0;
+            
             foreach (var s in ItemData)
-            {
-             //result += result == "" ? "" : "/";
-                result += " <a href = \"/catalog/" + s.CategoryId.ToString () + "\" class=\"post-category\">" +  s.Name + "</a>";
+            {                 
            
+                if (i > num && num != 0)
+                    result = " <a href = \"/catalog/" + s.CategoryId.ToString() + "\" class=\"post-category\">" + s.Name + "</a>";
+
+                else
+                    result += " <a href = \"/catalog/" + s.CategoryId.ToString() + "\" class=\"post-category\">" + s.Name + "</a>";
+
+               
+
             }
+
+            if (cid != "") {
+                var s =ItemData .Find(p => p.CategoryId == int.Parse (cid) );
+                if (s!=null && s.Parentid == 0)
+                {
+                    if (ItemData.Find(p => p.Parentid == int.Parse(cid)) != null)
+                        s = ItemData.Find(p => p.Parentid == int.Parse(cid));
+
+
+                }
+               
+
+                result = " <a href = \"/catalog/" + s.CategoryId.ToString() + "\" class=\"post-category\">" + s.Name + "</a>";
+
+            }
+
+
+
+
+
+
             return result ;
         }
     }
@@ -247,7 +278,9 @@ namespace article
         public static MainData Get_article(int id)
         {
             MainData MainData = new MainData();
-            string strsql = @"select * from    tbl_article  where articleid =@id";
+            string strsql = @"select * FROM  tbl_article LEFT OUTER JOIN
+                            tbl_lesson ON tbl_article.articleId = tbl_lesson.articleId 
+                            where tbl_article.articleid =@id";
             NameValueCollection nvc = new NameValueCollection
             {
                 { "id", id.ToString() }
@@ -274,6 +307,8 @@ namespace article
                 MainData.Recommend = dt.Rows[0]["Recommend"].ToString();
                 MainData.YoutubeUrl  = dt.Rows[0]["YoutubeUrl"].ToString();
                 MainData.NextRead = dt.Rows[0]["NextRead"].ToString();
+                MainData.Flag  = dt.Rows[0]["flag"].ToString();
+                
                 //if (MainData.YoutubeUrl != "")
                 //{
                 //    string v = MainData.YoutubeUrl.Substring(MainData.YoutubeUrl.IndexOf("?v=") +3, MainData.YoutubeUrl.Length  - MainData.YoutubeUrl.IndexOf("?v=")-3);
@@ -304,22 +339,22 @@ namespace article
             nvc.Clear();
 
             //取課程
-            List<Lesson> lesson = new List<Lesson>();
+            Lesson lesson = new Lesson();
             List<LessonDetail> lessondetail = new List<LessonDetail>();
             strsql = @"select * from    tbl_lesson where articleid =@id";
             nvc.Add("id", id.ToString());
             dt = DbControl.Data_Get(strsql, nvc);
             if (dt.Rows.Count > 0)
             {
-                lesson.Add(new Lesson
-                {
+                //lesson.Add(new Lesson
+                //{
 
-                    Address = dt.Rows[0]["address"].ToString(),
-                    Lessontime = dt.Rows[0]["Lessontime"].ToString(),
-                    StartDay = dt.Rows[0]["StartDay"].ToString() == "" ? DateTime.Today : DateTime.Parse(dt.Rows[0]["StartDay"].ToString()),
-                    EndDay = dt.Rows[0]["EndDay"].ToString() == "" ? DateTime.Today : DateTime.Parse(dt.Rows[0]["EndDay"].ToString()),
-                    Id = id
-                });
+                lesson.Address = dt.Rows[0]["address"].ToString();
+                lesson.Lessontime = dt.Rows[0]["Lessontime"].ToString();
+                lesson.StartDay = dt.Rows[0]["StartDay"].ToString() == "" ? DateTime.Today : DateTime.Parse(dt.Rows[0]["StartDay"].ToString());
+                lesson.EndDay = dt.Rows[0]["EndDay"].ToString() == "" ? DateTime.Today : DateTime.Parse(dt.Rows[0]["EndDay"].ToString());
+                lesson.Id = id;
+                //});
             }
 
             strsql = @"select * from  tbl_lesson_class where articleid =@id";
@@ -334,11 +369,15 @@ namespace article
                     Description = (string)dt.Rows[idx]["description"],
                     Limitnum = (int)dt.Rows[idx]["Limitnum"],
                     Sort  = (int)dt.Rows[idx]["sort"],
+                    Strdat =(DateTime)dt.Rows [idx]["strdat"],
+                    Enddat  = (DateTime)dt.Rows[idx]["enddat"],
+                    Flag=(string )dt.Rows[idx]["Flag"]
                 });
             }       
-        
+            
             dt.Dispose();
             nvc.Clear();
+            lesson.LessonDetail = lessondetail;
             //取講師
             termsList.Clear();
             strsql = "select * from  tbl_article_tag  where articleid =@id and unitid=14";
@@ -351,13 +390,13 @@ namespace article
             Lecturer = termsList.ToArray();
             termsList.Clear();
 
-            bool exists = lesson.Exists(p => p.Id == id);
-            if (exists)
-            {
-                var L = lesson.Find(p => p.Id == id);
-                L.LessonDetail = lessondetail;
-                L.Lecturer = Lecturer;
-            }
+            //bool exists = lesson.Exists(p => p.Id == id);
+            //if (exists)
+            //{
+            //    var L = lesson.Find(p => p.Id == id);
+            //    L.LessonDetail = lessondetail;
+            //    L.Lecturer = Lecturer;
+            //}
         
             nvc.Clear();
             dt.Dispose();
@@ -380,7 +419,7 @@ namespace article
             NameValueCollection nvc = new NameValueCollection();
             string strsql = @"SELECT      Tbl_article_category.articleId as id
                             , Tbl_article_category.categoryid, tbl_category.title as name,
-                            tbl_category.kind 
+                            tbl_category.kind  ,  tbl_category.parentid
                             FROM Tbl_article_category INNER JOIN
                             tbl_category ON Tbl_article_category.categoryid = tbl_category.categoryid
                             where  Tbl_article_category.articleId=@id  ";
@@ -393,10 +432,12 @@ namespace article
 
                 ItemData.Add(new Category
                 {
+                    Id = (int)dt.Rows[i]["id"],
                     CategoryId = (int)dt.Rows[i]["categoryid"],
                     Name = dt.Rows[i]["name"].ToString(),
                     Kind = dt.Rows[i]["Kind"].ToString(),
-
+                    Parentid = (int)dt.Rows[i]["Parentid"] 
+                    
                 });
 
             }
@@ -449,8 +490,16 @@ namespace article
             }
             return ItemData;
         }
-   
-        public static List<article.MainData> Get_article_list(string cid, string KeyWords="", int rows = 10, int page = 0,string sort ="")
+
+        public static List<article.MainData> Get_article_list(string cid
+            , string KeyWords = ""
+            , int rows = 10
+            , int page = 0
+            , string sort = ""
+            , string status = "Y"
+            , string postday = ""
+            , string kind ="N"
+            )
         {
         string[] cids = cid.Split(',');
         string cidp = "";
@@ -464,10 +513,15 @@ namespace article
             }
             List<article.MainData> MainData = new List<article.MainData>();
             DataTable dt;
-            string strsql = @"select  * from  tbl_article  where tbl_article.status='Y' 
-            and  postday <= CONVERT(VARCHAR(10), GETDATE(), 111) ";
+            string strsql = @"select  * from  tbl_article  where tbl_article.status <>'D' ";
+            if (kind != "all")
+                strsql += " and kind=@kind ";
+
+            if (postday == "") { strsql += "and postday <= CONVERT(VARCHAR(10), GETDATE(), 111) ";}
+            else
+            { strsql += "and postday <= CONVERT(VARCHAR(10), @postday, 111) "; }
           
-            if (cid != "")
+            if (cid != "" && cid != "0")
             {
                 strsql += @" and articleId  in (select articleId FROM Tbl_article_category
                           WHERE categoryid IN(SELECT categoryid  FROM   tbl_category  WHERE parentid in (@cid)  
@@ -475,6 +529,8 @@ namespace article
 
             }
             strsql = strsql.Replace("@cid", cidp);
+            if (status != "all")
+                strsql += " and status =@status ";
             if (KeyWords != "")
             {
               
@@ -493,12 +549,14 @@ namespace article
                
             {
                 case "id":
-                    strsql += " order articleId desc ";
+                    strsql += " order by articleId desc ";
                     break;
                 case "views":
                     strsql += " order by ViewCount desc,articleId desc ";
                     break;
-
+                case "postday":
+                    strsql += " order by postday desc,articleId desc ";
+                    break;
                 default:
                     strsql += " order by postday desc,articleId desc ";
                     break;
@@ -513,7 +571,9 @@ namespace article
             {
                 nvc.Add("cid" + s, s);
             }
-
+            nvc.Add("status", status);
+            nvc.Add("postday", postday);
+            nvc.Add("kind", kind);
             dt = DbControl.Data_Get(strsql, nvc);
 
             string[] tags;
@@ -612,12 +672,13 @@ namespace article
         }
         public static int Article_Update(article.MainData ad)
         {
-            List<article.Lesson> Lesson = ad.Lesson;
+            article.Lesson Lesson = ad.Lesson;
 
             string strsql = @"update  tbl_article set 
                     subject =@subject,pic=@pic,subtitle=@subtitle,postday=@postday,contents=@contents ,
                     keywords=@keywords,status=@status,author=@author,recommend=@recommend
-                    ,kind=@kind,YoutubeUrl=@YoutubeUrl,NextRead=@NextRead
+                    ,kind=@kind,YoutubeUrl=@YoutubeUrl,NextRead=@NextRead,ViewCount=@ViewCount,
+                    flag=@flag
                     where articleId =@id ";
             NameValueCollection nvc = new NameValueCollection
             {
@@ -632,7 +693,9 @@ namespace article
                 {"recommend",ad.Recommend  },
                 { "kind", ad.kind =="L" ? "Y":"N" },
                 {"YoutubeUrl",ad.YoutubeUrl  },
-                {"NextRead",ad.NextRead  }
+                {"NextRead",ad.NextRead  },
+                {"flag",ad.Flag   },
+                {"ViewCount",ad.Viewcount.ToString ()  }
                 //{ "startday",ad.StartDay.ToString("yyyy/MM/dd")  },
                 //{ "endday",ad.EndDay.ToString("yyyy/MM/dd") },
               
@@ -669,25 +732,25 @@ namespace article
             }
             nvc.Clear();
 
-            bool exists = Lesson.Exists(p => p.Id == ad.Id);
-            if (exists) {
-                var L = Lesson.Find(p => p.Id == ad.Id);
+          //  bool exists = Lesson.Exists(p => p.Id == ad.Id);
+            if (Lesson.Id > 0 ) {
+              //  var L = Lesson.Find(p => p.Id == ad.Id);
                 strsql = "delete from tbl_lesson  where articleId =@id ";
                 DbControl.Data_delete(strsql, ad.Id.ToString());
                  nvc.Clear();
                 strsql = @"insert into tbl_lesson (articleId,address,startday,endday,lessontime) values 
                      (@id,@address,@startday,@endday,@lessontime) ";
                 nvc.Add("id", ad.Id.ToString());
-                nvc.Add("address", L.Address );
-                nvc.Add("lessontime", L.Lessontime);
-                nvc.Add("startday", L.StartDay.ToShortDateString ());
-                nvc.Add("endday", L.EndDay.ToShortDateString ());
+                nvc.Add("address", Lesson.Address );
+                nvc.Add("lessontime", Lesson.Lessontime);
+                nvc.Add("startday", Lesson.StartDay.ToShortDateString ());
+                nvc.Add("endday", Lesson.EndDay.ToShortDateString ());
                 i = DbControl.Data_add(strsql, nvc);
                 nvc.Clear();
                 strsql = "delete from tbl_article_tag  where articleId =@id and unitid =14";
                 i = DbControl.Data_delete(strsql, ad.Id.ToString());
               
-                string[] lecturer  =  L.Lecturer ;
+                string[] lecturer  = Lesson.Lecturer ;
                 foreach (string s in lecturer)
                 {
                     nvc.Clear();
@@ -700,20 +763,38 @@ namespace article
                 }
                 nvc.Clear();
 
-                strsql = "delete from  tbl_lesson_class where   articleId =@id";
-                i = DbControl.Data_delete(strsql, ad.Id.ToString());
-                List<article.LessonDetail> detail = L.LessonDetail;
+                //strsql = "delete from  tbl_lesson_class where   articleId =@id";
+                //i = DbControl.Data_delete(strsql, ad.Id.ToString());
+                List<article.LessonDetail> detail = Lesson.LessonDetail;
                 foreach (var v in detail)
                 {
                     nvc.Clear();
-                    strsql = @"insert into tbl_lesson_class ( articleId, price, sellprice,limitnum,description,sort)
-                        values (@articleId,  @price, @sellprice,@limitnum,@description,@sort)";
+                    string lessonId = v.LessonId.ToString ();
+                    if (lessonId == "0" ||lessonId == "")
+                    {
+                        strsql = @"insert into tbl_lesson_class
+                        (articleId, price, sellprice,limitnum,description,sort,strdat,enddat,flag)
+                        values (@articleId,  @price, @sellprice,@limitnum,@description,@sort
+                        ,@strdat,@enddat,@flag)";
+                    }
+                    else
+                    {
+                        strsql = @"update  tbl_lesson_class set articleId=@articleId, 
+                        price=@price, sellprice=@sellprice,limitnum=@limitnum,
+                        description=@description,sort=@sort 
+                        ,strdat=@strdat,enddat=@enddat,flag=@flag where lessonId=@lessonId ";
+                      
+                    }
+                    nvc.Add("lessonId", lessonId);
                     nvc.Add("articleId", ad.Id.ToString());
                     nvc.Add("description", v.Description );
                     nvc.Add("limitnum",v.Limitnum.ToString () );
                     nvc.Add("price", v.Price.ToString());
                     nvc.Add("sellprice", v.Sellprice.ToString  ());
                     nvc.Add("sort", v.LessonId.ToString ());
+                    nvc.Add("strdat", v.Strdat.ToString("yyyy/MM/dd"));
+                    nvc.Add("enddat", v.Enddat.ToString("yyyy/MM/dd"));
+                    nvc.Add("flag", v.Flag );
                     i = DbControl.Data_add(strsql, nvc);
                 }
 
@@ -776,11 +857,13 @@ namespace article
         public string Keywords { get; set; }
         public int TotalRows { get; set; }
         public string Recommend { get; set; }
-        public List<Lesson> Lesson { get; set; }
+        public Lesson Lesson { get; set; }
         public string Tempid { get; set; }
         public string YoutubeUrl { get; set; }
         public string NextRead { get; set; }
-     
+        public string Flag { get; set; }
+
+
     }
     public class ItemData
     {
@@ -810,7 +893,10 @@ namespace article
         public int Price { get; set; }
         public int Sellprice { get; set; }
         public int Limitnum { get; set; }
-        public string Description { get; set; }       
+        public string Description { get; set; }   
+        public DateTime Strdat { get; set; }
+        public DateTime Enddat { get; set; }
+        public string Flag { get; set; }
     }
 
 
@@ -821,6 +907,7 @@ namespace article
         public int CategoryId { get; set; }
         public string Name { get; set; }
         public string Kind { get; set; }
+        public int Parentid { get; set; }
     }
     public class Tags
     {

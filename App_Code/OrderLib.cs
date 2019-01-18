@@ -10,6 +10,7 @@ using System.Text;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using SpGatewayHelper.Models;
 
 
 /// <summary>
@@ -107,9 +108,6 @@ public class OrderLib
         if (dt.Rows.Count > 0) msg = dt.Rows[0][0].ToString();
         return msg;
     }
-
-
-
     public static string Get_ord_code(string ord_date)
     {
         string ord_code = "";
@@ -119,21 +117,32 @@ public class OrderLib
             string ord_code2 = "";
 
 
-         
+            int secno = 1;
             string strsql;
-            strsql = @"SELECT  count(*) FROM tbl_orderdata WHERE  CONVERT(VARCHAR(10), crtdat, 111)  
-                         = @ord_date ";
+            strsql = @"SELECT  * FROM Tbl_OrderNo WHERE orddate = CONVERT(VARCHAR(10), getdate(), 111)";
             NameValueCollection nvc = new NameValueCollection();
-            nvc.Add("ord_date", ord_date);
+            nvc.Add("orddate", ord_date);
             DataTable dt = DbControl.Data_Get(strsql, nvc);
-            ord_code2 = ((int)dt.Rows [0][0] + 1).ToString().PadLeft(5, '0');
+            if (dt.Rows.Count == 0)
+            {
+                ord_code2 = "1";
+                strsql = @"insert into  Tbl_OrderNo  (orddate,secno) values (@orddate,@secno) ";
 
+            }
+            else
+            {
+                secno = (int)dt.Rows[0]["secno"] + 1;
+                strsql = @"update Tbl_OrderNo  set secno=@secno where orddate=@orddate ";
+
+            }
             dt.Dispose();
+            ord_code2 = (secno).ToString().PadLeft(5, '0');
+            nvc.Clear();
+            nvc.Add("secno", secno.ToString ());
+            nvc.Add("orddate", ord_date);
+            DbControl.Data_add(strsql, nvc);
             ord_code = ord_code1 + ord_code2;
-         
-
-      
-        return ord_code;
+            return ord_code;
     }
     public static OrderData Get_ordData(string     ord_code)
     {
@@ -148,76 +157,84 @@ public class OrderLib
         };
         dt = DbControl.Data_Get(strsql, nvc);
         o.Ord_code = ord_code;
-        o.Ord_id  = (int)dt.Rows[0]["ord_id"] ;
-
-        o.Ordphone  = dt.Rows[0]["ordphone"].ToString();
-        o.Paymode  = dt.Rows[0]["paymode"].ToString();
-        o.Status  = dt.Rows[0]["status"].ToString();
-        o.Orddate = DateTime.Parse(dt.Rows[0]["ord_date"].ToString());
-        o.TotalPrice  =(int) dt.Rows[0]["TotalPrice"] ;
-        o.Ordname  = dt.Rows[0]["ordname"].ToString();
-        o.Memberid = dt.Rows[0]["Memberid"].ToString();
-        o.Delivery_kind = dt.Rows[0]["delivery_kind"].ToString();
-        o.Ordemail  = dt.Rows[0]["email"].ToString();     
-        o.Ordname  = dt.Rows[0]["ordname"].ToString();
-        o.Shipphone  = dt.Rows[0]["shipname"].ToString();
-        o.Shipname  = dt.Rows[0]["shipphone"].ToString();
-        o.Shipaddress = dt.Rows[0]["shipaddress"].ToString();
-        o.Title = dt.Rows[0]["title"].ToString();
-        o.Companyno  = dt.Rows[0]["companyno"].ToString();
-        o.Shipzip = dt.Rows[0]["zip"].ToString();
-        o.Ordaddress = dt.Rows[0]["ordaddress"].ToString();
-        string countyid = dt.Rows[0]["countryid"].ToString();
-        strsql = @"select *  FROM    tbl_city  where cityid=@id";
-        nvc.Clear();
-        nvc.Add("id", dt.Rows[0]["cityid"].ToString ());
-        dt = DbControl.Data_Get(strsql, nvc);
-        //county縣
-        ItemData item = new ItemData();     
-        if (dt.Rows.Count >0)
+        o.Ord_id = 0;
+        if (dt.Rows.Count > 0)
         {
-            item.Id = (int)dt.Rows[0]["cityid"];
-            item.Name =   dt.Rows[0]["cityname"].ToString ();
+            o.Ord_id = (int)dt.Rows[0]["ord_id"];
 
-        }
-        o.Shipcity = item;
-        dt.Dispose();
-        nvc.Clear();
-        if (countyid != "") { 
-            strsql = @"select *  FROM   tbl_county where  countyid=@id";      
-            nvc.Add("id", countyid);
+            o.Ordphone = dt.Rows[0]["ordphone"].ToString();
+            o.Paymode = dt.Rows[0]["paymode"].ToString();
+            o.Status = dt.Rows[0]["status"].ToString();
+            o.Orddate = DateTime.Parse(dt.Rows[0]["ord_date"].ToString());
+            o.TotalPrice = (int)dt.Rows[0]["TotalPrice"];
+            o.Ordname = dt.Rows[0]["ordname"].ToString();
+            o.Memberid = dt.Rows[0]["Memberid"].ToString();
+            o.Delivery_kind = dt.Rows[0]["delivery_kind"].ToString();
+            o.Ordemail = dt.Rows[0]["email"].ToString();
+            o.Ordname = dt.Rows[0]["ordname"].ToString();
+            o.Shipphone = dt.Rows[0]["shipname"].ToString();
+            o.Shipname = dt.Rows[0]["shipphone"].ToString();
+            o.Shipaddress = dt.Rows[0]["shipaddress"].ToString();
+            o.Title = dt.Rows[0]["title"].ToString();
+            o.Companyno = dt.Rows[0]["companyno"].ToString();
+            o.Shipzip = dt.Rows[0]["zip"].ToString();
+            o.Ordaddress = dt.Rows[0]["ordaddress"].ToString();
+            string countyid = dt.Rows[0]["countryid"].ToString();
+            strsql = @"select *  FROM    tbl_city  where cityid=@id";
+            nvc.Clear();
+            nvc.Add("id", dt.Rows[0]["cityid"].ToString());
             dt = DbControl.Data_Get(strsql, nvc);
-            item = new ItemData();
+            //county縣
+            ItemData item = new ItemData();
             if (dt.Rows.Count > 0)
             {
-                item.Id = (int)dt.Rows[0]["countyid"];
-                item.Name = dt.Rows[0]["countyname"].ToString();
+                item.Id = (int)dt.Rows[0]["cityid"];
+                item.Name = dt.Rows[0]["cityname"].ToString();
 
             }
-            o.Shipcounty = item;
+            o.Shipcity = item;
             dt.Dispose();
-        }
-        strsql = @"select *  FROM    tbl_OrderDetail INNER JOIN
-                            tbl_productData ON tbl_OrderDetail.p_id = tbl_productData.p_id where ord_id=@ord_id";
-        nvc.Clear();
-        nvc.Add("ord_id", o.Ord_id.ToString ());
-        dt = DbControl.Data_Get(strsql, nvc);
-
-        List<OrderDetail> detail = new List<OrderDetail>();
-   
-        for (int i= 0;i<= dt.Rows.Count - 1; i++)
-        {
-            detail.Add(new OrderDetail 
+            nvc.Clear();
+            if (countyid != "")
             {
-                P_id =(int) dt.Rows[0]["p_id"] ,
-                Num  = (int)dt.Rows[0]["num"],
-                Price = (int)dt.Rows[0]["Price"],
-                Amount  = (int)dt.Rows[0]["Amount"],
-                Discount  = (int)dt.Rows[0]["Discount"],
-                P_name = dt.Rows[0]["productname"].ToString ()
-            });
+                strsql = @"select *  FROM   tbl_county where  countyid=@id";
+                nvc.Add("id", countyid);
+                dt = DbControl.Data_Get(strsql, nvc);
+                item = new ItemData();
+                if (dt.Rows.Count > 0)
+                {
+                    item.Id = (int)dt.Rows[0]["countyid"];
+                    item.Name = dt.Rows[0]["countyname"].ToString();
+
+                }
+                o.Shipcounty = item;
+                dt.Dispose();
+            }
+            strsql = @"select *  FROM    tbl_OrderDetail INNER JOIN
+                            tbl_productData ON tbl_OrderDetail.p_id = tbl_productData.p_id where ord_id=@ord_id";
+            nvc.Clear();
+            nvc.Add("ord_id", o.Ord_id.ToString());
+            dt = DbControl.Data_Get(strsql, nvc);
+
+            List<OrderDetail> detail = new List<OrderDetail>();
+
+            for (int i = 0; i <= dt.Rows.Count - 1; i++)
+            {
+                detail.Add(new OrderDetail
+                {
+                    P_id = (int)dt.Rows[0]["p_id"],
+                    Num = (int)dt.Rows[0]["num"],
+                    Price = (int)dt.Rows[0]["Price"],
+                    Amount = (int)dt.Rows[0]["Amount"],
+                    Discount = (int)dt.Rows[0]["Discount"],
+                    P_name = dt.Rows[0]["productname"].ToString(),
+                    Pic= dt.Rows[0]["logo"].ToString()
+                });
+            }
+            TradeInfoLog log = Get_Tradelog(ord_code);
+            o.TradeInfoLog = log;
+            o.OrderDetail = detail;
         }
-        o.OrderDetail = detail;
         return o;
        
     }
@@ -293,7 +310,62 @@ public class OrderLib
           
         return msg;
     }
-     public class OrderData
+    public static TradeInfoLog Get_Tradelog(string ord_code)
+    {
+        TradeInfoLog log = new TradeInfoLog();
+        string strsql = @"select *  FROM   TradeInfolog  where ord_code=@ord_code order by secno  ";
+        NameValueCollection nvc = new NameValueCollection
+        {
+            { "ord_code", ord_code }
+        };
+        DataTable dt = DbControl.Data_Get(strsql, nvc);
+        TradeInfoResult result = new TradeInfoResult
+        {
+            TradeNo = "",
+            MerchantOrderNo = "",
+            PaymentType = "",
+            RespondCode = "",
+            Auth = "",
+            Card6No = "",
+            Card4No = "",
+            PayTime = "",
+            PaymentMethod = "",
+            ExpireDate = "",
+            ExpireTime = "",
+            BankCode = "",
+            CodeNo = "",
+            Amt = "",
+            Exp = ""
+
+        };
+        if (dt.Rows.Count > 0)
+        {
+            log.Status = dt.Rows[0]["status"].ToString();
+            result = new TradeInfoResult
+            {
+                TradeNo = dt.Rows[0]["TradeNo"].ToString(),
+                MerchantOrderNo = dt.Rows[0]["MerchantOrderNo"].ToString(),
+                PaymentType = dt.Rows[0]["PaymentType"].ToString(),
+                RespondCode = dt.Rows[0]["RespondCode"].ToString(),
+                Auth = dt.Rows[0]["Auth"].ToString(),
+                Card6No = dt.Rows[0]["Card6No"].ToString(),
+                Card4No = dt.Rows[0]["Card4No"].ToString(),
+                PayTime = dt.Rows[0]["PayTime"].ToString(),
+                PaymentMethod = dt.Rows[0]["PaymentMethod"].ToString(),
+                ExpireDate = dt.Rows[0]["ExpireDate"].ToString(),
+                ExpireTime = dt.Rows[0]["ExpireTime"].ToString(),
+                BankCode = dt.Rows[0]["BankCode"].ToString(),
+                CodeNo = dt.Rows[0]["CodeNo"].ToString(),
+                Amt = dt.Rows[0]["Amt"].ToString(),
+                Exp = dt.Rows[0]["Exp"].ToString()
+            };
+         
+        }
+        log.Result = result;
+        dt.Dispose();
+        return log;
+    }
+    public class OrderData
     {
         public string Ord_code { get; set; }
         public int Ord_id { get; set; }
@@ -330,6 +402,7 @@ public class OrderLib
         public List<OrderDetail > OrderDetail { get; set; }
         public DateTime Orddate { get; set; }
         public string  coupon_no { get; set; }
+        public TradeInfoLog TradeInfoLog { get; set; }
     }
     public class ItemData
     {
@@ -345,6 +418,12 @@ public class OrderLib
         public int Price { get; set; }
         public int Discount { get; set; }
         public int Amount { get; set; }
+        public string Pic { get; set; }
+
+    }
+    public class TradeInfolog
+    {
+        public string status { get; set; }
     }
     public class ShoppingList
     {

@@ -1,0 +1,98 @@
+﻿<div class="col-md-10 col-sm-9 col-xs-12">
+    <article class="post-layout post">
+        <div class="post-header">
+            <div class="post-information">
+                <h1>訂單編號：@ord_code@</h1>
+            </div>
+            <!-- post-information END -->
+        </div>
+        <!-- post-header END -->
+    </article>
+    <div class="row">
+        <div class="col-md-6 col-sm-12 col-xs-12">
+            <img src="@pic@" alt="" title="@subject@">
+        </div>
+        <div class="col-md-6 col-sm-12 col-xs-12">
+            <div class="member-course-info">
+                <div class="member-order-detail-title">
+                    課程名稱: @subject@<p></p>
+                    課程日期:<i class="fa fa-calendar margin-R-5"></i> @StartDay@ 至 @EndDay@<p></p>
+                    課程時間: @Lessontime@<p></p>
+                    上課地點:
+                    <a href="https://www.google.com.tw/maps?q=@address@" target="_blank"><i class="fa fa-map-marker margin-R-5 " aria-hidden="true"></i>@address@</a>
+                </div>
+
+            </div>
+                
+                
+                <!-- meta-info END -->
+            </div>
+            
+        </div>
+    <div class="col-xs-12">
+
+        <!--票券詳細資訊-->
+        <table class="table process-tab">
+            <tbody>
+
+
+                @detail@
+                <tr class="total underline">
+                    <td colspan="3">總計</td>
+                    <td class="text-right">NT$@TotalPrice@</td>
+                </tr>
+                <tr class="underline">
+                    <td>取票方式</td>
+                    <td colspan="3">電子票券</td>
+                </tr>
+                <tr class="underline">
+                    <td>付款方式</td>
+                    <td colspan="3">@paymode@</td>
+                </tr>
+                <tr class="underline">
+                    <td>訂單狀態</td>
+                    <td colspan="3">@paystatus@</td>
+                </tr>
+                <tr class="underline">
+                    <td>付款資訊</td>
+                    <td colspan="3">@payinfo@</td>
+                </tr>
+
+            </tbody>
+        </table>
+
+
+
+        <section class="form-white-style">
+            <div class="page-header-blue">
+                <h3>聯絡人資訊</h3>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <form class="form-horizontal form-fill">
+                        <div class="form-group">
+                            <label class="col-xs-12 control-label title">姓名</label>
+                            <label class="col-xs-12 control-label text">@ordername@</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 control-label title">e-mail</label>
+                            <label class="col-xs-12 control-label text">@ordermail@</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 control-label title">聯絡電話</label>
+                            <label class="col-xs-12 control-label text">@orderphone@</label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="page-header-blue">
+                <h3>@ticketname@</h3>
+            </div>
+            @classdetail@
+        </section>
+
+        <!-- col-md-4 col-sm-6 col-xs-6 END -->
+
+    </div>
+    </div>

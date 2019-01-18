@@ -9,7 +9,7 @@
                 <div class="container">
                     <ol class="breadcrumb">
                         <li>
-                            <a href="hp.html">HOME</a>
+                            <a href="/">HOME</a>
                         </li>
                         <li class="active">完成訂單</li>
                     </ol>
@@ -29,10 +29,12 @@
                                 <div class="post-header">
 
                                     <div class="post-information">
-                                        <h1>版權聲明</h1>
+                                        <h1>完成訂單</h1>
                                         <div class="meta-info">
+                                            狀態:<%=ord_status %>
                                             <span class="post-date">
-                                                <time datetime="2017-07-26T14:17:05+00:00">2017/7/26</time>
+
+                                                <time datetime="2017-07-26T14:17:05+00:00"><%=DateTime.Now.ToString ("yyyy-MM-dd hh:mm:ss") %></time>
                                             </span>
                                         </div>
                                         <!-- meta-info END -->
@@ -49,10 +51,10 @@
                             </div>
 
                             <ul>
-                                <li>訂單編號：<span id="ord_code"><%=ord_code%></span></li>
-                                <li>訂購日期：<span id="ord_date"> <%=ord_date%></span></li>
-                                <li>付款方式：<span id="ord_pay"> <%=ord_pay%>   </span></li>
-                                <li>付款金額：<span id="ord_totalprice"><%=ord_totalprice%></span> 元</li>
+                                <li>訂單編號：<span id="ord_code"><%=o.Ord_code %></span></li>
+                                <li>訂購日期：<span id="ord_date"> <%=o.Orddate.ToString ("yyy/MM/dd") %></span></li>
+                                <li>付款方式：<span id="ord_pay"> <%= OrderLib.getPaymode ( o.Paymode)  %> </span></li>
+                                <li>付款金額：<span id="ord_totalprice"><%=String.Format("{0:C0}",  o.TotalPrice) %></span> 元</li>
 
                             </ul>
                         </div>
@@ -62,11 +64,11 @@
                         <asp:Repeater ID="temp_product" runat="server">
                             <ItemTemplate>
                                 <div class="form-group">
-                                    <a href="product-page.aspx?p_ID=<%# Eval("p_id") %>">
-                                        <img src="upload/<%#Eval("pic1") %>" class="img-responsive"></a>
+                                    <a href="#">
+                                        <img src="upload/<%#Eval("pic") %>" class="img-responsive"></a>
                                 </div>
                                 <div class="form-group">
-                                    <%#Eval("productname")%>
+                                    <%#Eval("P_name")%>
                                 </div>
 
                                 <div class="form-group">
@@ -81,6 +83,9 @@
 
                             </ItemTemplate>
                         </asp:Repeater>
+                     
+                  
+
 
 
 
@@ -90,15 +95,15 @@
                         </h4>
 
                         <ul>
-                            <li>姓名：<span id="consignee_name"><%=ord_name%></span></li>
-                            <li>手機號碼：<span id="consignee_cellphone"><%=ord_tel %></span></li>
-                            <li>email：<span id="consignee_zip"><%=email%></span></li>
-                            <li>地址：<span id="consignee_address"><%=ord_address  %></span></li>
+                            <li>姓名：<span id="consignee_name"><%=o.Ordname %></span></li>
+                            <li>手機號碼：<span id="consignee_cellphone"><%=o.Ordphone  %></span></li>
+                            <li>email：<span id="consignee_zip"><%=o.Ordemail %></span></li>
+                            <li>地址：<span id="consignee_address"><%=o.Ordaddress  %></span></li>
                         </ul>
 
 
 
-                        訂單查詢專線: 
+                        訂單查詢專線: (02) 2322-2635
                         </div>
   <!-- post-content END -->
 

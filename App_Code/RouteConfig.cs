@@ -21,6 +21,8 @@ namespace MyPublic
 
             routes.MapPageRoute("article", "Article/{Articleid}", "~/detail.aspx",false, null,new RouteValueDictionary { { "Articleid", "^[0-9]*$" } });
             routes.MapPageRoute("class", "Class/{Articleid}", "~/detail-course.aspx", false, null,new RouteValueDictionary { { "Articleid", "^[0-9]*$" } });
+            routes.MapPageRoute("buy", "1shop/{id}", "~/product.aspx", false, null,
+            new RouteValueDictionary { { "id", "^[0-9]*$" } });
 
             routes.MapPageRoute("list", "news/{id}", "~/list-text.aspx", false, null,
             new RouteValueDictionary { { "id", "^[0-9]*$" }});
@@ -38,7 +40,10 @@ namespace MyPublic
             new RouteValueDictionary { { "id", "^[0-9]*$" }, { "pageindex", "^[0-9]*$" } });
 
             routes.MapPageRoute("lesson", "lesson/{id}/page/{*pageindex}", "~/list-grid.aspx",
-                false, null,new RouteValueDictionary { { "id", "^[0-9]*$" }, { "pageindex", "^[0-9]*$" } }   );
+               false, null, new RouteValueDictionary { { "id", "^[0-9]*$" }, { "pageindex", "^[0-9]*$" } });
+
+            routes.MapPageRoute("process-step", "class/Article/{ArticleId}/lesson/{lessonId}", "~/process-step1.aspx",
+                false, null,new RouteValueDictionary { { "ArticleId", "^[0-9]*$" }, { "lessonId", "^[0-9]*$" } }   );
             //routes.MapPageRoute("listpage", "{unitname}/{*pageindex}", "~/list.aspx", false, null,                 
             //        new RouteValueDictionary {
             //{ "unitname", "catalog|industry|culture|folkart|exhibtion|perform|practice|operate|design|crossborder|localization|classess|News|Events|ArtMBA" }

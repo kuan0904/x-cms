@@ -46,17 +46,17 @@ public partial class process_step3 : System.Web.UI.Page
             Session["image"] = Session["websiteurl"] + pic;
             List<article.Lesson> lesson = new List<article.Lesson>();
             List<article.LessonDetail> lessondetail = new List<article.LessonDetail>();
-            if (MainData.Lesson.Count > 0)
+            if (MainData.Lesson.Id  > 0)
             {
                 Articleid = MainData.Id.ToString();
-                startday = MainData.Lesson[0].StartDay == null ? "" : MainData.Lesson[0].StartDay.ToString("yyyy/MM/dd");
-                endday = MainData.Lesson[0].EndDay.ToString("yyyy/MM/dd");
-                address = MainData.Lesson[0].Address;
+                startday = MainData.Lesson.StartDay == null ? "" : MainData.Lesson.StartDay.ToString("yyyy/MM/dd");
+                endday = MainData.Lesson.EndDay.ToString("yyyy/MM/dd");
+                address = MainData.Lesson.Address;
                 contents = MainData.Contents;
-                lessondetail = MainData.Lesson[0].LessonDetail;
+                lessondetail = MainData.Lesson.LessonDetail;
               
-                lessontime = MainData.Lesson[0].Lessontime;
-                Lecturer = article.DbHandle.Get_Lecturer_list(MainData.Lesson[0].Lecturer);
+                lessontime = MainData.Lesson.Lessontime;
+                Lecturer = article.DbHandle.Get_Lecturer_list(MainData.Lesson.Lecturer);
 
             }
 

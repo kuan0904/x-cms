@@ -76,7 +76,7 @@
 
                                             <div class="caption">
                                                 <div class="meta-info">
-                                                    <%# article.Web.Get_category_link ((int) Eval("id"))%>
+                                                    <%# article.Web.Get_category_link ((int) Eval("id"),1,cid )%>
                                                     <span class="post-date"><time datetime="<%#Eval("PostDay") %>"><%# DateTime.Parse ( Eval("PostDay").ToString()).ToString ("yyyy/MM/dd")  %></time></span>
                                                 </div><!-- meta-info END -->
 
@@ -97,7 +97,17 @@
 
 
                                 <div class=clearfix></div>
-
+                                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 藝時代全站廣告 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-1577795616373786"
+     data-ad-slot="3617043165"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
                             </div><!-- main-content-inner END -->
 
                         </div><!-- col-sm-12 -main-content END -->

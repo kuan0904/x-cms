@@ -14,7 +14,7 @@ public partial class MasterPage : System.Web.UI.MasterPage
 
     public string logo = "";
     public string active ;
-    public string FacebookAppId = "164103481107660";
+    public string un = "";
     public string cid = "";
     public string _status = "";
     public string _link = "";
@@ -54,6 +54,16 @@ public partial class MasterPage : System.Web.UI.MasterPage
         if (Session["active"].ToString() == "3") logo = " emba";
         if (Application["site_name"].ToString ().IndexOf ( "幸福台灣")==-1) logo = "";
      
+      
+        if (Session["memberdata"] != null && Session["memberdata"].ToString () !="")
+        {
+            MemberLib.Mmemberdata memberdata = (MemberLib.Mmemberdata)Session["memberdata"];
+            un=    memberdata.Username ;
+              
+
+        }
+
+                   
     }
     public string checkitem(object sender, int id)
     {

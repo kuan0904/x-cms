@@ -81,6 +81,8 @@ public partial class admin_EditClass : System.Web.UI.Page
 
     protected void ContactsListView_PagePropertiesChanging(object sender, PagePropertiesChangingEventArgs e)
     {
+        var pager = (DataPager)ListView1.FindControl("DataPager1");
+        pager.SetPageProperties(e.StartRowIndex, e.MaximumRows, false);
         selectSQL();
     }
 

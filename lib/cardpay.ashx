@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 public class cardpay : IHttpHandler,IRequiresSessionState {
-
+//綠界版本
     public void ProcessRequest (HttpContext context) {
         //(STOREID+ORDERNUMBER+AMOUNT+CUBKEY)
         //【特店代號】：011210028

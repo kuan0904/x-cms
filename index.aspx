@@ -48,6 +48,7 @@
                     <div class="row">
                         <div class="col-md-8 col-sm-8 main-content">
                             <div class=main-content-inner>
+
                                 <h2 class="main-title">最新文章</h2>
                                 <div class="news-wrap news-list">
                                     <asp:Repeater ID="hot_list_detail" runat="server" EnableViewState ="false" >
@@ -94,7 +95,8 @@
                             </div><!-- main-content-inner END -->
                         </div>
                         <div class="col-md-4 col-sm-4 main-sidebar">                         
-                                
+                                 <div class="block-wrap" id="ad_banner1"></div>
+
                                  <div class="block-wrap">
                                 <h2 class="new-index-main-title text-center">熱門文章</h2>
                                 <div class="news-wrap news-list">                              
@@ -113,8 +115,20 @@
                                             </ItemTemplate>
                                         </asp:Repeater>
                                     </div>
-
+                                  
+                                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                                <!-- 藝時代全站廣告 -->
+                                <ins class="adsbygoogle"
+                                     style="display:block"
+                                     data-ad-client="ca-pub-1577795616373786"
+                                     data-ad-slot="3617043165"
+                                     data-ad-format="auto"
+                                     data-full-width-responsive="true"></ins>
+                                <script>
+                                (adsbygoogle = window.adsbygoogle || []).push({});
+                                </script>
                                  </div>
+
                             <div class="block-wrap" id="ad_banner"></div>   
                                      
                         </div><!-- col-md-4 END -->

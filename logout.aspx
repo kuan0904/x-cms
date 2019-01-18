@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" %>
 <%
-    Session["memberdata"] = "";
+    Session["memberdata"] = null;
     Response.Redirect("/");
     %>

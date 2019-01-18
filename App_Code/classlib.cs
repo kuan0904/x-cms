@@ -239,14 +239,62 @@ namespace unity {
     public static class classlib
     {
         public static string dbConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["dbconnConnection"].ConnectionString;
-       private static string delivername = "創藝時代";
+        private static string delivername = "創藝時代";
         private static string servicemail = "event@xnet.world";
         private static string smtpuid = "event@xnet.world";
         private static string smtppwd = "5505361323222635";
-       
-      
 
-   
+        public class Log_Sms
+        {
+            public string Msgid { get; set; }
+            public string Statuscode { get; set; }
+            public string AccountPoint { get; set; }
+            public string Dstanumber { get; set; }
+            public string Smsbody { get; set; }
+            public string Ord_code { get; set; }
+        }
+
+
+        public static Log_Sms Sendsms(string dstanumber, string smsbody)
+        {
+            string result = "";
+            Log_Sms log  = new Log_Sms();
+            Encoding myenc = Encoding.GetEncoding("big5");
+            string smsurl =
+            string.Format(@"http://smexpress.mitake.com.tw:9600/SmSendGet.asp?username=55053613&password=xnet2635&dstaddr={0}&smbody={1}&response=http://192.168.1.200/smreply.asp"
+            , dstanumber, HttpUtility.UrlEncode(classlib.RemoveHTMLTag(smsbody), myenc));
+            HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(smsurl);
+            req.Method = "GET";
+            using (WebResponse wr = req.GetResponse())
+            {
+                using (StreamReader sr = new StreamReader(wr.GetResponseStream(), myenc))
+                {
+                    result =sr.ReadToEnd();
+                }
+            }
+            string[] stringSeparators = new string[] { "\r\n" };
+            string[] msg = result.Split(stringSeparators, StringSplitOptions.None);
+            string strsql = @"insert into log_sms (msgid,statuscode,AccountPoint,dstanumber,smsbody)
+                values (@msgid,@statuscode,@AccountPoint,@dstanumber,@smsbody) ";
+            NameValueCollection nvc = new NameValueCollection();
+            log.Msgid = msg[1].Replace("msgid=", "");
+            log.Statuscode = msg[2].Replace("statuscode=", "");
+            log.AccountPoint = msg[3].Replace("AccountPoint=", "");
+            log.Dstanumber = dstanumber;
+            log.Smsbody = classlib.RemoveHTMLTag(smsbody);
+            
+            nvc.Add("msgid", log.Msgid);
+            nvc.Add("statuscode", log.Statuscode );
+            nvc.Add("AccountPoint", log.AccountPoint );
+            nvc.Add("dstanumber", dstanumber);
+            nvc.Add("smsbody", log.Smsbody);
+            DbControl.Data_add(strsql, nvc);
+           
+            return log;
+        }
+
+
+
         public static string SubString (string str,int length,string kind)
         {
           if (kind == "notag") str = noHTML(str);
@@ -543,7 +591,8 @@ namespace unity {
             string msg = "";
             MailMessage email = new MailMessage();
              SmtpClient sm = new SmtpClient();
-
+            //smtpuid = "eightgeman.edu@gmail.com";
+            //smtppwd = "q66175968";
             string mailtext = Mailbody;
             try
             {
@@ -909,7 +958,7 @@ namespace unity {
 
         }
 
-
     }
+  
 
 }

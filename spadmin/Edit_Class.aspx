@@ -107,14 +107,14 @@
                                     </td>
                                 </tr>
 
-                                   <tr>
+                                   <tr >
                                     <td>
                                         連結</td>
                                     <td>
                                         <asp:TextBox ID="pagename" runat="server"></asp:TextBox>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr >
                                     <td>型態</td>
                                     <td>
                                         <asp:DropDownList ID="kind" runat="server">
@@ -123,7 +123,7 @@
                                              <asp:ListItem Value ="3">LINK</asp:ListItem>
                                         </asp:DropDownList></td>
                                 </tr>
-                                <tr>
+                                <tr >
                                     <td>
                                         優先順序</td>
                                     <td>

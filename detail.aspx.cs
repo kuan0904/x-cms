@@ -27,6 +27,7 @@ public partial class detail : System.Web.UI.Page
     public string pageunit = "";
     public string author = "";
     public string cid = "";
+    public string flag = "";
     public string Articleid = "";
     protected void Page_LoadComplete(object sender, EventArgs e)
     {       
@@ -78,11 +79,15 @@ public partial class detail : System.Web.UI.Page
             keywords = article.Web.Get_Keyword_link (  MainData.Keywords );
             Session["description"] = unity.classlib .noHTML (contents);
             Session["keywords"] = MainData.Keywords;
+            flag = MainData.Flag;
             if (MainData.YoutubeUrl != "")
             {
                 Match regexMatch = Regex.Match(MainData.YoutubeUrl, "^[^v]+v=(.{11}).*",
-                                   RegexOptions.IgnoreCase);
-                string v = regexMatch.Groups[1].Value; pic = " <iframe width = \"853\" height = \"480\" src = \"https://www.youtube.com/embed/" + v + "\" frameborder = \"0\"  allowfullscreen ></iframe >";
+                        RegexOptions.IgnoreCase);
+                string v = regexMatch.Groups[1].Value;
+                FatchU2BUtility util = new FatchU2BUtility(MainData.YoutubeUrl);
+                pic = " <iframe width = \"853\" height = \"480\" src = \"https://www.youtube.com/embed/"+ v +"\" frameborder = \"0\" allow = \"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen ></iframe >";
+
             }
             viewcount = MainData.Viewcount.ToString();
             tags = article.Web.Get_category_link(MainData.Id);
@@ -149,7 +154,7 @@ public partial class detail : System.Web.UI.Page
               
             }
 
-            if (Session["memberdata"] != null)
+            if (Session["memberdata"] != null && Session["memberdata"].ToString () != "")
             {
                 MemberLib.Mmemberdata o = (MemberLib.Mmemberdata) Session["memberdata"];
                 iscollection = MemberLib.Member.Is_collection(o.Memberid.ToString (), MainData.Id.ToString ())=="Y"? " active ":"";
@@ -159,4 +164,66 @@ public partial class detail : System.Web.UI.Page
             }
         }
     }
+}
+
+public class FatchU2BUtility
+{
+
+    public string YoutubeURL { get; private set; }
+    public string Id { get; private set; }
+    public string Title { get; private set; }
+    public string Intro { get; private set; }
+    public string ImageLarge { get; private set; }
+    public string ImageSmall { get; private set; }
+
+    public FatchU2BUtility(string youtubeURL)
+    {
+        // <p id="eow-description" >
+
+        var src =youtubeURL;
+        var regexIntro = new Regex(
+           @"(p id=""eow-description"" >)(?<INTRO>.*?)(</p>)",
+            RegexOptions.IgnoreCase);
+        MatchCollection mcIntro = regexIntro.Matches(src);
+
+        //<meta name="title" content="
+        var regexTitle = new Regex(
+          @"(<meta name=""title"" content="")(?<TITLE>.*?)("">)",
+           RegexOptions.IgnoreCase);
+        MatchCollection mcTitle = regexTitle.Matches(src);
+
+
+
+        var regexId = new Regex(
+         @"(data-button-menu-id=""some-nonexistent-menu"" data-video-id="")(?<ID>.*?)("")",
+          RegexOptions.IgnoreCase);
+        MatchCollection mcId = regexId.Matches(src);
+
+
+        if (mcIntro.Count != 0)
+            Intro = mcIntro[0].Groups["INTRO"].Value;
+        else
+            throw new Exception("Can't find Intro");
+
+        if (mcTitle.Count != 0)
+
+            Title = mcTitle[0].Groups["TITLE"].Value;
+        else
+            throw new Exception("Can't find Title");
+
+        if (mcId.Count != 0)
+            Id = mcId[0].Groups["ID"].Value;
+        else
+            throw new Exception("Can't find Id");
+
+
+        ImageSmall = "http://img.youtube.com/vi/" + Id + "/2.jpg";
+        ImageLarge = "http://img.youtube.com/vi/" + Id + "/0.jpg";
+
+        YoutubeURL = "http://www.youtube.com/watch?v=" + Id;
+
+
+    }
+
+
 }

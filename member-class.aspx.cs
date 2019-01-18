@@ -28,6 +28,10 @@ public partial class member_class : System.Web.UI.Page
             Repeater1.DataBind();
             dt.Dispose();
         }
+        else
+        {
+            Response.Redirect("/login.html");
+        }
 
     }
     public static string PagePaging(string path = "")
@@ -46,5 +50,34 @@ public partial class member_class : System.Web.UI.Page
         retmsg += "<li class=\"page-item\"><a class=\"page-link\" href=\"" + path + "?pageindex=" + (PageIdx >= Pagecount ? PageIdx + 1 : 1) + "\" aria-label=\"Next\"><span aria-hidden=\"true\">»</span><span class=\"sr-only\">Next</span></a></li>";
 
         return retmsg;
+    }
+    public string get_qrcode(string ord_code)
+    {
+        string QrCode = "";
+        LessonLib.JoinData o = new LessonLib.JoinData();
+        o = LessonLib.Web.Get_ord_JoinData(ord_code);
+        foreach (LessonLib.JoinDetail d in o.JoinDetail)
+        {
+            QrCode += o.Ord_code + "-" + d.JoinId.ToString() + "-" + d.LessonId  + "," + d.Name  + ";" ;
+          
+        }
+        return QrCode;
+    }
+
+    protected void Repeater1_ItemDataBound(object sender, RepeaterItemEventArgs e)
+    {
+        if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+        {
+            DataRowView dr = e.Item.DataItem as DataRowView;
+            if (dr.Row ["paid"].ToString () != "Y" && dr.Row["paymode"].ToString()=="1" )
+            {
+                HyperLink hy = ((HyperLink)e.Item.FindControl("repay"));
+                hy.Visible = true;
+                hy.NavigateUrl = "/pay?repay=" + MySecurity.EncryptAES256(dr.Row["ord_code"].ToString()) ; 
+            }
+
+            //b.CommandArgument = drv.Row["ID_COLUMN_NAME"].ToString();
+            //  ((Label)e.Item.FindControl("RatingLabel")).Text= "<b>***Good***</b>";
+        }
     }
 }

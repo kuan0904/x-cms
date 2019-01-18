@@ -2019,7 +2019,7 @@ footer .tag-group li {
 }
 .news-grid .thumbnail .caption {
     padding: 10px;
-    position: initial;
+    position: static;
 }
 
 .news-grid .thumbnail .caption .title,

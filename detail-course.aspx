@@ -2,26 +2,29 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
         <script>
-           
+            var status = '<%=status%>';
         $(document).ready(function () {     
-         
             
+            if (status != "Y") {
+                alert('活動未開放');
+               setTimeout("location.href = '/index'",1000);
+            }
               
 
         });
-            function checkjoin(id) {
-                   var islogin = "";
-                  $.post('/lib/member_handle.ashx', {                                       
-                            "p_ACTION": "CheckLogin", "_": new Date().getTime()
-                        }, function (data) {
-                            if (data == "-1") {
-                                alert('請先登入');
-                                $( ".login-modal-js" ).trigger( "click" );
-                            }
-                            else {
-                                location.href = '/join.aspx?lessonid=' + id;
-                            }
-                        });
+        function checkjoin(id) {
+                var islogin = "";
+                $.post('/lib/member_handle.ashx', {                                       
+                        "p_ACTION": "CheckLogin", "_": new Date().getTime()
+                    }, function (data) {
+                        if (data == "-1") {
+                            alert('請先登入');
+                            $( ".login-modal-js" ).trigger( "click" );
+                        }
+                        else {
+                            location.href = '/join.aspx?lessonid=' + id;
+                        }
+                    });
             }
     </script>
 </asp:Content>
@@ -38,8 +41,9 @@
 
     
                 <div class="container">
-
-
+                    <div class="post-featured-image">
+                                           <%=pic %>
+                                        </div>
                     <div class="row">
 
                         <div class="col-md-4 col-md-push-9 col-sm-4 main-sidebar">
@@ -51,7 +55,7 @@
                                         <ul class="category">
                                             <li class="entry-category"><%=tags%></li>
                                         </ul>
-                                        <h1><%=subject  %></h1>
+                                        <h1><%=MainData.Subject  %></h1>
                                         <div class="post-description">
                                           <%=title  %>
                                         </div><!-- post-description END -->
@@ -93,18 +97,20 @@
                                 <div class="block-wrap border">
                                     <div class=block-title>課程時間</div>
                                     <div class="block-body">
-                                        <%=startday  %> 至 <%=endday  %><br>
-                                       <%=lessontime  %>
+                                        <%=MainData.Lesson.StartDay.ToString("yyyy/MM/dd") %> 至  <%=MainData.Lesson.EndDay .ToString("yyyy/MM/dd") %><br>
+                                       <%=MainData.Lesson.Lessontime  %>
                                     </div>
                                 </div><!-- block-wrap END -->
 
                                 <div class="block-wrap border">
-                                    <div class=block-title>上課地點</div>
+                                    <div class=block-title>活動地點</div>
                                     <div class="block-body">
-                                        <a href="https://www.google.com.tw/maps?q=<%=address %>" class="link" target="_blank"><%=address %></a>
+                                        <a href="https://www.google.com.tw/maps?q=<%=MainData.Lesson.Address %>" class="link" target="_blank"><%=MainData.Lesson.Address%></a>
                                     </div>
-                                </div><!-- block-wrap END -->
-
+                                </div>
+                       
+                                
+                            <!-- block-wrap END -->
                             <asp:Repeater ID="Repeater1" runat="server" EnableViewState="False">
                                 <ItemTemplate>
                                 <div class="block-wrap border">
@@ -127,24 +133,41 @@
 
                                 </ItemTemplate>
                             </asp:Repeater>
-
+                                
                             <asp:Repeater ID="Repeater2" runat="server">
                                 <ItemTemplate>
                                 <div class="block-wrap border">
                                     <div class=block-title><%#Eval("description") %></div>
                                     <div class="block-body">
-                                        <span class="price">NT $<%#Eval("sellprice") %></span>
-                                        <span class="cost">NT $<%#Eval("price") %></span>
-                                        <a href="/process-step1?Articleid=<%=Articleid %>&lessonId=<%#Eval("lessonId") %>" class="btn btn-danger btn-block"  >立即報名</a>
+                                        <span class="price">NT $<%#Eval("price") %></span>
+                                        <span class="cost">NT $<%#Eval("sellprice") %></span>
+                                      <%# Get_joinnum(MainData, Eval("lessonId").ToString()) %>
+     
                                     </div>
-                                </div><!-- block-wrap END -->
-
+                                </div>
                                 </ItemTemplate>
                             </asp:Repeater>
-
-
-
-                            <!-- </div> --><!-- main-sidebar-inner END -->
+                            
+                            <div class="block-wrap border">
+                                    <div class=block-title>客服資訊</div>
+                                    <div class="block-body">
+                                        <%=s.Contents  %>
+                                    </div>
+                                </div>
+                           <div class="block-wrap border">
+                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                            <!-- 藝時代全站廣告 -->
+                            <ins class="adsbygoogle"
+                                 style="display:block"
+                                 data-ad-client="ca-pub-1577795616373786"
+                                 data-ad-slot="3617043165"
+                                 data-ad-format="auto"
+                                 data-full-width-responsive="true"></ins>
+                            <script>
+                            (adsbygoogle = window.adsbygoogle || []).push({});
+                            </script>
+                               </div> 
+                       
                         </div><!-- col-md-4 END -->
 
                         <div class="col-md-8 col-md-pull-4 col-sm-8 main-content">
@@ -154,24 +177,22 @@
 
                                     <div class="post-header">
 
-                                        <div class="post-featured-image">
-                                           <%=pic %>
-                                        </div>
+                                        
 
                                     </div><!-- post-header END -->
 
                                     <div class="post-content">
-                                          <%=contents %> 
+                                          <%=MainData.Contents %> 
 
                                     </div><!-- post-footer END -->
-
+                                                        
                                 </article>
 
                             </div><!-- main-content-inner END -->
 
                         </div><!-- col-md-8 td-main-content END -->
 
-
+  
 
 
                     </div><!-- row END -->

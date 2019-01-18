@@ -2,44 +2,74 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <script>
-$(document).ready(function() {
-   
+    $(document).ready(function() {
+    re = /^[09]{2}[0-9]{8}$/;   
     $("a.btn.btn-green").click(function () {
-       
-         if ($("#cname").val() == "") {
-             alert('請輸入聯絡人姓名!');
-
+        $('#POC').children().eq(2).removeClass("has-error");
+        $('#POC').children().eq(1).removeClass("has-error");
+        $('#POC').children().eq(0).removeClass("has-error");
+        if ($("#cname").val() == "") {
+            alert('請輸入聯絡人姓名!');
+            $('#POC').children().eq(0).addClass('has-error');
+            return false;
+        }
+    
+        else if ($("#cemail").val() == "") {
+            alert('請輸入聯絡人email!');          
+            $('#POC').children().eq(1).addClass('has-error');
          }
-         else if ($("#cemail").val() == "") {
-             alert('請輸入聯絡人email!');
-         }
+         else if (validEmail($("#cemail").val()) == false) {
+            $('#POC').children().eq(1).addClass('has-error');
+            alert('聯絡人email錯誤!');
+            return false;
+        }
          else if ($("#cphone").val() == "") {
-             alert('請輸入聯絡人聯絡電話!');
+            alert('請輸入聯絡人聯絡電話!');           
+            $('#POC').children().eq(2).addClass('has-error');
          }
-         else {
+         else if (!re.test($("#cphone").val())) {
+            $('#POC').children().eq(2).addClass('has-error');
+            alert('聯絡人手機格式錯誤!');
+            return false;
+        }
+        else if ($("#unitname").val() == "") {
+            alert('請輸入公司名稱!');           
+          return false;
+         }
+        else {
+          
              var flag = true;
-             for (index = 0; index < $('input[name="cr"]').length; index++){    
-               
-                    var t1 = $('input[name="name"]:eq('+ index + ')');
-                    var t2 = $('input[name="email"]:eq('+ index + ')');
-                    var t3 = $('input[name="phone"]:eq(' + index + ')');
-                    var i = index + 1;
-                    if (t1.val() == "") {
-                        alert('請輸入第' + i + '姓名!');
-                        flag = false;
-                        break;
-                     }
-                     else if (t2.val() == "") {
-                        alert('請輸入' + i + 'email!');
-                        flag = false;
-                        break;
-                     }
-                     else if (t3.val() == "") {
-                        alert('請輸入' + i + '聯絡電話!');
-                        flag = false;
-                        break;
-                     }
-             }
+             //for (index = 0; index < $('input[name="cr"]').length; index++){                   
+             //   var t1 = $('input[name="name"]:eq('+ index + ')');
+             //   var t2 = $('input[name="email"]:eq('+ index + ')');
+             //   var t3 = $('input[name="phone"]:eq(' + index + ')');
+             //   var i = index + 1;
+             //   if (t1.val() == "") {
+             //        alert('請輸入第' + i + '位姓名!');
+             //        flag = false;
+                     
+             //        break;
+             //    }
+             //    else if (t2.val() == "") {
+             //        alert('請輸入' + i + '位email!');
+             //        flag = false;
+             //        break;
+             //    }
+             //    else if (t3.val() == "") {
+             //        alert('請輸入' + i + '位聯絡電話!');
+             //        flag = false;
+             //        break;
+             //    }
+             //    else if (validEmail(t2.val()) == false) {
+             //        alert('第' + (index + 1) + '位Email有錯!');
+             //        return false;
+             //    }
+             //    else if (!re.test(t3.val())) {
+             //        alert('第' + (index + 1) + '位手機格式錯誤!');
+             //        return false;
+             //    }
+                          
+             //}
              if (flag) {
                  $("#form1").attr("action", "/process-step3");
                  $("#form1").submit();
@@ -48,14 +78,14 @@ $(document).ready(function() {
               
                   
                 
-             })
+    })
 
     $('input[name="cr"]').change(function () {
         var index = $('input[name="cr"]').index( this );
         var t1 = $('input[name="name"]:eq('+ index + ')');
         var t2 = $('input[name="email"]:eq('+ index + ')');
         var t3 = $('input[name="phone"]:eq(' + index + ')');
-
+       
         if(this.checked) {
             var cname = $("#cname").val();
             var cphone = $("#cphone").val();
@@ -100,32 +130,31 @@ $(document).ready(function() {
                         <!-- post-header END -->
                     </article>
                 <div class="row">
-                             <div class="col-md-6 col-sm-12 col-xs-12">
-                                <img src="<%=pic  %>" alt="" title="<%=subject %>">
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+                        <img src="<%=pic  %>" alt="" title="<%=subject %>">
+                    </div>
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+                        <div class="member-course-info">
+                            <div class="member-order-detail-title">
+                                <%=subject %>
                             </div>
-                            <div class="col-md-6 col-sm-12 col-xs-12">
-                                <div class="member-course-info">
-                                    <div class="member-order-detail-title">
-                                        <%=subject %>
-                                    </div>
-                                    <div class="member-course-date">
-                                        <p>
-                                            <i class="fa fa-calendar margin-R-5"></i><%= startday %><%=endday  %>
-                                        </p>
-                                        <p>
-                                             <a href="https://www.google.com.tw/maps?q=<%=address %>" class="link" target="_blank"><i class="fa fa-map-marker margin-R-5"></i><%=address %></a>
+                            <div class="member-course-date">
+                                <p>
+                                    <i class="fa fa-calendar margin-R-5"></i><%= startday %>至<%=endday  %>
+                                </p>
+                                <p>
+                                    <a href="https://www.google.com.tw/maps?q=<%=address %>" class="link" target="_blank"><i class="fa fa-map-marker margin-R-5"></i><%=address %></a>
 
-                                        </p>
-                                    </div>
-                                    <div class="notice">
-                                        <h4>注意事項</h4>
-                                        退票須知：委託藝時代退款<br/>
-                                        票券有效日期開始8天前可申請退票，酌收10%手續費，請詳閱
-                                        <a href="cp.html" target="_blank">退款操作說明</a>
-                                    </div>
-                                    <!-- meta-info END -->
-                                </div>
+                                </p>
                             </div>
+                            <div class="notice">
+                                <h4>注意事項</h4>
+                              
+                              
+                            </div>
+                            <!-- meta-info END -->
+                        </div>
+                    </div>
                     <div class="col-xs-12">
                         <hr>
                         <!--票券詳細資訊-->
@@ -166,12 +195,12 @@ $(document).ready(function() {
                                 <h3>聯絡人資訊</h3>
                             </div>
                             <div class="row">
-                                <div class="col-xs-12">
+                                <div class="col-xs-12" id="POC">
                                   
-                                        <div class="form-group has-error">
+                                        <div class="form-group">
                                             <label class="control-label title">* 姓名</label>
                                             <input class="form-control" id="cname" name="cname">
-                                            <label class="control-label">*錯誤訊息</label>
+                                            <label class="control-label"></label>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label title">* e-mail</label>
@@ -181,11 +210,19 @@ $(document).ready(function() {
                                             <label class="control-label title" >* 聯絡電話</label>
                                             <input class="form-control" id="cphone" name="cphone">
                                         </div>
-                             
+                                            <div class="form-group">
+                                            <label class="control-label title" >* 公司名稱</label>
+                                            <input class="form-control" id="unitname" name="unitname">
+                                        </div>
+                                          <div class="form-group">
+                                            <label class="control-label title" >職稱</label>
+                                            <input class="form-control" id="postion" name="postion">
+                                        </div>
                                 </div>
 
                             </div>
                         </section>
+                        <!--
                         <section class="form-white-style">
                             <div class="page-header-blue">
                                 <h3>報名人資訊</h3>
@@ -195,7 +232,7 @@ $(document).ready(function() {
                                     <asp:Repeater ID="Repeater2" runat="server">
                                         <ItemTemplate>
                                             <div class ="Signup">
-                                         <div class="form-group">
+                                            <div class="form-group">
                                             <!-- Default checkbox -->
                                             <div class="checkbox">
                                                 <label class="control-label title">
@@ -207,19 +244,19 @@ $(document).ready(function() {
                                                 </label>
                                             </div>
                                         </div>
-                                        <div class="form-group has-error">
-                                            <label class="control-label title">* 姓名</label>
-                                            <input class="form-control" name="name">
-                                            <label class="control-label">*錯誤訊息</label>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label title">* e-mail</label>
-                                            <input class="form-control" name="email">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label title">* 聯絡電話</label>
-                                            <input class="form-control" name="phone">
-                                        </div>
+                                            <div class="form-group">
+                                                <label class="control-label title">* 姓名</label>
+                                                <input class="form-control" name="name">
+                                                <label class="control-label"></label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label title">* e-mail</label>
+                                                <input class="form-control" name="email">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label title">* 聯絡電話</label>
+                                                <input class="form-control" name="phone">
+                                            </div>
 
                                             </div>
                                         </ItemTemplate>
@@ -230,11 +267,13 @@ $(document).ready(function() {
 
                             </div>
                         </section>
+        -->
                         <div class="text-center">
                             <!--a連結class新增disabled即可禁用，按鈕方式則為disabled="disabled"-->
-                            <a href="#join" class="btn btn-green ">下一步
-                                    <i class="fa fa-angle-right" aria-hidden="true"></i>
-                            </a>
+                                        <a href="#join" class="btn btn-green">確認報名
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                        </a>
+                        
                             <div class="divide40"></div>
                         </div>
 
@@ -252,7 +291,8 @@ $(document).ready(function() {
         <input type="hidden" name="joinnum" value ="<%=Request ["joinnum"] %>" />
         <input type="hidden" name="lessonid" value ="<%=Request ["lessonid"] %>" />
         <input type="hidden" name="sellprice" value ="<%=Request ["sellprice"] %>" />
-      
+       <input type="hidden" name="paymode"  value="3"  > 
+         <input type="hidden" name="kind"    value="1" class="chk">
     </div>
 </asp:Content>
 

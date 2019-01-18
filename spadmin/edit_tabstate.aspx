@@ -77,7 +77,7 @@
             <asp:HiddenField ID="Selected_id" runat="server" />
          
                     <div class="box-header well" data-original-title>
-                        <h2>網站版位設定</h2>
+                        <h2><%=unitname %></h2>
                     </div>  
 
                     <div class="box-content">

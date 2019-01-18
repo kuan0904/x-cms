@@ -3,7 +3,8 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
       <script>
            
-        $(document).ready(function () {     
+          $(document).ready(function () {     
+          
             var dataValue = {"kind":"list"};             
             $.post('/hot_list', dataValue, function (result) { $("#hot_list").html(result); });
             dataValue = {"classid":"2"};             
@@ -123,7 +124,17 @@
 
             <div class="col-md-4 col-sm-4 main-sidebar">    
                 <div class="block-wrap" id="ad_banner"></div>   
-
+                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                <!-- 藝時代全站廣告 -->
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-1577795616373786"
+                     data-ad-slot="3617043165"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
                 <div class="block-wrap">
                             <h2 class="new-index-main-title text-center">訂閱電子報</h2>
                             <div class="epaper-box">

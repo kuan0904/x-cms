@@ -212,8 +212,8 @@
 
             <div class="container">
 
-                <div class="row">
-                    <div class="col-md-2 col-sm-3 col-xs-12 hidden-sm hidden-xs">
+                <div class="row"> <!--hidden-sm hidden-xs-->
+                    <div class="col-md-2 col-sm-3 col-xs-12">
                         <div class="member-subnav">
                      
                         </div>

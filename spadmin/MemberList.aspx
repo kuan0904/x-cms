@@ -185,9 +185,16 @@
                                <td>
                                    <asp:Label ID="registdate" runat="server" Text="Label"></asp:Label></td>
                            </tr>
+                            <tr>
+                               <td>通知</td>
+                               <td>
+
+                                   <asp:Button ID="Button2" runat="server" Text="忘記密碼簡詢通知" OnClick ="Button2_Click" />
+                               </td>
+                           </tr>
                            <tr>
                                <td  colspan ="2" align="center"> 
-                                      <asp:Button ID="Btn_save" runat="server" class="btn btn-primary" Text="存 檔"   OnClientClick="return checkinput();"  OnClick ="Btn_save_Click" />
+                                    <asp:Button ID="Btn_save" runat="server" class="btn btn-primary" Text="存 檔"   OnClientClick="return checkinput();"  OnClick ="Btn_save_Click" />
                                     <asp:Button ID="Btn_cancel" runat="server" class="btn" Text="取 消" OnClick ="Btn_cancel_Click" />
                                </td>
 

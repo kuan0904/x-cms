@@ -72,10 +72,10 @@ public class MemberLib
             return result;        
 
         }
-        public static Mmemberdata Add(string email, string password, string fbid  ,  string username = "", string phone = "")
+        public static Mmemberdata Add(string email, string password, string account  ,  string username = "", string phone = "")
         {
             Mmemberdata result = new Mmemberdata();
-            if (fbid == "") fbid = email;
+            if (account == "") account = email;
             //result = Check_exist(email);
             //if (result.Memberid == 0)
             //{
@@ -85,13 +85,13 @@ public class MemberLib
                 {
                     { "email", email  },
                     { "password", password  },
-                    { "fbid", fbid  },
+                    { "fbid", account },
                     { "username", username  },
                     { "phone", phone  }
                 };
                 DbControl.Data_add(strsql, nvc);
-                result = Login(fbid, password);
-               // Mail.Join_member(result.Memberid);
+                result = Login(account, password);
+                Mail.Join_member(result.Memberid);
            // }
 
             return result  ;
@@ -189,16 +189,22 @@ public class MemberLib
         public static dynamic MyJoinLesson(string memberid)
         {
 
-            string strsql = @"SELECT      tbl_lesson.startday,  tbl_lesson.address, tbl_lesson.lessontime, tbl_OrderData.ord_code, tbl_OrderData.memberid, tbl_Joindata.joinid, 
-                            tbl_OrderData.paymode, tbl_OrderData.TotalPrice, tbl_OrderData.ordname, tbl_OrderData.ordphone, 
-                            tbl_OrderData.ord_date, tbl_article.articleId, tbl_article.subject, tbl_article.pic, tbl_lesson.endday
-
+            string strsql = @"SELECT          tbl_lesson.startday, tbl_lesson.address, tbl_lesson.lessontime, tbl_OrderData.ord_code, tbl_OrderData.memberid, 
+                            tbl_Joindata.joinid, tbl_OrderData.paymode, tbl_OrderData.TotalPrice, tbl_OrderData.ordname, 
+                            tbl_OrderData.ordphone, tbl_OrderData.ord_date, tbl_article.articleId, tbl_article.subject, tbl_article.pic, 
+                            tbl_lesson.endday, tbl_OrderData.companyno, tbl_OrderData.title, tbl_OrderData.status, tbl_OrderData.ord_id, 
+                            tbl_OrderData.ordaddress, tbl_OrderData.atmcode, tbl_OrderData.card_code, tbl_OrderData.card_pan, 
+                            tbl_OrderData.card_response, tbl_OrderData.paid, tbl_OrderData.ordgender, tbl_OrderData.email, tbl_OrderData.zip, 
+                            tbl_OrderData.cityid, tbl_OrderData.countryid, tbl_OrderData.companyid, tbl_paymode.name AS paymodename, 
+                            tbl_payStatus.name AS payStatusname, tbl_OrderData.invoice
 FROM              tbl_OrderData INNER JOIN
                             tbl_Joindata ON tbl_OrderData.ord_code = tbl_Joindata.ord_code INNER JOIN
                             tbl_article ON tbl_Joindata.Articleid = tbl_article.articleId INNER JOIN
-                            tbl_lesson ON tbl_Joindata.Articleid = tbl_lesson.articleId
-WHERE          (tbl_OrderData.memberid = @memberid)
-ORDER BY   tbl_OrderData.ord_code DESC ";
+                            tbl_lesson ON tbl_Joindata.Articleid = tbl_lesson.articleId INNER JOIN
+                            tbl_payStatus ON tbl_OrderData.status = tbl_payStatus.id INNER JOIN
+                            tbl_paymode ON tbl_OrderData.paymode = tbl_paymode.id
+                                WHERE          (tbl_OrderData.memberid = @memberid) and tbl_OrderData.status != 0
+                                ORDER BY   tbl_OrderData.ord_code DESC ";
 
             NameValueCollection nvc = new NameValueCollection
             {
@@ -216,9 +222,9 @@ ORDER BY   tbl_OrderData.ord_code DESC ";
         public static dynamic MyCollection(string memberid ){
           
             string strsql = @" select  tbl_article.*
-FROM              tbl_article INNER JOIN
-                            tbl_articleCollection ON tbl_article.articleId = tbl_articleCollection.articleid
- where memberid =@memberid";
+                FROM              tbl_article INNER JOIN
+                tbl_articleCollection ON tbl_article.articleId = tbl_articleCollection.articleid
+                where memberid =@memberid";
 
             NameValueCollection nvc = new NameValueCollection
             {
@@ -251,10 +257,13 @@ FROM              tbl_article INNER JOIN
      
                 site_name = HttpContext.Current.Application["site_name"].ToString();
                 string textbody = dt.Rows[0]["contents"].ToString().Replace("@site_name@", site_name);
-                string subject = dt.Rows[0]["title"].ToString().Replace("@site_name@", site_name); ;
+                string subject = "【" +  site_name + "】" + dt.Rows[0]["title"].ToString(); 
+
                 mailbody = mailbody.Replace("@title@", subject);
+                textbody = textbody.Replace("@name@", result.Username );
                 textbody = textbody.Replace("@email@", result.Email);
                 textbody = textbody.Replace("@password@", result.Password);
+                textbody = textbody.Replace("@websitename@", site_name);
                 mailbody = mailbody.Replace("@mailbody@", textbody);
                 msg = unity.classlib.SendsmtpMail(result.Email , subject, mailbody, "gmail");
 
@@ -320,6 +329,8 @@ FROM              tbl_article INNER JOIN
         public int Cityid { get; set; }
         public string Zip { get; set; }
         public string Address { get; set; }
+        public string Unitname { get; set; }
+        public string Postion { get; set; }
     }
 
 }

@@ -8,7 +8,7 @@ using unity;
 using System.Xml;
 using System.IO;
 public class cardreceive : IHttpHandler {
-
+//綠界版本
     public void ProcessRequest (HttpContext context) {
         string CAVALUE = "";
         string CUBKEY = "d6389d21e43d61ed226d75e5ab03e68d";

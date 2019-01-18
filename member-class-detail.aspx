@@ -50,8 +50,8 @@
                                 </div>
                                 <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
                                     <ul class="list-group">
-                                        <a href="member-edit.html" class="list-group-item">修改個人資料</a>
-                                        <a href="member-password.html" class="list-group-item">變更密碼</a>
+                                        <a href="/member-edit" class="list-group-item">修改個人資料</a>
+                                        <a href="/member-password" class="list-group-item">變更密碼</a>
                                     </ul>
                                 </div>
                             </div>

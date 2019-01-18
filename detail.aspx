@@ -4,7 +4,18 @@
     <!-- ScrollToFixed v1.0.8 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollToFixed/1.0.8/jquery-scrolltofixed-min.js"></script>
     <script>
+    var flag = '<%=flag%>';
+    var result ='<%= Session["memberdata"] %>';
+    if (flag == 'Y' &&  result == '') {
+        alert('此文章限會員閱讀,請登入後再閱讀');
+        var str = '<%=Request.RawUrl%>';
+        str = base64_encode(str);
+        link = "/login.html";
+        var returnurl = link + "?returnurl=" + str;
+        location.href = returnurl;               
+    }
         $(document).ready(function () {
+       
             $("#right").scrollToFixed({
                 // 參數設定[註1]
                 marginTop: $(".header").outerHeight(), // 與上面的間距
@@ -73,9 +84,9 @@
                             <div class="post-header">
                                 <div class="divide20"></div>
                                 <div class="post-information-RL-15">
-                                    <ul class="category">
-                                        <li class="entry-category"><%=tags%></li>
-                                    </ul>
+                                    <span class="meta-info">
+                                       <%=tags%>
+                                    </span>
                                     <h1><%=subject %></h1>
                                     <div class="meta-info clearfix">
                                         <div class="pull-left social-media-share-btn">
@@ -254,15 +265,24 @@
                             <blockquote cite="<%=Application["fb_url"] %>" class="fb-xfbml-parse-ignore"><a href="<%=Application["fb_url"] %>"><%=Application["site_name"] %></a></blockquote>
                         </div>
                     </div>
-                    <div class="block-wrap" id="ad_banner2"></div>
-                    <div class="divide20"></div>
+                
+                    
+           
                     <div class="extended-reading" id="right">
                         <h3 class="new-index-main-title text-center">站外推薦</h3>
-                        <div class="extended-list">
-                            <ul class="fa-ul" id="pushread">
-                            </ul>
-                        </div>
-
+                      <div class="block-wrap" id="ad_banner2"></div>
+                    <div class="divide20"></div>
+                                 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <!-- 藝時代全站廣告 -->
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-1577795616373786"
+                         data-ad-slot="3617043165"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
                         <!-- news-list END -->
                     </div>
                     <!-- main-sidebar-inner END -->

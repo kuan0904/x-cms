@@ -243,6 +243,11 @@ namespace unity {
         private static string servicemail = "event@xnet.world";
         private static string smtpuid = "event@xnet.world";
         private static string smtppwd = "5505361323222635";
+        public class MsgResult
+        {
+            public string Id { get; set; }
+            public string Msg { get; set; }
+        }
 
         public class Log_Sms
         {

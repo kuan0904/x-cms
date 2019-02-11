@@ -68,7 +68,7 @@ public class fb_login : IHttpHandler ,IRequiresSessionState {
                 string extendedAccessToken = eatWords[0];
                 // Request the Facebook user information
 
-                Uri targetUserUri = new Uri("https://graph.facebook.com/me?fields=gender,email,name,first_name,last_name,locale,link&access_token=" + accessToken);
+                Uri targetUserUri = new Uri("https://graph.facebook.com/me?fields=email,name,first_name,last_name&access_token=" + accessToken);
                 HttpWebRequest user = (HttpWebRequest)HttpWebRequest.Create(targetUserUri);
 
                 // Read the returned JSON object response
@@ -110,7 +110,7 @@ public class fb_login : IHttpHandler ,IRequiresSessionState {
             {
                 msg += "alert('<%=p_ACCOUNT%>');";
             }
-
+          
             if (returnurl != "" && returnurl != "undefined" && returnurl != null)
             {
                 returnurl = Base64Decode(returnurl);

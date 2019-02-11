@@ -10,7 +10,7 @@
         alert('此文章限會員閱讀,請登入後再閱讀');
         var str = '<%=Request.RawUrl%>';
         str = base64_encode(str);
-        link = "/login.html";
+        link = "https://www.culturelaunch.net/login";
         var returnurl = link + "?returnurl=" + str;
         location.href = returnurl;               
     }

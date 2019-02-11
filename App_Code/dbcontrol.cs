@@ -9,41 +9,7 @@ using System.Collections.Specialized;
 /// <summary>
 /// dbcontrol 的摘要描述
 /// </summary>
-  public class  ContactUs    {
-    public class ItemData
-    {
-        public string  Usermame { get; set; }
-        public int Secno { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
-        public string Contents { get; set; }
-        public string Status { get; set; }
 
-    }
-    public static  string Add(ItemData item)
-    {
-        using (SqlConnection conn = new SqlConnection(DbControl.dbConnectionString))
-        {
-            string strsql = @"insert into  tbl_ContactUs (username,email,phone,Contents) values   
-                (@username,@email,@phone,@Contents) ";
-          
-            NameValueCollection nvc = new NameValueCollection
-            {
-                { "username", item.Usermame },
-                { "email",item.Email  },
-                { "phone", item.Phone  },
-                { "Contents",item.Contents  },
-                { "status", item.Status  }
-                //{ "endday",ad.EndDay.ToString("yyyy/MM/dd") },
-              
-            };
-            DbControl.Data_add(strsql, nvc);
-
-
-        }
-        return "Y";
-    }
-}
 public class DbControl
 {
     public static string dbConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["dbconnConnection"].ConnectionString;

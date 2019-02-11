@@ -31,7 +31,9 @@ public class joinclass : IHttpHandler,IRequiresSessionState {
         int  joinnum = 1;
         string TicketKind  = c.Request["TicketKind"];
         string lessonid = c.Request["lessonid"];
-
+               string invoice = c.Request["invoice"];
+               string title = c.Request["title"];
+               string companyno = c.Request["companyno"];
         Result Result = new Result();
         article.MainData MainData = new article.MainData();
         MainData = article.DbHandle.Get_article(int.Parse (Articleid));
@@ -80,15 +82,15 @@ public class joinclass : IHttpHandler,IRequiresSessionState {
             Ord_id = 0,
             Memberid =m.Memberid .ToString () ,
             Paymode = paymode,
-            Invoice="",
+            Invoice=invoice,
             Contents="",
             ShipPrice= ship_free,
             Discount = 0,
             TotalPrice=totalprice ,
             Delivery_kind="",
             Orddate =DateTime.Today ,
-            Companyno="",
-            Title="",
+            Companyno= companyno,
+            Title=title,
             ReceiveTime="",
             coupon_no="",
             Paid="",

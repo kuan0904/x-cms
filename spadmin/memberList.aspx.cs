@@ -33,17 +33,7 @@ public partial class spadmin_memberList : System.Web.UI.Page
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-        string msg = @"[1]
-    msgid=1425110941
-statuscode=1
-AccountPoint=298";
-        string[] stringSeparators = new string[] { "\r\n" };
-      
-        string[] msgv = msg.Split(stringSeparators, StringSplitOptions.None);
-        Response.Write(msgv[0]);
-        Response.Write(msgv[1]);
 
-        Response.Write(msgv[2]);
 
         if (!IsPostBack)
         {
@@ -81,6 +71,7 @@ AccountPoint=298";
                 Hiddencounty.Value =rs["countyid"].ToString ();
                 address.Text =rs["address"].ToString ();
                 zip.Text = rs["zip"].ToString();
+                status.SelectedValue = rs["status"].ToString();
                 birthday .Text = rs["birthday"].ToString()=="" ? "": DateTime.Parse(rs["birthday"].ToString()).ToString("yyyy/MM/dd") ;
                 if (rs["gender"].ToString () != "") gender.SelectedIndex = gender.Items.IndexOf(gender.Items.FindByValue(rs["gender"].ToString()));
             }
@@ -119,7 +110,7 @@ AccountPoint=298";
             conn.Open();
            string strsql = @"update  tbl_MemberData set username=@username,gender=@gender,
                 phone=@phone,zip=@zip,cityid=@cityid,countyid=@countyid,address=@address
-,birthday=@birthday
+            ,birthday=@birthday,email=@email,status=@status
             WHERE  memberid=@memberid";
             cmd = new SqlCommand(strsql, conn);
             cmd.Parameters.Add("@memberid", SqlDbType.VarChar).Value = Selected_id.Value;
@@ -131,7 +122,8 @@ AccountPoint=298";
             cmd.Parameters.Add("@countyid", SqlDbType.VarChar).Value = countyid.SelectedValue ;
             cmd.Parameters.Add("@address", SqlDbType.NVarChar).Value = address.Text ;
             cmd.Parameters.Add("@birthday", SqlDbType.NVarChar).Value = birthday.Text;
-            // cmd.Parameters.Add("@password", SqlDbType.VarChar).Value = passwd.Text ;
+             cmd.Parameters.Add("@status", SqlDbType.VarChar).Value =status.SelectedValue  ;
+            cmd.Parameters.Add("@email", SqlDbType.VarChar).Value = Email.Text ;
             cmd.ExecuteNonQuery();         
             cmd.Dispose();
             conn.Close();
@@ -245,7 +237,15 @@ AccountPoint=298";
     }
 
 
+    public static string statstxt(string s)
+    {
+        string msg = "";
+        if (s == "Y") msg = "生效";
+        else if (s=="N")msg = "未驗証";
+        else if (s == "D") msg = "刪除";
+        return (msg);
 
+    }
     protected void Button2_Click(object sender, EventArgs e)
     {
         MemberLib.Mmemberdata m = MemberLib.Member.GetData(Selected_id.Value);

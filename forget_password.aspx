@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿<%@ Page Language="C#" %>
+<!DOCTYPE html>
 <html lang="zh-Hant-TW">
 
 <head>
@@ -19,9 +20,10 @@
     <meta property="og:image" content="" />
     <meta property="fb:admins" content="" />
     <meta name="robots" content="index,follow" />
-    <meta name="robots" content="noindex,follow" />
-    <meta name="robots" content="index,nofollow" />
-    <meta name="robots" content="noindex,nofollow" />
+        <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+    <META HTTP-EQUIV="EXPIRES" CONTENT="0">
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT">
     <title>會員中心 │ 藝時代 Cultural Launch</title>
 
     <link rel="stylesheet" href='assets/font-awesome/css/font-awesome.min.css' />
@@ -80,8 +82,8 @@
         </div>
         <!-- row END -->
     </div>
-    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="/js/jquery-1.11.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/swipe/swiper.min.js"></script>
     <script src='js/device.js'></script>

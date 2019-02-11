@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿<%@ Page Language="C#" %>
+
+<!DOCTYPE html>
 <html lang="zh-Hant-TW">
 
 <head>
@@ -93,7 +95,7 @@
                         <p>
                             已經有帳號了？
                             <span class="lead">
-                                <a href="login.html">馬上登入</a>
+                                <a href="/login">馬上登入</a>
                             </span>
                         </p>
                     </div>

@@ -21,7 +21,7 @@
     <meta property="og:url" content="<%=Request.Url.AbsoluteUri %>" />
     <meta property="og:image" content="<%=Session ["image"] %>" />
     <meta property="fb:admins" content="633770299" />
-    <meta name="robots" content="index,nofollow" />
+  
     <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
     <META HTTP-EQUIV="EXPIRES" CONTENT="0">
     <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
@@ -51,7 +51,14 @@
 </head>
 <body>
 
-    <form id="form1" runat="server">
+    <form id="form1" runat="server"><div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = 'https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.2&appId=164103481107660&autoLogAppEvents=1';
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
         <div class="scroll-up"><i class="fa fa-chevron-up"></i></div>
         <div class="menu-background"></div>
         <div id="mobile-nav">
@@ -394,7 +401,7 @@
                     $('.login').show();
                     var un = ''
                     $('.login').html('<i class=\"fa fa-user\"></i>登入 / 註冊');
-                    link = "https://www.culturelaunch.net/login.html";
+                    link = "https://www.culturelaunch.net/login";
                 } else {
                   
                     $('.logout').show();

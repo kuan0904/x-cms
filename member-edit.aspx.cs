@@ -7,6 +7,10 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Collections.Specialized;
+using System.Web.Services;
+using System.Web.Script.Services;
+using System.Web.Script.Serialization;
 public partial class member_edit : System.Web.UI.Page
 {
   
@@ -16,7 +20,7 @@ public partial class member_edit : System.Web.UI.Page
         Session["title"] = "個人資料修改│會員中心│" + Application["site_name"];
         if (Session["memberdata"] == null)
         {
-            Response.Redirect("login.html?returnurl=");
+            Response.Redirect("https://www.culturelaunch.net/login?returnurl=");
         }
         else
         {

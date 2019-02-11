@@ -34,7 +34,7 @@
                         $.post('/lib/Handler.ashx', dataValue, function (result) {
                             if (result != "") {
                                
-                                alert(result);
+                                alert('謝謝您的輸入');
                    
                             }
                         });
@@ -48,8 +48,8 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
     
-    <div class="container">
-  
+    <div class="main-content">
+            <div class="container">
 
     <label for="fname">聯絡人</label>
     <input type="text" id="username" name="username" placeholder="請輸入你的姓名">
@@ -64,9 +64,9 @@
 
     <label for="subject">留下你的訊息</label>
     <textarea id="contents" name="contents" placeholder="Write something.." style="height:200px"></textarea>
+                 <button type="button" id="send" class="btn btn-green btn-lg btn-block">送出"</button>
 
-    <input type="button" id="send" value="送出">
-
+    </div> 
 </div>
 </asp:Content>
 

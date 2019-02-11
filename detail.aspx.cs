@@ -39,6 +39,7 @@ public partial class detail : System.Web.UI.Page
     }
     protected void Page_Load(object sender, EventArgs e)
     {
+      
        
         Unitlib.WebsiteData m = new Unitlib.WebsiteData();
 

@@ -1,5 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="login.aspx.cs" Inherits="login" %>
-
+﻿<%@ Page Language="C#" %>
 <!DOCTYPE html>
 <html lang="zh-Hant-TW">
 
@@ -21,17 +20,20 @@
     <meta property="og:image" content="" />
     <meta property="fb:admins" content="" />
     <meta name="robots" content="index,follow" />
-    <meta name="robots" content="noindex,follow" />
-    <meta name="robots" content="index,nofollow" />
-    <meta name="robots" content="noindex,nofollow" />
-    <title>會員中心 │ 藝時代 Cultural Launch</title>
 
+    <meta name="robots" content="index,nofollow" />
+
+    <title>會員中心 │ 創藝時代 Cultural Launch</title>
+    <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+    <META HTTP-EQUIV="EXPIRES" CONTENT="0">
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT">
     <link rel="stylesheet" href='assets/font-awesome/css/font-awesome.min.css' />
     <link rel="stylesheet" href='assets/bootstrap/css/bootstrap.min.css' />
     <link rel="stylesheet" href='css/reset.css' type='text/css' />
-    <link rel="stylesheet" href='css/theme.css' type='text/css' />
+    <link rel="stylesheet" href='css/theme.css?v=1' type='text/css' />
     <link rel="stylesheet" href='css/post-layout.css' type='text/css' />
-    <link rel="stylesheet" href='css/style.css' type='text/css' />
+    <link rel="stylesheet" href='css/style.css?v=1' type='text/css' />
     <link rel="shortcut icon" href="favicon.ico" />
     <!--[if lt IE 9]><script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
     <style>
@@ -111,9 +113,22 @@
                 }
             }, { scope: 'public_profile,email' });
         }
-
+        function initFooter() {
+            $(".footer").load("footer.html")
+        }
     </script>
-  </head>
+    <script>
+        function Auth() {
+            var URL = 'https://access.line.me/oauth2/v2.1/authorize?';
+            URL += 'response_type=code';
+            URL += '&client_id=1620848228';
+            URL += '&redirect_uri=http://' + location.host + '/lib/linelogin.ashx';
+            URL += '&state=login&scope=openid%20profile&nonce=abc';
+            window.location.href = URL;
+        }
+     
+    </script>
+</head>
 
 <body class="login-bg">
 
@@ -123,7 +138,7 @@
                 <div class="login-box">
                     <div class="login-header text-center">
                         <div class="login-logo ">
-                            <a href="hp.html" title="藝時代 Cultural Launch">藝時代</a>
+                            <a href="/index" title="創藝時代 Cultural Launch">創藝時代</a>
                         </div>
                         <div class="login-box-title">登入</div>
                     </div>
@@ -131,20 +146,23 @@
 
                     <form class="form-member form-login">
                         <div class="form-group  text-center">
-                           
+
                             <button type="button" class="btn btn-facebook btn-lg btn-block">
-                                <i class="fa fa-facebook" aria-hidden="true"></i> <a href="<%=fblogin  %>">使用Facebook登入</a></button>
-                            <button type="button" class="btn btn-google btn-lg btn-block" id="login-button">
-                                <i class="fa fa-google" aria-hidden="true"></i>使用Google登入</button>
+                                <i class="fa fa-facebook" aria-hidden="true"></i>使用Facebook登入
+                            </button>
+                            <!--
+    <button type="button" class="btn btn-green  btn-block" id="lineLogin" onclick="Auth();">
+        <img src="/images/line.png" />
+    </button>-->
                             <div class="divide20"></div>
-                            <label>或使用藝時代帳號登入</label>
+                            <label>或使用創藝時代帳號登入</label>
                         </div>
                         <div class="form-group">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="fa fa-user fa-lg" aria-hidden="true"></i>
                                 </span>
-                                <input type="text" class="form-control">
+                                <input type="text" id="login_email" class="form-control">
                             </div>
                         </div>
                         <div class="form-group">
@@ -152,11 +170,12 @@
                                 <span class="input-group-addon">
                                     <i class="fa fa-key" aria-hidden="true"></i>
                                 </span>
-                                <input type="text" class="form-control">
+                                <input type="password" id="loginpass" class="form-control">
                             </div>
                         </div>
                         <div class="divide20"></div>
-                        <button type="submit" class="btn btn-green btn-lg btn-block">
+
+                        <button type="button" class="btn btn-green btn-lg btn-block" id="btnLogin">
                             登入
                             <i class="fa fa-angle-right margin-L-5" aria-hidden="true"></i>
                         </button>
@@ -164,20 +183,19 @@
                     <div class="divide20"></div>
                     <div class="text-center login-text">
                         <p>
-                            <a href="forget_password.html">忘記密碼</a>　|
-                            <a href="resend.html">重寄認證信</a>
+                            <a href="/forget_password">忘記密碼</a>　|
+                            <a href="/resend">重寄認證信</a>
                         </p>
                         <p>
                             還不是會員嗎？
                             <span class="lead">
-                                <a href="registered.html">立刻註冊新帳號</a>
+                                <a href="/registered">立刻註冊新帳號</a>
                             </span>
                         </p>
                     </div>
                 </div>
             </div>
             <!-- col-sm-12 -main-content END -->
-
             <!-- col-md-8 td-main-content END -->
         </div>
         <!-- row END -->
@@ -188,13 +206,21 @@
     <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 
-    <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};HandleGoogleApiLibrary()" onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>
+     <script src="/lib/common.js?v=5"></script>
 
     <script>
-         $(document).ready(function () {
+        $(document).ready(function () {
+            var url =getParameterByName("returnurl");
+            if (url == null || url == '') url = base64_encode('/index');
+            url = base64_decode(url);
+            $(".btn-facebook").click(function () {
+
+                location.href = 'https://www.facebook.com/v3.2/dialog/oauth/?client_id=164103481107660&redirect_uri=https://www.culturelaunch.net/fb_login.ashx&response_type=code&auth_type=rerequest&scope=email';
+                return false;
+            });
             $("#btnLogin").click(function () {
                 var objAccount = $("#login_email");
-                var objPasswd = $("#login_pass");
+                var objPasswd = $("#loginpass");
                 var objVerifyCode = $("#p_VERIFYCODE");
                 var p_ACCOUNT = objAccount.val();
                 var p_PASSWD = objPasswd.val();
@@ -205,254 +231,34 @@
                 } else if (p_PASSWD == "") {
                     alert("請輸入密碼");
                     objPasswd.focus();
-                }
-                else if (!validEmail(p_ACCOUNT)) {
-                    alert("帳號非EMail格式");
-                    objAccount.focus()
+                //}
+                //else if (!validEmail(p_ACCOUNT)) {
+                //    alert("帳號非EMail格式");
+                //    objAccount.focus()
 
-                    //} else if (p_VERIFYCODE == "") {
-                    //	setInputStyle("warning", objVerifyCode, "請輸入驗證碼");
+                   
                 } else {
-
+                 
                     var data = { "p_ACCOUNT": p_ACCOUNT, "p_PASSWD": p_PASSWD, "p_ACTION": "Login", "_": new Date().getTime() };
                     $.post('/lib/member_handle.ashx', data, function (data) {
 
                         if (data == "Y") {
                             alert('登入成功');
-                            $.magnificPopup.close();
+                            //$.magnificPopup.close();
+                            location.href = url;
                         } else if (data == "-1") {
                             alert("登入失敗");
                             //setInputStyle("error", objAccount, "帳號錯誤請重新輸入");
                             //setInputStyle("error", objPasswd, "密碼錯誤請重新輸入");
                         }
+                        return false;
                     });
                 }
             });
-            $("#btnLogin-mob").click(function () {
-                var objAccount = $("#login_email-mob");
-                var objPasswd = $("#login_pass-mob");
-                var objVerifyCode = $("#p_VERIFYCODE");
-                var p_ACCOUNT = objAccount.val();
-                var p_PASSWD = objPasswd.val();
-                $('.alert-err').show();
-                //var p_VERIFYCODE = objVerifyCode.val();
-                if (p_ACCOUNT == "") {
-                    $('.alert-err').html("請輪入Email");
-                    objAccount.focus();
-                } else if (p_PASSWD == "") {
-                    $('.alert-err').html("請輸入密碼");
-                    objPasswd.focus();
-                }
-                else if (!validEmail(p_ACCOUNT)) {
-                    $('.alert-err').html("帳號非EMail格式");
-                    objAccount.focus();
-                    //} else if (p_VERIFYCODE == "") {
-                    //	setInputStyle("warning", objVerifyCode, "請輸入驗證碼");
-                } else {
-                    $('.alert-err').html("");
-                    $('.alert-err').hide();
-                    var data = { "p_ACCOUNT": p_ACCOUNT, "p_PASSWD": p_PASSWD, "p_ACTION": "Login", "_": new Date().getTime() };
-                    $.post('/lib/member_handle.ashx', data, function (data) {
-                        if (data == "Y") {
-                            alert('登入成功');
-                            $.magnificPopup.close();
-                            $(".icon-close-mob").trigger("click");
-                        } else if (data == "-1") {
-                            alert("登入失敗");
-                            //setInputStyle("error", objAccount, "帳號錯誤請重新輸入");
-                            //setInputStyle("error", objPasswd, "密碼錯誤請重新輸入");
-                        }
-                    });
-                }
-            });
-            $("#btnRegister-mob").click(function () {
-                //if ($("#rad2").prop("checked")) {
-                var objNewAccount = $("#regist_email-mob");
-                var objNewPasswd = $("#regist_pass-mob");
-                var objChkPasswd = $("#regist_pass1-mob");
-                //var objMobile = $("#p_MOBILE");
-                var p_NEW_ACCOUNT = objNewAccount.val();
-                var p_NEW_PASSWD = objNewPasswd.val();
-                var p_CHK_PASSWD = objChkPasswd.val();
-
-                if (p_NEW_ACCOUNT == "") {
-                    setInputStyle("warning", objNewAccount, "請輪入Email");
-                } else if (!validEmail(p_NEW_ACCOUNT)) {
-                    alert("帳號非EMail格式");
-                    setInputStyle("error", objNewAccount, "Email錯誤請重新輸入");
-                } else if (p_NEW_PASSWD == "") {
-                    setInputStyle("warning", objNewPasswd, "請輸入密碼");
-                } else if ((p_NEW_PASSWD.length < 6) || (p_NEW_PASSWD.length > 15)) {
-                    alert("密碼長度不對");
-                    setInputStyle("error", objNewPasswd, "密碼錯誤請重新輸入");
-                } else if (p_CHK_PASSWD == "") {
-                    setInputStyle("warning", objChkPasswd, "請輸入確認密碼");
-                } else if (p_CHK_PASSWD != p_NEW_PASSWD) {
-                    alert("請確認兩次輸入的密碼是否相同");
-                    setInputStyle("error", objNewPasswd, "密碼錯誤請重新輸入");
-                    setInputStyle("error", objChkPasswd, "確認密碼錯誤請重新輸入");
-                    //} else if (p_MOBILECODE.length < 4 || p_MOBILE < 6) {
-                    //    alert("行動電話長度不對");
-                    //    setInputStyle("error", objMobile, "行動電話錯誤請重新輸入");
-                } else {
-                    $.post('/lib/member_handle.ashx', {
-                        "p_ACCOUNT": p_NEW_ACCOUNT, "p_PASSWD": p_NEW_PASSWD,
-                        "p_ACTION": "Register", "_": new Date().getTime()
-                    }, function (data) {
-                        if (data == "0") {
-                            alert("註冊失敗");
-                        } else if (data == "-1") {
-                            alert("帳號已經存在");
-                            setInputStyle("error", objNewAccount, "帳號錯誤請重新輸入");
-                        }
-                        else {
-                            alert('加入成功');
-                            $.magnificPopup.close();
-                        }
-                    });
-                }
-                //} else {
-                //    alert("尚未同意會員服務使用條款");
-                //}
-            });
-            $("#btnRegister").click(function () {
-                //if ($("#rad2").prop("checked")) {
-                var objNewAccount = $("#regist_email");
-                var objNewPasswd = $("#regist_pass");
-                var objChkPasswd = $("#regist_pass1");
-                //var objMobile = $("#p_MOBILE");
-                var p_NEW_ACCOUNT = objNewAccount.val();
-                var p_NEW_PASSWD = objNewPasswd.val();
-                var p_CHK_PASSWD = objChkPasswd.val();
-
-                if (p_NEW_ACCOUNT == "") {
-                    setInputStyle("warning", objNewAccount, "請輪入Email");
-                } else if (!validEmail(p_NEW_ACCOUNT)) {
-                    alert("帳號非EMail格式");
-                    setInputStyle("error", objNewAccount, "Email錯誤請重新輸入");
-                } else if (p_NEW_PASSWD == "") {
-                    setInputStyle("warning", objNewPasswd, "請輸入密碼");
-                } else if ((p_NEW_PASSWD.length < 6) || (p_NEW_PASSWD.length > 15)) {
-                    alert("密碼長度不對");
-                    setInputStyle("error", objNewPasswd, "密碼錯誤請重新輸入");
-                } else if (p_CHK_PASSWD == "") {
-                    setInputStyle("warning", objChkPasswd, "請輸入確認密碼");
-                } else if (p_CHK_PASSWD != p_NEW_PASSWD) {
-                    alert("請確認兩次輸入的密碼是否相同");
-                    setInputStyle("error", objNewPasswd, "密碼錯誤請重新輸入");
-                    setInputStyle("error", objChkPasswd, "確認密碼錯誤請重新輸入");
-                    //} else if (p_MOBILECODE.length < 4 || p_MOBILE < 6) {
-                    //    alert("行動電話長度不對");
-                    //    setInputStyle("error", objMobile, "行動電話錯誤請重新輸入");
-                } else {
-                    $.post('/lib/member_handle.ashx', {
-                        "p_ACCOUNT": p_NEW_ACCOUNT, "p_PASSWD": p_NEW_PASSWD,
-                        "p_ACTION": "Register", "_": new Date().getTime()
-                    }, function (data) {
-                        if (data == "0") {
-                            alert("註冊失敗");
-                        } else if (data == "-1") {
-                            alert("帳號已經存在");
-                            setInputStyle("error", objNewAccount, "帳號錯誤請重新輸入");
-                        }
-                        else {
-                            alert('加入成功');
-                            $.magnificPopup.close();
-                        }
-                    });
-                }
-                //} else {
-                //    alert("尚未同意會員服務使用條款");
-                //}
-            });
-            $("#p_NEW_ACCOUNT").blur(function () {
-                if ($(this).val() != "") {
-                    if (!validEmail($(this).val())) {
-                        alert("帳號非EMail格式");
-                        $(this).focus();
-                    }
-                }
-            });
-
-        $("#login-button").on('click', function() {
-	        $("#login-button").attr('disabled', 'disabled');
-			
-	        // API call for Google login
-	        gapi.auth2.getAuthInstance().signIn().then(
-		    // On success
-		            function(success) {
-			            // API call to get user information
-			            gapi.client.request({ path: 'https://www.googleapis.com/plus/v1/people/me' }).then(
-				            // On success
-				            function(success) {
-					            console.log(success);
-					            var user_info = JSON.parse(success.body);
-					            console.log(user_info);
-                                    var data = {"p_ACCOUNT": user_info.id, "p_PASSWD": user_info.emails[0].value, "p_PASSWD": user_info.emails[0].value, "p_username": user_info.displayName, "p_ACTION": "googleLogin", "_": new Date().getTime() };
-                                   $.post('/lib/member_handle.ashx', data, function (data) {                           
-                       
-                                           if (data == "Y") {
-                                                alert('登入成功');
-                                 
-                                           } else if (data == "-1") {
-                                               alert("登入失敗");
-                                               //setInputStyle("error", objAccount, "帳號錯誤請重新輸入");
-                                               //setInputStyle("error", objPasswd, "密碼錯誤請重新輸入");
-                                           } 
-                                   });
-        
-					            //$("#user-information div").eq(0).find("span").text(user_info.displayName);
-					            //$("#user-information div").eq(1).find("span").text(user_info.id);
-					            //$("#user-information div").eq(2).find("span").text(user_info.gender);
-					            //$("#user-information div").eq(3).find("span").html('<img src="' + user_info.image.url + '" />');
-					            //$("#user-information div").eq(4).find("span").text(user_info.emails[0].value);
-
-					            $("#user-information").show();
-					            $("#login-button").hide();
-				            },
-				            // On error
-				            function(error) {
-					            $("#login-button").removeAttr('disabled');
-					            alert('Error : Failed to get user user information');
-				            }
-			            );
-		            },
-		            // On error
-		            function(error) {
-			            $("#login-button").removeAttr('disabled');
-			            alert('Error : Login Failed');
-		            }
-	            );
-            });
+            
         });
 
-         function HandleGoogleApiLibrary() {
-	// Load "client" & "auth2" libraries
-	gapi.load('client:auth2', {
-		callback: function() {
-			// Initialize client library
-			// clientId & scope is provided => automatically initializes auth2 library
-			gapi.client.init({
-		    	apiKey: 'AIzaSyBnDVUVUIroavX9FIyf7QbSEjNvQqvfx9g',
-		    	clientId: '754193213942-a9fobo4p4djkdrgal6naqt0rue48qdvo.apps.googleusercontent.com',
-		    	scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me'
-			}).then(
-				// On success
-				function(success) {
-			  		// After library is successfully loaded then enable the login button
-			  		$("#login-button").removeAttr('disabled');
-				}, 
-				// On error
-				function(error) {
-					alert('Error : Failed to Load Library');
-			  	}
-			);
-		},
-		onerror: function() {
-			// Failed to load libraries
-		}
-	});
-}
+      
     </script>
 </body>
 

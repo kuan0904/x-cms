@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 using System.Collections.Specialized;
 using System.Reflection;
 using System.Text;
-
+using System.Web.Script.Serialization;
 /// <summary>
 /// MemberLib 的摘要描述
 /// </summary>
@@ -51,18 +51,18 @@ public class MemberLib
             return m;
 
         }
-        public static Mmemberdata Check_exist(string id)
+        public static Mmemberdata Check_exist(string accountid)
         {
 
             Mmemberdata result = new Mmemberdata
             {
                 Memberid = 0
             };
-            string strsql =  " select memberid from  tbl_MemberData where  fbid =@id "; 
+            string strsql = " select memberid from  tbl_MemberData where  AccountId =@accountid "; 
 
             NameValueCollection nvc = new NameValueCollection
             {
-                { "id", id  }
+                { "accountid", accountid }
             };
             DataTable dt = DbControl.Data_Get(strsql, nvc);
             if (dt.Rows.Count != 0)
@@ -79,13 +79,13 @@ public class MemberLib
             //result = Check_exist(email);
             //if (result.Memberid == 0)
             //{
-                string strsql = @"insert  into tbl_MemberData ( email,password ,fbid,phone,username)
-                values  ( @email,@password,@fbid,@phone ,@username) ";
+                string strsql = @"insert  into tbl_MemberData ( email,password ,AccountId,phone,username)
+                values  ( @email,@password,@AccountId,@phone ,@username) ";
                 NameValueCollection nvc = new NameValueCollection
                 {
                     { "email", email  },
                     { "password", password  },
-                    { "fbid", account },
+                    { "AccountId", account },
                     { "username", username  },
                     { "phone", phone  }
                 };
@@ -100,7 +100,7 @@ public class MemberLib
         public static Mmemberdata Login(string email, string password )
         {
             Mmemberdata result = new Mmemberdata();
-            string strsql = @"select memberid from tbl_MemberData  where  (fbid=@email  and password=@password ) ";
+            string strsql = @"select memberid from tbl_MemberData  where  (AccountId=@email  and password=@password ) ";
              
             NameValueCollection nvc = new NameValueCollection
             {
@@ -116,19 +116,22 @@ public class MemberLib
 
         }
     
-        public static Mmemberdata GetData(string memberid)
+        public static Mmemberdata GetData(string memberid )
         {
-           
-            string strsql = @"select * from tbl_MemberData  where  (memberid =@memberid) ";
+
+            string strsql = @"select * from tbl_MemberData  where 
+                memberid =@memberid ";
+
             NameValueCollection nvc = new NameValueCollection
             {
-                { "memberid", memberid  }
+                { "memberid", memberid  },
                
             };
             DataTable dt=  DbControl.Data_Get (strsql, nvc);
             Mmemberdata m = new Mmemberdata();
             if (dt.Rows.Count >0)
             {
+                m.AccountId= dt.Rows[0]["AccountId"].ToString();
                 m.Email = dt.Rows[0]["email"].ToString();
                 m.Memberid = (int) dt.Rows[0]["memberid"];
                 m.Phone = dt.Rows[0]["Phone"].ToString();
@@ -139,6 +142,7 @@ public class MemberLib
                 m.Countyid = dt.Rows[0]["Countyid"].ToString() ==""? 0:(int)dt.Rows[0]["Countyid"];
                 m.Cityid  = dt.Rows[0]["Cityid"].ToString() == "" ? 0 : (int)dt.Rows[0]["Cityid"];
                 m.Password = dt.Rows[0]["password"].ToString();
+                m.Kind = dt.Rows[0]["Kind"].ToString();
                 m.Birthday = dt.Rows[0]["Birthday"].ToString() == "" ? DateTime.Parse ("1911/1/1") : (DateTime )dt.Rows[0]["Birthday"];
             }
             return m ;
@@ -239,6 +243,50 @@ FROM              tbl_OrderData INNER JOIN
 
 
         }
+        public static string CheckCertification(string activeid)
+
+        {
+            unity.classlib.MsgResult m = new unity.classlib.MsgResult();
+            if (activeid != null && activeid != "")
+            {
+                Mmemberdata result = new Mmemberdata();
+                string strsql = @"select * from Log_Certification  where accountid =@accountid and 
+                getdate() <= ExpiryDate ";
+                NameValueCollection nvc = new NameValueCollection();
+                nvc.Add("accountid", activeid);
+                DataTable dt = DbControl.Data_Get(strsql, nvc);
+                if (dt.Rows.Count == 0)
+                {
+                    m.Id = "0";
+                    m.Msg = "証認碼不存在或已過期!請重新認証";
+
+                }
+                else
+                {
+                    m.Id = dt.Rows[0]["memberid"].ToString();
+                    strsql = "update tbl_MemberData set status='Y' where memberid = @memberid";
+                    nvc.Clear();
+                    nvc.Add("memberid", m.Id);
+                    DbControl.Data_add(strsql, nvc);
+                    strsql = @"update Log_Certification set status='Y' ,CertificationDate=getdate() 
+                         where accountid = @accountid" ;
+                    nvc.Clear();
+                    nvc.Add("accountid", activeid);
+                    DbControl.Data_add(strsql, nvc);
+
+                    m.Msg = "會員認証通過";
+                }
+
+            }
+            else
+            {
+                m.Id = "0";
+                m.Msg = "証認碼不存在";
+            }
+           
+            return new JavaScriptSerializer().Serialize(m); ;
+        }
+
     }
     public class Mail
     {
@@ -278,12 +326,12 @@ FROM              tbl_OrderData INNER JOIN
             }
 
         }
-        public static string Get_password(string email)
+        public static string Get_password(string accountid)
 
         {
             string site_name = "";
             Mmemberdata result = new Mmemberdata();
-            result = Member.Check_exist(email);
+            result = Member.Check_exist(accountid);
             string filename = HttpContext.Current.Server.MapPath("/templates/letter.html");
             string mailbody = unity.classlib.GetTextString(filename);
             DataTable dt = unity.classlib.Get_Message(6);
@@ -299,8 +347,9 @@ FROM              tbl_OrderData INNER JOIN
                 string subject = dt.Rows[0]["title"].ToString().Replace("@site_name@", site_name); ;
                 mailbody = mailbody.Replace("@title@", subject);
                 textbody = textbody.Replace("@password@", result.Password);
+                textbody = textbody.Replace("@username@", result.Username);
                 mailbody = mailbody.Replace("@mailbody@", textbody);
-                msg = unity.classlib.SendsmtpMail(email, subject, mailbody, "gmail");
+                msg = unity.classlib.SendsmtpMail(result.Email, subject, mailbody, "gmail");
 
             }
             if (result.Memberid == 0)
@@ -313,6 +362,63 @@ FROM              tbl_OrderData INNER JOIN
             }
 
         }
+     
+        public static string MailCertification(string account)
+
+        {
+            string site_name = "";
+            Mmemberdata result = new Mmemberdata();
+            result = Member.Check_exist(account );
+            string filename = HttpContext.Current.Server.MapPath("/templates/letter.html");
+            string mailbody = unity.classlib.GetTextString(filename);
+            DataTable dt = unity.classlib.Get_Message(1);
+            unity.classlib.MsgResult m =new unity.classlib.MsgResult ();
+
+            if (result.Memberid  > 0)
+            {
+                m.Id  = result.AccountId;
+                string AccountId = MySecurity.EncryptAES256(result.Memberid + DateTime.Now.ToString ("yyyyMMddhhmmss"));
+                site_name = HttpContext.Current.Application["site_name"].ToString();
+                string textbody = dt.Rows[0]["contents"].ToString().Replace("@site_name@", site_name);
+                string subject = dt.Rows[0]["title"].ToString().Replace("@site_name@", site_name);
+                string url = "https://www.culturelaunch.net/resend?activeid=" + AccountId + "&Certification=mail";
+                mailbody = mailbody.Replace("@title@", subject);
+                textbody = textbody.Replace("@password@", result.Password);
+                textbody = textbody.Replace("@username@", result.Username);
+                mailbody = mailbody.Replace("@mailbody@", textbody);
+
+                string strsql = @"insert into log_Certification (memberid,accountid,ExpiryDate,status)
+                values  (@memberid,@accountid,@ExpiryDate,@status) ";
+                NameValueCollection nvc = new NameValueCollection();
+                nvc.Add("memberid", result.Memberid.ToString());
+                nvc.Add("accountid", AccountId);
+                nvc.Add("ExpiryDate", DateTime.Now.AddHours(2).ToString("yyyy-MM-dd HH:mm:ss"));
+                nvc.Add("status", "");
+                DbControl.Data_add(strsql, nvc);
+
+                mailbody = mailbody.Replace("@currenttime@", DateTime.Now.AddHours(2).ToString("yyyy-MM-dd HH:mm:ss"));
+                mailbody = mailbody.Replace("@url@", url );
+
+                m.Msg = unity.classlib.SendsmtpMail(result.Email, subject, mailbody, "gmail");
+            
+            }
+            m.Id = result.Memberid.ToString();
+            if (result.Memberid == 0)
+            {
+                m.Msg = "帳號不存在,請重新輸入";
+
+              
+            }
+            else if (result.Email .ToString () == "") {
+                m.Id = "0";
+                m.Msg = "Email未填寫,請至會員中心";
+            }
+            else
+            {
+                m.Msg = "請收取Email以証證";
+            }
+            return new JavaScriptSerializer().Serialize(m); ;
+        }
     }
     public class Mmemberdata {
 
@@ -322,8 +428,8 @@ FROM              tbl_OrderData INNER JOIN
         public string Email { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public string FBid { get; set; }
-      
+        public string AccountId { get; set; }
+        public string Kind { get; set; }
         public DateTime Birthday { get; set; }
         public int Countyid { get; set; }
         public int Cityid { get; set; }

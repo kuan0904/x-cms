@@ -71,8 +71,8 @@
                                         <%# get_ld (Eval ("ord_code").ToString () )   %>
                                     </td>
                                     <td><%# Eval("TotalPrice") %></td>
-                                     <td><%# OrderLib.getPaymode (  Eval ("paymode").ToString ()) %> </td>
-                                      <td><%# OrderLib.get_ord_status   ( Eval ("status").ToString ())%>  </td>
+                                    <td><%# OrderLib.getPaymode (  Eval ("paymode").ToString ()) %> </td>
+                                    <td><%# OrderLib.get_ord_status   ( Eval ("status").ToString ())%>  </td>
                                                             
                                        </tr>
                             </ItemTemplate>
@@ -164,7 +164,7 @@
                                             </td>
                                             
                                          
-                                            <td>統一編號:<asp:TextBox ID="companyno" runat="server"></asp:TextBox><br />
+                                            <td>統一編號:<asp:TextBox ID="companyno" runat="server" ></asp:TextBox><br />
                                                發票抬頭:<asp:TextBox ID="title" runat="server"></asp:TextBox>
                                             </td>
                                     </tr>

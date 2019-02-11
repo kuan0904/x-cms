@@ -30,7 +30,7 @@ public partial class member_class : System.Web.UI.Page
         }
         else
         {
-            Response.Redirect("/login.html");
+            Response.Redirect("https://www.culturelaunch.net/login");
         }
 
     }

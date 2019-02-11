@@ -27,17 +27,6 @@ public partial class MasterPage : System.Web.UI.MasterPage
             Session["webmenu"] = menu;
         }
 
-        //if (Session["memberdata"] == null)
-        //{
-        //    _status = "登入 / 註冊";
-        //    _link = "/login.html";
-        //}
-        //else
-        //{
-        //    _status = "Hi 會員名稱";
-        //    _link = "/member-edit.aspx";
-        //}
-      
 
     }
 

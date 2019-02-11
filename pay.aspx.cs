@@ -38,10 +38,15 @@ public partial class pay : System.Web.UI.Page
         MerchantID = "MS357549208"; //正式ID      
         string _key = "CD9Zyfb82BIFpnYY2JUppiF4a3f1FB1B";        
         string _Vi = "jXbof2czX0r9FxBf";
-        //action = "https://ccore.spgateway.com/MPG/mpg_gateway";//測試ID
-        //MerchantID = "MS34344182";
-        //_key = "By8IMdyhhfeTTgACeHciAYe6bGrXc6bA";
-        //_Vi = "hiDG6VP3CrOA32bM";
+        if (Request.Url.Host.IndexOf ("localhost") !=-1)
+        {
+            action = "https://ccore.spgateway.com/MPG/mpg_gateway";//測試ID
+            MerchantID = "MS34344182";
+            _key = "By8IMdyhhfeTTgACeHciAYe6bGrXc6bA";
+            _Vi = "hiDG6VP3CrOA32bM";
+        }
+
+      
         string _ItemDesc ="";
         foreach (var obj in o.OrderDetail)
         {

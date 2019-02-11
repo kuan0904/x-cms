@@ -124,6 +124,14 @@ public class member_handle : IHttpHandler,IRequiresSessionState {
             if (msg == "") msg = "Y";
             context.Response.Write(msg);
         }
+           if (p_ACTION== "MailCertification")
+        {
+
+
+            string msg = MemberLib.Mail.MailCertification(p_ACCOUNT);
+            if (msg == "") msg = "Y";
+            context.Response.Write(msg);
+        }
 
 
     }

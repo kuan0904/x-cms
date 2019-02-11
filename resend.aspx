@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿<%@ Page Language="C#" %>
+
+<!DOCTYPE html>
 <html lang="zh-Hant-TW">
 
 <head>
@@ -32,7 +34,10 @@
     <link rel="stylesheet" href='css/style.css' type='text/css' />
     <link rel="shortcut icon" href="favicon.ico" />
     <!--[if lt IE 9]><script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-
+      <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+    <META HTTP-EQUIV="EXPIRES" CONTENT="0">
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT">
 </head>
 
 <body class="login-bg">
@@ -53,7 +58,7 @@
                         </div>
                         <div class="form-group">
                             <div class="login-input-box">
-                                <input class="login-input100 form-control"  placeholder="請填入註冊時使用的Email信箱">
+                                <input class="login-input100 form-control" id="accountid" placeholder="請填入註冊時使用的帳號">
                                 <span class="focus-input100"></span>
                                 <span class="symbol-input100">
                                     <i class="fa fa-envelope" aria-hidden="true"></i>
@@ -68,7 +73,7 @@
                     <div class="divide20"></div>
                     <div class="text-center login-text">
                         <p>
-                            <a href="login.html">回上一頁</a>
+                            <a href="/login">回上一頁</a>
                         </p>
                     </div>
                 </div>
@@ -81,14 +86,72 @@
         <!-- row END -->
     </div>
 
-    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/swipe/swiper.min.js"></script>
     <script src='js/device.js'></script>
-    <script src='js/theme.js'></script>
-    <script src='js/script.js'></script>
 
+    <script src='js/script.js'></script>
+    
+    <script>
+
+        var activeid ='<%=Request.QueryString["activeid"]%>';
+        if (activeid != '') {
+            result = '<%=MemberLib.Member.CheckCertification (Request.QueryString["activeid"])%>';
+            result = JSON.parse(result);
+            if (result.Id == '0') {
+                alert(result.Msg);
+            }
+            else {
+                alert(result.Msg);
+                location.href='/index'
+            }
+        }
+        $(document).ready(function () {
+           
+            var dataValue = {};
+            
+            $('#back').click(function () {
+                history.back();
+            });
+            $('button').click(function () {
+                var text = $('#accountid').val();
+                if (text == '') {
+                    alert('請輸入請填入註冊時使用的帳號');
+                }
+                else {
+                    $.post('/lib/member_handle.ashx', {
+                        "p_ACTION": "MailCertification"
+                        , "p_ACCOUNT": text,
+                        "_": new Date().getTime() 
+                    }, function (result) {
+                        if (result != "") {
+                            result = JSON.parse(result);
+                            if (result.Id != '0') {
+                                alert('請收取Email認証');
+                            }
+                            else if (result.Id == '0') {
+
+                                alert(res.Msg);
+                            }
+                            else {
+                                alert(result);
+                            }                            
+
+                        }
+                    });
+                }
+                return false;
+            })
+
+
+
+        });
+
+    
+
+    </script>
 </body>
 
 </html>

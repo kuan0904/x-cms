@@ -38,20 +38,22 @@
                 <td>
                     <%# Eval("memberid") %>
                 </td>
-            
+            <td>
+                <%#Eval("accountid") %>
+            </td>
                <td>
                     <%# Eval("email") %>
                 </td>
                 <td>
                     <%# Eval("username") %>
                 </td>
-                         <td>
-                    <%# Eval("gender") %>
-                </td>
+            
                     <td>
                     <%# Eval("phone") %>
                 </td>
-              
+                   <td>
+                    <%# statstxt( Eval("status").ToString()) %>
+                </td>
       
             </tr>
         </ItemTemplate>
@@ -64,10 +66,10 @@
                             <tr runat="server" >
                                 <th runat="server"></th>
                                 <th runat="server"><asp:LinkButton ID="sort1" runat="server" CommandArgument="desc" CommandName="memberid" onclick ="sortdata">會員編號</asp:LinkButton></th>
-                                  <th runat="server"><asp:LinkButton ID="LinkButton2" runat="server" CommandArgument="desc" CommandName="email" onclick ="sortdata">Email</asp:LinkButton></th>               
+                                <th runat="server"><asp:LinkButton ID="LinkButton1" runat="server" CommandArgument="desc" CommandName="accountid" onclick ="sortdata">會員帳號</asp:LinkButton></th>
+                                <th runat="server"><asp:LinkButton ID="LinkButton2" runat="server" CommandArgument="desc" CommandName="email" onclick ="sortdata">Email</asp:LinkButton></th>               
                                 <th runat="server"><asp:LinkButton ID="LinkButton3" runat="server" CommandArgument="desc" CommandName="username" onclick ="sortdata">姓名</asp:LinkButton></th>                                                        
-                                <th runat="server">性別</th>   
-                                <th runat="server">電話</th>   
+                                <th runat="server">電話</th>     <th runat="server">狀態</th>   
                          </tr>
                                   </thead> 
                             <tr id="itemPlaceholder" runat="server">
@@ -115,10 +117,14 @@
                          
                             <table width="100%" border="0" class="table table-striped table-bordered bootstrap-datatable datatable">
                             <tr>
-                               <td>ID</td>
+                               <td>會員編號</td>
                                <td> <%=memberid %></td>
 
                            </tr>
+                                <tr>
+                                    <td>會員帳號</td>
+                                    <td> <asp:TextBox ID="TextBox1" runat="server"   ></asp:TextBox></td>
+                                </tr>
                              <tr>
                                <td>Email</td>
                                <td>
@@ -192,6 +198,15 @@
                                    <asp:Button ID="Button2" runat="server" Text="忘記密碼簡詢通知" OnClick ="Button2_Click" />
                                </td>
                            </tr>
+                               <tr>
+                                  <td>狀態</td>
+                                   <td>
+                                       <asp:DropDownList ID="status" runat="server" >
+                                            <asp:ListItem Value ="Y">有效</asp:ListItem>
+                                            <asp:ListItem Value ="N">Email未驗証</asp:ListItem>
+                                            <asp:ListItem Value ="D">刪除</asp:ListItem>
+                                       </asp:DropDownList></td>
+                               </tr>
                            <tr>
                                <td  colspan ="2" align="center"> 
                                     <asp:Button ID="Btn_save" runat="server" class="btn btn-primary" Text="存 檔"   OnClientClick="return checkinput();"  OnClick ="Btn_save_Click" />

@@ -8,7 +8,7 @@
         var totalprice = 0;
         var totalnum = 0;
         var flag = "<%=status %>";
-        re = /^[09]{2}[0-9]{8}$/;
+        phre = /^[09]{2}[0-9]{8}$/;
         function cal() {
             totalprice = 0;
             $(".has-error").each(function () {
@@ -22,7 +22,25 @@
             
               
         }
+     function isValidGUI(taxId) {
+            var invalidList = "00000000,11111111";
+            if (/^\d{8}$/.test(taxId) == false || invalidList.indexOf(taxId) != -1) {
+                return false;
+            }
 
+            var validateOperator = [1, 2, 1, 2, 1, 2, 4, 1],
+                sum = 0,
+                calculate = function(product) { // 個位數 + 十位數
+                    var ones = product % 10,
+                        tens = (product - ones) / 10;
+                    return ones + tens;
+                };
+            for (var i = 0; i < validateOperator.length; i++) {
+                sum += calculate(taxId[i] * validateOperator[i]);
+            }
+
+            return sum % 10 == 0 || (taxId[6] == "7" && (sum + 1) % 10 == 0);
+        }
         $(document).ready(function () {
           
             $(document.body).on('change', 'select[name^="joinnum"]', function () {
@@ -83,7 +101,7 @@
                         alert('請輸入聯絡人聯絡電話!');
                         $('#POC').children().eq(2).addClass('has-error');
                     }
-                    else if (!re.test($("#cphone").val())) {
+                    else if (!phre.test($("#cphone").val())) {
                         $('#POC').children().eq(2).addClass('has-error');
                         alert('聯絡人手機格式錯誤!');
                         return false;
@@ -94,15 +112,33 @@
                     }
                     else if (typeof (paymode) == "undefined") {
                         alert('請選擇付款方式');
-                       
+
                         return false;
+                    }
+                    else if ($("#invoice2").prop("checked") == false && $("#invoice3").prop("checked") == false) {
+                        alert('請選擇發票方式');
+                        $("#invoice2").focus();
+                        return false;
+                    }
+                    else if ($("#invoice3").prop("checked") == true && ($("#title").val() == '' || $("#companyno").val() == '')) {
+                        alert('請填統編及公司抬頭');
+                        $("#invoice3").focus();
+                        return false;
+                    }
+                    else if ($("#companyno").val() != '' && isValidGUI($("#companyno").val()) ==false ) {                        
+                        alert('統編格式錯誤!');
+                        return false;                       
                     }
                     else if (btn == "") {
                         btn = "Y";
+                        var invoice = $("#invoice2").prop("checked") ? "2" : "3";                      
                         var json = {
                             "Articleid": Articleid, "lessonid": lessonid, "TicketKind": "1",
                             "email": $("#cemail").val(), "phone": $("#cphone").val(),
-                            "name": $("#cname").val(), "postion":$("#postion").val() ,
+                            "name": $("#cname").val(), "postion": $("#postion").val(),
+                             "invoice": invoice,
+                            "companyno": $("#companyno").val(),
+                            "title": $("#title").val(),
                             "unitname": $("#unitname").val() , "paymode": paymode, "joinnum": 1
                         };
                         $.post('/lib/joinclass.ashx', json, function (data) {
@@ -297,6 +333,34 @@
                                         </div>
                                       
                                     </td>
+                                </tr>
+                                <tr>
+                                    <td>統一發票</td>  
+                                    <td>
+                                        <!--選擇發票-->
+                                    <div class="radio">                 
+                                        <label>
+                                            <input type="radio" name="invoice" id="invoice2" value="2" checked >
+                                             <span class="cr">
+                                            <i class="cr-icon fa fa-circle"></i>
+                                             </span>二聯式紙本發票</label>
+                                     </div>
+                                    <div class="radio">  
+                                    <label>
+                                        <input type="radio" name="invoice" id="invoice3" value="3"> <span class="cr">
+                                        <i class="cr-icon fa fa-circle"></i>
+                                            </span>三聯式紙本發票</label>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">抬頭</label>
+                                        <input name="title" id="title" placeholder="輸入抬頭(三聯式發票填寫)" class="form-control" />
+
+                                    </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">統一編號</label>
+                            <input name="companyno"  id="companyno" placeholder="輸入統一編號(三聯式發票填寫)" class="form-control" />
+
+                        </div>
+                    </div></td>
                                 </tr>
                                 <tr class="total underline">
                                     <td >總計</td>

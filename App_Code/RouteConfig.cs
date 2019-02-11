@@ -66,14 +66,18 @@ namespace MyPublic
         public MyWebFormsFriendlyUrlResolver() { }
 
         public override string ConvertToFriendlyUrl(string path)
-    {   /// /// 把ckfinder文件夾以FriendlyUrl機制中排除掉，防止出现The uploaded file is corrupt错误 /// /// /// 
+    {   ///把ckfinder文件夾以FriendlyUrl機制中排除掉，防止出現The uploaded file is corrupt 
         if (!string.IsNullOrEmpty(path))
             {
-                   if (path.ToLower().Contains("/spadmin") || path.ToLower().Contains("/editor") || path.ToLower().Contains("/ckfinder") )
+                if (
+                    path.ToLower().Contains("/spadmin") || 
+                    path.ToLower().Contains("/editor") || 
+                    path.ToLower().Contains("/ckfinder") )
                 { // Here the filter code
                     return path;
                 }
             }
+
             return base.ConvertToFriendlyUrl(path);
         }
     }

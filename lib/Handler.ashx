@@ -7,15 +7,15 @@ using System.Data.SqlClient;
 using System.Collections.Specialized;
 using System.Web;
 using System.Collections.Generic;
-
+    using System.Web.Script.Serialization;
 public class Handler : IHttpHandler  {
 
     public void ProcessRequest (HttpContext context) {
-        string result = "";
+      
         string  kind =  context.Request["kind"];
         if (kind == "contactus")
         {
-            ContactUs.ItemData itemData = new ContactUs.ItemData();
+           Unitlib .ContactData .ItemData itemData = new Unitlib .ContactData.ItemData();
             itemData.Email = context.Request["email"];
             itemData.Contents = context.Request["Contents"];
             itemData.Phone = context.Request["Phone"];
@@ -23,8 +23,8 @@ public class Handler : IHttpHandler  {
 
             itemData.Secno = 0;
             itemData.Status = "Y";
-            result = ContactUs.Add(itemData);
-            context.Response.Write(result);
+            itemData = Unitlib .ContactData.Add ( itemData);
+            context.Response.Write(new JavaScriptSerializer().Serialize(itemData));
         }
         if (kind == "bookingepeper")
         {

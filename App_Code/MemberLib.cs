@@ -305,14 +305,33 @@ FROM              tbl_OrderData INNER JOIN
      
                 site_name = HttpContext.Current.Application["site_name"].ToString();
                 string textbody = dt.Rows[0]["contents"].ToString().Replace("@site_name@", site_name);
-                string subject = "【" +  site_name + "】" + dt.Rows[0]["title"].ToString(); 
+                string subject = "【" +  site_name + "】" + dt.Rows[0]["title"].ToString();
+                              
+                string AccountId = MySecurity.EncryptAES256(result.Memberid + DateTime.Now.ToString("yyyyMMddhhmmss"));
+                site_name = HttpContext.Current.Application["site_name"].ToString();              
+                string url = "https://www.culturelaunch.net/resend?activeid=" + AccountId + "&Certification=mail";
+
+                string strsql = @"insert into log_Certification (memberid,accountid,ExpiryDate,status)
+                values  (@memberid,@accountid,@ExpiryDate,@status) ";
+                NameValueCollection nvc = new NameValueCollection();
+                nvc.Add("memberid", result.Memberid.ToString());
+                nvc.Add("accountid", AccountId);
+                nvc.Add("ExpiryDate", DateTime.Now.AddHours(2).ToString("yyyy-MM-dd HH:mm:ss"));
+                nvc.Add("status", "");
+                DbControl.Data_add(strsql, nvc);
+
+        
+
 
                 mailbody = mailbody.Replace("@title@", subject);
                 textbody = textbody.Replace("@name@", result.Username );
                 textbody = textbody.Replace("@email@", result.Email);
                 textbody = textbody.Replace("@password@", result.Password);
                 textbody = textbody.Replace("@websitename@", site_name);
+                textbody = textbody.Replace("@currenttime@", DateTime.Now.AddHours(2).ToString("yyyy-MM-dd HH:mm:ss"));
+                mailbody = textbody.Replace("@url@", url);
                 mailbody = mailbody.Replace("@mailbody@", textbody);
+
                 msg = unity.classlib.SendsmtpMail(result.Email , subject, mailbody, "gmail");
 
             }
@@ -349,6 +368,9 @@ FROM              tbl_OrderData INNER JOIN
                 textbody = textbody.Replace("@password@", result.Password);
                 textbody = textbody.Replace("@username@", result.Username);
                 mailbody = mailbody.Replace("@mailbody@", textbody);
+
+
+
                 msg = unity.classlib.SendsmtpMail(result.Email, subject, mailbody, "gmail");
 
             }

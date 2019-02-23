@@ -155,8 +155,8 @@
                         }
                         else if (result == "Y") {
 
-                            alert("加入會員成功!");
-                              location.href = "/index";
+                            alert('加入會員成功,\r並請收取Email按下認証,\r以確認會員資格!');
+                            location.href = "/index";
                         }
                     });
                    

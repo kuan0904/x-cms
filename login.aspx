@@ -189,7 +189,7 @@
                         <p>
                             還不是會員嗎？
                             <span class="lead">
-                                <a href="/registered">立刻註冊新帳號</a>
+                                <a href="#" id="register">立刻註冊新帳號</a>
                             </span>
                         </p>
                     </div>
@@ -212,6 +212,12 @@
         $(document).ready(function () {
             var url =getParameterByName("returnurl");
             if (url == null || url == '') url = base64_encode('/index');
+            var returnurl = url;
+            $("#register").click(function () {
+
+                location.href = '/registered?returnurl='+ returnurl;
+                return false;
+            });
             url = base64_decode(url);
             $(".btn-facebook").click(function () {
 

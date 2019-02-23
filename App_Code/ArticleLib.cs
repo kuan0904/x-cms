@@ -217,17 +217,19 @@ namespace article
 
             if (cid != "") {
                 var s =ItemData .Find(p => p.CategoryId == int.Parse (cid) );
-                if (s!=null && s.Parentid == 0)
+                if (s!=null )
                 {
-                    if (ItemData.Find(p => p.Parentid == int.Parse(cid)) != null)
+                    if (s.Parentid == 0 && ItemData.Find(p => p.Parentid == int.Parse(cid)) != null)
                         s = ItemData.Find(p => p.Parentid == int.Parse(cid));
 
+                    result = " <a href = \"/catalog/" + s.CategoryId.ToString() + "\" class=\"post-category\">" + s.Name + "</a>";
 
                 }
+            
+                
                
 
-                result = " <a href = \"/catalog/" + s.CategoryId.ToString() + "\" class=\"post-category\">" + s.Name + "</a>";
-
+            
             }
 
 

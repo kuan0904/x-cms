@@ -222,13 +222,13 @@ public class OrderLib
             {
                 detail.Add(new OrderDetail
                 {
-                    P_id = (int)dt.Rows[0]["p_id"],
-                    Num = (int)dt.Rows[0]["num"],
-                    Price = (int)dt.Rows[0]["Price"],
-                    Amount = (int)dt.Rows[0]["Amount"],
-                    Discount = (int)dt.Rows[0]["Discount"],
-                    P_name = dt.Rows[0]["productname"].ToString(),
-                    Pic= dt.Rows[0]["logo"].ToString()
+                    P_id = (int)dt.Rows[i]["p_id"],
+                    Num = (int)dt.Rows[i]["num"],
+                    Price = (int)dt.Rows[i]["Price"],
+                    Amount = (int)dt.Rows[i]["Amount"],
+                    Discount = (int)dt.Rows[i]["Discount"],
+                    P_name = dt.Rows[i]["productname"].ToString(),
+                    Pic= dt.Rows[i]["logo"].ToString()
                 });
             }
             TradeInfoLog log = Get_Tradelog(ord_code);

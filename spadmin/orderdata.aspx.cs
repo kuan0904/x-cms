@@ -81,9 +81,11 @@ public partial class spadmin_orderdata : System.Web.UI.Page
         MultiView1.ActiveViewIndex = 1;
         LessonLib.JoinData l = LessonLib.Web.Get_ord_JoinData(o.Ord_code );
         joindata.Visible = false;
-        companyno.Text = l.OrderData.Companyno;
-        title.Text = l.OrderData.Title;
-        if (l.JoinDetail.Count > 0)
+        companyno.Text = o.Companyno ;
+        title.Text = o.Title;
+        Repeater1.DataSource = o.OrderDetail;
+        Repeater1.DataBind();
+        if (l.JoinDetail != null   )
         {
            
             joindata.Visible = true ;

@@ -193,7 +193,7 @@
                                         <ItemTemplate>
                                         <tr>
                                         
-                                        <td><%#Eval("productname") %></td>
+                                        <td><%#Eval("P_name") %></td>
                                         <td><%#Eval("price") %></td>
                                         <td><%#Eval("num") %></td>
                                         <td><%#Eval("amount") %></td>

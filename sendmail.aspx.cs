@@ -20,21 +20,21 @@ public partial class sendmailaspx : System.Web.UI.Page
             email.Subject ="test";
             email.IsBodyHtml = true;
             email.Body = mailtext;
-           
-        //        sm.Host = "smtp.gmail.com";
-        //        sm.Credentials = new System.Net.NetworkCredential("service@rollersports.org.tw", "00977211");
-        //        sm.Port = 587;
-        //sm.EnableSsl = true;
-        //sm.Send(email);
-          
-      //      msg = "";
-     sm.Host = "www.rollersports.org.tw";
-                sm.Port = 25;
-                //  sm.EnableSsl = true;
-                sm.ServicePoint.MaxIdleTime = 1;
-                sm.Send(email);
-      
-            sm.Dispose();
+
+        sm.Host = "smtp.gmail.com";
+        sm.Credentials = new System.Net.NetworkCredential("soccer03@yourcs.com", "xnet.world");
+        sm.Port = 587;
+        sm.EnableSsl = true;
+        sm.Send(email);
+
+        msg = "";
+        //sm.Host = "www.rollersports.org.tw";
+        //           sm.Port = 25;
+        //           //  sm.EnableSsl = true;
+        //           sm.ServicePoint.MaxIdleTime = 1;
+        //           sm.Send(email);
+
+        sm.Dispose();
             email.Dispose();
        
     }

@@ -2,3 +2,12 @@
 index.aspx
 index.aspx.cs
 App_Code/ArticleLib.cs
+/.vs/config/applicationhost.config
+/.vs/xcms/v15/Server/sqlite3/storage.ide-wal
+/.vs/xcms/v15/Server/sqlite3/storage.ide-shm
+/.vs/xcms/v15/Server/sqlite3/storage.ide
+/.vs/xcms/v15/Server/sqlite3/db.lock
+/.vs/x-cms/v15/Server/sqlite3/storage.ide-wal
+/.vs/x-cms/v15/Server/sqlite3/storage.ide-shm
+/.vs/x-cms/v15/Server/sqlite3/storage.ide
+/.vs/x-cms/v15/Server/sqlite3/db.lock
